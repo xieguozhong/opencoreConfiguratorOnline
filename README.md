@@ -16,8 +16,8 @@ html+javascript
 1.  直接使用在线版, 地址 https://galada.gitee.io/opencoreconfiguratoronline
 2.  git clone 后直接双击index.html使用
 
+![简单的使用图示说明](https://images.gitee.com/uploads/images/2019/1125/092517_804711cc_1122816.jpeg "Jietu20191125-092127.jpg")
 
-![简单的图示](https://images.gitee.com/uploads/images/2019/1125/090642_019047bb_1122816.jpeg "Xnip2019-11-18_18-21-37.jpg")
 
 
 #### 参与贡献
