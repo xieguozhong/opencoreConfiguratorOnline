@@ -4,20 +4,18 @@
 html5版的OpenCore引导工具config.plist的在线编辑器
 
 #### 软件架构
-软件架构说明
+html+javascript
 
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+无需安装
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  直接使用在线版, 地址
+2.  git clone 后直接双击index.html使用
+
 
 #### 参与贡献
 
