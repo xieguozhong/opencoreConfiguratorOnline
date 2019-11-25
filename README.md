@@ -1,7 +1,7 @@
 # OpenCoreConfiguratorOnline
 
 #### 介绍
-html5版的OpenCore引导工具config.plist的在线编辑器
+html版的OpenCore引导工具config.plist的在线编辑器, 
 
 #### 软件架构
 html+javascript
@@ -13,8 +13,11 @@ html+javascript
 
 #### 使用说明
 
-1.  直接使用在线版, 地址
+1.  直接使用在线版, 地址 https://galada.gitee.io/opencoreconfiguratoronline
 2.  git clone 后直接双击index.html使用
+
+
+![简单的图示](https://images.gitee.com/uploads/images/2019/1125/090642_019047bb_1122816.jpeg "Xnip2019-11-18_18-21-37.jpg")
 
 
 #### 参与贡献
