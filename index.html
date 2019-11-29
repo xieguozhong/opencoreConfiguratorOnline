@@ -20,9 +20,9 @@
 			.ctrlicon {
 				width:12px; height:12px; cursor: pointer;
 			}
-			.changcol12padding {
-				padding-right:5px;padding-left:5px;
-			}
+			/* .changcol12padding {
+				 padding-right:5px;padding-left:5px;
+			} */
 
 		</style>
 	</head>
@@ -166,10 +166,10 @@
                         </div>
 					</div>
 
-					<div class="page-content">
-
-                        <div class="row" v-show="root === 'ACPI'">
-                            <div class="col-xs-12 changcol12padding">
+					<div class="page-content" style="padding-right:5px;padding-left:0px;">
+                    <div class="container-fluid" >
+                        <div class="row" v-show="root === 'ACPI'" >
+                            <div class="col-xs-12">
                             	
                                 
                                 <h3 class="header smaller lighter blue" :title="title.ACPI.Add.Title"> Add</h3>
@@ -234,7 +234,7 @@
 
                         
                         <div class="row" v-show="root === 'Booter'" >
-                        	<div class="col-xs-12 changcol12padding">
+                        	<div class="col-xs-12">
                             	
 	                            <h3 class="header smaller lighter blue"> MmioWhitelist</h3>
 	                            <table id="gridtable-Booter-MmioWhitelist"></table>
@@ -308,7 +308,7 @@
                     	</div>
 
                         <div class="row" v-show="root === 'DeviceProperties'">
-                            <div class="col-xs-12 changcol12padding">
+                            <div class="col-xs-12">
                                 
                                 <h3 class="header smaller lighter blue" :title="title.DeviceProperties.Add.Title"> Add</h3>
                                 <div class="row">
@@ -359,7 +359,7 @@
 
 
                         <div class="row" v-show="root === 'Kernel'">
-                            <div class="col-xs-12 changcol12padding">
+                            <div class="col-xs-12">
                                 <h3 class="header smaller lighter blue" :title="title.Kernel.Add_title"> Add</h3>
 
                                 <table id="gridtable-Kernel-Add"></table>
@@ -465,7 +465,7 @@
 
                         <div class="row" v-show="root === 'Misc'">
                             
-                            <div class="col-xs-12 changcol12padding">
+                            <div class="col-xs-12">
                                 <h3 class="header smaller lighter blue"> BlessOverride</h3>
 
                                 <h3 class="header smaller lighter blue" :title="title.Misc.Entires_title"> Entries</h3>
@@ -595,7 +595,7 @@
 
                         <div class="row" v-show="root === 'NVRAM'">                        
 
-                            <div class="col-xs-12 changcol12padding">
+                            <div class="col-xs-12">
                                 
 
                                 <h3 class="header smaller lighter blue"> Add</h3>
@@ -680,7 +680,7 @@
 
 
                         <div class="row" v-show="root === 'PlatformInfo'">
-                        	<div class="col-xs-12 changcol12padding">
+                        	<div class="col-xs-12">
 	                            <h3 class="header smaller lighter blue"> Root</h3>
 	                            <div class="well">
 	                                <div class="row">
@@ -931,7 +931,7 @@
 
 
                         <div class="row" v-show="root === 'UEFI'">
-                            <div class="col-xs-12 changcol12padding">
+                            <div class="col-xs-12">
                                 <h3 class="header smaller lighter blue"> Root</h3>                            
                                 <div class="well">
                                     <div class="checkbox">
@@ -1113,7 +1113,7 @@
                         </div>
                         
 						
-
+                    </div>
 					</div><!-- /.page-content -->
 
 				</div><!-- /.main-content-inner -->

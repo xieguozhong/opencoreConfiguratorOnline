@@ -1,8 +1,11 @@
-let table_column_width = 0;
+var table_column_width = 0;
+
 function initGridTableACPI() {
 
 	//gridtable-ACPI-Add
-	table_column_width = $('#gridtable-ACPI-Add').closest('[class^="col-"]').width();
+	let objGT_ACPI_Add = jQuery('#gridtable-ACPI-Add');
+
+	table_column_width = objGT_ACPI_Add.closest('[class^="col-"]').width();
 	
 	let colNames = ['Comment', 'Path','Enabled'];
 	let colModel = [			
@@ -10,7 +13,7 @@ function initGridTableACPI() {
 		{name:'Path',index:'Path', width:150,editable: true, sortable:false},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
-	initGridTable(jQuery('#gridtable-ACPI-Add'), VUEAPP.ACPI.Add, colNames, colModel);
+	initGridTable(objGT_ACPI_Add, VUEAPP.ACPI.Add, colNames, colModel);
 
 	//gridtable-ACPI-Block
 	colNames = ['Comment', 'OemTableId','TableLength','TableSignature','All','Enabled'];
@@ -75,14 +78,14 @@ function initGridTableMisc() {
 
 function initGridTableDeviceProperties() {
 	//AddLeft
-	let colNames = ['Devices', 'id'];
+	let colNames = ['Devices', 'id'], tableHeight = 240, tableWidth = table_column_width / 2;
 	let colModel = [			
 		{name:'Devices',index:'Devices', width:150,editable: true, sortable:false},
 		{name:'id',index:'id', editable: false, hidden:true,key:true}
 	];
 	let objGT_DeviceProperties_AddLeft = jQuery('#gridtable-DeviceProperties-AddLeft');
-	initGridTable(objGT_DeviceProperties_AddLeft, VUEAPP.DeviceProperties.AddLeft, colNames, colModel, 200);
-	objGT_DeviceProperties_AddLeft.jqGrid( 'setGridWidth', table_column_width / 2 - 1);
+	initGridTable(objGT_DeviceProperties_AddLeft, VUEAPP.DeviceProperties.AddLeft, colNames, colModel, tableHeight);
+	objGT_DeviceProperties_AddLeft.jqGrid( 'setGridWidth', tableWidth);
 
 	//AddRight
 	colNames = ['Key', 'Value', 'Type','pid','id'];
@@ -94,8 +97,8 @@ function initGridTableDeviceProperties() {
         {name:'id',index:'id', editable: false, key:true, hidden:true}
 	];
 	let objGT_DeviceProperties_AddRight = jQuery('#gridtable-DeviceProperties-AddRight');
-	initGridTable(objGT_DeviceProperties_AddRight, VUEAPP.DeviceProperties.AddRight, colNames, colModel, 200);
-	objGT_DeviceProperties_AddRight.jqGrid( 'setGridWidth', table_column_width / 2 - 1);
+	initGridTable(objGT_DeviceProperties_AddRight, VUEAPP.DeviceProperties.AddRight, colNames, colModel, tableHeight);
+	objGT_DeviceProperties_AddRight.jqGrid( 'setGridWidth', tableWidth);
 		
 
 	//增加行选中事件
@@ -114,8 +117,8 @@ function initGridTableDeviceProperties() {
 	];
 
 	let objGT_DeviceProperties_BlockLeft = jQuery('#gridtable-DeviceProperties-BlockLeft');
-	initGridTable(objGT_DeviceProperties_BlockLeft, VUEAPP.DeviceProperties.BlockLeft, colNames, colModel, 200);
-	objGT_DeviceProperties_BlockLeft.jqGrid( 'setGridWidth', table_column_width / 2 - 1);
+	initGridTable(objGT_DeviceProperties_BlockLeft, VUEAPP.DeviceProperties.BlockLeft, colNames, colModel, tableHeight);
+	objGT_DeviceProperties_BlockLeft.jqGrid( 'setGridWidth', tableWidth);
 
 	//BlockRight
     colNames = ['Volume', 'Type', 'pid', 'id'];
@@ -127,8 +130,8 @@ function initGridTableDeviceProperties() {
 	];
 	let objGT_DeviceProperties_BlockRight = jQuery('#gridtable-DeviceProperties-BlockRight');
 
-	initGridTable(objGT_DeviceProperties_BlockRight, VUEAPP.DeviceProperties.BlockRight, colNames, colModel, 200);
-	objGT_DeviceProperties_BlockRight.jqGrid( 'setGridWidth', table_column_width / 2 - 1);
+	initGridTable(objGT_DeviceProperties_BlockRight, VUEAPP.DeviceProperties.BlockRight, colNames, colModel, tableHeight);
+	objGT_DeviceProperties_BlockRight.jqGrid( 'setGridWidth', tableWidth);
 	//增加行选中事件
 	objGT_DeviceProperties_BlockLeft.jqGrid('setGridParam',{ 
         onSelectRow : function (rowid) {
@@ -224,7 +227,8 @@ function initGridTableUEFI() {
 }
 
 function initGridTableNVRAM() {
-	let colNames = ['Devices', 'id'], tabLeheight = 130, tableWidth = table_column_width / 2 - 20;
+	let colNames = ['Devices', 'id'], tabLeheight = 130, tableWidth = table_column_width / 2 - 5;
+	//console.log(tableWidth);
     let colModel = [            
         {name:'Devices',index:'Devices', width:150,editable: true, sortable:false},
         {name:'id',index:'id', editable: false, hidden:true,key:true}
@@ -320,7 +324,7 @@ function initGridTableNVRAM() {
 **/
 function initSubGridTable(pid, gridid, theData, keyname) {
 
-    let rightName = keyname + 'Right', objGridTable = $(gridid);
+    let rightName = keyname + 'Right', objGridTable = jQuery(gridid);
     objGridTable.jqGrid('resetSelection');
     for(let i=0;i<theData[rightName].length;i++) {
         if(theData[rightName][i].pid == pid) { //这里一定是==,不能===
@@ -348,7 +352,7 @@ function initGridTable(objGridTable, gridData, colNames, colModel, height) {
         autoScroll: true,
         multiselect:true,
         multiboxonly : true,
-		ondblClickRow: function (rowid) {
+		ondblClickRow : function (rowid) {
             objGridTable.jqGrid('editRow', rowid, {
                 url:'clientArray', keys:true
             });
