@@ -110,7 +110,33 @@ jQuery(function($) {
 		showTextareaModal();
 	});
 
+	// //点击tab时候设置width
+	// $('.tablelia').on('click', function(){
+ //    	//console.log($(this).attr('href'));
+ //    	let arrHref = $(this).attr('href').split('_');
+ //    	let ojbtb = jQuery('#gridtable' + '-' + arrHref[1] + '-' + arrHref[2]);
+ //    	ojbtb.jqGrid( 'setGridWidth', GLOBAL_TABLE_WIDTH );
+ // 	})
+
 })
+
+// function setTableWidth(rootname) {
+// 	// $("table[id^='gridtable-" + rootname + "-']").each(function(it){
+
+//  //    	//console.log($(this).width() + '\n' + GLOBAL_TABLE_WIDTH);
+//  //    	let theid = $(this).context.id;
+//  //    	//console.log(theid);
+//  //    	if(theid.indexOf('Left') > 0 || theid.indexOf('Right') > 0) {
+// 	// 		$(this).jqGrid( 'setGridWidth', (GLOBAL_TABLE_WIDTH - 50) / 2 );
+//  //    	} else {
+//  //    		$(this).jqGrid( 'setGridWidth', GLOBAL_TABLE_WIDTH );
+//  //    	}
+    	
+//  //    });
+// }
+            
+
+
 
 function getRandom(type, len) { //1-字母,2-数字,4-字符
     const str_num = "0123456789",
@@ -200,7 +226,8 @@ var VUEAPP = new Vue({
             DataHub : {
                 ARTFrequency:'', BoardProduct:'', BoardRevision:'', DevicePathsSupported:'', FSBFrequency:'',
                 InitialTSC:'', PlatformName:'', SmcBranch:'', SmcPlatform:'', SmcRevision:'', StartupPowerEvents:'',
-                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''},
+                SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
+            },
             Generic : {
                 MLB:'', ROM:'', SpoofVendor:false, SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
@@ -242,7 +269,7 @@ var VUEAPP = new Vue({
     methods: {
 
         setRoot : function (rootname) {
-            this.root = rootname;
+            this.root = rootname; 
         }
 
         // 初始化所有表格

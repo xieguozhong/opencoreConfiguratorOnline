@@ -3,7 +3,7 @@
 	<head>
         <meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="chrome=1" />		
-		<title>OpenCore Configurator</title>
+		<title>OpenCore Configurator on line</title>
 		<meta name="description" content="OpenCore Configurator" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
@@ -20,17 +20,21 @@
 			.ctrlicon {
 				width:12px; height:12px; cursor: pointer;
 			}
-			/* .changcol12padding {
-				 padding-right:5px;padding-left:5px;
-			} */
+			.tablelia {
+				font-size: 18px;
+				color: #478FCA!important;
+				font-weight: lighter;
+			}
+
+			
 
 		</style>
 	</head>
 
 	<body class="no-skin">
 		<div id="navbar" class="navbar navbar-default ace-save-state">
-			<div class="navbar-container ace-save-state" id="navbar-container">
 
+			<div class="navbar-container ace-save-state" id="navbar-container">
 				<div class="navbar-header pull-left">
 					<a href="index.html" class="navbar-brand">
 						<small>
@@ -38,10 +42,9 @@
 							OpenCore Configurator
 						</small>
 					</a>
-				</div>
-
-				
+				</div>				
 			</div><!-- /.navbar-container -->
+
 		</div>
 
 		<div class="main-container ace-save-state" id="main-container">
@@ -146,7 +149,7 @@
                 <h6>2019-11-29<br>&nbsp;&nbsp;&nbsp;&nbsp;1 更新回acidanthera于20191030发布的OpenCore-0.5.2为准</h6>
 			</div>
 
-			<div class="main-content">
+			<div class="main-content" >
 				<div class="main-content-inner">
 					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
 						<ul class="breadcrumb">
@@ -166,41 +169,53 @@
                         </div>
 					</div>
 
-					<div class="page-content" style="padding-right:5px;padding-left:0px;">
+					<div class="page-content" style="padding-right:0px;padding-left:0px;">
                     <div class="container-fluid" >
-                        <div class="row" v-show="root === 'ACPI'" >
-                            <div class="col-xs-12">
-                            	
-                                
-                                <h3 class="header smaller lighter blue" :title="title.ACPI.Add.Title"> Add</h3>
-                                <table id="gridtable-ACPI-Add"></table>
-                                <span class="grey pull-right">                                    
-                                    <a id="btncopy-ACPI-Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-                                    <a id="btnpaste-ACPI-Add"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-                                    <a id="btnadd-ACPI-Add"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-                                    <a id="btndel-ACPI-Add"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>
-                                </span>
-                                
-                                
-                                
-                                <h3 class="header smaller lighter blue" :title="title.ACPI.Block.Title"> Block</h3>
-                                <table id="gridtable-ACPI-Block"></table>
-                                <span class="grey pull-right">                                    
-                                    <a id="btncopy-ACPI-Block"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-                                    <a id="btnpaste-ACPI-Block"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-                                    <a id="btnadd-ACPI-Block"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-                                    <a id="btndel-ACPI-Block"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>
-                                </span>
 
-                                
-                                <h3 class="header smaller lighter blue" :title="title.ACPI.Patch.Title"> Patch</h3>
-                                <table id="gridtable-ACPI-Patch"></table>
-                                <span class="grey pull-right">
-                                    <a id="btncopy-ACPI-Patch"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-                                    <a id="btnpaste-ACPI-Patch"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-                                    <a id="btnadd-ACPI-Patch"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-                                    <a id="btndel-ACPI-Patch"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>
-                                </span>
+                        <div class="row" v-show="root === 'ACPI'" >
+							<div class="col-xs-12" >
+
+                        		<div class="tabbable" >
+									<ul class="nav nav-tabs">
+										<li class="active" :title="title.ACPI.Add"><a data-toggle="tab" href="#tabbable_ACPI_Add" class="tablelia">Add</a></li>
+										<li :title="title.ACPI.Block"><a data-toggle="tab" href="#tabbable_ACPI_Block" class="tablelia">Block</a></li>
+										<li :title="title.ACPI.Patch"><a data-toggle="tab" href="#tabbable_ACPI_Patch" class="tablelia">Patch</a></li>																					
+									</ul>
+
+									<div class="tab-content" style="padding-right:3px;padding-left:2px;">
+										<div id="tabbable_ACPI_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+											<table id="gridtable-ACPI-Add"></table>
+			                                <span class="grey pull-right" >                                    
+			                                    <a id="btncopy-ACPI-Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-ACPI-Add"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-ACPI-Add"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-ACPI-Add"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>
+			                                </span>
+										</div>
+
+										<div id="tabbable_ACPI_Block" class="tab-pane fade" style="padding-bottom: 5px;">
+											<table id="gridtable-ACPI-Block"></table>
+			                                <span class="grey pull-right">                                    
+			                                    <a id="btncopy-ACPI-Block"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-ACPI-Block"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-ACPI-Block"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-ACPI-Block"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>
+			                                </span>
+										</div>
+
+										<div id="tabbable_ACPI_Patch" class="tab-pane fade" style="padding-bottom: 5px;">
+											<table id="gridtable-ACPI-Patch"></table>
+			                                <span class="grey pull-right">
+			                                    <a id="btncopy-ACPI-Patch"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-ACPI-Patch"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-ACPI-Patch"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-ACPI-Patch"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>
+			                                </span>
+										</div>
+										
+									</div>
+								</div>
+
 
                                 
                                 <h3 class="header smaller lighter blue" :title="title.ACPI.Quirks.Title"> Quirks</h3>
@@ -235,16 +250,26 @@
                         
                         <div class="row" v-show="root === 'Booter'" >
                         	<div class="col-xs-12">
-                            	
-	                            <h3 class="header smaller lighter blue"> MmioWhitelist</h3>
-	                            <table id="gridtable-Booter-MmioWhitelist"></table>
-                                <span class="grey pull-right">
-                                    <a id="btncopy-Booter-MmioWhitelist"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-                                    <a id="btnpaste-Booter-MmioWhitelist"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-                                    <a id="btnadd-Booter-MmioWhitelist"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-                                    <a id="btndel-Booter-MmioWhitelist"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                    
-                                </span>
 
+                        		<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" :title="title.Booter.MmioWhitelist"><a data-toggle="tab" href="#tabbable_Booter_MmioWhitelist" class="tablelia">MmioWhitelist</a></li>                                                                                                                        
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:3px;padding-left:2px;">
+
+                                        <div id="tabbable_Booter_MmioWhitelist" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Booter-MmioWhitelist"></table>
+			                                <span class="grey pull-right">
+			                                    <a id="btncopy-Booter-MmioWhitelist"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Booter-MmioWhitelist"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Booter-MmioWhitelist"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-Booter-MmioWhitelist"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                    
+			                                </span>
+                                        </div>                                       
+                                        
+                                    </div>
+                                </div>  
                                 
                                 <h3 class="header smaller lighter blue"> Quirks</h3>
                                 <div class="well">
@@ -309,50 +334,64 @@
 
                         <div class="row" v-show="root === 'DeviceProperties'">
                             <div class="col-xs-12">
-                                
-                                <h3 class="header smaller lighter blue" :title="title.DeviceProperties.Add.Title"> Add</h3>
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <table id="gridtable-DeviceProperties-AddLeft"></table>
-                                        <span class="grey pull-right">                                             
-                                            <a id="btncopy-DeviceProperties-AddLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-		                                    <a id="btnpaste-DeviceProperties-AddLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-		                                    <a id="btnadd-DeviceProperties-AddLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-		                                    <a id="btndel-DeviceProperties-AddLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                 
-                                        </span>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <table id="gridtable-DeviceProperties-AddRight"></table>
-                                        <span class="grey pull-right">                                            
-                                            <a id="btncopy-DeviceProperties-AddRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-		                                    <a id="btnpaste-DeviceProperties-AddRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-		                                    <a id="btnadd-DeviceProperties-AddRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-		                                    <a id="btndel-DeviceProperties-AddRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                  
-                                        </span>
-                                    </div>
-                                </div>
 
-                                <h3 class="header smaller lighter blue" :title="title.DeviceProperties.Block.Title"> Block</h3>
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <table id="gridtable-DeviceProperties-BlockLeft"></table>
-                                        <span class="grey pull-right">                                               
-                                            <a id="btncopy-DeviceProperties-BlockLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-		                                    <a id="btnpaste-DeviceProperties-BlockLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-		                                    <a id="btnadd-DeviceProperties-BlockLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-		                                    <a id="btndel-DeviceProperties-BlockLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                   
-                                        </span>
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" :title="title.DeviceProperties.Add"><a data-toggle="tab" href="#tabbable_DeviceProperties_Add" class="tablelia">Add</a></li>
+                                        <li :title="title.DeviceProperties.Block"><a data-toggle="tab" href="#tabbable_DeviceProperties_Block" class="tablelia">Block</a></li>
+                                                                                                                          
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_DeviceProperties_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-DeviceProperties-AddLeft"></table>
+			                                        <span class="grey pull-right">                                             
+			                                            <a id="btncopy-DeviceProperties-AddLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-DeviceProperties-AddLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-DeviceProperties-AddLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+					                                    <a id="btndel-DeviceProperties-AddLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                 
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-DeviceProperties-AddRight"></table>
+			                                        <span class="grey pull-right">                                            
+			                                            <a id="btncopy-DeviceProperties-AddRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-DeviceProperties-AddRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-DeviceProperties-AddRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+					                                    <a id="btndel-DeviceProperties-AddRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                  
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_DeviceProperties_Block" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-DeviceProperties-BlockLeft"></table>
+			                                        <span class="grey pull-right">                                               
+			                                            <a id="btncopy-DeviceProperties-BlockLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-DeviceProperties-BlockLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-DeviceProperties-BlockLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+					                                    <a id="btndel-DeviceProperties-BlockLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                   
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-DeviceProperties-BlockRight"></table>
+			                                        <span class="grey pull-right"> 
+			                                            <a id="btncopy-DeviceProperties-BlockRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-DeviceProperties-BlockRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-DeviceProperties-BlockRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+					                                    <a id="btndel-DeviceProperties-BlockRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>                                      
+                                        
                                     </div>
-                                    <div class="col-xs-6">
-                                        <table id="gridtable-DeviceProperties-BlockRight"></table>
-                                        <span class="grey pull-right"> 
-                                            <a id="btncopy-DeviceProperties-BlockRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-		                                    <a id="btnpaste-DeviceProperties-BlockRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-		                                    <a id="btnadd-DeviceProperties-BlockRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-		                                    <a id="btndel-DeviceProperties-BlockRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                
-                                        </span>
-                                    </div>
-                                </div>
+                                </div>                                  
                             </div>
                             
                         </div>
@@ -360,49 +399,65 @@
 
                         <div class="row" v-show="root === 'Kernel'">
                             <div class="col-xs-12">
-                                <h3 class="header smaller lighter blue" :title="title.Kernel.Add_title"> Add</h3>
 
-                                <table id="gridtable-Kernel-Add"></table>
-                                <span class="grey pull-right">
-                                    <a id="btncopy-Kernel-Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-                                    <a id="btnpaste-Kernel-Add"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-                                    <a id="btnadd-Kernel-Add"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-                                    <a id="btndel-Kernel-Add"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a> 
-                                </span>
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" :title="title.Kernel.Add"><a data-toggle="tab" href="#tabbable_Kernel_Add" class="tablelia">Add</a></li>
+                                        <li :title="title.Kernel.Block"><a data-toggle="tab" href="#tabbable_Kernel_Block" class="tablelia">Block</a></li>
+                                        <li :title="title.Kernel.Patch"><a data-toggle="tab" href="#tabbable_Kernel_Patch" class="tablelia">Patch</a></li>
+                                        <li :title="title.Kernel.Emulate"><a data-toggle="tab" href="#tabbable_Kernel_Emulate" class="tablelia">Emulate</a></li>
+                                    </ul>
 
-                                <h3 class="header smaller lighter blue" :title="title.Kernel.Block_title"> Block</h3>
-                                <table id="gridtable-Kernel-Block"></table>
-                                <span class="grey pull-right">
-                                    <a id="btncopy-Kernel-Block"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-                                    <a id="btnpaste-Kernel-Block"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-                                    <a id="btnadd-Kernel-Block"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-                                    <a id="btndel-Kernel-Block"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a> 
-                                </span>
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
 
-                                <h3 class="header smaller lighter blue" :title="title.Kernel.Patch_title"> Patch</h3>
-                                <table id="gridtable-Kernel-Patch"></table>
-                                <span class="grey pull-right">
-                                    <a id="btncopy-Kernel-Patch"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-                                    <a id="btnpaste-Kernel-Patch"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-                                    <a id="btnadd-Kernel-Patch"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-                                    <a id="btndel-Kernel-Patch"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a> 
-                                </span>
-
-                                <h3 class="header smaller lighter blue" :title="title.Kernel.Emulate_title"> Emulate</h3>
-                                <div class="well">
-
-
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            Cpuid1Data<input type="text" class="form-control" v-model="Kernel.Emulate.Cpuid1Data"/>
+                                        <div id="tabbable_Kernel_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Kernel-Add"></table>
+			                                <span class="grey pull-right">
+			                                    <a id="btncopy-Kernel-Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Kernel-Add"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Kernel-Add"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-Kernel-Add"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a> 
+			                                </span>
                                         </div>
-                                        <div class="col-xs-3">
-                                            Cpuid1Mask<input type="text" class="form-control" v-model="Kernel.Emulate.Cpuid1Mask"/>
+
+                                        <div id="tabbable_Kernel_Block" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Kernel-Block"></table>
+			                                <span class="grey pull-right">
+			                                    <a id="btncopy-Kernel-Block"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Kernel-Block"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Kernel-Block"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-Kernel-Block"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a> 
+			                                </span>
                                         </div>
+
+                                        <div id="tabbable_Kernel_Patch" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            
+			                                <table id="gridtable-Kernel-Patch"></table>
+			                                <span class="grey pull-right">
+			                                    <a id="btncopy-Kernel-Patch"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Kernel-Patch"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Kernel-Patch"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-Kernel-Patch"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a> 
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_Kernel_Emulate" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            
+			                                <div class="well">
+			                                    <div class="row">
+			                                        <div class="col-xs-3">
+			                                            Cpuid1Data<input type="text" class="form-control" v-model="Kernel.Emulate.Cpuid1Data"/>
+			                                        </div>
+			                                        <div class="col-xs-3">
+			                                            Cpuid1Mask<input type="text" class="form-control" v-model="Kernel.Emulate.Cpuid1Mask"/>
+			                                        </div>
+			                                    </div>		                                    
+		                                	</div>
+
+                                       	</div>  
+
+                                        
                                     </div>
-
-
-                                    
                                 </div>
 
                                 <h3 class="header smaller lighter blue"> Quirks</h3>
@@ -466,126 +521,149 @@
                         <div class="row" v-show="root === 'Misc'">
                             
                             <div class="col-xs-12">
-                                <h3 class="header smaller lighter blue"> BlessOverride</h3>
 
-                                <h3 class="header smaller lighter blue" :title="title.Misc.Entires_title"> Entries</h3>
-                                <table id="gridtable-Misc-Entries"></table>
-                                <span class="grey pull-right">
-                                    <a id="btncopy-Misc-Entries"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-                                    <a id="btnpaste-Misc-Entries"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-                                    <a id="btnadd-Misc-Entries"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-                                    <a id="btndel-Misc-Entries"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a> 
-                                </span>
+								<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li :title="title.Misc.BlessOverride"><a data-toggle="tab" href="#tabbable_Misc_BlessOverride" class="tablelia">BlessOverride</a></li>
+                                        <li class="active" :title="title.Misc.Entries"><a data-toggle="tab" href="#tabbable_Misc_Entries" class="tablelia">Entries</a></li>
+                                        <li :title="title.Misc.Tools"><a data-toggle="tab" href="#tabbable_Misc_Tools" class="tablelia">Tools</a></li>
+                                        <li :title="title.Misc.Boot"><a data-toggle="tab" href="#tabbable_Misc_Boot" class="tablelia">Boot</a></li>
+                                        <li :title="title.Misc.Debug"><a data-toggle="tab" href="#tabbable_Misc_Debug" class="tablelia">Debug</a></li>
+                                        <li :title="title.Misc.Security"><a data-toggle="tab" href="#tabbable_Misc_Security" class="tablelia">Security</a></li>
+                                                                                                                          
+                                    </ul>
 
-                                <h3 class="header smaller lighter blue" :title="title.Misc.Tools_title"> Tools</h3>
-                                <table id="gridtable-Misc-Tools"></table>
-                                <span class="grey pull-right">
-                                    <a id="btncopy-Misc-Tools"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-                                    <a id="btnpaste-Misc-Tools"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-                                    <a id="btnadd-Misc-Tools"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-                                    <a id="btndel-Misc-Tools"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a> 
-                                </span>
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
 
-                                <h3 class="header smaller lighter blue" :title="title.Misc.Boot_title"> Boot</h3>
-                                <div class="well">
-
-                                    <div class="row">
-                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
-                                            ConsoleBehaviourOs<input type="text" class="form-control" v-model="Misc.Boot.ConsoleBehaviourOs"/>
+                                        <div id="tabbable_Misc_BlessOverride" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            
                                         </div>
-                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
-                                            ConsoleBehaviourUi<input type="text" class="form-control" v-model="Misc.Boot.ConsoleBehaviourUi"/>
-                                        </div>                                        
-                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
-                                            ConsoleMode<input type="text" class="form-control" v-model="Misc.Boot.ConsoleMode"/>
-                                        </div>
-                                        <div class="col-xs-3" :title="title.Misc.Boot.HibernateMode">
-                                            HibernateMode<input type="text" class="form-control" v-model="Misc.Boot.HibernateMode"/>
-                                        </div>
-                                    </div>
 
-                                    <div class="row" style="margin-top: 10px ">                                        
-                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
-                                            Resolution<input type="text" class="form-control" v-model="Misc.Boot.Resolution"/>
+                                        <div id="tabbable_Misc_Entries" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Misc-Entries"></table>
+			                                <span class="grey pull-right">
+			                                    <a id="btncopy-Misc-Entries"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Misc-Entries"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Misc-Entries"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-Misc-Entries"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a> 
+			                                </span>
                                         </div>
-                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
-                                            Timeout<input type="text" class="form-control" v-model="Misc.Boot.Timeout"/>
-                                        </div>                                        
-                                    </div>
-                                                             
-                                    <div class="checkbox" style="margin-top: 20px ">                       
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="Misc.Boot.HideSelf" />
-                                            <span class="lbl"> HideSelf</span>
-                                        </label>
-                                        <label style="margin-left: 5px;">
-                                            <input type="checkbox" class="ace" v-model="Misc.Boot.PollAppleHotKeys" />
-                                            <span class="lbl"> PollAppleHotKeys</span>
-                                        </label>
-                                        <label style="margin-left: 5px;">
-                                            <input type="checkbox" class="ace" v-model="Misc.Boot.ShowPicker" />
-                                            <span class="lbl"> ShowPicker</span>
-                                        </label>
-                                        <label style="margin-left: 5px;">
-                                            <input type="checkbox" class="ace" v-model="Misc.Boot.UsePicker" />
-                                            <span class="lbl"> UsePicker</span>
-                                        </label> 
-                                    </div>
-                                </div>
-
-                                <h3 class="header smaller lighter blue" :title="title.Misc.Debug_title"> Debug</h3>
-                                <div class="well">
-
-                                    <div class="row">                                        
-                                        <div class="col-xs-3">
-                                            DisplayDelay<input type="text" class="form-control" v-model="Misc.Debug.DisplayDelay"/>
+                                        <div id="tabbable_Misc_Tools" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Misc-Tools"></table>
+			                                <span class="grey pull-right">
+			                                    <a id="btncopy-Misc-Tools"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Misc-Tools"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Misc-Tools"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-Misc-Tools"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a> 
+			                                </span>
                                         </div>
-                                        <div class="col-xs-3">
-                                            DisplayLevel<input type="text" class="form-control" v-model="Misc.Debug.DisplayLevel"/>
-                                        </div>     
-                                        <div class="col-xs-3">
-                                            Target<input type="text" class="form-control" v-model="Misc.Debug.Target"/>
-                                        </div>                                       
-                                    </div>
-                                     
-                                   <div class="checkbox" style="margin-top: 20px ">                    
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="Misc.Debug.DisableWatchDog" />
-                                            <span class="lbl"> DisableWatchDog</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                
-                                <h3 class="header smaller lighter blue" :title="title.Misc.Security_title"> Security</h3>
-                                <div class="well">
+                                        <div id="tabbable_Misc_Boot" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
 
-                                    <div class="row">                                        
-                                        <div class="col-xs-3">
-                                            ExposeSensitiveData<input type="text" class="form-control" v-model="Misc.Security.ExposeSensitiveData"/>
+			                                    <div class="row">
+			                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
+			                                            ConsoleBehaviourOs<input type="text" class="form-control" v-model="Misc.Boot.ConsoleBehaviourOs"/>
+			                                        </div>
+			                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
+			                                            ConsoleBehaviourUi<input type="text" class="form-control" v-model="Misc.Boot.ConsoleBehaviourUi"/>
+			                                        </div>                                        
+			                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
+			                                            ConsoleMode<input type="text" class="form-control" v-model="Misc.Boot.ConsoleMode"/>
+			                                        </div>
+			                                        <div class="col-xs-3" :title="title.Misc.Boot.HibernateMode">
+			                                            HibernateMode<input type="text" class="form-control" v-model="Misc.Boot.HibernateMode"/>
+			                                        </div>
+			                                    </div>
+
+			                                    <div class="row" style="margin-top: 10px ">                                        
+			                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
+			                                            Resolution<input type="text" class="form-control" v-model="Misc.Boot.Resolution"/>
+			                                        </div>
+			                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
+			                                            Timeout<input type="text" class="form-control" v-model="Misc.Boot.Timeout"/>
+			                                        </div>                                        
+			                                    </div>
+			                                                             
+			                                    <div class="checkbox" style="margin-top: 20px ">                       
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.HideSelf" />
+			                                            <span class="lbl"> HideSelf</span>
+			                                        </label>
+			                                        <label style="margin-left: 5px;">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.PollAppleHotKeys" />
+			                                            <span class="lbl"> PollAppleHotKeys</span>
+			                                        </label>
+			                                        <label style="margin-left: 5px;">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.ShowPicker" />
+			                                            <span class="lbl"> ShowPicker</span>
+			                                        </label>
+			                                        <label style="margin-left: 5px;">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.UsePicker" />
+			                                            <span class="lbl"> UsePicker</span>
+			                                        </label> 
+			                                    </div>
+			                                </div>
                                         </div>
-                                        <div class="col-xs-3">
-                                            HaltLevel<input type="text" class="form-control" v-model="Misc.Security.HaltLevel"/>
-                                        </div>     
-                                        <div class="col-xs-3">
-                                            ScanPolicy<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
-                                        </div>                                       
-                                    </div>
 
-                                    <div class="checkbox" style="margin-top: 20px">                    
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="Misc.Security.AllowNvramReset" />
-                                            <span class="lbl"> AllowNvramReset</span>
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="Misc.Security.RequireSignature" />
-                                            <span class="lbl"> RequireSignature</span>
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="Misc.Security.RequireVault" />
-                                            <span class="lbl"> RequireVault</span>
-                                        </label>
-                                    </div>  
-                                </div>
+                                        <div id="tabbable_Misc_Debug" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+			                                    <div class="row">                                        
+			                                        <div class="col-xs-3">
+			                                            DisplayDelay<input type="text" class="form-control" v-model="Misc.Debug.DisplayDelay"/>
+			                                        </div>
+			                                        <div class="col-xs-3">
+			                                            DisplayLevel<input type="text" class="form-control" v-model="Misc.Debug.DisplayLevel"/>
+			                                        </div>     
+			                                        <div class="col-xs-3">
+			                                            Target<input type="text" class="form-control" v-model="Misc.Debug.Target"/>
+			                                        </div>                                       
+			                                    </div>
+			                                     
+			                                   <div class="checkbox" style="margin-top: 20px ">                    
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.DisableWatchDog" />
+			                                            <span class="lbl"> DisableWatchDog</span>
+			                                        </label>
+			                                    </div>
+			                                </div>
+                                        </div>
+                                        <div id="tabbable_Misc_Security" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+			                                    <div class="row">                                        
+			                                        <div class="col-xs-3">
+			                                            ExposeSensitiveData<input type="text" class="form-control" v-model="Misc.Security.ExposeSensitiveData"/>
+			                                        </div>
+			                                        <div class="col-xs-3">
+			                                            HaltLevel<input type="text" class="form-control" v-model="Misc.Security.HaltLevel"/>
+			                                        </div>     
+			                                        <div class="col-xs-3">
+			                                            ScanPolicy<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
+			                                        </div>                                       
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">                    
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AllowNvramReset" />
+			                                            <span class="lbl"> AllowNvramReset</span>
+			                                        </label>
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.RequireSignature" />
+			                                            <span class="lbl"> RequireSignature</span>
+			                                        </label>
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.RequireVault" />
+			                                            <span class="lbl"> RequireVault</span>
+			                                        </label>
+			                                    </div>  
+			                                </div>
+                                        </div>
+
+                                       
+                                        
+                                    </div>
+                                </div>                              
                                 
                             </div>
 
@@ -596,75 +674,88 @@
                         <div class="row" v-show="root === 'NVRAM'">                        
 
                             <div class="col-xs-12">
-                                
 
-                                <h3 class="header smaller lighter blue"> Add</h3>
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <table id="gridtable-NVRAM-AddLeft"></table>
-                                        <span class="grey pull-right">
-                                            <a id="btncopy-NVRAM-AddLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-		                                    <a id="btnpaste-NVRAM-AddLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-		                                    <a id="btnadd-NVRAM-AddLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-		                                    <a id="btndel-NVRAM-AddLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                
-                                        </span>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <table id="gridtable-NVRAM-AddRight"></table>
-                                        <span class="grey pull-right">
-                                            <a id="btncopy-NVRAM-AddRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-		                                    <a id="btnpaste-NVRAM-AddRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-		                                    <a id="btnadd-NVRAM-AddRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-		                                    <a id="btndel-NVRAM-AddRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                            
-                                        </span>
-                                    </div>
-                                </div>
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" :title="title.NVRAM.Add"><a data-toggle="tab" href="#tabbable_NVRAM_Add" class="tablelia">Add</a></li>
+                                        <li :title="title.NVRAM.Block"><a data-toggle="tab" href="#tabbable_NVRAM_Block" class="tablelia">Block</a></li>
+                                        <li :title="title.NVRAM.LegacySchema"><a data-toggle="tab" href="#tabbable_NVRAM_LegacySchema" class="tablelia">LegacySchema</a></li>                                                                                  
+                                    </ul>
 
-                                <h3 class="header smaller lighter blue"> Block</h3>
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <table id="gridtable-NVRAM-BlockLeft"></table>
-                                        <span class="grey pull-right">
-                                            <a id="btncopy-NVRAM-BlockLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-		                                    <a id="btnpaste-NVRAM-BlockLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-		                                    <a id="btnadd-NVRAM-BlockLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-		                                    <a id="btndel-NVRAM-BlockLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                      
-                                        </span>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <table id="gridtable-NVRAM-BlockRight"></table>
-                                        <span class="grey pull-right">
-                                            <a id="btncopy-NVRAM-BlockRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-		                                    <a id="btnpaste-NVRAM-BlockRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-		                                    <a id="btnadd-NVRAM-BlockRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-		                                    <a id="btndel-NVRAM-BlockRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                  
-                                        </span>
-                                    </div>
-                                </div>
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
 
-                                <h3 class="header smaller lighter blue"> LegacySchema</h3>
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <table id="gridtable-NVRAM-LegacySchemaLeft"></table>
-                                        <span class="grey pull-right">  
-                                            <a id="btncopy-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-		                                    <a id="btnpaste-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-		                                    <a id="btnadd-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-		                                    <a id="btndel-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                     
-                                        </span>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <table id="gridtable-NVRAM-LegacySchemaRight"></table>
-                                        <span class="grey pull-right">
-                                            <a id="btncopy-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-		                                    <a id="btnpaste-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-		                                    <a id="btnadd-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-		                                    <a id="btndel-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                   
-                                        </span>
-                                    </div>
-                                </div>
+                                        <div id="tabbable_NVRAM_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-AddLeft"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-AddLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-AddLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-AddLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-AddLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-AddRight"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-AddRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-AddRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-AddRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-AddRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                            
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
 
-                                <h3 class="header smaller lighter blue"> Root</h3>                            
+                                        <div id="tabbable_NVRAM_Block" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-BlockLeft"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-BlockLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-BlockLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-BlockLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-BlockLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                      
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-BlockRight"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-BlockRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-BlockRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-BlockRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-BlockRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                  
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_NVRAM_LegacySchema" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-LegacySchemaLeft"></table>
+			                                        <span class="grey pull-right">  
+			                                            <a id="btncopy-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                     
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-LegacySchemaRight"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>                                   
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>  
+                                    </div>
+                                </div>                                
+
+                                <h3 class="header smaller lighter blue"></h3>                            
                                 <div class="well">
                                     <div class="checkbox">
                                         <label>
@@ -681,7 +772,235 @@
 
                         <div class="row" v-show="root === 'PlatformInfo'">
                         	<div class="col-xs-12">
-	                            <h3 class="header smaller lighter blue"> Root</h3>
+
+                        		<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" ><a data-toggle="tab" href="#tabbable_PlatformInfo_DataHub" class="tablelia">DataHub</a></li>
+                                        <li ><a data-toggle="tab" href="#tabbable_PlatformInfo_Generic" class="tablelia">Generic</a></li>
+                                        <li ><a data-toggle="tab" href="#tabbable_PlatformInfo_PlatformNVRAM" class="tablelia">PlatformNVRAM</a></li>
+                                        <li ><a data-toggle="tab" href="#tabbable_PlatformInfo_SMBIOS" class="tablelia">SMBIOS</a></li>
+                                                                                                                          
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_PlatformInfo_DataHub" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                  <div class="col-xs-3">
+				                                    ARTFrequency<input type="text" class="form-control" v-model="PlatformInfo.DataHub.ARTFrequency">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    BoardProduct<input type="text" class="form-control" v-model="PlatformInfo.DataHub.BoardProduct">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    BoardRevision<input type="text" class="form-control" v-model="PlatformInfo.DataHub.BoardRevision">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    DevicePathsSupported<input type="text" class="form-control" v-model="PlatformInfo.DataHub.DevicePathsSupported">
+				                                  </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                  <div class="col-xs-3">
+				                                    FSBFrequency<input type="text" class="form-control" v-model="PlatformInfo.DataHub.FSBFrequency">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    InitialTSC<input type="text" class="form-control" v-model="PlatformInfo.DataHub.InitialTSC">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    PlatformName<input type="text" class="form-control" v-model="PlatformInfo.DataHub.PlatformName">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SmcBranch<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcBranch">
+				                                  </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                  <div class="col-xs-3">
+				                                    SmcPlatform<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcPlatform">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SmcRevision<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcRevision">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    StartupPowerEvents<input type="text" class="form-control" v-model="PlatformInfo.DataHub.StartupPowerEvents">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemProductName">
+				                                  </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                  <div class="col-xs-3">
+				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemSerialNumber">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemUUID">
+				                                  </div>                                  
+				                                </div>
+				                            </div>
+                                        </div>
+
+                                        <div id="tabbable_PlatformInfo_Generic" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                  <div class="col-xs-3"> 
+				                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    ROM<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
+				                                  </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3"> 
+				                                        SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
+				                                    </div>
+				                                </div>
+
+				                                <div class="checkbox" style="margin-top: 20px">
+				                                    <label>
+				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.SpoofVendor" />
+				                                        <span class="lbl"> SpoofVendor</span>
+				                                    </label>
+				                                </div>
+				                            </div>
+                                        </div>
+
+                                        <div id="tabbable_PlatformInfo_PlatformNVRAM" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                  <div class="col-xs-3"> 
+				                                    BID<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.BID">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeatures">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeaturesMask">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.MLB">
+				                                  </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3"> 
+				                                        ROM<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ROM">
+				                                    </div>
+				                                </div>
+				                            </div>
+                                        </div>
+
+                                        <div id="tabbable_PlatformInfo_SMBIOS" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                    <div class="col-xs-3"> 
+				                                    BIOSReleaseDate<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSReleaseDate">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BIOSVendor<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSVendor">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BIOSVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardAssetTag<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardAssetTag">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3"> 
+				                                    BoardLocationInChassis<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardLocationInChassis">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardManufacturer">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardProduct<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardProduct">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardSerialNumber">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3"> 
+				                                    BoardType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardType">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisAssetTag<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisAssetTag">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisManufacturer">
+				                                    </div>
+				                                </div>   
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3"> 
+				                                    ChassisSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisSerialNumber">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisType">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.FirmwareFeatures">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3"> 
+				                                    FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.FirmwareFeaturesMask">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    MemoryFormFactor<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.MemoryFormFactor">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    PlatformFeature<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.PlatformFeature">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ProcessorType">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3"> 
+				                                    SmcVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SmcVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemFamily<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemFamily">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemManufacturer">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemProductName">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3"> 
+				                                    SystemSKUNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemSKUNumber">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemSerialNumber">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemUUID">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemVersion">
+				                                    </div>
+				                                </div>
+				                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+	                            <h3 class="header smaller lighter blue"> </h3>
 	                            <div class="well">
 	                                <div class="row">
 	                                  <div class="col-xs-3">
@@ -710,221 +1029,8 @@
 	                                </div>
 	                            </div>
 
-	                            <h3 class="header smaller lighter blue"> DataHub</h3>
-	                            <div class="well">
-	                                <div class="row">
-	                                  <div class="col-xs-3">
-	                                    ARTFrequency<input type="text" class="form-control" v-model="PlatformInfo.DataHub.ARTFrequency">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    BoardProduct<input type="text" class="form-control" v-model="PlatformInfo.DataHub.BoardProduct">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    BoardRevision<input type="text" class="form-control" v-model="PlatformInfo.DataHub.BoardRevision">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    DevicePathsSupported<input type="text" class="form-control" v-model="PlatformInfo.DataHub.DevicePathsSupported">
-	                                  </div>
-	                                </div>
-	                                <div class="row" style="margin-top: 10px">
-	                                  <div class="col-xs-3">
-	                                    FSBFrequency<input type="text" class="form-control" v-model="PlatformInfo.DataHub.FSBFrequency">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    InitialTSC<input type="text" class="form-control" v-model="PlatformInfo.DataHub.InitialTSC">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    PlatformName<input type="text" class="form-control" v-model="PlatformInfo.DataHub.PlatformName">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    SmcBranch<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcBranch">
-	                                  </div>
-	                                </div>
-	                                <div class="row" style="margin-top: 10px">
-	                                  <div class="col-xs-3">
-	                                    SmcPlatform<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcPlatform">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    SmcRevision<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcRevision">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    StartupPowerEvents<input type="text" class="form-control" v-model="PlatformInfo.DataHub.StartupPowerEvents">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemProductName">
-	                                  </div>
-	                                </div>
-	                                <div class="row" style="margin-top: 10px">
-	                                  <div class="col-xs-3">
-	                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemSerialNumber">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemUUID">
-	                                  </div>                                  
-	                                </div>
-	                            </div>
-
-
+	                           
 	                            
-	                            <h3 class="header smaller lighter blue"> Generic</h3>
-	                            <div class="well">
-	                                <div class="row">
-	                                  <div class="col-xs-3"> 
-	                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    ROM<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
-	                                  </div>
-	                                </div>
-	                                <div class="row" style="margin-top: 10px">
-	                                    <div class="col-xs-3"> 
-	                                        SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
-	                                    </div>
-	                                </div>
-
-	                                <div class="checkbox" style="margin-top: 20px">
-	                                    <label>
-	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.SpoofVendor" />
-	                                        <span class="lbl"> SpoofVendor</span>
-	                                    </label>
-	                                </div>
-
-
-	                            </div>
-
-	                            <h3 class="header smaller lighter blue"> PlatformNVRAM</h3> 
-	                            <div class="well">
-	                                <div class="row">
-	                                  <div class="col-xs-3"> 
-	                                    BID<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.BID">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeatures">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeaturesMask">
-	                                  </div>
-	                                  <div class="col-xs-3">
-	                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.MLB">
-	                                  </div>
-	                                </div>
-	                                <div class="row" style="margin-top: 10px">
-	                                    <div class="col-xs-3"> 
-	                                        ROM<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ROM">
-	                                    </div>
-	                                </div>
-	                            </div>
-
-	                                        
-	                
-	                            
-	                            <h3 class="header smaller lighter blue"> SMBIOS</h3> 
-	                            <div class="well">
-	                                <div class="row">
-	                                    <div class="col-xs-3"> 
-	                                    BIOSReleaseDate<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSReleaseDate">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    BIOSVendor<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSVendor">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    BIOSVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSVersion">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    BoardAssetTag<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardAssetTag">
-	                                    </div>
-	                                </div>
-	                                <div class="row" style="margin-top: 10px">
-	                                    <div class="col-xs-3"> 
-	                                    BoardLocationInChassis<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardLocationInChassis">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    BoardManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardManufacturer">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    BoardProduct<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardProduct">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    BoardSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardSerialNumber">
-	                                    </div>
-	                                </div>
-	                                <div class="row" style="margin-top: 10px">
-	                                    <div class="col-xs-3"> 
-	                                    BoardType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardType">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    BoardVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardVersion">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    ChassisAssetTag<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisAssetTag">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    ChassisManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisManufacturer">
-	                                    </div>
-	                                </div>   
-	                                <div class="row" style="margin-top: 10px">
-	                                    <div class="col-xs-3"> 
-	                                    ChassisSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisSerialNumber">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    ChassisType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisType">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    ChassisVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisVersion">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.FirmwareFeatures">
-	                                    </div>
-	                                </div>
-	                                <div class="row" style="margin-top: 10px">
-	                                    <div class="col-xs-3"> 
-	                                    FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.FirmwareFeaturesMask">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    MemoryFormFactor<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.MemoryFormFactor">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    PlatformFeature<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.PlatformFeature">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ProcessorType">
-	                                    </div>
-	                                </div>
-	                                <div class="row" style="margin-top: 10px">
-	                                    <div class="col-xs-3"> 
-	                                    SmcVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SmcVersion">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    SystemFamily<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemFamily">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    SystemManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemManufacturer">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemProductName">
-	                                    </div>
-	                                </div>
-	                                <div class="row" style="margin-top: 10px">
-	                                    <div class="col-xs-3"> 
-	                                    SystemSKUNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemSKUNumber">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemSerialNumber">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemUUID">
-	                                    </div>
-	                                    <div class="col-xs-3">
-	                                    SystemVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemVersion">
-	                                    </div>
-	                                </div>
-	                            </div>
                             </div>
 
                         </div>
@@ -932,7 +1038,190 @@
 
                         <div class="row" v-show="root === 'UEFI'">
                             <div class="col-xs-12">
-                                <h3 class="header smaller lighter blue"> Root</h3>                            
+
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" :title="title.UEFI.Drivers"><a data-toggle="tab" href="#tabbable_UEFI_Drivers" class="tablelia">Drivers</a></li>
+                                        <li :title="title.UEFI.Input"><a data-toggle="tab" href="#tabbable_UEFI_Input" class="tablelia">Input</a></li>
+                                        <li :title="title.UEFI.Protocols"><a data-toggle="tab" href="#tabbable_UEFI_Protocols" class="tablelia">Protocols</a></li>
+                                        <li :title="title.UEFI.Quirks"><a data-toggle="tab" href="#tabbable_UEFI_Quirks" class="tablelia">Quirks</a></li>                                                                              
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_UEFI_Drivers" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable-UEFI-Drivers"></table>
+			                                <span class="grey pull-right">
+			                                    <a id="btncopy-UEFI-Drivers"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-UEFI-Drivers"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-UEFI-Drivers"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-UEFI-Drivers"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_UEFI_Input" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    <div class="row">
+			                                      <div class="col-xs-3" :title="title.UEFI.Input.KeyForgetThreshold">
+			                                        KeyForgetThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyForgetThreshold">
+			                                      </div>
+			                                      <div class="col-xs-3" :title="title.UEFI.Input.KeyMergeThreshold">
+			                                        KeyMergeThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyMergeThreshold">
+			                                      </div>
+			                                      <div class="col-xs-3" :title="title.UEFI.Input.KeySupportMode">
+			                                        KeySupportMode<input type="text" class="form-control" v-model="UEFI.Input.KeySupportMode">
+			                                      </div>
+			                                      <div class="col-xs-3" :title="title.UEFI.Input.PointerSupportMode">
+			                                        PointerSupportMode<input type="text" class="form-control" v-model="UEFI.Input.PointerSupportMode">
+			                                      </div>
+			                                    </div>
+			                                    <div class="row" style="margin-top: 10px">
+			                                        <div class="col-xs-3" :title="title.UEFI.Input.TimerResolution"> 
+			                                            TimerResolution<input type="text" class="form-control" v-model="UEFI.Input.TimerResolution">
+			                                        </div>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label :title="title.UEFI.Input.KeySupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeySupport" />
+			                                            <span class="lbl"> KeySupport</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Input.KeySwap">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeySwap" />
+			                                            <span class="lbl"> KeySwap</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Input.PointerSupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.PointerSupport" />
+			                                            <span class="lbl"> PointerSupport</span>
+			                                        </label>
+			                                    </div>
+
+
+			                                </div>
+                                        </div>
+                                        <div id="tabbable_UEFI_Protocols" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    <div class="checkbox" :title="title.UEFI.Protocols.AppleBootPolicy">
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleBootPolicy" />
+			                                            <span class="lbl"> AppleBootPolicy</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Protocols.AppleEvent">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleEvent" />
+			                                            <span class="lbl"> AppleEvent</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Protocols.AppleImageConversion">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleImageConversion" />
+			                                            <span class="lbl"> AppleImageConversion</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Protocols.AppleKeyMap">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleKeyMap" />
+			                                            <span class="lbl"> AppleKeyMap</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Protocols.AppleUserInterfaceTheme">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleUserInterfaceTheme" />
+			                                            <span class="lbl"> AppleUserInterfaceTheme</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Protocols.ConsoleControl">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.ConsoleControl" />
+			                                            <span class="lbl"> ConsoleControl</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Protocols.DataHub">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.DataHub" />
+			                                            <span class="lbl"> DataHub</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Protocols.DeviceProperties">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.DeviceProperties" />
+			                                            <span class="lbl"> DeviceProperties</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Protocols.FirmwareVolume">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.FirmwareVolume" />
+			                                            <span class="lbl"> FirmwareVolume</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Protocols.HashServices">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.HashServices" />
+			                                            <span class="lbl"> HashServices</span>
+			                                        </label>
+			                                        <label :title="title.UEFI.Protocols.UnicodeCollation">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.UnicodeCollation" />
+			                                            <span class="lbl"> UnicodeCollation</span>
+			                                        </label>
+			                                        
+			                                    </div>
+			                                </div>
+                                        </div>
+                                        <div id="tabbable_UEFI_Quirks" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    <div class="row">
+			                                      <div class="col-xs-3">
+			                                        ExitBootServicesDelay<input type="text" class="form-control" v-model="UEFI.Quirks.ExitBootServicesDelay">
+			                                      </div>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.AvoidHighAlloc" />
+			                                            <span class="lbl"> AvoidHighAlloc</span>
+			                                        </label>
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ClearScreenOnModeSwitch" />
+			                                            <span class="lbl"> ClearScreenOnModeSwitch</span>
+			                                        </label>
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreInvalidFlexRatio" />
+			                                            <span class="lbl"> IgnoreInvalidFlexRatio</span>
+			                                        </label>
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreTextInGraphics" />
+			                                            <span class="lbl"> IgnoreTextInGraphics</span>
+			                                        </label>
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ProvideConsoleGop" />
+			                                            <span class="lbl"> ProvideConsoleGop</span>
+			                                        </label>
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReconnectOnResChange" />
+			                                            <span class="lbl"> ReconnectOnResChange</span>
+			                                        </label>
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReleaseUsbOwnership" />
+			                                            <span class="lbl"> ReleaseUsbOwnership</span>
+			                                        </label>
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReplaceTabWithSpace" />
+			                                            <span class="lbl"> ReplaceTabWithSpace</span>
+			                                        </label>
+
+			                                        <!--
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarFallback" />
+			                                            <span class="lbl"> RequestBootVarFallback</span>
+			                                        </label>
+			                                        //-->
+
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarRouting" />
+			                                            <span class="lbl"> RequestBootVarRouting</span>
+			                                        </label>
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.SanitiseClearScreen" />
+			                                            <span class="lbl"> SanitiseClearScreen</span>
+			                                        </label>
+			                                        <!--
+			                                        <label>
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.UnblockFsConnect" />
+			                                            <span class="lbl"> UnblockFsConnect</span>
+			                                        </label>
+			                                        //-->
+			                                    </div>
+
+			                                </div>
+                                        </div>                                       
+                                        
+                                    </div>
+                                </div>
+
+                                <h3 class="header smaller lighter blue"></h3>                            
                                 <div class="well">
                                     <div class="checkbox">
                                         <label :title="title.UEFI.ConnectDrivers">
@@ -940,175 +1229,8 @@
                                             <span class="lbl"> ConnectDrivers</span>
                                         </label>
                                     </div>
-                                </div>
-
-                                <h3 class="header smaller lighter blue" :title="title.UEFI.Drivers"> Drivers</h3>
-                                <table id="gridtable-UEFI-Drivers"></table>
-                                <span class="grey pull-right">
-                                    <a id="btncopy-UEFI-Drivers"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
-                                    <a id="btnpaste-UEFI-Drivers"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
-                                    <a id="btnadd-UEFI-Drivers"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
-                                    <a id="btndel-UEFI-Drivers"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>
-                                </span>
-
-                                <h3 class="header smaller lighter blue"> Input</h3>
-                                <div class="well">
-                                    <div class="row">
-                                      <div class="col-xs-3" :title="title.UEFI.Input.KeyForgetThreshold">
-                                        KeyForgetThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyForgetThreshold">
-                                      </div>
-                                      <div class="col-xs-3" :title="title.UEFI.Input.KeyMergeThreshold">
-                                        KeyMergeThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyMergeThreshold">
-                                      </div>
-                                      <div class="col-xs-3" :title="title.UEFI.Input.KeySupportMode">
-                                        KeySupportMode<input type="text" class="form-control" v-model="UEFI.Input.KeySupportMode">
-                                      </div>
-                                      <div class="col-xs-3" :title="title.UEFI.Input.PointerSupportMode">
-                                        PointerSupportMode<input type="text" class="form-control" v-model="UEFI.Input.PointerSupportMode">
-                                      </div>
-                                    </div>
-                                    <div class="row" style="margin-top: 10px">
-                                        <div class="col-xs-3" :title="title.UEFI.Input.TimerResolution"> 
-                                            TimerResolution<input type="text" class="form-control" v-model="UEFI.Input.TimerResolution">
-                                        </div>
-                                    </div>
-
-                                    <div class="checkbox" style="margin-top: 20px">
-                                        <label :title="title.UEFI.Input.KeySupport">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeySupport" />
-                                            <span class="lbl"> KeySupport</span>
-                                        </label>
-                                        <label :title="title.UEFI.Input.KeySwap">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeySwap" />
-                                            <span class="lbl"> KeySwap</span>
-                                        </label>
-                                        <label :title="title.UEFI.Input.PointerSupport">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Input.PointerSupport" />
-                                            <span class="lbl"> PointerSupport</span>
-                                        </label>
-                                    </div>
-
-
-                                </div>
-
-
-                                <h3 class="header smaller lighter blue"> Protocols</h3>
-                                <div class="well">
-                                    <div class="checkbox" :title="title.UEFI.Protocols.AppleBootPolicy">
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleBootPolicy" />
-                                            <span class="lbl"> AppleBootPolicy</span>
-                                        </label>
-                                        <label :title="title.UEFI.Protocols.AppleEvent">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleEvent" />
-                                            <span class="lbl"> AppleEvent</span>
-                                        </label>
-                                        <label :title="title.UEFI.Protocols.AppleImageConversion">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleImageConversion" />
-                                            <span class="lbl"> AppleImageConversion</span>
-                                        </label>
-                                        <label :title="title.UEFI.Protocols.AppleKeyMap">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleKeyMap" />
-                                            <span class="lbl"> AppleKeyMap</span>
-                                        </label>
-                                        <label :title="title.UEFI.Protocols.AppleUserInterfaceTheme">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleUserInterfaceTheme" />
-                                            <span class="lbl"> AppleUserInterfaceTheme</span>
-                                        </label>
-                                        <label :title="title.UEFI.Protocols.ConsoleControl">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.ConsoleControl" />
-                                            <span class="lbl"> ConsoleControl</span>
-                                        </label>
-                                        <label :title="title.UEFI.Protocols.DataHub">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.DataHub" />
-                                            <span class="lbl"> DataHub</span>
-                                        </label>
-                                        <label :title="title.UEFI.Protocols.DeviceProperties">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.DeviceProperties" />
-                                            <span class="lbl"> DeviceProperties</span>
-                                        </label>
-                                        <label :title="title.UEFI.Protocols.FirmwareVolume">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.FirmwareVolume" />
-                                            <span class="lbl"> FirmwareVolume</span>
-                                        </label>
-                                        <label :title="title.UEFI.Protocols.HashServices">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.HashServices" />
-                                            <span class="lbl"> HashServices</span>
-                                        </label>
-                                        <label :title="title.UEFI.Protocols.UnicodeCollation">
-                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.UnicodeCollation" />
-                                            <span class="lbl"> UnicodeCollation</span>
-                                        </label>
-                                        
-                                    </div>
-                                </div>
-
-                                <h3 class="header smaller lighter blue"> Quirks</h3>
-                                <div class="well">
-                                    <div class="row">
-                                      <div class="col-xs-3">
-                                        ExitBootServicesDelay<input type="text" class="form-control" v-model="UEFI.Quirks.ExitBootServicesDelay">
-                                      </div>
-                                    </div>
-
-                                    <div class="checkbox" style="margin-top: 20px">
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.AvoidHighAlloc" />
-                                            <span class="lbl"> AvoidHighAlloc</span>
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ClearScreenOnModeSwitch" />
-                                            <span class="lbl"> ClearScreenOnModeSwitch</span>
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreInvalidFlexRatio" />
-                                            <span class="lbl"> IgnoreInvalidFlexRatio</span>
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreTextInGraphics" />
-                                            <span class="lbl"> IgnoreTextInGraphics</span>
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ProvideConsoleGop" />
-                                            <span class="lbl"> ProvideConsoleGop</span>
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReconnectOnResChange" />
-                                            <span class="lbl"> ReconnectOnResChange</span>
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReleaseUsbOwnership" />
-                                            <span class="lbl"> ReleaseUsbOwnership</span>
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReplaceTabWithSpace" />
-                                            <span class="lbl"> ReplaceTabWithSpace</span>
-                                        </label>
-
-                                        <!--
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarFallback" />
-                                            <span class="lbl"> RequestBootVarFallback</span>
-                                        </label>
-                                        //-->
-
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarRouting" />
-                                            <span class="lbl"> RequestBootVarRouting</span>
-                                        </label>
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.SanitiseClearScreen" />
-                                            <span class="lbl"> SanitiseClearScreen</span>
-                                        </label>
-                                        <!--
-                                        <label>
-                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.UnblockFsConnect" />
-                                            <span class="lbl"> UnblockFsConnect</span>
-                                        </label>
-                                        //-->
-                                    </div>
-
-                                </div>
+                                </div>                               
+                                
                             </div>    
                         </div>
                         
