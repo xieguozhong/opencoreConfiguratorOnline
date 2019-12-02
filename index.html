@@ -3,7 +3,7 @@
 	<head>
         <meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="chrome=1" />		
-		<title>OpenCore Configurator on line</title>
+		<title>OpenCore Configurator On Line</title>
 		<meta name="description" content="OpenCore Configurator" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
@@ -39,7 +39,7 @@
 					<a href="index.html" class="navbar-brand">
 						<small>
 							<i class="fa fa-leaf"></i>
-							OpenCore Configurator
+							OpenCore Configurator On Line
 						</small>
 					</a>
 				</div>				
@@ -146,7 +146,7 @@
 				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
 					<i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
 				</div>
-                <h6>2019-11-29<br>&nbsp;&nbsp;&nbsp;&nbsp;1 更新回acidanthera于20191030发布的OpenCore-0.5.2为准</h6>
+                
 			</div>
 
 			<div class="main-content" >
@@ -504,9 +504,9 @@
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.PowerTimeoutKernelPanic" />
                                             <span class="lbl"> PowerTimeoutKernelPanic</span>
                                         </label>
-                                        <label :title="title.Kernel.Quirks.ThirdPartyTrim">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ThirdPartyTrim" />
-                                            <span class="lbl"> ThirdPartyTrim</span>
+                                        <label :title="title.Kernel.Quirks.ThirdPartyDrives">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ThirdPartyDrives" />
+                                            <span class="lbl"> ThirdPartyDrives</span>
                                         </label>
                                         <label :title="title.Kernel.Quirks.XhciPortLimit">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.XhciPortLimit" />
@@ -1191,13 +1191,11 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReplaceTabWithSpace" />
 			                                            <span class="lbl"> ReplaceTabWithSpace</span>
 			                                        </label>
-
-			                                        <!--
+			                                        
 			                                        <label>
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarFallback" />
 			                                            <span class="lbl"> RequestBootVarFallback</span>
-			                                        </label>
-			                                        //-->
+			                                        </label>			                                        
 
 			                                        <label>
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarRouting" />
@@ -1207,12 +1205,12 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.SanitiseClearScreen" />
 			                                            <span class="lbl"> SanitiseClearScreen</span>
 			                                        </label>
-			                                        <!--
+			                                        
 			                                        <label>
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.UnblockFsConnect" />
 			                                            <span class="lbl"> UnblockFsConnect</span>
 			                                        </label>
-			                                        //-->
+			                                        
 			                                    </div>
 
 			                                </div>
@@ -1245,7 +1243,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">by Ace jqGrid jquery vue bootstrap</span>
+							<span class="blue bolder">Support OpenCore-0.5.3-RELEASE</span>
 							
 						</span>
 
@@ -1283,20 +1281,19 @@
 
 		</div><!-- /.main-container -->
 
-       <!--  <script>
+        <!-- <script>
             let lang = navigator.language;
-
-            if( lang === undefined) {
-                lang = "zh-CN";
-            }            
-            document.write("<script src='assets/opencore/lang-" + lang + ".js'><\/script>");
+            console.log('lang=' + lang);
+            // if( lang === undefined) {
+            //     lang = "zh-CN";
+            // }            
+            // document.write("<script src='assets/opencore/lang-" + lang + ".js'><\/script>");
         </script> -->
 
 
 		<script src="assets/js/jquery-2.1.4.min.js"></script>		
 		<script src="assets/js/jquery-ui.custom.min.js"></script>
-		<script src="assets/js/jquery.jqGrid.min.js"></script>
-		<script src="assets/js/grid.locale-cn.js"></script>
+		<script src="assets/js/jquery.jqGrid.min.js"></script>		
         <script src="assets/js/bootstrap.min.js"></script>        
 		<script src="assets/js/ace-elements.min.js"></script>	
 		<script src="assets/js/ace.min.js"></script>

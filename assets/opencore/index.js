@@ -173,7 +173,7 @@ var VUEAPP = new Vue({
         Booter : { 
             MmioWhitelist : [], 
             Quirks : {
-                AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableVariableWrite:false, DisableSingleUser:false,
+                AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false, 
                 DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectCsmRegion:false, 
                 ProvideCustomSlide:false, SetupVirtualMap:false, ShrinkMemoryMap:false
             }
@@ -192,7 +192,7 @@ var VUEAPP = new Vue({
             Quirks:{
                 AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, CustomSMBIOSGuid:false,  
                 DisableIoMapper:false, ExternalDiskIcons:false, LapicKernelPanic:false, PanicNoKextDump:false, 
-                PowerTimeoutKernelPanic:false, ThirdPartyTrim:false, XhciPortLimit:false
+                PowerTimeoutKernelPanic:false, ThirdPartyDrives:false, XhciPortLimit:false
             }
         },
         Misc : {
@@ -255,8 +255,8 @@ var VUEAPP = new Vue({
             },
             Quirks : {
                 AvoidHighAlloc:false, ClearScreenOnModeSwitch:false, ExitBootServicesDelay:'', IgnoreInvalidFlexRatio:false, IgnoreTextInGraphics:false,
-                ProvideConsoleGop:false, ReconnectOnResChange:false,ReleaseUsbOwnership:false, ReplaceTabWithSpace:false, //RequestBootVarFallback:false,
-                RequestBootVarRouting:false, SanitiseClearScreen:false //,UnblockFsConnect:false
+                ProvideConsoleGop:false, ReconnectOnResChange:false,ReleaseUsbOwnership:false, ReplaceTabWithSpace:false, RequestBootVarFallback:false,
+                RequestBootVarRouting:false, SanitiseClearScreen:false ,UnblockFsConnect:false
             }
         }
 

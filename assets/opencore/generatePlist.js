@@ -95,23 +95,19 @@ function getKernel() {
 	keContext += '<key>Add</key>';
 	keContext += genArrayDict(VUEAPP.Kernel.Add);
 
-	//Emulate
-	keContext += '<key>Emulate</key><dict>';
-	keContext += '<key>Cpuid1Data</key>';
-	
-	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Data']) + '</data>';
-
-	keContext += '<key>Cpuid1Mask</key>';
-			
-	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Mask']) + '</data>';
-
-
 	//Block
-	keContext += '</dict><key>Block</key>';
+	keContext += '<key>Block</key>';
 	keContext += genArrayDict(VUEAPP.Kernel.Block);
 
+	//Emulate
+	keContext += '<key>Emulate</key><dict>';
+	keContext += '<key>Cpuid1Data</key>';	
+	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Data']) + '</data>';
+	keContext += '<key>Cpuid1Mask</key>';			
+	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Mask']) + '</data>';	
+
 	//Patch
-	keContext += '<key>Patch</key>';
+	keContext += '</dict><key>Patch</key>';
 	keContext += genArrayDict(VUEAPP.Kernel.Patch,['Find','Mask','Replace','ReplaceMask'],['Count','Limit','Skip']);
 
 	//Quirks
@@ -147,8 +143,12 @@ function getMisc() {
 	miscContext += '<key>DisplayLevel</key><integer>' + toNumber(VUEAPP.Misc.Debug['DisplayLevel']) + '</integer>';
 	miscContext += '<key>Target</key><integer>' + toNumber(VUEAPP.Misc.Debug['Target']) + '</integer>';
 
-	//4 Security
-	miscContext += '</dict><key>Security</key><dict>';
+	//4 Entries
+	miscContext += '</dict><key>Entries</key>';
+	miscContext += genArrayDict(VUEAPP.Misc.Entries);
+
+	//5 Security
+	miscContext += '<key>Security</key><dict>';
 	miscContext += '<key>AllowNvramReset</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowNvramReset']);
 	miscContext += '<key>ExposeSensitiveData</key><integer>' + toNumber(VUEAPP.Misc.Security['ExposeSensitiveData']) + '</integer>';
 	miscContext += '<key>HaltLevel</key><integer>' + toNumber(VUEAPP.Misc.Security['HaltLevel']) + '</integer>';
@@ -156,13 +156,11 @@ function getMisc() {
 	miscContext += '<key>RequireVault</key>' + toBoolStringStrict(VUEAPP.Misc.Security['RequireVault']);
 	miscContext += '<key>ScanPolicy</key><integer>' + toNumber(VUEAPP.Misc.Security['ScanPolicy']) + '</integer>';
 
-	//5 Tools
+	//6 Tools
 	miscContext += '</dict><key>Tools</key>';
 	miscContext += genArrayDict(VUEAPP.Misc.Tools);
 
-	//6 Entries
-	miscContext += '<key>Entries</key>';
-	miscContext += genArrayDict(VUEAPP.Misc.Entries);
+	
 
 	return miscContext + '</dict>';
 }
