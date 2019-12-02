@@ -72,6 +72,15 @@ function initGridTableMisc() {
 	let objGT_Misc_Entries = jQuery('#gridtable-Misc-Entries');
 	GLOBAL_ARRAY_TABLE[0].push(objGT_Misc_Entries);
 	initGridTable(objGT_Misc_Entries, VUEAPP.Misc.Entries, colNames, colModel);
+
+	//BlessOverride
+	colNames = ['ScanningPaths'];
+	colModel = [		
+		{name:'ScanningPaths',index:'ScanningPaths', width:150,editable: true,  sortable:false}
+	];
+	let objGT_Misc_BlessOverride = jQuery('#gridtable-Misc-BlessOverride');
+	GLOBAL_ARRAY_TABLE[0].push(objGT_Misc_BlessOverride);
+	initGridTable(objGT_Misc_BlessOverride, VUEAPP.Misc.BlessOverride, colNames, colModel);
 	
 
 

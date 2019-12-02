@@ -524,8 +524,8 @@
 
 								<div class="tabbable" >
                                     <ul class="nav nav-tabs">
-                                        <li :title="title.Misc.BlessOverride"><a data-toggle="tab" href="#tabbable_Misc_BlessOverride" class="tablelia">BlessOverride</a></li>
-                                        <li class="active" :title="title.Misc.Entries"><a data-toggle="tab" href="#tabbable_Misc_Entries" class="tablelia">Entries</a></li>
+                                        <li class="active" :title="title.Misc.BlessOverride"><a data-toggle="tab" href="#tabbable_Misc_BlessOverride" class="tablelia">BlessOverride</a></li>
+                                        <li :title="title.Misc.Entries"><a data-toggle="tab" href="#tabbable_Misc_Entries" class="tablelia">Entries</a></li>
                                         <li :title="title.Misc.Tools"><a data-toggle="tab" href="#tabbable_Misc_Tools" class="tablelia">Tools</a></li>
                                         <li :title="title.Misc.Boot"><a data-toggle="tab" href="#tabbable_Misc_Boot" class="tablelia">Boot</a></li>
                                         <li :title="title.Misc.Debug"><a data-toggle="tab" href="#tabbable_Misc_Debug" class="tablelia">Debug</a></li>
@@ -535,11 +535,17 @@
 
                                     <div class="tab-content" style="padding-right:18px;padding-left:2px;">
 
-                                        <div id="tabbable_Misc_BlessOverride" class="tab-pane fade in" style="padding-bottom: 5px;">
-                                            
+                                        <div id="tabbable_Misc_BlessOverride" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Misc-BlessOverride"></table>
+			                                <span class="grey pull-right">
+			                                    <a id="btncopy-Misc-BlessOverride"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Misc-BlessOverride"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="title.lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Misc-BlessOverride"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="title.lang.add"></a>&nbsp;
+			                                    <a id="btndel-Misc-BlessOverride"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="title.lang.del"></a>
+			                                </span>
                                         </div>
 
-                                        <div id="tabbable_Misc_Entries" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                        <div id="tabbable_Misc_Entries" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <table id="gridtable-Misc-Entries"></table>
 			                                <span class="grey pull-right">
 			                                    <a id="btncopy-Misc-Entries"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="title.lang.copy"></a>&nbsp;

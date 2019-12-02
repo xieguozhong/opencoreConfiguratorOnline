@@ -425,6 +425,15 @@ var VUEAPP = new Vue({
         , initMisc : function() {
             let MiscText = getValuesByKeyname(VUEAPP.plistcontext, 'Misc', true);
 
+            //BlessOverride
+            let BlessOverrideText = getValuesByKeyname(MiscText, 'BlessOverride');
+            this.Misc.BlessOverride.length = 0;
+            let arrayBlessOverride = parsePlistArray2stringArray(BlessOverrideText);
+            for(let i=0;i<arrayBlessOverride.length;i++) {
+                this.Misc.BlessOverride.push({ ScanningPaths : arrayBlessOverride[i]['Volume']}) ;             
+            }
+            jQuery("#gridtable-Misc-BlessOverride").trigger("reloadGrid");
+
             //Entries            
             this.getPlistAndResetTableData(MiscText, 'Entries', 'gridtable-Misc-Entries', this.Misc.Entries);
             //Tools

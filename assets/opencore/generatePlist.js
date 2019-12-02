@@ -120,8 +120,14 @@ function getKernel() {
 function getMisc() {
 	let miscContext = '<key>Misc</key><dict>';
 
-	//1 BlessOverride TODO 待官方完善
-	miscContext += '<key>BlessOverride</key><array/>';
+	//1 BlessOverride
+	miscContext += '<key>BlessOverride</key>';	
+	let bodata = VUEAPP.Misc.BlessOverride, bostring = '';	
+	for(let i=0;i<bodata.length;i++) {
+		bostring += addCharstring(bodata[i]['ScanningPaths']);
+	}	
+	miscContext += bothsidesAddarray(bostring);
+
 
 	//2 Boot
 	miscContext += '<key>Boot</key><dict>';
@@ -479,6 +485,17 @@ function genArrayDict(arrayDictData, dataFileds, intFileds) {
 */
 function addKey(str) {
 	return '<key>' + str + '</key>';
+}
+
+/*
+* 在字符串两边加上<array>
+*/
+function bothsidesAddarray(context) {
+	if(context === '' || context === undefined) {
+		return '<array/>';
+	} else {
+		return '<array>' + context + '</array>';
+	}
 }
 
 function addvtype(valu) {
