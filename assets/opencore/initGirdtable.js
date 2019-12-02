@@ -402,6 +402,7 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width , heigh
                 url:'clientArray', keys:true
             });
         }
+
 	});	
 
 	objGridTable.jqGrid( 'setGridWidth', width );

@@ -55,14 +55,19 @@ jQuery(function($) {
 
     //绑定所有的删除按钮
     $("a[id^=btndel-]").on("click",function(){
+
         let ids = this.id.split('-');
         let gridid = '#gridtable-' + ids[1] + '-' + ids[2];
         let objGridTable = $(gridid);
 
         let selectedIds = objGridTable.jqGrid('getGridParam','selarrrow');
-        let len = selectedIds.length
-        for(let i=0;i<len;i++) {
-			objGridTable.jqGrid('delRowData', selectedIds[0]);
+        let deleteIds = [];
+        for(let i=0;i<selectedIds.length;i++) {
+            deleteIds.push(selectedIds[i]);
+        }
+        let len = deleteIds.length -1;        
+        for(let i=len;i>=0;i--) {            
+			objGridTable.jqGrid('delRowData', deleteIds[i]);
         }
 
         //如果删除左边表格, 要隐藏右边表格
@@ -79,8 +84,6 @@ jQuery(function($) {
     $("a[id^=btncopy-]").on("click",function(){
 
         //先清空剪贴板
-
-
     	let ids = this.id.split('-');
         let gridid = '#gridtable-' + ids[1] + '-' + ids[2];
         let objGrid = $(gridid);
@@ -110,30 +113,11 @@ jQuery(function($) {
 		showTextareaModal();
 	});
 
-	// //点击tab时候设置width
-	// $('.tablelia').on('click', function(){
- //    	//console.log($(this).attr('href'));
- //    	let arrHref = $(this).attr('href').split('_');
- //    	let ojbtb = jQuery('#gridtable' + '-' + arrHref[1] + '-' + arrHref[2]);
- //    	ojbtb.jqGrid( 'setGridWidth', GLOBAL_TABLE_WIDTH );
- // 	})
+
 
 })
 
-// function setTableWidth(rootname) {
-// 	// $("table[id^='gridtable-" + rootname + "-']").each(function(it){
 
-//  //    	//console.log($(this).width() + '\n' + GLOBAL_TABLE_WIDTH);
-//  //    	let theid = $(this).context.id;
-//  //    	//console.log(theid);
-//  //    	if(theid.indexOf('Left') > 0 || theid.indexOf('Right') > 0) {
-// 	// 		$(this).jqGrid( 'setGridWidth', (GLOBAL_TABLE_WIDTH - 50) / 2 );
-//  //    	} else {
-//  //    		$(this).jqGrid( 'setGridWidth', GLOBAL_TABLE_WIDTH );
-//  //    	}
-    	
-//  //    });
-// }
             
 
 

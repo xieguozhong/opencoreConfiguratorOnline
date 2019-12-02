@@ -243,13 +243,13 @@ function getUEFI() {
 	
 	
 	//2 Drivers
-	uefiContext += '<key>Drivers</key><array>';
-	let dridata = VUEAPP.UEFI.Drivers;
+	uefiContext += '<key>Drivers</key>';
+	let dridata = VUEAPP.UEFI.Drivers, dristring = '';
 	//console.log(dridata);
 	for(let i=0;i<dridata.length;i++) {
-		uefiContext += addCharstring(dridata[i]['FileName']);
+		dristring += addCharstring(dridata[i]['FileName']);
 	}
-	uefiContext += '</array>';
+	uefiContext += bothsidesAddarray(dristring);
 
 	//3 Input
 	uefiContext += '<key>Input</key><dict>';	
@@ -294,7 +294,7 @@ function getDeviceVolumeData(leftData, rightData) {
 }
 
 function getSubDeviceVolumeData(pid, rightData) {
-	let strreturn = '<array>';
+	let strreturn = '';
 	//console.log(rightData);
 	for(let it in rightData) {
 		if(rightData[it]['pid'] == pid) {  //<string>MaximumBootBeepVolume</string>
@@ -321,7 +321,12 @@ function getSubDeviceVolumeData(pid, rightData) {
 
 		}
 	}
-	return strreturn + '</array>'
+	if(strreturn === '') {
+		return '<array/>';
+	} else {
+		return '<array>' + strreturn + '</array>';
+	}
+	
 }
 
 function getStringorboolorinterger(theData, dataType) {
