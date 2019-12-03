@@ -6,7 +6,7 @@ const PAGE_TITLE = {
         choose : '打开',
         change : '更换',
         alertfileerror : '只能选择plist文件',
-        toNumberError : '整形格式的数据被错误的输入了字符串, 可能导致配置文件错误, 请检查, 如果有修改后未提交的数据请先在修改处按回车键提交修改',
+        toNumberError : '整形格式的数据被错误的输入了字符串"{@1}", 可能导致配置文件错误, 请检查, 如果有修改后未提交的数据请先在修改处按回车键提交修改',
         DeviceError : '增加或修改配置行后请按回车键提交, 不需要的空行请删除, 否则可能导致配置文件格式错误',
         copyplistSuccess : '已成功复制到剪贴板中, 请手动粘贴到EFI的config.plist文件中',
         pasteMessage : '请按 Command+V 或者在下面框中点右键选择粘贴, 然后点击下面的 确定 按钮',

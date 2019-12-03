@@ -286,7 +286,7 @@ function getDeviceVolumeData(leftData, rightData) {
 		if(leftData[it]['Devices'] === undefined) {
 			showTipModal(PAGE_TITLE.lang.DeviceError);
 		}
-		strreturn += '<key>' + leftData[it]['Devices'] + '</key>';
+		strreturn += addKey(leftData[it]['Devices']);
 		strreturn += getSubDeviceVolumeData(leftData[it]['id'], rightData);
 	}
 
@@ -316,7 +316,7 @@ function getSubDeviceVolumeData(pid, rightData) {
 			}
 			//如果是其他就直接用数据类型包裹值
 			else {
-				strreturn += '<' + rightData[it].Type + '>' + rightData[it].Volume + '</' + rightData[it].Type + '>';
+				strreturn += '<' + rightData[it].Type + '>' + plistEncode(rightData[it].Volume) + '</' + rightData[it].Type + '>';
 			}
 
 		}
@@ -329,13 +329,14 @@ function getSubDeviceVolumeData(pid, rightData) {
 	
 }
 
+
 function getStringorboolorinterger(theData, dataType) {
 	if(dataType === undefined) dataType = {};
 
 	let strreturn = "";
 
 	for(let it in theData) {
-		strreturn += '<key>' + it + '</key>';
+		strreturn += addKey(it);
 
 		//如果数据类型是BOOLEAN
 		if(typeof(theData[it]) === 'boolean') {
@@ -355,8 +356,8 @@ function getStringorboolorinterger(theData, dataType) {
 				case 'real':
 					strreturn += '<real>' + toNumber(theData[it]) + '</real>';
 					break;				
-				default: //integer date
-					strreturn += '<' + itDataType + '>' + theData[it] + '</' + itDataType + '>';
+				default:
+					strreturn += '<' + itDataType + '>' + plistEncode(theData[it]) + '</' + itDataType + '>';
 			}
 		}
 		
@@ -406,7 +407,7 @@ function getSubDeviceData(pid, rightData) {
 			}
 			//如果是其他就直接用数据类型包裹值
 			else {
-				subcontext += '<' + rightData[i].Type + '>' + rightData[i].Value + '</' + rightData[i].Type + '>';
+				subcontext += '<' + rightData[i].Type + '>' + plistEncode(rightData[i].Value) + '</' + rightData[i].Type + '>';
 			}
 		}
 	}
@@ -488,8 +489,8 @@ function genArrayDict(arrayDictData, dataFileds, intFileds) {
 /*
 * 在key两边加上<key>字符串
 */
-function addKey(str) {
-	return '<key>' + str + '</key>';
+function addKey(keyContext) {
+    return '<key>' + plistEncode(keyContext) + '</key>';
 }
 
 /*

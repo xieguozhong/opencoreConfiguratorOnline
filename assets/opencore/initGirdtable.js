@@ -2,6 +2,7 @@ var GLOBAL_TABLE_WIDTH = 0, GLOBAL_TABLE_HEIGHT = 0, GLOBAL_TABLE_HALF_WIDTH = 0
 
 
 
+
 function initGridTableACPI() {
 
 	
@@ -16,8 +17,8 @@ function initGridTableACPI() {
 	
 	let colNames = ['Comment', 'Path','Enabled'];
 	let colModel = [			
-		{name:'Comment',index:'Comment',width:90, editable:true, sortable:false},
-		{name:'Path',index:'Path', width:150,editable: true, sortable:false},
+		{name:'Comment',index:'Comment',width:90, editable:true, sortable:false, formatter:plistEncode},
+		{name:'Path',index:'Path', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	initGridTable(objGT_ACPI_Add, VUEAPP.ACPI.Add, colNames, colModel);
@@ -25,10 +26,10 @@ function initGridTableACPI() {
 	//gridtable-ACPI-Block
 	colNames = ['Comment', 'OemTableId','TableLength','TableSignature','All','Enabled'];
 	colModel = [			
-		{name:'Comment',index:'Comment',width:90, editable:true, sortable:false},
-		{name:'OemTableId',index:'OemTableId', width:150,editable: true, sortable:false},
-		{name:'TableLength',index:'TableLength',width:90, editable:true, sortable:false, fixed:true, align:'center'},
-		{name:'TableSignature',index:'TableSignature', width:150,editable: true, sortable:false},
+		{name:'Comment',index:'Comment',width:90, editable:true, sortable:false, formatter:plistEncode},
+		{name:'OemTableId',index:'OemTableId', width:150,editable: true, sortable:false, formatter:plistEncode},
+		{name:'TableLength',index:'TableLength',width:90, editable:true, sortable:false, fixed:true, align:'center', formatter:plistEncode},
+		{name:'TableSignature',index:'TableSignature', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'All',index:'All', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,formatter:enabledFormat, fixed:true, align:'center'},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
@@ -39,17 +40,17 @@ function initGridTableACPI() {
 	//gridtable-ACPI-Patch
 	colNames = ['Comment','Count','Find','Limit','Mask','OemTableId','Replace','ReplaceMask','Skip','TableLength','TableSignature','Enabled'];
 	colModel = [			
-			{name:'Comment',index:'Comment',width:90, editable:true, sortable:false},
-			{name:'Count',index:'Count',width:60, editable:true, sortable:false, fixed:true, align:'center'},
-			{name:'Find',index:'Find',width:90, editable:true, sortable:false},
-			{name:'Limit',index:'Limit',width:60, editable:true, sortable:false, fixed:true, align:'center'},
-			{name:'Mask',index:'Mask',width:90, editable:true, sortable:false},
-			{name:'OemTableId',index:'OemTableId',width:90, editable:true, sortable:false},
-			{name:'Replace',index:'Replace',width:90, editable:true, sortable:false},
-			{name:'ReplaceMask',index:'ReplaceMask',width:90, editable:true, sortable:false},
-			{name:'Skip',index:'Skip',width:60, editable:true, sortable:false, fixed:true, align:'center'},
-			{name:'TableLength',index:'TableLength',width:90, editable:true, sortable:false, fixed:true, align:'center'},
-			{name:'TableSignature',index:'TableSignature',width:90, editable:true, sortable:false},			
+			{name:'Comment',index:'Comment',width:90, editable:true, sortable:false, formatter:plistEncode},
+			{name:'Count',index:'Count',width:60, editable:true, sortable:false, fixed:true, align:'center', formatter:plistEncode},
+			{name:'Find',index:'Find',width:90, editable:true, sortable:false, formatter:plistEncode},
+			{name:'Limit',index:'Limit',width:60, editable:true, sortable:false, fixed:true, align:'center', formatter:plistEncode},
+			{name:'Mask',index:'Mask',width:90, editable:true, sortable:false, formatter:plistEncode},
+			{name:'OemTableId',index:'OemTableId',width:90, editable:true, sortable:false, formatter:plistEncode},
+			{name:'Replace',index:'Replace',width:90, editable:true, sortable:false, formatter:plistEncode},
+			{name:'ReplaceMask',index:'ReplaceMask',width:90, editable:true, sortable:false, formatter:plistEncode},
+			{name:'Skip',index:'Skip',width:60, editable:true, sortable:false, fixed:true, align:'center', formatter:plistEncode},
+			{name:'TableLength',index:'TableLength',width:90, editable:true, sortable:false, fixed:true, align:'center', formatter:plistEncode},
+			{name:'TableSignature',index:'TableSignature',width:90, editable:true, sortable:false, formatter:plistEncode},			
 			{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 		];
 
@@ -63,10 +64,10 @@ function initGridTableACPI() {
 function initGridTableMisc() {
 	let colNames = ['Arguments','Comment','Name','Path','Enabled'];
 	let colModel = [		
-		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false},
-		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false},
-		{name:'Name',index:'Name', width:100,editable: true,  sortable:false},
-		{name:'Path',index:'Path', width:400,editable: true,  sortable:false},
+		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Name',index:'Name', width:100,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Path',index:'Path', width:400,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Misc_Entries = jQuery('#gridtable-Misc-Entries');
@@ -76,7 +77,7 @@ function initGridTableMisc() {
 	//BlessOverride
 	colNames = ['ScanningPaths'];
 	colModel = [		
-		{name:'ScanningPaths',index:'ScanningPaths', width:150,editable: true,  sortable:false}
+		{name:'ScanningPaths',index:'ScanningPaths', width:150,editable: true,  sortable:false, formatter:plistEncode}
 	];
 	let objGT_Misc_BlessOverride = jQuery('#gridtable-Misc-BlessOverride');
 	GLOBAL_ARRAY_TABLE[0].push(objGT_Misc_BlessOverride);
@@ -87,10 +88,10 @@ function initGridTableMisc() {
 	//Tools
 	colNames = ['Arguments','Comment','Name','Path','Enabled'];
 	colModel = [		
-		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false},
-		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false},
-		{name:'Name',index:'Name', width:150,editable: true,  sortable:false},
-		{name:'Path',index:'Path', width:150,editable: true,  sortable:false},
+		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Name',index:'Name', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Path',index:'Path', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Misc_Tools = jQuery('#gridtable-Misc-Tools');
@@ -103,7 +104,7 @@ function initGridTableDeviceProperties() {
 	//AddLeft
 	let colNames = ['Devices', 'id'];
 	let colModel = [			
-		{name:'Devices',index:'Devices', width:150,editable: true, sortable:false},
+		{name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'id',index:'id', editable: false, hidden:true,key:true}
 	];
 	let objGT_DeviceProperties_AddLeft = jQuery('#gridtable-DeviceProperties-AddLeft');
@@ -114,8 +115,8 @@ function initGridTableDeviceProperties() {
 	//AddRight
 	colNames = ['Key', 'Value', 'Type','pid','id'];
 	colModel = [			
-		{name:'Key',index:'Key', width:150,editable: true, sortable:false},
-		{name:'Value',index:'Value', width:150,editable: true, sortable:false},
+		{name:'Key',index:'Key', width:150,editable: true, sortable:false, formatter:plistEncode},
+		{name:'Value',index:'Value', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:{string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'}}},
 		{name:'pid',index:'pid', editable: false, hidden:true},
         {name:'id',index:'id', editable: false, key:true, hidden:true}
@@ -137,7 +138,7 @@ function initGridTableDeviceProperties() {
 	//BlockLeft
     colNames = ['Devices', 'id'];
 	colModel = [			
-		{name:'Devices',index:'Devices', width:150,editable: true, sortable:false},
+		{name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'id',index:'id', editable: false, hidden:true,key:true}
 	];
 
@@ -149,7 +150,7 @@ function initGridTableDeviceProperties() {
 	//BlockRight
     colNames = ['Volume', 'Type', 'pid', 'id'];
 	colModel = [			
-		{name:'Volume',index:'Volume', width:150,editable: true, sortable:false},
+		{name:'Volume',index:'Volume', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:{string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'}}},
 		{name:'pid',index:'pid', editable: false, hidden:true},
         {name:'id',index:'id', editable: false,key:true, hidden:true}
@@ -174,8 +175,8 @@ function initGridTableBooter() {
 	//MmioWhitelist
 	let colNames = ['Address', 'Comment','Enabled'];
 	let colModel = [			
-		{name:'Address',index:'Address', width:150,editable: true, sortable:false},
-		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false},
+		{name:'Address',index:'Address', width:150,editable: true, sortable:false, formatter:plistEncode},
+		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 
@@ -190,12 +191,12 @@ function initGridTableKernel() {
 	//Add
 	let colNames = ['BundlePath', 'Comment','ExecutablePath','MaxKernel','MinKernel','PlistPath','Enabled'];
 	let colModel = [			
-		{name:'BundlePath',index:'BundlePath', width:150,editable: true, sortable:false},
-		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false},
-		{name:'ExecutablePath',index:'ExecutablePath', width:150,editable: true,  sortable:false},
-		{name:'MaxKernel',index:'MaxKernel', width:150,editable: true,  sortable:false},
-		{name:'MinKernel',index:'MinKernel', width:150,editable: true,  sortable:false},
-		{name:'PlistPath',index:'PlistPath', width:150,editable: true,  sortable:false},
+		{name:'BundlePath',index:'BundlePath', width:150,editable: true, sortable:false, formatter:plistEncode},
+		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'ExecutablePath',index:'ExecutablePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MaxKernel',index:'MaxKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MinKernel',index:'MinKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'PlistPath',index:'PlistPath', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Kernel_Add = jQuery('#gridtable-Kernel-Add');
@@ -207,10 +208,10 @@ function initGridTableKernel() {
 	colNames = ['Comment','Identifier', 'MaxKernel','MinKernel','Enabled'];
 	colModel = [			
 		
-		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false},
-		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false},
-		{name:'MaxKernel',index:'MaxKernel', width:150,editable: true,  sortable:false},
-		{name:'MinKernel',index:'MinKernel', width:150,editable: true,  sortable:false},
+		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MaxKernel',index:'MaxKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MinKernel',index:'MinKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Kernel_Block = jQuery('#gridtable-Kernel-Block');
@@ -222,18 +223,18 @@ function initGridTableKernel() {
 	colNames = ['Base','Comment', 'Count','Find','Identifier','Limit','Mask','MaxKernel', 'MinKernel','Replace','ReplaceMask','Skip','Enabled'];
 	colModel = [			
 		
-		{name:'Base',index:'Base', width:150,editable: true,  sortable:false},
-		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false},
-		{name:'Count',index:'Count', width:50,editable: true,  sortable:false, fixed:true, align:'center'},
-		{name:'Find',index:'Find', width:150,editable: true,  sortable:false},
-		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false},
-		{name:'Limit',index:'Limit', width:50,editable: true,  sortable:false, fixed:true, align:'center'},
-		{name:'Mask',index:'Mask', width:150,editable: true,  sortable:false},
-		{name:'MaxKernel',index:'MaxKernel', width:75,editable: true,  sortable:false, fixed:true, align:'center'},
-		{name:'MinKernel',index:'MinKernel', width:75,editable: true,  sortable:false, fixed:true, align:'center'},
-		{name:'Replace',index:'Replace', width:150,editable: true,  sortable:false},
-		{name:'ReplaceMask',index:'ReplaceMask', width:150,editable: true,  sortable:false},
-		{name:'Skip',index:'Skip', width:50,editable: true,  sortable:false, fixed:true, align:'center'},
+		{name:'Base',index:'Base', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Count',index:'Count', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
+		{name:'Find',index:'Find', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Limit',index:'Limit', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
+		{name:'Mask',index:'Mask', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MaxKernel',index:'MaxKernel', width:75,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
+		{name:'MinKernel',index:'MinKernel', width:75,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
+		{name:'Replace',index:'Replace', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'ReplaceMask',index:'ReplaceMask', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Skip',index:'Skip', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true, align:'center',formatter:enabledFormat}
 	];
 	let objGT_Kernel_Patch = jQuery('#gridtable-Kernel-Patch');
@@ -248,7 +249,7 @@ function initGridTableKernel() {
 function initGridTableUEFI() {
 	colNames = ['FileName'];
 	colModel = [		
-		{name:'FileName',index:'FileName', width:150,editable: true,  sortable:false}
+		{name:'FileName',index:'FileName', width:150,editable: true,  sortable:false, formatter:plistEncode}
 	];
 	let objGT_UEFI_Drivers = jQuery('#gridtable-UEFI-Drivers');
 	GLOBAL_ARRAY_TABLE[0].push(objGT_UEFI_Drivers);
@@ -260,7 +261,7 @@ function initGridTableNVRAM() {
 	let colNames = ['Devices', 'id'];
 	//console.log(tableWidth);
     let colModel = [            
-        {name:'Devices',index:'Devices', width:150,editable: true, sortable:false},
+        {name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
         {name:'id',index:'id', editable: false, hidden:true,key:true}
     ];
     let objGT_NVRAM_AddLeft = jQuery('#gridtable-NVRAM-AddLeft');
@@ -271,8 +272,8 @@ function initGridTableNVRAM() {
     //AddRight
     colNames = ['Key', 'Value', 'Type', 'pid','id'];
     colModel = [            
-        {name:'Key',index:'Key', width:150,editable: true, sortable:false},
-        {name:'Value',index:'Value', width:150,editable: true, sortable:false},
+        {name:'Key',index:'Key', width:150,editable: true, sortable:false, formatter:plistEncode},
+        {name:'Value',index:'Value', width:150,editable: true, sortable:false, formatter:plistEncode},
         {name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:{string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'}}},
         {name:'pid',index:'pid', editable: false,hidden:true},
         {name:'id',index:'id', editable: false,key:true,hidden:true}
@@ -294,7 +295,7 @@ function initGridTableNVRAM() {
     //BlockLeft
     colNames = ['Devices', 'id'];
     colModel = [            
-        {name:'Devices',index:'Devices', width:150,editable: true, sortable:false},
+        {name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
         {name:'id',index:'id', editable: false, hidden:true,key:true}
     ];
     let objGT_NVRAM_BlockLeft = jQuery('#gridtable-NVRAM-BlockLeft');
@@ -305,7 +306,7 @@ function initGridTableNVRAM() {
     //BlockRight
     colNames = ['Volume', 'Type', 'pid','id'];
     colModel = [            
-        {name:'Volume',index:'Volume', width:150,editable: true, sortable:false},
+        {name:'Volume',index:'Volume', width:150,editable: true, sortable:false, formatter:plistEncode},
         {name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:{string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'}}},
         {name:'pid',index:'pid', hidden:true, editable: false},
         {name:'id',index:'id', hidden:true, editable: false, key:true}
@@ -324,7 +325,7 @@ function initGridTableNVRAM() {
     //LegacySchemaLeft
     colNames = ['Devices', 'id'];
     colModel = [            
-        {name:'Devices',index:'Devices', width:150,editable: true, sortable:false},
+        {name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
         {name:'id',index:'id', editable: false, hidden:true,key:true}
     ];
     let objGT_NVRAM_LegacySchemaLeft = jQuery('#gridtable-NVRAM-LegacySchemaLeft');
@@ -335,7 +336,7 @@ function initGridTableNVRAM() {
     //LegacySchemaRight
     colNames = ['Volume', 'Type', 'pid','id'];
     colModel = [            
-        {name:'Volume',index:'Volume', width:150,editable: true, sortable:false},
+        {name:'Volume',index:'Volume', width:150,editable: true, sortable:false, formatter:plistEncode},
         {name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:{string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'}}},
         {name:'pid',index:'pid', hidden:true, editable: false},
         {name:'id',index:'id', hidden:true, editable: false, key:true}
@@ -387,20 +388,18 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width , heigh
 		data 	: gridData,
 		datatype : "local",
 		height : height,
-		//width : 'auto',
 		shrinkToFit:true,
-		//width : width,
 		autowidth : true,
 		colNames:colNames,
 		colModel:colModel, 		
 		altRows: true,
-		//autoencode : true,
         scroll: false,
         multiselect : true,
         multiboxonly : true,
 		ondblClickRow : function (rowid) {
             objGridTable.jqGrid('editRow', rowid, {
-                url:'clientArray', keys:true
+                url : 'clientArray', 
+                keys : true
             });
         }
 

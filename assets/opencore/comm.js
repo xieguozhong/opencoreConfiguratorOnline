@@ -482,12 +482,19 @@ function toBoolStringStrict(strbool) {
     }
 }
 
-
+//编码特殊字符<和>
+function plistEncode(context) {
+    if(context === '' || context === undefined) {
+        return '';
+    } else {
+        return context.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+}
 
 
 function toNumber(num) {
     if(isNaN(num)) {
-        showTipModal(PAGE_TITLE.lang.toNumberError);
+        showTipModal(fillLangString(PAGE_TITLE.lang.toNumberError, num));
         return 0;
     } else {
         return Number(num);
@@ -495,16 +502,7 @@ function toNumber(num) {
 }
 
 function addCharstring(context) {
-    if(context === '' || context === undefined) {
-        return '<string></string>';
-    } else {
-        //转义特殊字符
-        context = context.trim();
-        context = context.replace(/</g,'&lt;');
-        context = context.replace(/>/g,'&gt;')
-        return '<string>' + context + '</string>';
-    }
-    
+    return '<string>' + plistEncode(context) + '</string>';    
 }
 
 //复制内容到剪贴板中
