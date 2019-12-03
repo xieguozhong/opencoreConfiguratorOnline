@@ -394,6 +394,7 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width , heigh
 		colNames:colNames,
 		colModel:colModel, 		
 		altRows: true,
+		//autoencode : true,
         scroll: false,
         multiselect : true,
         multiboxonly : true,

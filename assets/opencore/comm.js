@@ -494,11 +494,15 @@ function toNumber(num) {
     }
 }
 
-function addCharstring(str) {
-    if(str === undefined) {
-        return '';
-    } else {        
-        return '<string>' + str.trim() + '</string>';
+function addCharstring(context) {
+    if(context === '' || context === undefined) {
+        return '<string></string>';
+    } else {
+        //转义特殊字符
+        context = context.trim();
+        context = context.replace(/</g,'&lt;');
+        context = context.replace(/>/g,'&gt;')
+        return '<string>' + context + '</string>';
     }
     
 }
