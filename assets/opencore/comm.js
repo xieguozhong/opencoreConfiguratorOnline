@@ -454,7 +454,7 @@ function hextoBase64(strhex) {
     
     strhex = strhex.replace(/\s+/g, "");
     if (strhex.length % 2) {
-        showTipModal (PAGE_TITLE.lang.Error + ', ' + fillLangString(PAGE_TITLE.lang.hexstringlengthisodd, strhex));           
+        showTipModal (VUEAPP.lang.Error + ', ' + fillLangString(VUEAPP.lang.hexstringlengthisodd, strhex));           
         return '';
     }
     let binary = new Array();
@@ -494,7 +494,7 @@ function plistEncode(context) {
 
 function toNumber(num) {
     if(isNaN(num)) {
-        showTipModal(fillLangString(PAGE_TITLE.lang.toNumberError, num));
+        showTipModal(fillLangString(VUEAPP.lang.toNumberError, num));
         return 0;
     } else {
         return Number(num);

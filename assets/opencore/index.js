@@ -2,9 +2,9 @@
 
 jQuery(function($) {
     $('#id-input-file-2').ace_file_input({
-        no_file : PAGE_TITLE.lang.no_file,
-        btn_choose : PAGE_TITLE.lang.choose,
-        btn_change : PAGE_TITLE.lang.change,
+        no_file : VUEAPP.lang.no_file,
+        btn_choose : VUEAPP.lang.choose,
+        btn_change : VUEAPP.lang.change,
         droppable : false,
         onchange : null,
         allowExt : ['plist'],
@@ -20,7 +20,7 @@ jQuery(function($) {
             return true;
         }
         }).on('file.error.ace', function(event, info) {
-            showTipModal(PAGE_TITLE.lang.alertfileerror);
+            showTipModal(VUEAPP.lang.alertfileerror);
     });
 
     
@@ -113,13 +113,7 @@ jQuery(function($) {
 		showTextareaModal();
 	});
 
-
-
 })
-
-
-            
-
 
 
 function getRandom(type, len) { //1-字母,2-数字,4-字符
@@ -143,9 +137,10 @@ var VUEAPP = new Vue({
     data: {
         root : 'ACPI',                  //决定当前显示哪个节点
         plistcontext : '',              //保存从config.plist中读取的内容
-        title : PAGE_TITLE,             //下面都是语言变量
+        title : PAGE_TITLE,             //下面都是提示变量
         textarea_content : '',          //保存粘贴页面时候textarea中的内容
         current_paste_tableid : '',     //保存点击当前粘贴按钮的table id
+        lang : {},                      //语言数据, 和浏览器的语言设置挂钩
 
         ACPI : { 
             Add : [], 
@@ -247,7 +242,13 @@ var VUEAPP = new Vue({
     },
 
     created : function () {
-
+        let syslang = navigator.language;
+        //console.log(GLOBAL_LANG[syslang]);
+        if(syslang === undefined || GLOBAL_LANG[syslang] === undefined) {
+            this.lang = GLOBAL_LANG['en-US'];
+        } else {
+            this.lang = GLOBAL_LANG[syslang];
+        }
     },
 
     methods: {
@@ -549,7 +550,7 @@ function savePlist() {
 function copyPlist() {
 	let xmlcontext = getAllPlist();
 	copyDatatoClipboard(xmlcontext);
-	showTipModal(PAGE_TITLE.lang.copyplistSuccess);
+	showTipModal(VUEAPP.lang.copyplistSuccess);
 }
 
 function startPaste() {
