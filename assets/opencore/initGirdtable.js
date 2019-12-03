@@ -264,6 +264,7 @@ function initGridTableNVRAM() {
         {name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
         {name:'id',index:'id', editable: false, hidden:true,key:true}
     ];
+    
     let objGT_NVRAM_AddLeft = jQuery('#gridtable-NVRAM-AddLeft');
     GLOBAL_ARRAY_TABLE[1].push(objGT_NVRAM_AddLeft);
     initGridTable(objGT_NVRAM_AddLeft, VUEAPP.NVRAM.AddLeft, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);

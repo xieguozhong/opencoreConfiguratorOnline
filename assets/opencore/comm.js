@@ -21,14 +21,13 @@ function parsePlistArray2stringArray(context) {
         idx1 = context.indexOf('<', idx3);
         if(idx1 === -1) break;
         idx2 = context.indexOf('>', idx1);
-        //console.log(context.slice(idx1+1, idx2));
+        
         item['Type'] = context.slice(idx1+1, idx2);
 
         key = '</' + context.slice(idx1+1, idx2+1)
 
         idx3 = context.indexOf(key, idx2);
-
-        //console.log(context.slice(idx2, idx3));
+        
         item['Volume'] = context.slice(idx2 + 1, idx3);
         rarray.push(item);
         idx3 += key.length;
@@ -94,9 +93,9 @@ function getKeyarrayZIarray(context) {
         idx0 = context.indexOf('<array>', idx1);
         if(idx0 === -1) break;
         idx1 = context.indexOf('</array>', idx0 + 7);
-        //rarray.push(context.slice(idx0+7, idx1));
+        
         let arrayTemp = parsePlistArray2stringArray(context.slice(idx0+7, idx1));
-        //console.log(arrayTemp);
+        
         for(let it=0;it<arrayTemp.length;it++) {
             rarray.push({pid:pid, Volume:arrayTemp[it]['Volume'], Type:arrayTemp[it]['Type']});
         }
@@ -135,11 +134,11 @@ function getParentKeys(context) {
         if(idx1 === -1) break;
         idx2 = context.lastIndexOf('</key>', idx1);
         idx3 = context.lastIndexOf('<key>', idx2);
-        //console.log(context.slice(idx3 + 5, idx2));
+        
         rarray.push(context.slice(idx3 + 5, idx2));
         idx1 += 5;
     }
-    //console.log(rarray);
+    
     return rarray;
 }
 
@@ -173,7 +172,7 @@ function getSubKeys(context) {
     	idx1 += 7;
     	pid ++;
     }
-    //console.log(return rarray;);
+    
     return rarray;
 }
 
@@ -191,10 +190,10 @@ function parrayToJSarray(context) {
         dicttext = context.slice(idx1 + 6, idx2);
         let item = pdictToJSobject(dicttext);
         rarray.push(item);
-        //console.log(dicttext);
+        
 
     }
-    //console.log(rarray);
+    
     return rarray;
 }
 
@@ -237,10 +236,19 @@ function pdictToJSobjectKV(context, pid, rarray) {
         idx3 = context.indexOf('<', idx2 + 6);
         idx4 = context.indexOf('>', idx3);
         vtype = context.slice(idx3 + 1, idx4);
-        //console.log(vtype);
+
         //3 再找值
-        value = getValuesByKeyname(context, key);
-        //robj[key] = value;
+        if(vtype === 'true/') {
+            vtype = 'bool';
+            value = true;
+        } else if (vtype === 'false/') {
+            vtype = 'bool';
+            value = false;            
+        } else {
+            value = getValuesByKeyname(context, key);
+        }
+        
+        
         item['pid'] = pid;
         item['Key'] = key;
         item['Type'] = vtype;
@@ -335,10 +343,10 @@ function formatContext(context) {
 	let arrayContext = context.split('\n');
 	let newContext = '';
 	for(let i=0;i<arrayContext.length;i++) {
-		//console.log(arrayContext[i].trim());
+		
 		newContext += arrayContext[i].trim();
 	}
-    //context = context.replace(/[\t\r\n]/g,'');
+    
     return newContext;
 }
 
@@ -466,10 +474,10 @@ function hextoBase64(strhex) {
 } 
 
 
-function toBoolString(strbool) {
-    if(strbool === '1' || strbool === 'true') {
+function toBoolString(strbool) {    
+    if(strbool === true || strbool === 'true' || strbool === '1') {        
        return '<true/>';
-    } else {
+    } else {        
         return '<false/>';
     }
 }
@@ -484,10 +492,16 @@ function toBoolStringStrict(strbool) {
 
 //编码特殊字符<和>
 function plistEncode(context) {
+    
     if(context === '' || context === undefined) {
         return '';
     } else {
-        return context.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        if(typeof(context) === 'string') {
+            return context.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        } else {
+            return context;
+        }
+        
     }
 }
 
@@ -502,6 +516,7 @@ function toNumber(num) {
 }
 
 function addCharstring(context) {
+    
     return '<string>' + plistEncode(context) + '</string>';    
 }
 

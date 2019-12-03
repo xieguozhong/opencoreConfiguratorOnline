@@ -310,9 +310,9 @@ function getSubDeviceVolumeData(pid, rightData) {
 			else if(rightData[it].Type === 'bool') {
 				strreturn += toBoolString(rightData[it].Volume);
 			} else if(rightData[it].Type === 'integer' ) {
-				subcontext += '<integer>' + toNumber(rightData[it].Value) + '</integer>';
+				strreturn += '<integer>' + toNumber(rightData[it].Value) + '</integer>';
 			} else if(rightData[it].Type === 'real') {
-				subcontext += '<real>' + toNumber(rightData[it].Value) + '</real>';
+				strreturn += '<real>' + toNumber(rightData[it].Value) + '</real>';
 			}
 			//如果是其他就直接用数据类型包裹值
 			else {
@@ -391,7 +391,7 @@ function getSubDeviceData(pid, rightData) {
 				showTipModal(VUEAPP.lang.DeviceError);
 			}
 
-			subcontext += addKey(rightData[i].Key);
+			subcontext += addKey(rightData[i].Key);		
 
 			//如果数据类型是DATA, 转成BASE64
 			if(rightData[i].Type === 'data') {
@@ -399,7 +399,7 @@ function getSubDeviceData(pid, rightData) {
 			} 
 			//如果是BOOL, 转成<true/>或者 <false/>
 			else if(rightData[i].Type === 'bool') {
-				strreturn += toBoolString(rightData[i].Value);
+				subcontext += toBoolString(rightData[i].Value);
 			} else if(rightData[i].Type === 'integer' ) {
 				subcontext += '<integer>' + toNumber(rightData[i].Value) + '</integer>';
 			} else if(rightData[i].Type === 'real') {

@@ -306,10 +306,12 @@ var VUEAPP = new Vue({
             }            
             //this.NVRAM.AddSub = getSubKeys(AddText);
             let subarray = getSubKeys(AddText);
+            
             for(let it in subarray) {
                 subarray[it]['id'] = it;
                 this.NVRAM.AddRight.push(subarray[it]);
             }
+            
             jQuery("#gridtable-NVRAM-AddLeft").trigger("reloadGrid");
             jQuery("#gridtable-NVRAM-AddRight").trigger("reloadGrid");
             //选中第一条记录
@@ -338,7 +340,7 @@ var VUEAPP = new Vue({
             let arrayParent3 = getKeyarrayZIkey(LegacySchemaText);
             
             for(let k=0;k<arrayParent3.length;k++) {
-                //console.log(arrayParent3[k]);
+               
                 this.NVRAM.LegacySchemaLeft.push({id:k, Devices:arrayParent3[k]});
             }    
 
@@ -385,7 +387,7 @@ var VUEAPP = new Vue({
 
         , initPlatformInfo : function () {
             let ipiText = getValuesByKeyname(VUEAPP.plistcontext, 'PlatformInfo', true);
-            //console.log(ipiText);
+            
             //root
             this.getAndSetDictItem(ipiText, this.PlatformInfo.root);
 
@@ -585,7 +587,7 @@ function startPaste() {
     if(ids[2].substr(-5) === 'Right') {
         let leftgridid = '#gridtable-' + ids[1] + '-' + ids[2].replace('Right','Left');            
         let leftSelectedId = $(leftgridid).jqGrid("getGridParam", "selrow");
-        console.log(leftSelectedId);
+        
 
         if(leftSelectedId === null) {
             showTipModal('请先在左边选择 Devices 记录');
