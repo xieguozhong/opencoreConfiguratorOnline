@@ -1,6 +1,6 @@
 
 
-jQuery(function($) {
+$(document).ready(function() {
     $('#id-input-file-2').ace_file_input({
         no_file : VUEAPP.lang.no_file,
         btn_choose : VUEAPP.lang.choose,
@@ -23,8 +23,8 @@ jQuery(function($) {
             showTipModal(VUEAPP.lang.alertfileerror);
     });
 
-    
-    
+
+
     initGridTableACPI();
     initGridTableBooter();
     initGridTableDeviceProperties();
@@ -32,25 +32,32 @@ jQuery(function($) {
     initGridTableMisc();
     initGridTableNVRAM();
     initGridTableUEFI();
-    
 
     //绑定所有的增加按钮
     $("a[id^=btnadd-]").on("click",function(){
         let ids = this.id.split('-');
+
+        let currentGridTable = jQuery('#gridtable-' + ids[1] + '-' + ids[2]);
+        let currentSelectedId = currentGridTable.jqGrid("getGridParam", "selrow");
+        let position = 'last';
+        if(currentSelectedId !== null) {
+            position = 'before';
+        }
         //如果是右边表格, 先检查左边有没有选中, 如果没有, 不做任何反应
         if(ids[2].substr(-5) === 'Right') {
             let gridid = '#gridtable-' + ids[1] + '-' + ids[2].replace('Right','Left');
-            
+
             let selectedId = $(gridid).jqGrid("getGridParam", "selrow");
             if(selectedId !== null) {
-                jQuery('#gridtable-' + ids[1] + '-' + ids[2]).jqGrid('addRowData', getRandom(), {pid:selectedId}, 'last');
+                jQuery('#gridtable-' + ids[1] + '-' + ids[2]).jqGrid('addRowData', getRandom(), {pid:selectedId}, position, currentSelectedId);
             }
-            
+
         } else {
-            jQuery('#gridtable-' + ids[1] + '-' + ids[2]).jqGrid('addRowData', getRandom(), {}, 'last');
+
+            currentGridTable.jqGrid('addRowData', getRandom(), {}, position, currentSelectedId);
         }
-        
-                    
+
+
     });
 
     //绑定所有的删除按钮
@@ -65,8 +72,8 @@ jQuery(function($) {
         for(let i=0;i<selectedIds.length;i++) {
             deleteIds.push(selectedIds[i]);
         }
-        let len = deleteIds.length -1;        
-        for(let i=len;i>=0;i--) {            
+        let len = deleteIds.length -1;
+        for(let i=len;i>=0;i--) {
 			objGridTable.jqGrid('delRowData', deleteIds[i]);
         }
 
@@ -88,7 +95,7 @@ jQuery(function($) {
         let gridid = '#gridtable-' + ids[1] + '-' + ids[2];
         let objGrid = $(gridid);
         let selectedId = objGrid.jqGrid("getGridParam", "selarrrow");
-        if(selectedId.length === 0) {            
+        if(selectedId.length === 0) {
         	showTipModal('请选择要复制的行数据');
             copyDatatoClipboard(' ');
         	return;
@@ -101,10 +108,10 @@ jQuery(function($) {
     		}
     		strdata += JSON.stringify(rowData);
     	}
-    	
-    	copyDatatoClipboard('[' + strdata + ']');     
-        
-        
+
+    	copyDatatoClipboard('[' + strdata + ']');
+
+
 	});
 
     //绑定所有的粘贴按钮
@@ -113,7 +120,120 @@ jQuery(function($) {
 		showTextareaModal();
 	});
 
-})
+    $.minimalTips();
+
+});
+
+function addRowUEFIDrivers(drivers) {
+    if(drivers.value !== '') {
+        let thetable = jQuery('#gridtable-UEFI-Drivers');
+
+        let selectedId = thetable.jqGrid("getGridParam", "selrow");
+        let position = 'last';
+        if(selectedId !== null) {
+            position = 'before';
+        }
+        thetable.jqGrid('addRowData', getRandom(), {FileName:drivers.value}, position, selectedId);
+        drivers.value = '';
+    }
+
+}
+
+function addkexts(kext) {
+
+    let allKext = [
+        ['RealtekRTL8100.kext','Contents/MacOS/RealtekRTL8100','Contents/Info.plist'],
+        ['ACPIBatteryManager.kext','Contents/MacOS/ACPIBatteryManager','Contents/Info.plist'],
+        ['AHCI_3rdParty_SATA.kext','','Contents/Info.plist'],
+        ['Lilu.kext','Contents/MacOS/Lilu','Contents/Info.plist'],
+        ['BrcmWLFixup.kext','Contents/MacOS/BrcmWLFixup','Contents/Info.plist'],
+        ['VoodooI2CAtmelMXT.kext','Contents/MacOS/VoodooI2CAtmelMXT','Contents/Info.plist'],
+        ['BrcmFirmwareData.kext','Contents/MacOS/BrcmFirmwareData','Contents/Info.plist'],
+        ['HibernationFixup.kext','Contents/MacOS/HibernationFixup','Contents/Info.plist'],
+        ['AnyAppleUSBKeyboard.kext','','Contents/Info.plist'],
+        ['NoTouchID.kext','Contents/MacOS/NoTouchID','Contents/Info.plist'],
+        ['XHCI-300-series-injector.kext','','Contents/Info.plist'],
+        ['BT4LEContinuityFixup.kext','Contents/MacOS/BT4LEContinuityFixup','Contents/Info.plist'],
+        ['AirportBrcmFixup.kext','Contents/MacOS/AirportBrcmFixup','Contents/Info.plist'],
+        ['AnyAppleUSBMouse.kext','','Contents/Info.plist'],
+        ['VoodooHDA.kext','Contents/MacOS/VoodooHDA','Contents/Info.plist'],
+        ['AppleALC.kext','Contents/MacOS/AppleALC','Contents/Info.plist'],
+        ['AtherosE2200Ethernet.kext','Contents/MacOS/AtherosE2200Ethernet','Contents/Info.plist'],
+        ['IntelMausi.kext','Contents/MacOS/IntelMausi','Contents/Info.plist'],
+        ['VoodooI2CUPDDEngine.kext','Contents/MacOS/VoodooI2CUPDDEngine','Contents/Info.plist'],
+        ['SATA-100-series-unsupported.kext','','Contents/Info.plist'],
+        ['IntelMausiEthernet.kext','Contents/MacOS/IntelMausiEthernet','Contents/Info.plist'],
+        ['VoodooI2CSynaptics.kext','Contents/MacOS/VoodooI2CSynaptics','Contents/Info.plist'],
+        ['SMCSuperIO.kext','Contents/MacOS/SMCSuperIO','Contents/Info.plist'],
+        ['XHCI-200-series-injector.kext','','Contents/Info.plist'],
+        ['WhateverGreen.kext','Contents/MacOS/WhateverGreen','Contents/Info.plist'],
+        ['SMCBatteryManager.kext','Contents/MacOS/SMCBatteryManager','Contents/Info.plist'],
+        ['CPUFriendDataProvider.kext','','Contents/Info.plist'],
+        ['RealtekRTL8111.kext','Contents/MacOS/RealtekRTL8111','Contents/Info.plist'],
+        ['SATA-RAID-unsupported.kext','','Contents/Info.plist'],
+        ['NullCPUPowerManagement.kext','Contents/MacOS/NullCPUPowerManagement','Contents/Info.plist'],
+        ['SMCProcessor.kext','Contents/MacOS/SMCProcessor','Contents/Info.plist'],
+        ['AppleIntelE1000e.kext','Contents/MacOS/AppleIntelE1000e','Contents/Info.plist'],
+        ['USBInjectAll.kext','Contents/MacOS/USBInjectAll','Contents/Info.plist'],
+        ['CPUFriend.kext','Contents/MacOS/CPUFriend','Contents/Info.plist'],
+        ['AsusSMC.kext','Contents/MacOS/AsusSMC','Contents/Info.plist'],
+        ['VoodooI2CHID.kext','Contents/MacOS/VoodooI2CHID','Contents/Info.plist'],
+        ['AppleIGB.kext','Contents/MacOS/AppleIGB','Contents/Info.plist'],
+        ['AppleBacklightFixup.kext','Contents/MacOS/AppleBacklightFixup','Contents/Info.plist'],
+        ['CoreDisplayFixup.kext','Contents/MacOS/CoreDisplayFixup','Contents/Info.plist'],
+        ['AHCI_3rdParty_eSATA.kext','','Contents/Info.plist'],
+        ['VoodooI2CFTE.kext','Contents/MacOS/VoodooI2CFTE','Contents/Info.plist'],
+        ['VoodooI2CELAN.kext','Contents/MacOS/VoodooI2CELAN','Contents/Info.plist'],
+        ['AppleACPIPS2Nub.kext','Contents/MacOS/AppleACPIPS2Nub','Contents/Info.plist'],
+        ['ApplePS2SmartTouchPad.kext','Contents/MacOS/ApplePS2SmartTouchPad','Contents/Info.plist'],
+        ['ApplePS2SmartTouchPad.kext','Contents/PlugIns/ApplePS2Keyboard.kext/Contents/MacOS/ApplePS2Keyboard','Contents/PlugIns/ApplePS2Keyboard.kext/Contents/Info.plist'],
+        ['ApplePS2SmartTouchPad.kext','Contents/PlugIns/ApplePS2Controller.kext/Contents/MacOS/ApplePS2Controller','Contents/PlugIns/ApplePS2Controller.kext/Contents/Info.plist'],
+        ['VirtualSMC.kext','Contents/MacOS/VirtualSMC','Contents/Info.plist'],
+        ['BrcmPatchRAM.kext','Contents/MacOS/BrcmPatchRAM','Contents/Info.plist'],
+        ['BrcmFirmwareRepo.kext','Contents/MacOS/BrcmFirmwareRepo','Contents/Info.plist'],
+        ['VoodooPS2Controller.kext','Contents/MacOS/VoodooPS2Controller','Contents/Info.plist'],
+        ['VoodooPS2Controller.kext','Contents/PlugIns/VoodooPS2Trackpad.kext/Contents/MacOS/VoodooPS2Trackpad','Contents/PlugIns/VoodooPS2Trackpad.kext/Contents/Info.plist'],
+        ['VoodooPS2Controller.kext','Contents/PlugIns/VoodooPS2Keyboard.kext/Contents/MacOS/VoodooPS2Keyboard','Contents/PlugIns/VoodooPS2Keyboard.kext/Contents/Info.plist'],
+        ['VoodooPS2Controller.kext','Contents/PlugIns/VoodooPS2Mouse.kext/Contents/MacOS/VoodooPS2Mouse','Contents/PlugIns/VoodooPS2Mouse.kext/Contents/Info.plist'],
+        ['HoRNDIS.kext','Contents/MacOS/HoRNDIS','Contents/Info.plist'],
+        ['SMCLightSensor.kext','Contents/MacOS/SMCLightSensor','Contents/Info.plist'],
+        ['FakeSMC.kext','Contents/MacOS/FakeSMC','Contents/Info.plist'],
+        ['SATA-200-series-unsupported.kext','','Contents/Info.plist'],
+        ['USBPorts.kext','','Contents/Info.plist'],
+        ['BrcmPatchRAM2.kext','Contents/MacOS/BrcmPatchRAM2','Contents/Info.plist'],
+        ['VoodooI2C.kext','Contents/MacOS/VoodooI2C','Contents/Info.plist'],
+        ['VoodooI2C.kext','Contents/PlugIns/VoodooGPIO.kext/Contents/MacOS/VoodooGPIO','Contents/PlugIns/VoodooGPIO.kext/Contents/Info.plist'],
+        ['VoodooI2C.kext','Contents/PlugIns/VoodooI2CServices.kext/Contents/MacOS/VoodooI2CServices','Contents/PlugIns/VoodooI2CServices.kext/Contents/Info.plist'],
+        ['AHCI_Intel_Generic_SATA.kext','','Contents/Info.plist'],
+        ['XHCI-unsupported.kext','','Contents/Info.plist']
+        ];
+
+    let thetable = jQuery("#gridtable-Kernel-Add");
+
+    let selectedId = thetable.jqGrid("getGridParam", "selrow");
+    let position = 'last';
+    if(selectedId !== null) {
+        position = 'before';
+    }
+    for(let i=0;i<allKext.length;i++) {
+
+        if(allKext[i][0] === kext.value) {
+
+            thetable.jqGrid('addRowData', getRandom(), {
+                BundlePath : allKext[i][0],
+                Comment : '',
+                ExecutablePath : allKext[i][1],
+                MaxKernel : '', MinKernel : '',
+                PlistPath : allKext[i][2],
+                Enabled:"YES"
+            }, position, selectedId);
+
+        }
+    }
+    kext.value = '';
+    //console.log(kext.value);
+    delete allKext;
+}
 
 
 function getRandom(type, len) { //1-字母,2-数字,4-字符
@@ -123,11 +243,11 @@ function getRandom(type, len) { //1-字母,2-数字,4-字符
     let newstr = "", uuid = [];
     type = type || 3;   //默认字母+数字
     len = len || 6;     //默认长度6
-    
+
     if(type & 0x1<<0) newstr += str_num;
     if(type & 0x1<<1) newstr += str_char;
     if(type & 0x1<<2) newstr += str_specchar;
-    
+
     for (i = 0; i < len; i++) uuid[i] = newstr[0 | (Math.random() * newstr.length)];
     return uuid.join('');
 }
@@ -137,45 +257,45 @@ var VUEAPP = new Vue({
     data: {
         root : 'ACPI',                  //决定当前显示哪个节点
         plistcontext : '',              //保存从config.plist中读取的内容
-        title : PAGE_TITLE,             //下面都是提示变量
+        title : SYSTEM_TIPS,             //下面都是提示变量
         textarea_content : '',          //保存粘贴页面时候textarea中的内容
         current_paste_tableid : '',     //保存点击当前粘贴按钮的table id
         lang : {},                      //语言数据, 和浏览器的语言设置挂钩
 
-        ACPI : { 
-            Add : [], 
-            Block : [], 
+        ACPI : {
+            Add : [],
+            Block : [],
             Patch : [] ,
             Quirks : {
                 FadtEnableReset:false, NormalizeHeaders:false, RebaseRegions:false, ResetHwSig:false, ResetLogoStatus:false}
             },
-        Booter : { 
-            MmioWhitelist : [], 
+        Booter : {
+            MmioWhitelist : [],
             Quirks : {
-                AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false, 
-                DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectCsmRegion:false, 
+                AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
+                DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectCsmRegion:false,
                 ProvideCustomSlide:false, SetupVirtualMap:false, ShrinkMemoryMap:false
             }
         },
         DeviceProperties : {
-            AddLeft:[], 
-            AddRight:[],             
+            AddLeft:[],
+            AddRight:[],
             BlockLeft : [],
-            BlockRight : []            
+            BlockRight : []
         },
         Kernel : {
-            Add:[], 
+            Add:[],
             Block:[],
             Patch:[],
             Emulate:{Cpuid1Data : '',Cpuid1Mask :''},
             Quirks:{
-                AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, CustomSMBIOSGuid:false,  
-                DisableIoMapper:false, ExternalDiskIcons:false, LapicKernelPanic:false, PanicNoKextDump:false, 
+                AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, CustomSMBIOSGuid:false,
+                DisableIoMapper:false, ExternalDiskIcons:false, LapicKernelPanic:false, PanicNoKextDump:false,
                 PowerTimeoutKernelPanic:false, ThirdPartyDrives:false, XhciPortLimit:false
             }
         },
         Misc : {
-            BlessOverride:[], 
+            BlessOverride:[],
             Boot:{
                 ConsoleBehaviourOs:'', ConsoleBehaviourUi:'', ConsoleMode:'', HibernateMode:'', Resolution:'', Timeout:'',
                 HideSelf : false, PollAppleHotKeys: false, ShowPicker: false, UsePicker: false
@@ -191,8 +311,8 @@ var VUEAPP = new Vue({
         },
         NVRAM : {
             root : { LegacyEnable : false},
-            AddLeft:[], 
-            AddRight:[], 
+            AddLeft:[],
+            AddRight:[],
             BlockLeft : [],
             BlockRight : [],
             LegacySchemaLeft : [],
@@ -215,7 +335,7 @@ var VUEAPP = new Vue({
             },
             SMBIOS : {
                 BIOSReleaseDate:'', BIOSVendor:'', BIOSVersion:'', BoardAssetTag:'', BoardLocationInChassis:'', BoardManufacturer:'',
-                BoardProduct:'', BoardSerialNumber:'', BoardType:'', BoardVersion:'', ChassisAssetTag:'', ChassisManufacturer:'', 
+                BoardProduct:'', BoardSerialNumber:'', BoardType:'', BoardVersion:'', ChassisAssetTag:'', ChassisManufacturer:'',
                 ChassisSerialNumber:'', ChassisType:'', ChassisVersion:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', MemoryFormFactor:'',
                 PlatformFeature:'', ProcessorType:'', SmcVersion:'', SystemFamily:'', SystemManufacturer:'',
                 SystemProductName:'', SystemSKUNumber:'', SystemSerialNumber:'', SystemUUID:'', SystemVersion:''
@@ -226,7 +346,7 @@ var VUEAPP = new Vue({
             Drivers : [],
             Input : {
                 KeyForgetThreshold:'', KeyMergeThreshold:'', KeySupport:false, KeySupportMode:'', KeySwap:false,  PointerSupport:false, PointerSupportMode:'', TimerResolution:''
-                 
+
             },
             Protocols : {
                 AppleBootPolicy:false, AppleEvent:false, AppleImageConversion:false, AppleKeyMap:false, AppleUserInterfaceTheme:false,
@@ -254,7 +374,7 @@ var VUEAPP = new Vue({
     methods: {
 
         setRoot : function (rootname) {
-            this.root = rootname; 
+            this.root = rootname;
         }
 
         // 初始化所有表格
@@ -274,12 +394,12 @@ var VUEAPP = new Vue({
         // 获取并设置dict的值和bool值
         , getAndSetDictItem(context, vueData) {
             for(let it in vueData) {
-                if(typeof(vueData[it]) === "boolean") {                    
+                if(typeof(vueData[it]) === "boolean") {
                     Vue.set(vueData, it, partrue(getValuesByKeyname(context, it)));
-                } else {                    
+                } else {
                     Vue.set(vueData, it, getValuesByKeyname(context, it));
                 }
-                
+
             }
 
         }
@@ -295,23 +415,23 @@ var VUEAPP = new Vue({
 
 
             let NVRAMText = getValuesByKeyname(VUEAPP.plistcontext, 'NVRAM', true);
-            this.getAndSetDictItem(NVRAMText, this.NVRAM.root);            
+            this.getAndSetDictItem(NVRAMText, this.NVRAM.root);
 
-            
+
             let AddText = getValuesByKeyname(NVRAMText, 'Add');
             //AddLeft
             let arrayParent = getParentKeys(AddText);
             for(let i=0;i<arrayParent.length;i++) {
                 this.NVRAM.AddLeft.push({id:i, Devices:arrayParent[i]});
-            }            
+            }
             //this.NVRAM.AddSub = getSubKeys(AddText);
             let subarray = getSubKeys(AddText);
-            
+
             for(let it in subarray) {
                 subarray[it]['id'] = it;
                 this.NVRAM.AddRight.push(subarray[it]);
             }
-            
+
             jQuery("#gridtable-NVRAM-AddLeft").trigger("reloadGrid");
             jQuery("#gridtable-NVRAM-AddRight").trigger("reloadGrid");
             //选中第一条记录
@@ -320,12 +440,12 @@ var VUEAPP = new Vue({
             //BlockLeft
             let BlockText = getValuesByKeyname(NVRAMText, 'Block')
             let arrayParent2 = getKeyarrayZIkey(BlockText);
-            
+
             for(let j=0;j<arrayParent2.length;j++) {
                 this.NVRAM.BlockLeft.push({id:j, Devices:arrayParent2[j]});
-            }    
+            }
 
-            
+
             subarray = getKeyarrayZIarray(BlockText);
             for(let it in subarray) {
                 subarray[it]['id'] = it;
@@ -338,13 +458,13 @@ var VUEAPP = new Vue({
             //LegacySchemaLeft
             let LegacySchemaText = getValuesByKeyname(NVRAMText, 'LegacySchema')
             let arrayParent3 = getKeyarrayZIkey(LegacySchemaText);
-            
-            for(let k=0;k<arrayParent3.length;k++) {
-               
-                this.NVRAM.LegacySchemaLeft.push({id:k, Devices:arrayParent3[k]});
-            }    
 
-            
+            for(let k=0;k<arrayParent3.length;k++) {
+
+                this.NVRAM.LegacySchemaLeft.push({id:k, Devices:arrayParent3[k]});
+            }
+
+
             subarray = getKeyarrayZIarray(LegacySchemaText);
             for(let it in subarray) {
                 subarray[it]['id'] = it;
@@ -354,13 +474,13 @@ var VUEAPP = new Vue({
             jQuery("#gridtable-NVRAM-LegacySchemaRight").trigger("reloadGrid");
             jQuery("#gridtable-NVRAM-LegacySchemaLeft").jqGrid('setSelection',0, true);
 
-            
+
         }
 
         , initUEFI : function () {
             let UEFIText = getValuesByKeyname(VUEAPP.plistcontext, 'UEFI', true);
-            
-            //root   
+
+            //root
             this.getAndSetDictItem(UEFIText, this.UEFI.root);
 
             //Drivers
@@ -368,7 +488,7 @@ var VUEAPP = new Vue({
             this.UEFI.Drivers.length = 0;
             let arrayDrivers = parsePlistArray2stringArray(DriversText);
             for(let i=0;i<arrayDrivers.length;i++) {
-                this.UEFI.Drivers.push({ FileName : arrayDrivers[i]['Volume']}) ;             
+                this.UEFI.Drivers.push({ FileName : arrayDrivers[i]['Volume']}) ;
             }
             jQuery("#gridtable-UEFI-Drivers").trigger("reloadGrid");
 
@@ -387,7 +507,7 @@ var VUEAPP = new Vue({
 
         , initPlatformInfo : function () {
             let ipiText = getValuesByKeyname(VUEAPP.plistcontext, 'PlatformInfo', true);
-            
+
             //root
             this.getAndSetDictItem(ipiText, this.PlatformInfo.root);
 
@@ -417,41 +537,41 @@ var VUEAPP = new Vue({
             this.Misc.BlessOverride.length = 0;
             let arrayBlessOverride = parsePlistArray2stringArray(BlessOverrideText);
             for(let i=0;i<arrayBlessOverride.length;i++) {
-                this.Misc.BlessOverride.push({ ScanningPaths : arrayBlessOverride[i]['Volume']}) ;             
+                this.Misc.BlessOverride.push({ ScanningPaths : arrayBlessOverride[i]['Volume']}) ;
             }
             jQuery("#gridtable-Misc-BlessOverride").trigger("reloadGrid");
 
-            //Entries            
+            //Entries
             this.getPlistAndResetTableData(MiscText, 'Entries', 'gridtable-Misc-Entries', this.Misc.Entries);
             //Tools
             this.getPlistAndResetTableData(MiscText, 'Tools', 'gridtable-Misc-Tools', this.Misc.Tools);
             //Boot
-            let BootText = getValuesByKeyname(MiscText, 'Boot');     
-            this.getAndSetDictItem(BootText, this.Misc.Boot);         
+            let BootText = getValuesByKeyname(MiscText, 'Boot');
+            this.getAndSetDictItem(BootText, this.Misc.Boot);
 
             //Debug
-            let DebugText = getValuesByKeyname(MiscText, 'Debug');   
-            this.getAndSetDictItem(DebugText, this.Misc.Debug);           
+            let DebugText = getValuesByKeyname(MiscText, 'Debug');
+            this.getAndSetDictItem(DebugText, this.Misc.Debug);
 
             //Security
-            let SecurityText = getValuesByKeyname(MiscText, 'Security');    
-            this.getAndSetDictItem(SecurityText, this.Misc.Security);        
+            let SecurityText = getValuesByKeyname(MiscText, 'Security');
+            this.getAndSetDictItem(SecurityText, this.Misc.Security);
 
         }
 
-        
+
 
         , initKernel : function () {
             let text = getValuesByKeyname(VUEAPP.plistcontext, 'Kernel', true);
             this.getPlistAndResetTableData(text, 'Add', 'gridtable-Kernel-Add', this.Kernel.Add);
             this.getPlistAndResetTableData(text, 'Block', 'gridtable-Kernel-Block', this.Kernel.Block);
             this.getPlistAndResetTableData(text, 'Patch', 'gridtable-Kernel-Patch', this.Kernel.Patch);
-            
+
             let EmulateText = getValuesByKeyname(text, 'Emulate');
-            this.getAndSetDictItem(EmulateText, this.Kernel.Emulate);  
+            this.getAndSetDictItem(EmulateText, this.Kernel.Emulate);
 
             let QuirksText = getValuesByKeyname(text, 'Quirks');
-            this.getAndSetDictItem(QuirksText, this.Kernel.Quirks);          
+            this.getAndSetDictItem(QuirksText, this.Kernel.Quirks);
 
 
         }
@@ -469,7 +589,7 @@ var VUEAPP = new Vue({
             let arrayParent = getParentKeys(AddText);
             for(let i=0;i<arrayParent.length;i++) {
                 this.DeviceProperties.AddLeft.push({id:i, Devices:arrayParent[i]});
-            }            
+            }
 
             let subArray = getSubKeys(AddText);
             for(let it in subArray) {
@@ -488,9 +608,9 @@ var VUEAPP = new Vue({
             //console.log(arrayParent2);
             for(let i=0;i<arrayParent2.length;i++) {
                 this.DeviceProperties.BlockLeft.push({id:i, Devices:arrayParent2[i]});
-            }    
+            }
 
-            
+
             subArray = getKeyarrayZIarray(BlockText);
             for(let it in subArray) {
                 subArray[it]['id']=it;
@@ -509,7 +629,7 @@ var VUEAPP = new Vue({
             this.getPlistAndResetTableData(text, 'MmioWhitelist', 'gridtable-Booter-MmioWhitelist', this.Booter.MmioWhitelist);
 
             let QuirksText = getValuesByKeyname(text, 'Quirks');
-            this.getAndSetDictItem(QuirksText, this.Booter.Quirks);  
+            this.getAndSetDictItem(QuirksText, this.Booter.Quirks);
 
         }
 
@@ -520,8 +640,8 @@ var VUEAPP = new Vue({
             this.getPlistAndResetTableData(acpiText, 'Patch', 'gridtable-ACPI-Patch', this.ACPI.Patch);
 
             let QuirksText = getValuesByKeyname(acpiText, 'Quirks');
-            this.getAndSetDictItem(QuirksText, this.ACPI.Quirks);  
-           
+            this.getAndSetDictItem(QuirksText, this.ACPI.Quirks);
+
 
             //强制刷新一下, 否则 checkbox 不更新
             this.$forceUpdate();
@@ -529,12 +649,12 @@ var VUEAPP = new Vue({
 
         // 获取plist中array的值并更新到table表格中
         , getPlistAndResetTableData : function (context, keyname, gridid, gridData) {
-            
+
             let arrayAdd = parrayToJSarray(getValuesByKeyname(context, keyname));
             gridData.length = 0;
             for(let it in arrayAdd) {
                 gridData.push(arrayAdd[it]);
-            }       
+            }
             jQuery("#" + gridid).trigger("reloadGrid");
         }
 
@@ -545,7 +665,7 @@ var VUEAPP = new Vue({
 
 function savePlist() {
     let xmlcontext = getAllPlist();
-    let blob = new Blob([xmlcontext], {type: "text/plain;charset=utf-8"});    
+    let blob = new Blob([xmlcontext], {type: "text/plain;charset=utf-8"});
     saveAs(blob, "config.plist");
 }
 
@@ -567,9 +687,9 @@ function startPaste() {
 
 	if(isArray === false) {
 		showTipModal("数据格式不对,无法粘贴");
-		return;		
-	} 
- 
+		return;
+	}
+
  	let ids = VUEAPP.current_paste_tableid.split('-');
     let objGridTable = jQuery('#gridtable-' + ids[1] + '-' + ids[2]);
 
@@ -580,14 +700,14 @@ function startPaste() {
             showTipModal("数据格式不对, 无法粘贴");
             return;
         }
-        
+
     }
 
     //如果是右边表格, 要多做几个处理,1 检查左边是否选中, 2 修改pid 3 删除id
     if(ids[2].substr(-5) === 'Right') {
-        let leftgridid = '#gridtable-' + ids[1] + '-' + ids[2].replace('Right','Left');            
+        let leftgridid = '#gridtable-' + ids[1] + '-' + ids[2].replace('Right','Left');
         let leftSelectedId = $(leftgridid).jqGrid("getGridParam", "selrow");
-        
+
 
         if(leftSelectedId === null) {
             showTipModal('请先在左边选择 Devices 记录');
@@ -595,21 +715,21 @@ function startPaste() {
         }
 
         for(let it in rowData) {
-            
+
             if(rowData[it]['pid'] !== undefined) {
                 rowData[it]['pid'] = leftSelectedId;
             }
-            if(rowData[it]['id'] !== undefined) {                
+            if(rowData[it]['id'] !== undefined) {
                 delete rowData[it]['id'];
             }
         }
-        
+
     }
 
 	for(let it in rowData) {
 		objGridTable.jqGrid('addRowData', getRandom(), rowData[it], 'last');
 	}
 	$('#inputModal').modal('hide');
-	
+
 
 }

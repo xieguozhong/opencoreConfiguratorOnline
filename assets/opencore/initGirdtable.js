@@ -182,12 +182,13 @@ function initGridTableBooter() {
 
 	let objGT_Booter_MmioWhitelist = jQuery('#gridtable-Booter-MmioWhitelist');
 	GLOBAL_ARRAY_TABLE[0].push(objGT_Booter_MmioWhitelist);
-	initGridTable(objGT_Booter_MmioWhitelist, VUEAPP.Booter.MmioWhitelist, colNames, colModel);
+	initGridTable(objGT_Booter_MmioWhitelist, VUEAPP.Booter.MmioWhitelist, colNames, colModel, 0, parseInt(GLOBAL_TABLE_HEIGHT * 0.44));
 	
 }
 
 function initGridTableKernel() {
 
+	let tableHeight = parseInt(GLOBAL_TABLE_HEIGHT * 0.44);
 	//Add
 	let colNames = ['BundlePath', 'Comment','ExecutablePath','MaxKernel','MinKernel','PlistPath','Enabled'];
 	let colModel = [			
@@ -201,7 +202,7 @@ function initGridTableKernel() {
 	];
 	let objGT_Kernel_Add = jQuery('#gridtable-Kernel-Add');
 	GLOBAL_ARRAY_TABLE[0].push(objGT_Kernel_Add);
-	initGridTable(objGT_Kernel_Add, VUEAPP.Kernel.Add, colNames, colModel);
+	initGridTable(objGT_Kernel_Add, VUEAPP.Kernel.Add, colNames, colModel, 0, tableHeight);
 	
 
 	//Block
@@ -216,7 +217,7 @@ function initGridTableKernel() {
 	];
 	let objGT_Kernel_Block = jQuery('#gridtable-Kernel-Block');
 	GLOBAL_ARRAY_TABLE[0].push(objGT_Kernel_Block);
-	initGridTable(objGT_Kernel_Block, VUEAPP.Kernel.Block, colNames, colModel);
+	initGridTable(objGT_Kernel_Block, VUEAPP.Kernel.Block, colNames, colModel, 0, tableHeight);
 	
 
 	//Patch
@@ -239,7 +240,7 @@ function initGridTableKernel() {
 	];
 	let objGT_Kernel_Patch = jQuery('#gridtable-Kernel-Patch');
 	GLOBAL_ARRAY_TABLE[0].push(objGT_Kernel_Patch);
-	initGridTable(objGT_Kernel_Patch, VUEAPP.Kernel.Patch, colNames, colModel);
+	initGridTable(objGT_Kernel_Patch, VUEAPP.Kernel.Patch, colNames, colModel, 0, tableHeight);
 	
 
 	
