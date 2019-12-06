@@ -38,23 +38,19 @@ $(document).ready(function() {
         let ids = this.id.split('-');
 
         let currentGridTable = jQuery('#gridtable-' + ids[1] + '-' + ids[2]);
-        let currentSelectedId = currentGridTable.jqGrid("getGridParam", "selrow");
-        let position = 'last';
-        if(currentSelectedId !== null) {
-            position = 'before';
-        }
+
         //如果是右边表格, 先检查左边有没有选中, 如果没有, 不做任何反应
         if(ids[2].substr(-5) === 'Right') {
             let gridid = '#gridtable-' + ids[1] + '-' + ids[2].replace('Right','Left');
 
             let selectedId = $(gridid).jqGrid("getGridParam", "selrow");
             if(selectedId !== null) {
-                jQuery('#gridtable-' + ids[1] + '-' + ids[2]).jqGrid('addRowData', getRandom(), {pid:selectedId}, position, currentSelectedId);
+                currentGridTable.jqGrid('addRowData', getRandom(), {pid:selectedId}, 'last');
             }
 
         } else {
 
-            currentGridTable.jqGrid('addRowData', getRandom(), {}, position, currentSelectedId);
+            currentGridTable.jqGrid('addRowData', getRandom(), {}, 'last');
         }
 
 
@@ -127,13 +123,7 @@ $(document).ready(function() {
 function addRowUEFIDrivers(drivers) {
     if(drivers.value !== '') {
         let thetable = jQuery('#gridtable-UEFI-Drivers');
-
-        let selectedId = thetable.jqGrid("getGridParam", "selrow");
-        let position = 'last';
-        if(selectedId !== null) {
-            position = 'before';
-        }
-        thetable.jqGrid('addRowData', getRandom(), {FileName:drivers.value}, position, selectedId);
+        thetable.jqGrid('addRowData', getRandom(), {FileName:drivers.value}, 'last');
         drivers.value = '';
     }
 
@@ -210,11 +200,6 @@ function addkexts(kext) {
 
     let thetable = jQuery("#gridtable-Kernel-Add");
 
-    let selectedId = thetable.jqGrid("getGridParam", "selrow");
-    let position = 'last';
-    if(selectedId !== null) {
-        position = 'before';
-    }
     for(let i=0;i<allKext.length;i++) {
 
         if(allKext[i][0] === kext.value) {
@@ -222,11 +207,11 @@ function addkexts(kext) {
             thetable.jqGrid('addRowData', getRandom(), {
                 BundlePath : allKext[i][0],
                 Comment : '',
+                Enabled : "YES",
                 ExecutablePath : allKext[i][1],
                 MaxKernel : '', MinKernel : '',
-                PlistPath : allKext[i][2],
-                Enabled:"YES"
-            }, position, selectedId);
+                PlistPath : allKext[i][2]
+            }, 'last');
 
         }
     }

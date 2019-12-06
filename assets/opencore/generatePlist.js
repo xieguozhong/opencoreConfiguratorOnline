@@ -31,11 +31,11 @@ function getAllPlist() {
 
 	//8 UEFI
 	plistContext += getUEFI();
-	
+
 
 	plistContext +=  '</dict>';
 	plistContext +=  '</plist>';
-	
+
 	return $.format(plistContext, {method: 'xml'});
 
 }
@@ -67,7 +67,7 @@ function getBooter() {
 	BooterContext += '<key>MmioWhitelist</key>';
 	BooterContext += genArrayDict(VUEAPP.Booter.MmioWhitelist,[],['Address']);
 
-	
+
 	//Quirks
 	BooterContext += '<key>Quirks</key>' + getBoolens(VUEAPP.Booter.Quirks);
 
@@ -80,8 +80,8 @@ function getDeviceProperties() {
 	//Add
 	DPContext += '<key>Add</key>';
 	DPContext += getDeviceData(VUEAPP.DeviceProperties.AddLeft, VUEAPP.DeviceProperties.AddRight);
-	
-	//Block 
+
+	//Block
 	DPContext += '<key>Block</key>';
 	DPContext += getDeviceVolumeData(VUEAPP.DeviceProperties.BlockLeft, VUEAPP.DeviceProperties.BlockRight);
 
@@ -101,10 +101,10 @@ function getKernel() {
 
 	//Emulate
 	keContext += '<key>Emulate</key><dict>';
-	keContext += '<key>Cpuid1Data</key>';	
+	keContext += '<key>Cpuid1Data</key>';
 	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Data']) + '</data>';
-	keContext += '<key>Cpuid1Mask</key>';			
-	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Mask']) + '</data>';	
+	keContext += '<key>Cpuid1Mask</key>';
+	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Mask']) + '</data>';
 
 	//Patch
 	keContext += '</dict><key>Patch</key>';
@@ -121,11 +121,11 @@ function getMisc() {
 	let miscContext = '<key>Misc</key><dict>';
 
 	//1 BlessOverride
-	miscContext += '<key>BlessOverride</key>';	
-	let bodata = VUEAPP.Misc.BlessOverride, bostring = '';	
+	miscContext += '<key>BlessOverride</key>';
+	let bodata = VUEAPP.Misc.BlessOverride, bostring = '';
 	for(let i=0;i<bodata.length;i++) {
 		bostring += addCharstring(bodata[i]['ScanningPaths']);
-	}	
+	}
 	miscContext += bothsidesAddarray(bostring);
 
 
@@ -166,7 +166,7 @@ function getMisc() {
 	miscContext += '</dict><key>Tools</key>';
 	miscContext += genArrayDict(VUEAPP.Misc.Tools);
 
-	
+
 
 	return miscContext + '</dict>';
 }
@@ -179,7 +179,7 @@ function getNVRAM() {
 	nvramContext += '<key>Add</key>';
 	nvramContext += getDeviceData(VUEAPP.NVRAM.AddLeft, VUEAPP.NVRAM.AddRight);
 
-	//2 Block 
+	//2 Block
 	nvramContext += '<key>Block</key>';
 	nvramContext += getDeviceVolumeData(VUEAPP.NVRAM.BlockLeft, VUEAPP.NVRAM.BlockRight);
 
@@ -194,7 +194,7 @@ function getNVRAM() {
 }
 
 function getPlatformInfo() {
-	let pfiContext = '<key>PlatformInfo</key><dict>';	
+	let pfiContext = '<key>PlatformInfo</key><dict>';
 
 	//0 Automatic
 	pfiContext += '<key>Automatic</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['Automatic']);
@@ -204,7 +204,7 @@ function getPlatformInfo() {
 	let thedt = {ARTFrequency:'integer', BoardRevision:'data',DevicePathsSupported:'integer',FSBFrequency:'integer', InitialTSC:'integer',SmcBranch:'data',SmcPlatform:'data'
 			,SmcRevision:'data',StartupPowerEvents:'integer'};
 	pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.DataHub, thedt);
-	pfiContext += '</dict>';	
+	pfiContext += '</dict>';
 
 	//2 Generic
 	pfiContext += '<key>Generic</key><dict>';
@@ -219,8 +219,8 @@ function getPlatformInfo() {
 	pfiContext += '</dict>';
 
 	//4 SMBIOS
-	pfiContext += '<key>SMBIOS</key><dict>';		
-			
+	pfiContext += '<key>SMBIOS</key><dict>';
+
 	let smbiosdatatype = {BoardType:'integer',ChassisType:'integer',FirmwareFeatures:'data',FirmwareFeaturesMask:'data',MemoryFormFactor:'integer'
 				,PlatformFeature:'integer',ProcessorType:'integer',SmcVersion:'data'};
 	pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.SMBIOS, smbiosdatatype);
@@ -240,8 +240,8 @@ function getUEFI() {
 
 	//1 root
 	uefiContext += '<key>ConnectDrivers</key>' + toBoolStringStrict(VUEAPP.UEFI.root['ConnectDrivers']);
-	
-	
+
+
 	//2 Drivers
 	uefiContext += '<key>Drivers</key>';
 	let dridata = VUEAPP.UEFI.Drivers, dristring = '';
@@ -252,13 +252,13 @@ function getUEFI() {
 	uefiContext += bothsidesAddarray(dristring);
 
 	//3 Input
-	uefiContext += '<key>Input</key><dict>';	
+	uefiContext += '<key>Input</key><dict>';
 	let inputDataType = {KeyForgetThreshold:'integer',KeyMergeThreshold:'integer',TimerResolution:'integer'};
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Input, inputDataType);
 	uefiContext += '</dict>';
 
 	//4 Protocols
-	uefiContext += '<key>Protocols</key><dict>';	
+	uefiContext += '<key>Protocols</key><dict>';
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Protocols);
 	uefiContext += '</dict>';
 
@@ -305,7 +305,7 @@ function getSubDeviceVolumeData(pid, rightData) {
 
 			if(rightData[it].Type === 'data') {
 				strreturn += '<data>' + hextoBase64(rightData[it].Volume) + '</data>';
-			} 
+			}
 			//如果是BOOL, 转成<true/>或者 <false/>
 			else if(rightData[it].Type === 'bool') {
 				strreturn += toBoolString(rightData[it].Volume);
@@ -326,7 +326,7 @@ function getSubDeviceVolumeData(pid, rightData) {
 	} else {
 		return '<array>' + strreturn + '</array>';
 	}
-	
+
 }
 
 
@@ -349,18 +349,18 @@ function getStringorboolorinterger(theData, dataType) {
 					break;
 				case undefined:
 					strreturn += addCharstring(theData[it]);
-					break;	
+					break;
 				case 'integer':
 					strreturn += '<integer>' + toNumber(theData[it]) + '</integer>';
 					break;
 				case 'real':
 					strreturn += '<real>' + toNumber(theData[it]) + '</real>';
-					break;				
+					break;
 				default:
 					strreturn += '<' + itDataType + '>' + plistEncode(theData[it]) + '</' + itDataType + '>';
 			}
 		}
-		
+
 	}
 
 	return strreturn;
@@ -391,12 +391,12 @@ function getSubDeviceData(pid, rightData) {
 				showTipModal(VUEAPP.lang.DeviceError);
 			}
 
-			subcontext += addKey(rightData[i].Key);		
+			subcontext += addKey(rightData[i].Key);
 
 			//如果数据类型是DATA, 转成BASE64
 			if(rightData[i].Type === 'data') {
 				subcontext += '<data>' + hextoBase64(rightData[i].Value) + '</data>';
-			} 
+			}
 			//如果是BOOL, 转成<true/>或者 <false/>
 			else if(rightData[i].Type === 'bool') {
 				subcontext += toBoolString(rightData[i].Value);
@@ -448,7 +448,7 @@ function getBoolens(boolData) {
 function genArrayDict(arrayDictData, dataFileds, intFileds) {
 	if(dataFileds === undefined) dataFileds =[];
 	if(intFileds === undefined) intFileds =[];
-	
+
 	if(arrayDictData.length === 0) {
 		return '<array/>'
 	}
@@ -457,6 +457,9 @@ function genArrayDict(arrayDictData, dataFileds, intFileds) {
 		tmpreturn += '<dict>';
 		//console.log(arrayDictData[i]);
 		for(let it in arrayDictData[i]) {
+			if(it === 'id' || it === 'pid') {
+				continue;
+			}
 			let itemData = arrayDictData[i][it] === undefined ? '' : arrayDictData[i][it];
 
 			tmpreturn += addKey(it);
@@ -468,7 +471,7 @@ function genArrayDict(arrayDictData, dataFileds, intFileds) {
                 } else {
                     tmpreturn += '<data>' + hextoBase64(itemData) + '</data>';
                 }
-                
+
                 continue;
             }
             // 如果在整形字段列表中
