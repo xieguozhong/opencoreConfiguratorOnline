@@ -20,7 +20,7 @@ $(document).ready(function() {
             return true;
         }
         }).on('file.error.ace', function(event, info) {
-            showTipModal(VUEAPP.lang.alertfileerror);
+            showTipModal(VUEAPP.lang.alertfileerror, 'error');
     });
 
 
@@ -81,6 +81,7 @@ $(document).ready(function() {
                 rightGrid.setRowData(rowIds[i],null,{display: 'none'});
             }
         }
+        showTipModal(VUEAPP.lang.deleterowsuccess, 'success');
     });
 
     //绑定所有的复制按钮
@@ -92,7 +93,7 @@ $(document).ready(function() {
         let objGrid = $(gridid);
         let selectedId = objGrid.jqGrid("getGridParam", "selarrrow");
         if(selectedId.length === 0) {
-        	showTipModal('请选择要复制的行数据');
+        	showTipModal(VUEAPP.lang.checkdatafirst, 'error');
             copyDatatoClipboard(' ');
         	return;
         }
@@ -107,6 +108,8 @@ $(document).ready(function() {
 
     	copyDatatoClipboard('[' + strdata + ']');
 
+    	showTipModal(VUEAPP.lang.copydatasuccess, 'success');
+
 
 	});
 
@@ -117,6 +120,11 @@ $(document).ready(function() {
 	});
 
     $.minimalTips();
+
+    toastr.options = {
+      "closeButton": true,
+      "positionClass": "toast-top-center"
+    };
 
 });
 
@@ -195,7 +203,9 @@ function addkexts(kext) {
         ['VoodooI2C.kext','Contents/PlugIns/VoodooGPIO.kext/Contents/MacOS/VoodooGPIO','Contents/PlugIns/VoodooGPIO.kext/Contents/Info.plist'],
         ['VoodooI2C.kext','Contents/PlugIns/VoodooI2CServices.kext/Contents/MacOS/VoodooI2CServices','Contents/PlugIns/VoodooI2CServices.kext/Contents/Info.plist'],
         ['AHCI_Intel_Generic_SATA.kext','','Contents/Info.plist'],
-        ['XHCI-unsupported.kext','','Contents/Info.plist']
+        ['XHCI-unsupported.kext','','Contents/Info.plist'],
+        ['CodecCommander.kext','Contents/MacOS/CodecCommander','Contents/Info.plist'],
+        ['SystemProfilerMemoryFixup.kext','Contents/MacOS/SystemProfilerMemoryFixup','Contents/Info.plist']
         ];
 
     let thetable = jQuery("#gridtable-Kernel-Add");
@@ -657,13 +667,13 @@ function savePlist() {
 function copyPlist() {
 	let xmlcontext = getAllPlist();
 	copyDatatoClipboard(xmlcontext);
-	showTipModal(VUEAPP.lang.copyplistSuccess);
+	showTipModal(VUEAPP.lang.copyplistSuccess, 'success');
 }
 
 function startPaste() {
     VUEAPP.textarea_content = VUEAPP.textarea_content.trim();
 	if(VUEAPP.textarea_content === '') {
-		showTipModal("没有可供粘贴的数据");
+		showTipModal("没有可供粘贴的数据", 'warning');
 		return;
 	}
 
@@ -671,7 +681,7 @@ function startPaste() {
 	let isArray = rowData instanceof Array;
 
 	if(isArray === false) {
-		showTipModal("数据格式不对,无法粘贴");
+		showTipModal("数据格式不对,无法粘贴",'error');
 		return;
 	}
 
@@ -682,7 +692,7 @@ function startPaste() {
     let arrayColNames = objGridTable.jqGrid('getGridParam','colNames');
     for(let con in rowData[0]) {
         if(arrayColNames.indexOf(con) === -1) {
-            showTipModal("数据格式不对, 无法粘贴");
+            showTipModal("数据格式不对, 无法粘贴",'error');
             return;
         }
 
@@ -695,7 +705,7 @@ function startPaste() {
 
 
         if(leftSelectedId === null) {
-            showTipModal('请先在左边选择 Devices 记录');
+            showTipModal('请先在左边选择 Devices 记录', 'warning');
             return;
         }
 
@@ -716,5 +726,5 @@ function startPaste() {
 	}
 	$('#inputModal').modal('hide');
 
-
+	showTipModal(VUEAPP.lang.pasteDataSuccess, 'success');
 }

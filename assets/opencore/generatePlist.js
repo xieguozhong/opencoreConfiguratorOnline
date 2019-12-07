@@ -284,7 +284,7 @@ function getDeviceVolumeData(leftData, rightData) {
 
 	for(let it in leftData) {
 		if(leftData[it]['Devices'] === undefined) {
-			showTipModal(VUEAPP.lang.DeviceError);
+			showTipModal(VUEAPP.lang.DeviceError, 'warning');
 		}
 		strreturn += addKey(leftData[it]['Devices']);
 		strreturn += getSubDeviceVolumeData(leftData[it]['id'], rightData);
@@ -300,7 +300,7 @@ function getSubDeviceVolumeData(pid, rightData) {
 		if(rightData[it]['pid'] == pid) {  //<string>MaximumBootBeepVolume</string>
 
 			if(rightData[it].Volume === undefined) {
-				showTipModal(VUEAPP.lang.DeviceError);
+				showTipModal(VUEAPP.lang.DeviceError, 'warning');
 			}
 
 			if(rightData[it].Type === 'data') {
@@ -371,7 +371,7 @@ function getDeviceData(leftData, rightData) {
 	//console.log(leftData);
 	for(let it in leftData) {
 		if(leftData[it]['Devices'] === undefined) {
-			showTipModal(VUEAPP.lang.DeviceError);
+			showTipModal(VUEAPP.lang.DeviceError, 'warning');
 		}
 
 		strreturn += addKey(leftData[it]['Devices']);
@@ -388,7 +388,7 @@ function getSubDeviceData(pid, rightData) {
 		if(rightData[i].pid == pid) {
 			//console.log(rightData[i].Value);
 			if(rightData[i].Value === undefined) {
-				showTipModal(VUEAPP.lang.DeviceError);
+				showTipModal(VUEAPP.lang.DeviceError, 'warning');
 			}
 
 			subcontext += addKey(rightData[i].Key);

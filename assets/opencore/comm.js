@@ -21,18 +21,18 @@ function parsePlistArray2stringArray(context) {
         idx1 = context.indexOf('<', idx3);
         if(idx1 === -1) break;
         idx2 = context.indexOf('>', idx1);
-        
+
         item['Type'] = context.slice(idx1+1, idx2);
 
         key = '</' + context.slice(idx1+1, idx2+1)
 
         idx3 = context.indexOf(key, idx2);
-        
+
         item['Volume'] = context.slice(idx2 + 1, idx3);
         rarray.push(item);
         idx3 += key.length;
     }
-    
+
     return rarray;
 }
 
@@ -66,7 +66,7 @@ function getKeyarrayZIkey(context) {
         rarray.push(context.slice(idx0+5, idx1));
         idx1 += 6;
     }
-    
+
     return rarray;
 
 }
@@ -93,9 +93,9 @@ function getKeyarrayZIarray(context) {
         idx0 = context.indexOf('<array>', idx1);
         if(idx0 === -1) break;
         idx1 = context.indexOf('</array>', idx0 + 7);
-        
+
         let arrayTemp = parsePlistArray2stringArray(context.slice(idx0+7, idx1));
-        
+
         for(let it=0;it<arrayTemp.length;it++) {
             rarray.push({pid:pid, Volume:arrayTemp[it]['Volume'], Type:arrayTemp[it]['Type']});
         }
@@ -103,7 +103,7 @@ function getKeyarrayZIarray(context) {
         idx1 += 8;
         pid ++;
     }
-    
+
     return rarray;
 
 }
@@ -134,11 +134,11 @@ function getParentKeys(context) {
         if(idx1 === -1) break;
         idx2 = context.lastIndexOf('</key>', idx1);
         idx3 = context.lastIndexOf('<key>', idx2);
-        
+
         rarray.push(context.slice(idx3 + 5, idx2));
         idx1 += 5;
     }
-    
+
     return rarray;
 }
 
@@ -163,7 +163,7 @@ function getSubKeys(context) {
 
     let idx1 = 0, idx2 = 0, rarray = [],pid = 0;
 
-    
+
     while(true) {
     	idx1 = context.indexOf('</dict>', idx1);
     	if(idx1 === -1) break;
@@ -172,7 +172,7 @@ function getSubKeys(context) {
     	idx1 += 7;
     	pid ++;
     }
-    
+
     return rarray;
 }
 
@@ -190,10 +190,10 @@ function parrayToJSarray(context) {
         dicttext = context.slice(idx1 + 6, idx2);
         let item = pdictToJSobject(dicttext);
         rarray.push(item);
-        
+
 
     }
-    
+
     return rarray;
 }
 
@@ -219,7 +219,7 @@ function pdictToJSobject(context) {
 
 //把 <key>name</key><string>xieguozhong</string>
 //转成 {key:'name', value:'xieguozhong'}
-// 
+//
 function pdictToJSobjectKV(context, pid, rarray) {
     if(context === '') return [];
     let idx1 = 0, idx2 = 0, idx3 = 0, idx4 = 0, key='', value = '', vtype = '';
@@ -243,19 +243,19 @@ function pdictToJSobjectKV(context, pid, rarray) {
             value = true;
         } else if (vtype === 'false/') {
             vtype = 'bool';
-            value = false;            
+            value = false;
         } else {
             value = getValuesByKeyname(context, key);
         }
-        
-        
+
+
         item['pid'] = pid;
         item['Key'] = key;
         item['Type'] = vtype;
         item['Value'] = value;
         rarray.push(item);
     }
-    
+
 }
 
 // //获取 'ACPI:App的格式取值'
@@ -291,7 +291,7 @@ function getValuesByKeyname(context, keyname, istop) {
     ix3 = context.indexOf('>', ix2);
     let theNextKey = context.slice(ix2 , ix3 + 1);
     let isData = false;
-    
+
     switch(theNextKey) {
         case '<array/>':
             return '';
@@ -330,10 +330,10 @@ function getValuesByKeyname(context, keyname, istop) {
     }
     let rstring = context.slice(ix3 + 1, ix1 - 2);
     if(isData === true && rstring !== '') {
-        rstring = base64toHex(rstring);        
+        rstring = base64toHex(rstring);
     }
 
-    
+
     return rstring;
 }
 
@@ -343,10 +343,10 @@ function formatContext(context) {
 	let arrayContext = context.split('\n');
 	let newContext = '';
 	for(let i=0;i<arrayContext.length;i++) {
-		
+
 		newContext += arrayContext[i].trim();
 	}
-    
+
     return newContext;
 }
 
@@ -359,12 +359,12 @@ function base64toHex(strbase64) {
         while (d>15) {
             d>>=4;
             h=hD.substr(d&15,1)+h;
-        }            
+        }
         return h;
     }
 
 
-    function base64_decode(input) {   
+    function base64_decode(input) {
 
         let keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
         let output = new Array();
@@ -375,12 +375,12 @@ function base64toHex(strbase64) {
         let orig_input = input;
         input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
         if (orig_input != input)
-            showTipModal ("Warning! Characters outside Base64 range in input string ignored.");
+            showTipModal (VUEAPP.lang.CharactersOutsideWarning, 'warning');
         if (input.length % 4) {
-            showTipModal ("Error: Input length is not a multiple of 4 bytes.");
+            showTipModal (VUEAPP.lang.InputlengthError, 'error');
             return "";
         }
-        
+
         let j=0;
         while (i < input.length) {
 
@@ -392,13 +392,13 @@ function base64toHex(strbase64) {
             chr1 = (enc1 << 2) | (enc2 >> 4);
             chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
             chr3 = ((enc3 & 3) << 6) | enc4;
-            
+
             output[j++] = chr1;
             if (enc3 != 64)
               output[j++] = chr2;
             if (enc4 != 64)
               output[j++] = chr3;
-              
+
         }
         return output;
     }
@@ -408,7 +408,7 @@ function base64toHex(strbase64) {
     let output = base64_decode(strbase64);
     let hexText = '';
     for (i=0; i<output.length; i++) {
-      hexText = hexText + (output[i]<16?"0":"") + dec2hex(output[i]);          
+      hexText = hexText + (output[i]<16?"0":"") + dec2hex(output[i]);
     }
     return hexText;
 }
@@ -459,25 +459,25 @@ function hextoBase64(strhex) {
 
         return ret;
     }
-    
+
     strhex = strhex.replace(/\s+/g, "");
     if (strhex.length % 2) {
-        showTipModal (VUEAPP.lang.Error + ', ' + fillLangString(VUEAPP.lang.hexstringlengthisodd, strhex));           
+        showTipModal (VUEAPP.lang.Error + ', ' + fillLangString(VUEAPP.lang.hexstringlengthisodd, strhex), 'error');
         return '';
     }
     let binary = new Array();
     for (let i=0; i<strhex.length/2; i++) {
         let h = strhex.substr(i*2, 2);
-        binary[i] = parseInt(h,16);        
+        binary[i] = parseInt(h,16);
     }
     return binary_to_base64(binary);
-} 
+}
 
 
-function toBoolString(strbool) {    
-    if(strbool === true || strbool === 'true' || strbool === '1') {        
+function toBoolString(strbool) {
+    if(strbool === true || strbool === 'true' || strbool === '1') {
        return '<true/>';
-    } else {        
+    } else {
         return '<false/>';
     }
 }
@@ -492,7 +492,7 @@ function toBoolStringStrict(strbool) {
 
 //编码特殊字符<和>
 function plistEncode(context) {
-    
+
     if(context === '' || context === undefined) {
         return '';
     } else {
@@ -501,14 +501,14 @@ function plistEncode(context) {
         } else {
             return context;
         }
-        
+
     }
 }
 
 
 function toNumber(num) {
     if(isNaN(num)) {
-        showTipModal(fillLangString(VUEAPP.lang.toNumberError, num));
+        showTipModal(fillLangString(VUEAPP.lang.toNumberError, num), 'warning');
         return 0;
     } else {
         return Number(num);
@@ -516,8 +516,8 @@ function toNumber(num) {
 }
 
 function addCharstring(context) {
-    
-    return '<string>' + plistEncode(context) + '</string>';    
+
+    return '<string>' + plistEncode(context) + '</string>';
 }
 
 //复制内容到剪贴板中
@@ -532,13 +532,24 @@ function copyDatatoClipboard(rowdata) {
 	$("#hiddenbuttonforcopy").trigger("click");
 	//删除
 	clipboard.destroy();
-	
+
 	$("#hiddendivforcopy").remove();
 }
 
 
-function showTipModal(content) {
-	alert(content);
+function showTipModal(content, msgtype) {
+	//alert(content);
+
+    //Command: toastr["success"]("Inconceivable!")
+    //msgtype = msgtype === 0 ? 0 : 1;
+
+
+    if(msgtype === undefined || msgtype === '') {
+        toastr["success"](content);
+    } else {
+        toastr[msgtype](content);
+    }
+
 }
 
 function showTextareaModal(content) {
