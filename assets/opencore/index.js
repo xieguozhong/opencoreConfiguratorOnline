@@ -292,11 +292,11 @@ var VUEAPP = new Vue({
         Misc : {
             BlessOverride:[],
             Boot:{
-                ConsoleBehaviourOs:'', ConsoleBehaviourUi:'', ConsoleMode:'', HibernateMode:'', Resolution:'', Timeout:'',
+                ConsoleBehaviourOs:'', ConsoleBehaviourUi:'', ConsoleMode:'', HibernateMode:'', Resolution:'', Timeout:'0',
                 HideSelf : false, PollAppleHotKeys: false, ShowPicker: false, UsePicker: false
             },
             Debug: {
-                DisableWatchDog:false, DisplayDelay:'', DisplayLevel:'', Target:''
+                DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', Target:'0'
             },
             Security : {
                 ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'',AllowNvramReset:false, RequireSignature:false, RequireVault:false
@@ -673,7 +673,7 @@ function copyPlist() {
 function startPaste() {
     VUEAPP.textarea_content = VUEAPP.textarea_content.trim();
 	if(VUEAPP.textarea_content === '') {
-		showTipModal("没有可供粘贴的数据", 'warning');
+		showTipModal(VUEAPP.lang.nopasteData, 'error');
 		return;
 	}
 
@@ -681,7 +681,7 @@ function startPaste() {
 	let isArray = rowData instanceof Array;
 
 	if(isArray === false) {
-		showTipModal("数据格式不对,无法粘贴",'error');
+		showTipModal(VUEAPP.lang.dataFormaterror,'error');
 		return;
 	}
 
@@ -692,7 +692,7 @@ function startPaste() {
     let arrayColNames = objGridTable.jqGrid('getGridParam','colNames');
     for(let con in rowData[0]) {
         if(arrayColNames.indexOf(con) === -1) {
-            showTipModal("数据格式不对, 无法粘贴",'error');
+            showTipModal(VUEAPP.lang.dataFormaterror,'error');
             return;
         }
 
@@ -705,7 +705,7 @@ function startPaste() {
 
 
         if(leftSelectedId === null) {
-            showTipModal('请先在左边选择 Devices 记录', 'warning');
+            showTipModal(VUEAPP.lang.chooseDevices, 'warning');
             return;
         }
 

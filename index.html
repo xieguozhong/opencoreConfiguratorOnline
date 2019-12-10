@@ -197,6 +197,7 @@
 										<div id="tabbable_ACPI_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
 											<table id="gridtable-ACPI-Add"></table>
 			                                <span class="grey pull-right" >
+			                                	<a id="btncopy-ACPI-Enabled"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
 			                                    <a id="btncopy-ACPI-Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
 			                                    <a id="btnpaste-ACPI-Add"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
 			                                    <a id="btnadd-ACPI-Add"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
@@ -1161,35 +1162,35 @@
                                         <div id="tabbable_UEFI_Input" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="well">
 			                                    <div class="row">
-			                                      <div class="col-xs-3" :title="title.UEFI.Input.KeyForgetThreshold">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeyForgetThreshold">
 			                                        KeyForgetThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyForgetThreshold">
 			                                      </div>
-			                                      <div class="col-xs-3" :title="title.UEFI.Input.KeyMergeThreshold">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeyMergeThreshold">
 			                                        KeyMergeThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyMergeThreshold">
 			                                      </div>
-			                                      <div class="col-xs-3" :title="title.UEFI.Input.KeySupportMode">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeySupportMode">
 			                                        KeySupportMode<input type="text" class="form-control" v-model="UEFI.Input.KeySupportMode">
 			                                      </div>
-			                                      <div class="col-xs-3" :title="title.UEFI.Input.PointerSupportMode">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.PointerSupportMode">
 			                                        PointerSupportMode<input type="text" class="form-control" v-model="UEFI.Input.PointerSupportMode">
 			                                      </div>
 			                                    </div>
 			                                    <div class="row" style="margin-top: 10px">
-			                                        <div class="col-xs-3" :title="title.UEFI.Input.TimerResolution">
+			                                        <div class="col-xs-3 mintip" :title="title.UEFI.Input.TimerResolution">
 			                                            TimerResolution<input type="text" class="form-control" v-model="UEFI.Input.TimerResolution">
 			                                        </div>
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px">
-			                                        <label :title="title.UEFI.Input.KeySupport">
+			                                        <label class="mintip" :title="title.UEFI.Input.KeySupport">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeySupport" />
 			                                            <span class="lbl"> KeySupport</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Input.KeySwap">
+			                                        <label class="mintip" :title="title.UEFI.Input.KeySwap">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeySwap" />
 			                                            <span class="lbl"> KeySwap</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Input.PointerSupport">
+			                                        <label class="mintip" :title="title.UEFI.Input.PointerSupport">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.PointerSupport" />
 			                                            <span class="lbl"> PointerSupport</span>
 			                                        </label>
@@ -1200,48 +1201,48 @@
                                         </div>
                                         <div id="tabbable_UEFI_Protocols" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="well">
-			                                    <div class="checkbox" :title="title.UEFI.Protocols.AppleBootPolicy">
-			                                        <label>
+			                                    <div class="checkbox">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.AppleBootPolicy">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleBootPolicy" />
 			                                            <span class="lbl"> AppleBootPolicy</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Protocols.AppleEvent">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.AppleEvent">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleEvent" />
 			                                            <span class="lbl"> AppleEvent</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Protocols.AppleImageConversion">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.AppleImageConversion">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleImageConversion" />
 			                                            <span class="lbl"> AppleImageConversion</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Protocols.AppleKeyMap">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.AppleKeyMap">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleKeyMap" />
 			                                            <span class="lbl"> AppleKeyMap</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Protocols.AppleUserInterfaceTheme">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.AppleUserInterfaceTheme">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleUserInterfaceTheme" />
 			                                            <span class="lbl"> AppleUserInterfaceTheme</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Protocols.ConsoleControl">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.ConsoleControl">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.ConsoleControl" />
 			                                            <span class="lbl"> ConsoleControl</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Protocols.DataHub">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.DataHub">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.DataHub" />
 			                                            <span class="lbl"> DataHub</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Protocols.DeviceProperties">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.DeviceProperties">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.DeviceProperties" />
 			                                            <span class="lbl"> DeviceProperties</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Protocols.FirmwareVolume">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.FirmwareVolume">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.FirmwareVolume" />
 			                                            <span class="lbl"> FirmwareVolume</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Protocols.HashServices">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.HashServices">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.HashServices" />
 			                                            <span class="lbl"> HashServices</span>
 			                                        </label>
-			                                        <label :title="title.UEFI.Protocols.UnicodeCollation">
+			                                        <label class="mintip" :title="title.UEFI.Protocols.UnicodeCollation">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.UnicodeCollation" />
 			                                            <span class="lbl"> UnicodeCollation</span>
 			                                        </label>
@@ -1258,11 +1259,11 @@
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px">
-			                                        <label>
+			                                        <label class="mintip">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.AvoidHighAlloc" />
 			                                            <span class="lbl"> AvoidHighAlloc</span>
 			                                        </label>
-			                                        <label>
+			                                        <label class="mintip">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ClearScreenOnModeSwitch" />
 			                                            <span class="lbl"> ClearScreenOnModeSwitch</span>
 			                                        </label>

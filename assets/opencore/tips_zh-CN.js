@@ -116,15 +116,18 @@ const SYSTEM_TIPS = {
             KeyMergeThreshold: '2 按住按键被重置的时间间隔 (单位: 毫秒)',
             KeySupport: 'YES 开启 OC 的内置键盘支持 使用 UsbKbDxe.efi 请设置为 NO',
             KeySupportMode: 'Auto 键值转换协议模式 V1: UEFI 旧版输入协议    V2: UEFI 新输入协议',
-            AMI: 'APTIO 输入协议',
             KeySwap: 'NO 交换 Command 和 Option 键',
-            PointerSupport: 'NO    修复 UEFI 选择器协议',
-            PointerSupportMode: '留空 ',
+            PointerSupport: 'NO 修复 UEFI 选择器协议',
+            PointerSupportMode: '留空 设置用于内部指针驱动程序的OEM协议 ',
             TimerResolution: '50000 固件时钟刷新的频率 (单位: 100纳秒) 华硕主板为自己的界面使用 60000 苹果使用 100000'
         },
 
         Protocols : {
             AppleBootPolicy: 'NO 用于确保虚拟机或旧白苹果上兼容 APFS',
+            AppleEvent : 'NO 重新安装具有内置版本的Apple Event协议。这可用于确保VM或旧版Mac上的File Vault 2兼容性。',
+            AppleImageConversion : 'NO 重新安装具有内置版本的Apple Image Conversion协议',
+            AppleKeyMap : 'NO 安装具有内置版本的Apple Key Map协议',
+            AppleUserInterfaceTheme : 'NO 重新安装具有内置版本的Apple用户界面主题协议',
             ConsoleControl: 'YES macOS 引导加载程序基于文本输出的控制台控制协议, 某些固件缺少该协议。当协议已经在固件中可用时, 需要设置此选项, 并且使用其他控制台控制选项, 例如 IgnoreTextInGraphics, SanitiseClearScreen 以及 ConsoleBehaviourUi 的 ConsoleBehaviourOs',
             DataHub: 'NO 重新安装数据库',
             DeviceProperties: 'NO 确保在 VM 或旧白苹果上完全兼容',

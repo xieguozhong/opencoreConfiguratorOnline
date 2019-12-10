@@ -6,6 +6,11 @@ function enabledFormat(cellvalue) {
     }
 }
 
+function formatInteger(cellvalue) {
+    cellvalue = parseInt(cellvalue);
+    return isNaN(cellvalue) ? 0 : cellvalue;
+}
+
 
 //<string>HfsPlus.efi</string>
 //<string>ApfsDriverLoader.efi</string>
@@ -542,7 +547,7 @@ function showTipModal(content, msgtype) {
 
     //Command: toastr["success"]("Inconceivable!")
     //msgtype = msgtype === 0 ? 0 : 1;
-
+    toastr.clear();
 
     if(msgtype === undefined || msgtype === '') {
         toastr["success"](content);
