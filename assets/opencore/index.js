@@ -1,3 +1,4 @@
+var MAXROWID = 500;  //表格的最大id
 
 
 $(document).ready(function() {
@@ -33,91 +34,7 @@ $(document).ready(function() {
     initGridTableNVRAM();
     initGridTableUEFI();
 
-    //绑定所有的增加按钮
-    $("a[id^=btnadd-]").on("click",function(){
-        let ids = this.id.split('-');
-
-        let currentGridTable = jQuery('#gridtable-' + ids[1] + '-' + ids[2]);
-
-        //如果是右边表格, 先检查左边有没有选中, 如果没有, 不做任何反应
-        if(ids[2].substr(-5) === 'Right') {
-            let gridid = '#gridtable-' + ids[1] + '-' + ids[2].replace('Right','Left');
-
-            let selectedId = $(gridid).jqGrid("getGridParam", "selrow");
-            if(selectedId !== null) {
-                currentGridTable.jqGrid('addRowData', getRandom(), {pid:selectedId}, 'last');
-            }
-
-        } else {
-
-            currentGridTable.jqGrid('addRowData', getRandom(), {}, 'last');
-        }
-
-
-    });
-
-    //绑定所有的删除按钮
-    $("a[id^=btndel-]").on("click",function(){
-
-        let ids = this.id.split('-');
-        let gridid = '#gridtable-' + ids[1] + '-' + ids[2];
-        let objGridTable = $(gridid);
-
-        let selectedIds = objGridTable.jqGrid('getGridParam','selarrrow');
-        let deleteIds = [];
-        for(let i=0;i<selectedIds.length;i++) {
-            deleteIds.push(selectedIds[i]);
-        }
-        let len = deleteIds.length -1;
-        for(let i=len;i>=0;i--) {
-			objGridTable.jqGrid('delRowData', deleteIds[i]);
-        }
-
-        //如果删除左边表格, 要隐藏右边表格
-        if(gridid.substr(-4) === 'Left') {
-            let rightGrid = jQuery(gridid.replace('Left', 'Right'));
-            let rowIds = rightGrid.getDataIDs();
-            for(let i=0;i<rowIds.length;i++) {
-                rightGrid.setRowData(rowIds[i],null,{display: 'none'});
-            }
-        }
-        showTipModal(VUEAPP.lang.deleterowsuccess, 'success');
-    });
-
-    //绑定所有的复制按钮
-    $("a[id^=btncopy-]").on("click",function(){
-
-        //先清空剪贴板
-    	let ids = this.id.split('-');
-        let gridid = '#gridtable-' + ids[1] + '-' + ids[2];
-        let objGrid = $(gridid);
-        let selectedId = objGrid.jqGrid("getGridParam", "selarrrow");
-        if(selectedId.length === 0) {
-        	showTipModal(VUEAPP.lang.checkdatafirst, 'error');
-            copyDatatoClipboard(' ');
-        	return;
-        }
-        let rowData, strdata = '';
-    	for(let i=0;i<selectedId.length;i++) {
-    		rowData = objGrid.jqGrid('getRowData', selectedId[i]);
-    		if(i > 0) {
-    			strdata += ',';
-    		}
-    		strdata += JSON.stringify(rowData);
-    	}
-
-    	copyDatatoClipboard('[' + strdata + ']');
-
-    	showTipModal(VUEAPP.lang.copydatasuccess, 'success');
-
-
-	});
-
-    //绑定所有的粘贴按钮
-	$("a[id^=btnpaste-]").on("click",function(){
-		VUEAPP.current_paste_tableid = this.id;
-		showTextareaModal();
-	});
+    bindAllButton();
 
     $.minimalTips();
 
@@ -128,10 +45,140 @@ $(document).ready(function() {
 
 });
 
+
+
+//绑定所有的按钮的clicks事件
+function bindAllButton() {
+
+    const arrayButtonID = ['gridtable-ACPI-Add', 'gridtable-ACPI-Block','gridtable-ACPI-Patch','gridtable-Booter-MmioWhitelist'
+                        ,'gridtable-DeviceProperties-AddLeft','gridtable-DeviceProperties-AddRight','gridtable-DeviceProperties-BlockLeft','gridtable-DeviceProperties-BlockRight'
+                        ,'gridtable-Kernel-Add', 'gridtable-Kernel-Block', 'gridtable-Kernel-Patch', 'gridtable-Misc-BlessOverride','gridtable-Misc-Entries','gridtable-Misc-Tools'
+                        ,'gridtable-NVRAM-AddLeft', 'gridtable-NVRAM-AddRight','gridtable-NVRAM-BlockLeft','gridtable-NVRAM-BlockRight',
+                        'gridtable-NVRAM-LegacySchemaLeft', 'gridtable-NVRAM-LegacySchemaRight', 'gridtable-UEFI-Drivers'];
+
+    for(let i=0;i<arrayButtonID.length;i++) {
+        bindClick(arrayButtonID[i]);
+    }
+
+
+
+    function bindClick(gridtableid) {
+
+        let currentGridTable = jQuery('#' + gridtableid), buttonBehind = gridtableid.slice(9);
+
+        //绑定所有的增加按钮
+        $("#btnadd" + buttonBehind).on("click",function(){
+
+            //如果是右边表格, 先检查左边有没有选中, 如果没有, 不做任何反应
+            if(buttonBehind.substr(-5) === 'Right') {
+                let gridid = '#gridtable' + buttonBehind.replace('Right','Left');
+
+                let selectedId = jQuery(gridid).jqGrid("getGridParam", "selrow");
+                if(selectedId !== null) {
+                    currentGridTable.jqGrid('addRowData', MAXROWID ++ , {pid:selectedId}, 'last');
+                }
+
+            } else {
+
+                currentGridTable.jqGrid('addRowData', MAXROWID ++, {}, 'last');
+            }
+
+
+        });
+
+
+        //绑定所有的删除按钮
+        $("#btndel" + buttonBehind).on("click",function(){
+
+            let selectedIds = currentGridTable.jqGrid('getGridParam','selarrrow');
+
+            //如果有选中行, 说明有数据被删除
+            if(selectedIds.length > 0) {
+                let deleteIds = [];
+                for(let i=0;i<selectedIds.length;i++) {
+                    deleteIds.push(selectedIds[i]);
+                }
+                deleteIds.sort();
+                let len = deleteIds.length - 1;
+                for(let i=len;i>=0;i--) {
+                    currentGridTable.jqGrid('delRowData', deleteIds[i]);
+                }
+
+                //如果删除左边表格, 要隐藏右边表格
+                if(buttonBehind.substr(-4) === 'Left') {
+                    let rightGrid = jQuery('#' + gridtableid.replace('Left', 'Right'));
+                    let rowIds = rightGrid.getDataIDs();
+                    for(let i=0;i<rowIds.length;i++) {
+                        rightGrid.setRowData(rowIds[i],null,{display: 'none'});
+                    }
+                }
+
+                showTipModal(VUEAPP.lang.deleterowsuccess, 'success');
+            }
+
+        });
+
+
+        //绑定所有的复制按钮
+        $("#btncopy" + buttonBehind).on("click",function(){
+
+            //先清空剪贴板
+            let selectedId = currentGridTable.jqGrid("getGridParam", "selarrrow");
+            if(selectedId.length === 0) {
+                copyDatatoClipboard(' ');
+                showTipModal(VUEAPP.lang.checkdatafirst, 'error');
+                return;
+            }
+            let rowData, strdata = '';
+            for(let i=0;i<selectedId.length;i++) {
+                rowData = currentGridTable.jqGrid('getRowData', selectedId[i]);
+                if(i > 0) {
+                    strdata += ',';
+                }
+                strdata += JSON.stringify(rowData);
+            }
+
+            copyDatatoClipboard('[' + strdata + ']');
+
+            showTipModal(VUEAPP.lang.copydatasuccess, 'success');
+
+
+        });
+
+        //绑定所有的粘贴按钮
+        $("#btnpaste" + buttonBehind).on("click",function(){
+            VUEAPP.current_paste_tableid = gridtableid;
+            showTextareaModal();
+        });
+
+        //绑定所有的 启用/禁用 按钮
+
+        $("#btnenabled" + buttonBehind).on("click",function(){
+            let selectedIds = currentGridTable.jqGrid("getGridParam", "selarrrow");
+
+
+            if(selectedIds.length > 0) {
+                let theEnabled = currentGridTable.getCell(selectedIds[0], "Enabled");
+                theEnabled = theEnabled === 'YES' ? 'NO' : 'YES';
+
+                for(let i=0;i<selectedIds.length;i++) {
+                    currentGridTable.jqGrid('setCell',selectedIds[i],"Enabled",theEnabled);
+                }
+            }
+
+        });
+
+    }
+
+
+
+
+}
+
 function addRowUEFIDrivers(drivers) {
     if(drivers.value !== '') {
         let thetable = jQuery('#gridtable-UEFI-Drivers');
-        thetable.jqGrid('addRowData', getRandom(), {FileName:drivers.value}, 'last');
+        thetable.jqGrid('addRowData', MAXROWID++, {FileName:drivers.value}, 'last');
         drivers.value = '';
     }
 
@@ -214,7 +261,7 @@ function addkexts(kext) {
 
         if(allKext[i][0] === kext.value) {
 
-            thetable.jqGrid('addRowData', getRandom(), {
+            thetable.jqGrid('addRowData', MAXROWID++, {
                 BundlePath : allKext[i][0],
                 Comment : '',
                 Enabled : "YES",
@@ -230,22 +277,6 @@ function addkexts(kext) {
     delete allKext;
 }
 
-
-function getRandom(type, len) { //1-字母,2-数字,4-字符
-    const str_num = "0123456789",
-        str_char = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-        str_specchar = "~!@#$%^&()";
-    let newstr = "", uuid = [];
-    type = type || 3;   //默认字母+数字
-    len = len || 6;     //默认长度6
-
-    if(type & 0x1<<0) newstr += str_num;
-    if(type & 0x1<<1) newstr += str_char;
-    if(type & 0x1<<2) newstr += str_specchar;
-
-    for (i = 0; i < len; i++) uuid[i] = newstr[0 | (Math.random() * newstr.length)];
-    return uuid.join('');
-}
 
 var VUEAPP = new Vue({
     el: '#main-container',
@@ -292,7 +323,7 @@ var VUEAPP = new Vue({
         Misc : {
             BlessOverride:[],
             Boot:{
-                ConsoleBehaviourOs:'', ConsoleBehaviourUi:'', ConsoleMode:'', HibernateMode:'', Resolution:'', Timeout:'0',
+                ConsoleBehaviourOs:'', ConsoleBehaviourUi:'', ConsoleMode:'', HibernateMode:'None', Resolution:'', Timeout:'0',
                 HideSelf : false, PollAppleHotKeys: false, ShowPicker: false, UsePicker: false
             },
             Debug: {
@@ -315,7 +346,7 @@ var VUEAPP = new Vue({
         },
         PlatformInfo : {
             root : {
-                Automatic:false, UpdateDataHub:false, UpdateNVRAM:false, UpdateSMBIOS:false, UpdateSMBIOSMode : ''
+                Automatic:false, UpdateDataHub:false, UpdateNVRAM:false, UpdateSMBIOS:false, UpdateSMBIOSMode : 'Create'
             },
             DataHub : {
                 ARTFrequency:'', BoardProduct:'', BoardRevision:'', DevicePathsSupported:'', FSBFrequency:'',
@@ -722,7 +753,7 @@ function startPaste() {
     }
 
 	for(let it in rowData) {
-		objGridTable.jqGrid('addRowData', getRandom(), rowData[it], 'last');
+		objGridTable.jqGrid('addRowData', MAXROWID++, rowData[it], 'last');
 	}
 	$('#inputModal').modal('hide');
 

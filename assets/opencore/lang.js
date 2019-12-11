@@ -26,6 +26,7 @@ const GLOBAL_LANG = {
         add  : '增加',
         del  : '删除',
         Error : '错误',
+        enabled : '启用/禁用',
         hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数'
     },
 
@@ -55,6 +56,7 @@ const GLOBAL_LANG = {
         add  : 'Add',
         del  : 'Delete',
         Error : 'Error',
+        enabled : 'enabled/disabled',
         hexstringlengthisodd : '<{@1}> is not a valid hexadecimal string, because the length of a hexadecimal string cannot be odd'
     }
 };
