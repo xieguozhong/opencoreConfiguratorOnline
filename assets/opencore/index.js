@@ -1,5 +1,3 @@
-var MAXROWID = 500;  //表格的最大id
-
 
 $(document).ready(function() {
     $('#id-input-file-2').ace_file_input({
@@ -50,23 +48,36 @@ $(document).ready(function() {
 //绑定所有的按钮的clicks事件
 function bindAllButton() {
 
-    const arrayButtonID = ['gridtable-ACPI-Add', 'gridtable-ACPI-Block','gridtable-ACPI-Patch','gridtable-Booter-MmioWhitelist'
-                        ,'gridtable-DeviceProperties-AddLeft','gridtable-DeviceProperties-AddRight','gridtable-DeviceProperties-BlockLeft','gridtable-DeviceProperties-BlockRight'
-                        ,'gridtable-Kernel-Add', 'gridtable-Kernel-Block', 'gridtable-Kernel-Patch', 'gridtable-Misc-BlessOverride','gridtable-Misc-Entries','gridtable-Misc-Tools'
-                        ,'gridtable-NVRAM-AddLeft', 'gridtable-NVRAM-AddRight','gridtable-NVRAM-BlockLeft','gridtable-NVRAM-BlockRight',
-                        'gridtable-NVRAM-LegacySchemaLeft', 'gridtable-NVRAM-LegacySchemaRight', 'gridtable-UEFI-Drivers'];
+    // const arrayButtonID = ['gridtable-ACPI-Add', 'gridtable-ACPI-Block','gridtable-ACPI-Patch','gridtable-Booter-MmioWhitelist'
+    //                     ,'gridtable-DeviceProperties-AddLeft','gridtable-DeviceProperties-AddRight','gridtable-DeviceProperties-BlockLeft','gridtable-DeviceProperties-BlockRight'
+    //                     ,'gridtable-Kernel-Add', 'gridtable-Kernel-Block', 'gridtable-Kernel-Patch', 'gridtable-Misc-BlessOverride','gridtable-Misc-Entries','gridtable-Misc-Tools'
+    //                     ,'gridtable-NVRAM-AddLeft', 'gridtable-NVRAM-AddRight','gridtable-NVRAM-BlockLeft','gridtable-NVRAM-BlockRight',
+    //                     'gridtable-NVRAM-LegacySchemaLeft', 'gridtable-NVRAM-LegacySchemaRight', 'gridtable-UEFI-Drivers'];
 
-    for(let i=0;i<arrayButtonID.length;i++) {
-        bindClick(arrayButtonID[i]);
+    // for(let i=0;i<arrayButtonID.length;i++) {
+    //     bindClick(arrayButtonID[i]);
+    // }
+
+
+
+    for(let i=0;i<GLOBAL_ARRAY_TABLE[0].length;i++ ) {
+        bindClick(GLOBAL_ARRAY_TABLE[0][i]);
+    }
+
+    for(let i=0;i<GLOBAL_ARRAY_TABLE[1].length;i++ ) {
+        bindClick(GLOBAL_ARRAY_TABLE[1][i]);
     }
 
 
 
-    function bindClick(gridtableid) {
+    function bindClick(currentGridTable) {
 
-        let currentGridTable = jQuery('#' + gridtableid), buttonBehind = gridtableid.slice(9);
+        //let currentGridTable = jQuery('#' + gridtableid), buttonBehind = gridtableid.slice(9);
 
-        //绑定所有的增加按钮
+        let gridtableid = currentGridTable.attr('id');
+        let buttonBehind = gridtableid.slice(9);
+
+        // 1 绑定所有的增加按钮
         $("#btnadd" + buttonBehind).on("click",function(){
 
             //如果是右边表格, 先检查左边有没有选中, 如果没有, 不做任何反应
@@ -87,7 +98,7 @@ function bindAllButton() {
         });
 
 
-        //绑定所有的删除按钮
+        // 2 绑定所有的删除按钮
         $("#btndel" + buttonBehind).on("click",function(){
 
             let selectedIds = currentGridTable.jqGrid('getGridParam','selarrrow');
@@ -119,7 +130,7 @@ function bindAllButton() {
         });
 
 
-        //绑定所有的复制按钮
+        // 3 绑定所有的复制按钮
         $("#btncopy" + buttonBehind).on("click",function(){
 
             //先清空剪贴板
@@ -145,20 +156,19 @@ function bindAllButton() {
 
         });
 
-        //绑定所有的粘贴按钮
+        // 4 绑定所有的粘贴按钮
         $("#btnpaste" + buttonBehind).on("click",function(){
             VUEAPP.current_paste_tableid = gridtableid;
             showTextareaModal();
         });
 
-        //绑定所有的 启用/禁用 按钮
-
+        // 5 绑定所有的 启用/禁用 按钮
         $("#btnenabled" + buttonBehind).on("click",function(){
             let selectedIds = currentGridTable.jqGrid("getGridParam", "selarrrow");
 
 
             if(selectedIds.length > 0) {
-                let theEnabled = currentGridTable.getCell(selectedIds[0], "Enabled");
+                let theEnabled = currentGridTable.jqGrid('getCell', selectedIds[0], "Enabled");
                 theEnabled = theEnabled === 'YES' ? 'NO' : 'YES';
 
                 for(let i=0;i<selectedIds.length;i++) {
