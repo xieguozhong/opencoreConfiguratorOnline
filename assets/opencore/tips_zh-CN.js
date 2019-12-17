@@ -70,12 +70,12 @@ const SYSTEM_TIPS = {
             AppleXcpmCfgLock: 'NO 仅在 BIOS 中无法禁用 CFG-Lock 时才需要',
             AppleXcpmExtraMsrs: 'NO 禁用奔腾和某些至强等不支持 CPU 所需的多个 MSR 访问',
             CustomSMBIOSGuid: 'NO 对 UpdateSMBIOSMode 自定义模式执行 GUID 修补, 用于戴尔笔记本电脑 (等同于 Clover 的 DellSMBIOSPatch)',
-            DisbaleIOMapper: 'NO 需要绕过 VT-d 且 BIOS 中禁用时使用',
+            DisableIoMapper: 'NO 需要绕过 VT-d 且 BIOS 中禁用时使用',
             ExternalDiskIcons: 'YES 硬盘图标补丁, macOS 将内部硬盘视为外接硬盘 (黄色) 时使用',
             LapicKernelPanic: 'NO 禁用由 AP 核心 lapic 中断造成的内核崩溃, 通常用于惠普电脑 (等同于 Clover 的 Kernel LAPIC)',
             PanicNoKextDump: 'YES 在发生内核崩溃时阻止输出 Kext 列表, 提供可供排错参考的日志',
-            ThirdPartyDrives: 'NO 为 SSD 启用 TRIM 指令, NVMe SSD 会自动被 macOS 加载因此不需要',
-            ThirdPartyTrim: 'NO 为 SSD 启用 TRIM 指令, NVMe SSD 会自动被 macOS 加载因此不需要, SATA SSD 可以在终端执行 sudo trimforce enable 开启',
+            ThirdPartyDrives: 'NO 将供应商修补程序应用于IOAHCIBlockStorage.kext，以启用第三方驱动器的本机功能，例如SSD上的TRIM或10.15及更高版本上的休眠支持',
+            PowerTimeoutKernelPanic : 'YES 修复 macOS Catalina 中由于设备电源状态变化超时而导致的内核崩溃',
             XhciPortLimit: 'YES 这实际上是 15 端口限制补丁, 不建议依赖, 因为这不是 USB 的最佳解决方案。有能力的情况下请选择定制 USB, 这个选项用于没有定制 USB 的设备'
         }
     },
@@ -100,11 +100,23 @@ const SYSTEM_TIPS = {
     },
 
     NVRAM : {
-        title : '用于注入 NVRAM (如引导标识符和 SIP)'
+        title : '用于注入 NVRAM (如引导标识符和 SIP)',
+        LegacyEnable: 'NO 启用从EFI卷根目录加载名为nvram.plist的NVRAM变量文件<br>1 没有原生 NVRAM 的设备设置为 YES<br>2 macOS 下硬件 NVRAM 工作「不」正常的设备设置为 YES<br>3 macOS 下硬件 NVRAM 工作正常的设备设置为'
     },
 
     PlatformInfo : {
-        title:'用于设置 SMBIOS 机型信息'
+        title:'用于设置 SMBIOS 机型信息',
+        root : {
+            UpdateSMBIOSMode : '更新SMBIOS字段方法',
+            Create : '将表替换为在AllocateMaxAddress处新分配的EfiReservedMemoryType，而没有任何后备',
+            TryOverwrite : '如果新大小小于对齐页面的原始大小，则覆盖，并且旧版区域解锁没有问题。否则创建。某些固件有问题',
+            Overwrite : '如果适合新大小，则覆盖现有的gEfiSmbiosTableGuid和gEfiSmbiosTable3Guid数据。否则以未指定状态中止',
+            Custom : '将第一个SMBIOS表（gEfiSmbiosTableGuid）写入gOcCustomSmbiosTableGuid，以解决固件在ExitBootServices覆盖SMBIOS内容的问题。否则等效于创建。要求修补AppleSmbios.kext和AppleACPIPlatform.kext以便从另一个GUID读取：“ EB9D2D31”-“ EB9D2D35”（ASCII），由CustomSMBIOSGuid自动完成',
+            Automatic : 'NO 根据通用部分而不是使用DataHub，NVRAM和SMBIOS部分的值生成PlatformInfo',
+            UpdateDataHub : 'NO 更新数据中心字段。这些字段是根据“Automatic”值从“Generic”或“DataHub”部分读取的',
+            UpdateNVRAM : '更新与平台信息有关的NVRAM字段',
+            UpdateSMBIOS : '更新SMBIOS字段。这些字段是从“Generic”或“SMBIOS”部分读取的，具体取决于“Automatic”值'
+        }
     },
 
     UEFI : {
@@ -134,6 +146,20 @@ const SYSTEM_TIPS = {
             FirmwareVolume: 'NO 修复 Filevault 的 UI 问题, 设置为 YES 可以获得更好地兼容 FileVault',
             HashServices: 'NO 修复运行 FileVault 时鼠标光标大小不正确的问题, 设置为 YES 可以更好地兼容 FileVault',
             UnicodeCollation: 'NO 一些较旧的固件破坏了 Unicode 排序规则, 设置为 YES 可以修复这些系统上 UEFI Shell 的兼容性 (通常为用于 IvyBridge 或更旧的设备)'
+        },
+        Quirks : {
+            AvoidHighAlloc:'NO 主板无法正确访问 UEFI Boot Services 中更高内存的解决方法。除非有必要, 否则避免使用',
+            ClearScreenOnModeSwitch : 'NO 从图形模式切换到文本模式时, 某些固件仅清除屏幕的一部分, 导致屏幕上残留之前绘制的图片。 此选项会在切换到文本模式之前用黑色填充整个屏幕',
+            IgnoreInvalidFlexRatio : 'NO BIOS 中无法禁用 MSR_FLEX_RATIO(0x194) 时开启',
+            IgnoreTextInGraphics : 'NO 修复不用 -v 开机时日志覆盖苹果标志输出的问题',
+            ProvideConsoleGop : 'YES macOS 引导加载程序要求 GOP (图形输出协议) 存在于控制台句柄上 如果选择启动项之后不出现 macOS 启动 Verbose 请启用',
+            ReconnectOnResChange : 'NO 有些固件在 GOP 分辨率改变后要求重新连接控制器才能输出文本, 开启这个选项会导致从 UEFI Shell 中启动 OpenCore 时直接黑屏, 尽量避免开启',
+            ReleaseUsbOwnership : 'NO 从固件驱动程序中释放 USB 控制器所属权, 除非您不知道自己在做什么, 否则避免使用。Clover 的等效设置是 FixOwnership',
+            ReplaceTabWithSpace : 'NO 取决于固件, 某些设备在 UEFI Shell 中编辑文件使用 Tab键 出问题时启用。注意, 此选项需要将 ConsoleControl 设置为 YES',
+            RequestBootVarFallback : 'NO 请求将某些Boot前缀变量从OC_VENDOR_VARIABLE_GUID回退到EFI_GLOBAL_VARIABLE_GUID',
+            RequestBootVarRouting : 'YES 从 EFI_GLOBAL_VARIABLE_GUID 中为 OC_VENDOR_VARIABLE_GUID 请求 redirectBoot 前缀变量 <br>启用此项以便能够在与 macOS 引导项设计上不兼容的固件中可靠地使用 启动磁盘 设置',
+            SanitiseClearScreen : 'YES 修复 OpenCore 在高分屏中以 1024x768 显示的问题, 注意要同时开启 ConsoleControl 并将 ConsoleMode 的内容留空',
+            UnblockFsConnect : 'NO 惠普笔记本在 OpenCore 引导界面没有引导项时设置为 YES'
         }
     }
 

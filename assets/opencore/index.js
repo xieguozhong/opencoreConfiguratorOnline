@@ -41,6 +41,7 @@ $(document).ready(function() {
       "positionClass": "toast-top-center"
     };
 
+
 });
 
 
@@ -60,11 +61,11 @@ function bindAllButton() {
 
 
 
-    for(let i=0;i<GLOBAL_ARRAY_TABLE[0].length;i++ ) {
+    for(let i=0,len=GLOBAL_ARRAY_TABLE[0].length;i<len;i++ ) {
         bindClick(GLOBAL_ARRAY_TABLE[0][i]);
     }
 
-    for(let i=0;i<GLOBAL_ARRAY_TABLE[1].length;i++ ) {
+    for(let i=0,len=GLOBAL_ARRAY_TABLE[1].length;i<len;i++ ) {
         bindClick(GLOBAL_ARRAY_TABLE[1][i]);
     }
 
@@ -106,7 +107,7 @@ function bindAllButton() {
             //如果有选中行, 说明有数据被删除
             if(selectedIds.length > 0) {
                 let deleteIds = [];
-                for(let i=0;i<selectedIds.length;i++) {
+                for(let i=0,len=selectedIds.length;i<len;i++) {
                     deleteIds.push(selectedIds[i]);
                 }
                 deleteIds.sort();
@@ -119,7 +120,7 @@ function bindAllButton() {
                 if(buttonBehind.substr(-4) === 'Left') {
                     let rightGrid = jQuery('#' + gridtableid.replace('Left', 'Right'));
                     let rowIds = rightGrid.getDataIDs();
-                    for(let i=0;i<rowIds.length;i++) {
+                    for(let i=0,len=rowIds.length;i<len;i++) {
                         rightGrid.setRowData(rowIds[i],null,{display: 'none'});
                     }
                 }
@@ -141,7 +142,7 @@ function bindAllButton() {
                 return;
             }
             let rowData, strdata = '';
-            for(let i=0;i<selectedId.length;i++) {
+            for(let i=0,len=selectedId.length;i<len;i++) {
                 rowData = currentGridTable.jqGrid('getRowData', selectedId[i]);
                 if(i > 0) {
                     strdata += ',';
@@ -171,7 +172,7 @@ function bindAllButton() {
                 let theEnabled = currentGridTable.jqGrid('getCell', selectedIds[0], "Enabled");
                 theEnabled = theEnabled === 'YES' ? 'NO' : 'YES';
 
-                for(let i=0;i<selectedIds.length;i++) {
+                for(let i=0,len=selectedIds.length;i<len;i++) {
                     currentGridTable.jqGrid('setCell',selectedIds[i],"Enabled",theEnabled);
                 }
             }
@@ -267,7 +268,7 @@ function addkexts(kext) {
 
     let thetable = jQuery("#gridtable-Kernel-Add");
 
-    for(let i=0;i<allKext.length;i++) {
+    for(let i=0,len=allKext.length;i<len;i++) {
 
         if(allKext[i][0] === kext.value) {
 
@@ -457,7 +458,7 @@ var VUEAPP = new Vue({
             let AddText = getValuesByKeyname(NVRAMText, 'Add');
             //AddLeft
             let arrayParent = getParentKeys(AddText);
-            for(let i=0;i<arrayParent.length;i++) {
+            for(let i=0,len=arrayParent.length;i<len;i++) {
                 this.NVRAM.AddLeft.push({id:i, Devices:arrayParent[i]});
             }
             //this.NVRAM.AddSub = getSubKeys(AddText);
@@ -477,7 +478,7 @@ var VUEAPP = new Vue({
             let BlockText = getValuesByKeyname(NVRAMText, 'Block')
             let arrayParent2 = getKeyarrayZIkey(BlockText);
 
-            for(let j=0;j<arrayParent2.length;j++) {
+            for(let j=0,len=arrayParent2.length;j<len;j++) {
                 this.NVRAM.BlockLeft.push({id:j, Devices:arrayParent2[j]});
             }
 
@@ -495,7 +496,7 @@ var VUEAPP = new Vue({
             let LegacySchemaText = getValuesByKeyname(NVRAMText, 'LegacySchema')
             let arrayParent3 = getKeyarrayZIkey(LegacySchemaText);
 
-            for(let k=0;k<arrayParent3.length;k++) {
+            for(let k=0,len=arrayParent3.length;k<len;k++) {
 
                 this.NVRAM.LegacySchemaLeft.push({id:k, Devices:arrayParent3[k]});
             }
@@ -523,7 +524,7 @@ var VUEAPP = new Vue({
             let DriversText = getValuesByKeyname(UEFIText, 'Drivers');
             this.UEFI.Drivers.length = 0;
             let arrayDrivers = parsePlistArray2stringArray(DriversText);
-            for(let i=0;i<arrayDrivers.length;i++) {
+            for(let i=0,len=arrayDrivers.length;i<len;i++) {
                 this.UEFI.Drivers.push({ FileName : arrayDrivers[i]['Volume']}) ;
             }
             jQuery("#gridtable-UEFI-Drivers").trigger("reloadGrid");
@@ -572,7 +573,7 @@ var VUEAPP = new Vue({
             let BlessOverrideText = getValuesByKeyname(MiscText, 'BlessOverride');
             this.Misc.BlessOverride.length = 0;
             let arrayBlessOverride = parsePlistArray2stringArray(BlessOverrideText);
-            for(let i=0;i<arrayBlessOverride.length;i++) {
+            for(let i=0,len=arrayBlessOverride.length;i<len;i++) {
                 this.Misc.BlessOverride.push({ ScanningPaths : arrayBlessOverride[i]['Volume']}) ;
             }
             jQuery("#gridtable-Misc-BlessOverride").trigger("reloadGrid");
@@ -623,7 +624,7 @@ var VUEAPP = new Vue({
             let AddText = getValuesByKeyname(text, 'Add');
             //Add
             let arrayParent = getParentKeys(AddText);
-            for(let i=0;i<arrayParent.length;i++) {
+            for(let i=0,len=arrayParent.length;i<len;i++) {
                 this.DeviceProperties.AddLeft.push({id:i, Devices:arrayParent[i]});
             }
 
@@ -642,7 +643,7 @@ var VUEAPP = new Vue({
             let BlockText = getValuesByKeyname(text, 'Block')
             let arrayParent2 = getKeyarrayZIkey(BlockText);
             //console.log(arrayParent2);
-            for(let i=0;i<arrayParent2.length;i++) {
+            for(let i=0,len=arrayParent2.length;i<len;i++) {
                 this.DeviceProperties.BlockLeft.push({id:i, Devices:arrayParent2[i]});
             }
 

@@ -363,7 +363,7 @@ function initSubGridTable(pid, gridid, theData, keyname) {
 
     let rightName = keyname + 'Right', objGridTable = jQuery(gridid);
     objGridTable.jqGrid('resetSelection');
-    for(let i=0;i<theData[rightName].length;i++) {
+    for(let i=0,len=theData[rightName].length;i<len;i++) {
         if(theData[rightName][i].pid == pid) { //这里一定是==,不能===
             objGridTable.setRowData(theData[rightName][i].id,null,{display: ''});
         } else {
@@ -419,11 +419,11 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width , heigh
 				setTimeout(function(){
 
 					if(theWidth === GLOBAL_TABLE_WIDTH) {
-						for(let i=0;i<GLOBAL_ARRAY_TABLE[0].length;i++) {
+						for(let i=0,len=GLOBAL_ARRAY_TABLE[0].length;i<len;i++) {
 							GLOBAL_ARRAY_TABLE[0][i].jqGrid( 'setGridWidth', theWidth);
 						}
 						theWidth = theWidth / 2 - 8;
-						for(let i=0;i<GLOBAL_ARRAY_TABLE[1].length;i++) {
+						for(let i=0,len=GLOBAL_ARRAY_TABLE[1].length;i<len;i++) {
 							GLOBAL_ARRAY_TABLE[1][i].jqGrid( 'setGridWidth', theWidth);
 						}
 					}

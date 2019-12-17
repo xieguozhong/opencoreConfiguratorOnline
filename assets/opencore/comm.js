@@ -7,8 +7,10 @@ function enabledFormat(cellvalue) {
 }
 
 function formatInteger(cellvalue) {
-    cellvalue = parseInt(cellvalue);
-    return isNaN(cellvalue) ? 0 : cellvalue;
+    if(isNaN(cellvalue)) {
+        showTipModal(fillLangString(VUEAPP.lang.toNumberError, cellvalue), 'warning');
+    }
+    return  cellvalue;
 }
 
 
@@ -101,7 +103,7 @@ function getKeyarrayZIarray(context) {
 
         let arrayTemp = parsePlistArray2stringArray(context.slice(idx0+7, idx1));
 
-        for(let it=0;it<arrayTemp.length;it++) {
+        for(let it=0,len=arrayTemp.length;it<len;it++) {
             rarray.push({pid:pid, Volume:arrayTemp[it]['Volume'], Type:arrayTemp[it]['Type']});
         }
 
@@ -345,10 +347,9 @@ function getValuesByKeyname(context, keyname, istop) {
 //去除 换行 tab 回车 两边空格
 function formatContext(context) {
 	context = context.replace(/[\t\r]/g,'');
-	let arrayContext = context.split('\n');
-	let newContext = '';
-	for(let i=0;i<arrayContext.length;i++) {
+	let arrayContext = context.split('\n'), newContext = '';
 
+	for(let i=0,len=arrayContext.length;i<len;i++) {
 		newContext += arrayContext[i].trim();
 	}
 
@@ -514,7 +515,7 @@ function plistEncode(context) {
 function toNumber(num) {
     if(isNaN(num)) {
         showTipModal(fillLangString(VUEAPP.lang.toNumberError, num), 'warning');
-        return 0;
+        return num;
     } else {
         return Number(num);
     }
@@ -569,7 +570,7 @@ function showTextareaModal(content) {
 
 // fillLangString('my {@1} is {@2}', 'name', 'mady')
 function fillLangString(context) {
-	for(let i=1;i<arguments.length;i++) {
+	for(let i=1,len=arguments.length;i<len;i++) {
 		context = context.replace('{@' + i + '}', arguments[i]);
 	}
 	return context;

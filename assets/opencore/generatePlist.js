@@ -123,7 +123,7 @@ function getMisc() {
 	//1 BlessOverride
 	miscContext += '<key>BlessOverride</key>';
 	let bodata = VUEAPP.Misc.BlessOverride, bostring = '';
-	for(let i=0;i<bodata.length;i++) {
+	for(let i=0,len=bodata.length;i<len;i++) {
 		bostring += addCharstring(bodata[i]['ScanningPaths']);
 	}
 	miscContext += bothsidesAddarray(bostring);
@@ -246,7 +246,7 @@ function getUEFI() {
 	uefiContext += '<key>Drivers</key>';
 	let dridata = VUEAPP.UEFI.Drivers, dristring = '';
 	//console.log(dridata);
-	for(let i=0;i<dridata.length;i++) {
+	for(let i=0,len=dridata.length;i<len;i++) {
 		dristring += addCharstring(dridata[i]['FileName']);
 	}
 	uefiContext += bothsidesAddarray(dristring);
@@ -384,7 +384,7 @@ function getDeviceData(leftData, rightData) {
 function getSubDeviceData(pid, rightData) {
 	//console.log(rightData);
 	let subcontext = "<dict>"
-	for(let i=0;i<rightData.length;i++) {
+	for(let i=0,len=rightData.length;i<len;i++) {
 		if(rightData[i].pid == pid) {
 			//console.log(rightData[i].Value);
 			if(rightData[i].Value === undefined) {
@@ -453,7 +453,7 @@ function genArrayDict(arrayDictData, dataFileds, intFileds) {
 		return '<array/>'
 	}
 	let tmpreturn = '';
-	for(let i=0;i<arrayDictData.length;i++) {
+	for(let i=0,len=arrayDictData.length;i<len;i++) {
 		tmpreturn += '<dict>';
 		//console.log(arrayDictData[i]);
 		for(let it in arrayDictData[i]) {
