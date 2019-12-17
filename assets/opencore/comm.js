@@ -7,6 +7,9 @@ function enabledFormat(cellvalue) {
 }
 
 function formatInteger(cellvalue) {
+    if(cellvalue === undefined) {
+        return 0;
+    }
     if(isNaN(cellvalue)) {
         showTipModal(fillLangString(VUEAPP.lang.toNumberError, cellvalue), 'warning');
     }
