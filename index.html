@@ -171,12 +171,17 @@
 							<li class="active">{{root}}</li>
 						</ul><!-- /.breadcrumb -->
 
-						<div class="nav-search" style="width:250px;margin-right: 100px" >
+						<div class="nav-search" style="width:270px;margin-right: 140px" >
 							<input type="file" id="id-input-file-2" />
 						</div><!-- /.nav-search -->
                         <div class="pull-right">
-                            <button class="btn btn-minier btn-info" onclick="savePlist();">{{lang.down}}</button>&nbsp; &nbsp;
-                            <button class="btn btn-minier btn-info" onclick="copyPlist();">{{lang.copy}}</button>
+
+                            <button class="btn btn-minier btn-success" onclick="savePlist();">{{lang.down}}</button>&nbsp; &nbsp;
+                            <button class="btn btn-minier btn-success" onclick="copyPlist();">{{lang.copy}}</button>&nbsp;
+							<label class="mintip" :title="title.PlatformInfo.configisfull">
+								<input id="configisfull" type="checkbox" class="ace" />
+								<span class="lbl"> Full</span>
+							</label>
                         </div>
 					</div>
 

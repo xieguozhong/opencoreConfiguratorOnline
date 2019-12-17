@@ -194,17 +194,21 @@ function getNVRAM() {
 }
 
 function getPlatformInfo() {
-	let pfiContext = '<key>PlatformInfo</key><dict>';
+	let pfiContext = '<key>PlatformInfo</key><dict>', configisfull = $('#configisfull').prop('checked');
+	//console.log(configisfull);
 
 	//0 Automatic
 	pfiContext += '<key>Automatic</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['Automatic']);
 
 	//1 DataHub
-	pfiContext += '<key>DataHub</key><dict>';
-	let thedt = {ARTFrequency:'integer', BoardRevision:'data',DevicePathsSupported:'integer',FSBFrequency:'integer', InitialTSC:'integer',SmcBranch:'data',SmcPlatform:'data'
-			,SmcRevision:'data',StartupPowerEvents:'integer'};
-	pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.DataHub, thedt);
-	pfiContext += '</dict>';
+	if(configisfull === true) {
+		pfiContext += '<key>DataHub</key><dict>';
+		let thedt = {ARTFrequency:'integer', BoardRevision:'data',DevicePathsSupported:'integer',FSBFrequency:'integer', InitialTSC:'integer',SmcBranch:'data',SmcPlatform:'data'
+				,SmcRevision:'data',StartupPowerEvents:'integer'};
+		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.DataHub, thedt);
+		pfiContext += '</dict>';
+	}
+
 
 	//2 Generic
 	pfiContext += '<key>Generic</key><dict>';
@@ -213,18 +217,21 @@ function getPlatformInfo() {
 	pfiContext += '</dict>';
 
 	//3 PlatformNVRAM
-	pfiContext += '<key>PlatformNVRAM</key><dict>';
-	let pfndatatype = {FirmwareFeatures:'data',FirmwareFeaturesMask:'data',ROM:'data'};
-	pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.PlatformNVRAM, pfndatatype);
-	pfiContext += '</dict>';
+	if(configisfull === true) {
+		pfiContext += '<key>PlatformNVRAM</key><dict>';
+		let pfndatatype = {FirmwareFeatures:'data',FirmwareFeaturesMask:'data',ROM:'data'};
+		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.PlatformNVRAM, pfndatatype);
+		pfiContext += '</dict>';
+	}
 
 	//4 SMBIOS
-	pfiContext += '<key>SMBIOS</key><dict>';
-
-	let smbiosdatatype = {BoardType:'integer',ChassisType:'integer',FirmwareFeatures:'data',FirmwareFeaturesMask:'data',MemoryFormFactor:'integer'
-				,PlatformFeature:'integer',ProcessorType:'integer',SmcVersion:'data'};
-	pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.SMBIOS, smbiosdatatype);
-	pfiContext += '</dict>';
+	if(configisfull === true) {
+		pfiContext += '<key>SMBIOS</key><dict>';
+		let smbiosdatatype = {BoardType:'integer',ChassisType:'integer',FirmwareFeatures:'data',FirmwareFeaturesMask:'data',MemoryFormFactor:'integer'
+					,PlatformFeature:'integer',ProcessorType:'integer',SmcVersion:'data'};
+		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.SMBIOS, smbiosdatatype);
+		pfiContext += '</dict>';
+	}
 
 	//5 root
 	pfiContext += '<key>UpdateDataHub</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['UpdateDataHub']);

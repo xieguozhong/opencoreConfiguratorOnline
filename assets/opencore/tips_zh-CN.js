@@ -106,6 +106,7 @@ const SYSTEM_TIPS = {
 
     PlatformInfo : {
         title:'用于设置 SMBIOS 机型信息',
+        configisfull : '如果你打算使用的 SMBIOS 苹果已经停止支持(2011年或更早)或者你是用的是戴尔 OEM 笔记本, 那么请先勾选这里并「认真」补全所有 SMBIOS 信息, 然后再点击 下载 或者 复制 按钮',
         root : {
             UpdateSMBIOSMode : '更新SMBIOS字段方法',
             Create : '将表替换为在AllocateMaxAddress处新分配的EfiReservedMemoryType，而没有任何后备',
