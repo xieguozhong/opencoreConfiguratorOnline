@@ -179,7 +179,7 @@
                             <button class="btn btn-minier btn-success" onclick="savePlist();">{{lang.down}}</button>&nbsp; &nbsp;
                             <button class="btn btn-minier btn-success" onclick="copyPlist();">{{lang.copy}}</button>&nbsp;
 							<label class="mintip" :title="title.PlatformInfo.configisfull">
-								<input id="configisfull" type="checkbox" class="ace" />
+								<input v-model="configisfull" type="checkbox" class="ace" />
 								<span class="lbl"> Full</span>
 							</label>
                         </div>
@@ -659,7 +659,7 @@
                                             <div class="well">
 
 			                                    <div class="row">
-			                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.ConsoleBehaviourOs">
 			                                            ConsoleBehaviourOs<!-- <input type="text" class="form-control" v-model="Misc.Boot.ConsoleBehaviourOs"/> -->
 			                                            <select class="form-control" v-model="Misc.Boot.ConsoleBehaviourOs">
 														<option value="">Empty string</option>
@@ -669,7 +669,7 @@
 														<option value="ForceGraphics">ForceGraphics</option>
 														</select>
 			                                        </div>
-			                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.ConsoleBehaviourUi">
 			                                            ConsoleBehaviourUi<!-- <input type="text" class="form-control" v-model="Misc.Boot.ConsoleBehaviourUi"/> -->
 			                                            <select class="form-control" v-model="Misc.Boot.ConsoleBehaviourUi">
 														<option value="">Empty string</option>
@@ -679,10 +679,10 @@
 														<option value="ForceGraphics">ForceGraphics</option>
 														</select>
 			                                        </div>
-			                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.ConsoleMode">
 			                                            ConsoleMode<input type="text" class="form-control" v-model="Misc.Boot.ConsoleMode"/>
 			                                        </div>
-			                                        <div class="col-xs-3" :title="title.Misc.Boot.HibernateMode">
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.HibernateMode">
 			                                            HibernateMode<!-- <input type="text" class="form-control" v-model="Misc.Boot.HibernateMode"/> -->
 			                                            <select class="form-control" v-model="Misc.Boot.HibernateMode">
 														<option value="None">None</option>
@@ -695,28 +695,28 @@
 			                                    </div>
 
 			                                    <div class="row" style="margin-top: 10px ">
-			                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.Resolution">
 			                                            Resolution<input type="text" class="form-control" v-model="Misc.Boot.Resolution"/>
 			                                        </div>
-			                                        <div class="col-xs-3" :title="title.Misc.Boot.AAAAA">
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.Timeout">
 			                                            Timeout<input type="text" class="form-control" v-model="Misc.Boot.Timeout"/>
 			                                        </div>
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px ">
-			                                        <label>
+			                                        <label class="mintip" :title="title.Misc.Boot.HideSelf">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.HideSelf" />
 			                                            <span class="lbl"> HideSelf</span>
 			                                        </label>
-			                                        <label style="margin-left: 5px;">
+			                                        <label class="mintip" style="margin-left: 5px;" :title="title.Misc.Boot.PollAppleHotKeys">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.PollAppleHotKeys" />
 			                                            <span class="lbl"> PollAppleHotKeys</span>
 			                                        </label>
-			                                        <label style="margin-left: 5px;">
+			                                        <label class="mintip" style="margin-left: 5px;" :title="title.Misc.Boot.ShowPicker">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.ShowPicker" />
 			                                            <span class="lbl"> ShowPicker</span>
 			                                        </label>
-			                                        <label style="margin-left: 5px;">
+			                                        <label class="mintip" style="margin-left: 5px;" :title="title.Misc.Boot.UsePicker">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.UsePicker" />
 			                                            <span class="lbl"> UsePicker</span>
 			                                        </label>
@@ -740,7 +740,7 @@
 			                                    </div>
 
 			                                   <div class="checkbox" style="margin-top: 20px ">
-			                                        <label>
+			                                        <label class="mintip" :title="title.Misc.Debug.DisableWatchDog">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.DisableWatchDog" />
 			                                            <span class="lbl"> DisableWatchDog</span>
 			                                        </label>
@@ -763,15 +763,15 @@
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px">
-			                                        <label>
+			                                        <label class="mintip" :title="title.Misc.Security.AllowNvramReset">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AllowNvramReset" />
 			                                            <span class="lbl"> AllowNvramReset</span>
 			                                        </label>
-			                                        <label>
+			                                        <label class="mintip" :title="title.Misc.Security.RequireSignature">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.RequireSignature" />
 			                                            <span class="lbl"> RequireSignature</span>
 			                                        </label>
-			                                        <label>
+			                                        <label class="mintip" :title="title.Misc.Security.RequireVault">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.RequireVault" />
 			                                            <span class="lbl"> RequireVault</span>
 			                                        </label>
@@ -894,10 +894,10 @@
 
                         		<div class="tabbable" >
                                     <ul class="nav nav-tabs">
-                                        <li class="active" ><a data-toggle="tab" href="#tabbable_PlatformInfo_DataHub" class="tablelia">DataHub</a></li>
-                                        <li ><a data-toggle="tab" href="#tabbable_PlatformInfo_Generic" class="tablelia">Generic</a></li>
-                                        <li ><a data-toggle="tab" href="#tabbable_PlatformInfo_PlatformNVRAM" class="tablelia">PlatformNVRAM</a></li>
-                                        <li ><a data-toggle="tab" href="#tabbable_PlatformInfo_SMBIOS" class="tablelia">SMBIOS</a></li>
+                                        <li class="active" id="li_PlatformInfo_Generic"><a data-toggle="tab" href="#tabbable_PlatformInfo_Generic" class="tablelia" id="button_PlatformInfo_Generic">Generic</a></li>
+                                        <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_DataHub" class="tablelia">DataHub</a></li>
+                                        <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_PlatformNVRAM" class="tablelia">PlatformNVRAM</a></li>
+                                        <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_SMBIOS" class="tablelia">SMBIOS</a></li>
 
                                     </ul>
 

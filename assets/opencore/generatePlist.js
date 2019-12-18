@@ -194,7 +194,7 @@ function getNVRAM() {
 }
 
 function getPlatformInfo() {
-	let pfiContext = '<key>PlatformInfo</key><dict>', configisfull = $('#configisfull').prop('checked');
+	let pfiContext = '<key>PlatformInfo</key><dict>', configisfull = VUEAPP.configisfull;
 	//console.log(configisfull);
 
 	//0 Automatic

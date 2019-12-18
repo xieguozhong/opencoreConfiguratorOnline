@@ -94,7 +94,20 @@ const SYSTEM_TIPS = {
             PollAppleHotKeys: 'YES 允许在引导过程中使用苹果原生快捷键, 需要与 AppleGenericInput.efi 或 UsbKbDxe.efi 结合使用, 具体体验取决于固件',
             Timeout: '5 设置引导项等待时间',
             ShowPicker: 'YES 显示 OpenCore 的 UI, 用于查看可用引导项, 设置为 NO 可以和 PollAppleHotKeys 配合提升体验',
-            UsePicker: 'YES 使用 OpenCore 的默认 GUI, 如果您希望使用其他 GUI (暂时没有), 则设置为 NO'
+            UsePicker: 'YES 使用 OpenCore 的默认 GUI, 如果您希望使用其他 GUI (暂时没有), 则设置为 NO',
+            ConsoleBehaviourOs : '在操作系统负载时设置控制台控制行为',
+            ConsoleBehaviourUi : '在OpenCore用户界面加载时设置控制台控件行为。有关详细信息，请参考ConsoleBehaviourOs描述',
+            ConsoleMode : '大多数固件上最好将此字段留空',
+            Resolution : '设置控制台输出屏幕分辨率, 如:1920x1080@32, 1920x1080, Max 或者 直接留空'
+        },
+        Debug : {
+            DisableWatchDog : 'NO 某些固件可能无法成功快速启动操作系统，尤其是在调试模式下，这会导致看门狗定时器中止该过程。此选项关闭看门狗计时器'
+        },
+        Security : {
+            AllowNvramReset : 'NO 允许CMD + OPT + P + R处理并在引导选择器中启用显示NVRAM重置条目',
+            RequireSignature : 'YES OC目录中的vault.plist需要vault.sig签名文件',
+            RequireVault : 'YES 要求OC目录中存在vault.plist文件'
+
         }
 
     },

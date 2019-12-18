@@ -49,17 +49,6 @@ $(document).ready(function() {
 //绑定所有的按钮的clicks事件
 function bindAllButton() {
 
-    // const arrayButtonID = ['gridtable-ACPI-Add', 'gridtable-ACPI-Block','gridtable-ACPI-Patch','gridtable-Booter-MmioWhitelist'
-    //                     ,'gridtable-DeviceProperties-AddLeft','gridtable-DeviceProperties-AddRight','gridtable-DeviceProperties-BlockLeft','gridtable-DeviceProperties-BlockRight'
-    //                     ,'gridtable-Kernel-Add', 'gridtable-Kernel-Block', 'gridtable-Kernel-Patch', 'gridtable-Misc-BlessOverride','gridtable-Misc-Entries','gridtable-Misc-Tools'
-    //                     ,'gridtable-NVRAM-AddLeft', 'gridtable-NVRAM-AddRight','gridtable-NVRAM-BlockLeft','gridtable-NVRAM-BlockRight',
-    //                     'gridtable-NVRAM-LegacySchemaLeft', 'gridtable-NVRAM-LegacySchemaRight', 'gridtable-UEFI-Drivers'];
-
-    // for(let i=0;i<arrayButtonID.length;i++) {
-    //     bindClick(arrayButtonID[i]);
-    // }
-
-
 
     for(let i=0,len=GLOBAL_ARRAY_TABLE[0].length;i<len;i++ ) {
         bindClick(GLOBAL_ARRAY_TABLE[0][i]);
@@ -73,7 +62,6 @@ function bindAllButton() {
 
     function bindClick(currentGridTable) {
 
-        //let currentGridTable = jQuery('#' + gridtableid), buttonBehind = gridtableid.slice(9);
 
         let gridtableid = currentGridTable.attr('id');
         let buttonBehind = gridtableid.slice(9);
@@ -303,7 +291,7 @@ var VUEAPP = new Vue({
         textarea_content : '',          //保存粘贴页面时候textarea中的内容
         current_paste_tableid : '',     //保存点击当前粘贴按钮的table id
         lang : {},                      //语言数据, 和浏览器的语言设置挂钩
-
+        configisfull : false,           //是否full模式
         ACPI : {
             Add : [],
             Block : [],
@@ -410,6 +398,16 @@ var VUEAPP = new Vue({
             this.lang = GLOBAL_LANG['en-US'];
         } else {
             this.lang = GLOBAL_LANG[syslang];
+        }
+    },
+
+    watch: {
+
+        //监视configisfull变量, 为否时显示Generic标签的内容
+        configisfull(newval) {
+            if(newval === false && $("#li_PlatformInfo_Generic").hasClass("active") === false) {
+                $('#button_PlatformInfo_Generic').click();
+            }
         }
     },
 
