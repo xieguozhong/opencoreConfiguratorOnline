@@ -108,11 +108,12 @@ function bindAllButton() {
             if(selectedIds.length > 0) {
                 let deleteIds = [];
                 for(let i=0,len=selectedIds.length;i<len;i++) {
-                    deleteIds.push(selectedIds[i]);
+                    deleteIds.push(parseInt(selectedIds[i]));
                 }
-                deleteIds.sort();
+                deleteIds.sort(sortNumber);
                 let len = deleteIds.length - 1;
                 for(let i=len;i>=0;i--) {
+
                     currentGridTable.jqGrid('delRowData', deleteIds[i]);
                 }
 
@@ -127,6 +128,10 @@ function bindAllButton() {
 
                 showTipModal(VUEAPP.lang.deleterowsuccess, 'success');
             }
+
+            function sortNumber(a,b){
+				return a - b;
+			}
 
         });
 
