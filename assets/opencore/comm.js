@@ -25,13 +25,14 @@ function formatInteger(cellvalue) {
 // 返回一个基本值数组
 function parsePlistArray2stringArray(context) {
     if(context === '') return [];
-    let idx1=0,idx2=0,idx3=0,key='', rarray=[];
+    let idx1=0, idx2=0, idx3=0, key='', rarray=[];
     while(true) {
-        let item = {};
+
         idx1 = context.indexOf('<', idx3);
         if(idx1 === -1) break;
         idx2 = context.indexOf('>', idx1);
 
+        let item = {};
         item['Type'] = context.slice(idx1+1, idx2);
 
         key = '</' + context.slice(idx1+1, idx2+1)
@@ -198,8 +199,8 @@ function parrayToJSarray(context) {
         idx2 = context.indexOf('</dict>', idx1);
 
         dicttext = context.slice(idx1 + 6, idx2);
-        let item = pdictToJSobject(dicttext);
-        rarray.push(item);
+
+        rarray.push(pdictToJSobject(dicttext));
 
 
     }

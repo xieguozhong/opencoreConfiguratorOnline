@@ -404,10 +404,11 @@ var VUEAPP = new Vue({
     watch: {
 
         //监视configisfull变量, 为否时显示Generic标签的内容
-        configisfull(newval) {
-            if(newval === false && $("#li_PlatformInfo_Generic").hasClass("active") === false) {
-                $('#button_PlatformInfo_Generic').click();
-            }
+        configisfull(newval, oldval) {
+        	if(oldval === true && newval === false && $("#li_PlatformInfo_Generic").hasClass("active") === false) {
+        		$('#button_PlatformInfo_Generic').click();
+        	}
+
         }
     },
 
@@ -433,6 +434,7 @@ var VUEAPP = new Vue({
 
         // 获取并设置dict的值和bool值
         , getAndSetDictItem(context, vueData) {
+
             for(let it in vueData) {
                 if(typeof(vueData[it]) === "boolean") {
                     Vue.set(vueData, it, partrue(getValuesByKeyname(context, it)));
@@ -553,6 +555,11 @@ var VUEAPP = new Vue({
 
             //DataHub
             let DataHubText = getValuesByKeyname(ipiText, 'DataHub');
+
+            //如果DataHub为空, 就不显示datahub , PlatformNVRAM SMBIOS 三项目
+            this.configisfull = DataHubText === '' ? false : true;
+
+            //console.log('DataHubText=' + DataHubText);
             this.getAndSetDictItem(DataHubText, this.PlatformInfo.DataHub);
 
             //Generic
