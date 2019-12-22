@@ -903,7 +903,38 @@
 
                                     <div class="tab-content" style="padding-right:18px;padding-left:2px;">
 
-                                        <div id="tabbable_PlatformInfo_DataHub" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                    	<div id="tabbable_PlatformInfo_Generic" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                  <div class="col-xs-3">
+				                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    ROM<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
+				                                  </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3">
+				                                        SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
+				                                    </div>
+				                                </div>
+
+				                                <div class="checkbox" style="margin-top: 20px">
+				                                    <label>
+				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.SpoofVendor" />
+				                                        <span class="lbl"> SpoofVendor</span>
+				                                    </label>
+				                                </div>
+				                            </div>
+                                        </div>
+
+                                        <div id="tabbable_PlatformInfo_DataHub" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="well">
 				                                <div class="row">
 				                                  <div class="col-xs-3">
@@ -958,36 +989,7 @@
 				                            </div>
                                         </div>
 
-                                        <div id="tabbable_PlatformInfo_Generic" class="tab-pane fade in" style="padding-bottom: 5px;">
-                                            <div class="well">
-				                                <div class="row">
-				                                  <div class="col-xs-3">
-				                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
-				                                  </div>
-				                                  <div class="col-xs-3">
-				                                    ROM<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
-				                                  </div>
-				                                  <div class="col-xs-3">
-				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
-				                                  </div>
-				                                  <div class="col-xs-3">
-				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
-				                                  </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
-				                                    <div class="col-xs-3">
-				                                        SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
-				                                    </div>
-				                                </div>
 
-				                                <div class="checkbox" style="margin-top: 20px">
-				                                    <label>
-				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.SpoofVendor" />
-				                                        <span class="lbl"> SpoofVendor</span>
-				                                    </label>
-				                                </div>
-				                            </div>
-                                        </div>
 
                                         <div id="tabbable_PlatformInfo_PlatformNVRAM" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="well">
