@@ -17,7 +17,7 @@ html+javascript
 2.  git clone 后直接双击index.html使用
 
 
-![简单的使用图示说明](https://images.gitee.com/uploads/images/2019/1125/092741_dac8894b_1122816.jpeg "Jietu20191125-092127.jpg")
+![简单的使用图示说明](https://upload-images.jianshu.io/upload_images/10751558-e7e199ecf3bce17c.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp "Jietu20191125-092127.jpg")
 
 
 
