@@ -77,6 +77,10 @@ const SYSTEM_TIPS = {
             ThirdPartyDrives: 'NO 将供应商修补程序应用于IOAHCIBlockStorage.kext，以启用第三方驱动器的本机功能，例如SSD上的TRIM或10.15及更高版本上的休眠支持',
             PowerTimeoutKernelPanic : 'YES 修复 macOS Catalina 中由于设备电源状态变化超时而导致的内核崩溃',
             XhciPortLimit: 'YES 这实际上是 15 端口限制补丁, 不建议依赖, 因为这不是 USB 的最佳解决方案。有能力的情况下请选择定制 USB, 这个选项用于没有定制 USB 的设备'
+        },
+        Emulate : {
+            Cpuid1Data : '为不支持的CPU进行仿冒以加载电源管理,比如Haswell-E的处理器为: F2060300 00000000 00000000 00000000',
+            Cpuid1Mask : '为不支持的CPU进行仿冒以加载电源管理,比如Haswell-E的处理器为: 010A0000 00000000 00000000 00000000'
         }
     },
 
@@ -101,13 +105,18 @@ const SYSTEM_TIPS = {
             Resolution : '设置控制台输出屏幕分辨率, 如:1920x1080@32, 1920x1080, Max 或者 直接留空'
         },
         Debug : {
-            DisableWatchDog : 'NO 某些固件可能无法成功快速启动操作系统，尤其是在调试模式下，这会导致看门狗定时器中止该过程。此选项关闭看门狗计时器'
+            DisableWatchDog : 'NO 某些固件可能无法成功快速启动操作系统，尤其是在调试模式下，这会导致看门狗定时器中止该过程。此选项关闭看门狗计时器',
+            DisplayDelay : '0 屏幕上显示每条打印线后执行的微秒延迟',
+            DisplayLevel : '0 屏幕上显示了EDK II调试级别位掩码（总和）。除非Target启用控制台（屏幕上）打印，否则屏幕上的调试输出将不可见',
+            Target : '0 启用的日志记录目标的位掩码（总和）。默认情况下，所有日志记录输出都是隐藏的，因此在需要调试时需要设置此选项'
         },
         Security : {
             AllowNvramReset : 'NO 允许CMD + OPT + P + R处理并在引导选择器中启用显示NVRAM重置条目',
             RequireSignature : 'YES OC目录中的vault.plist需要vault.sig签名文件',
-            RequireVault : 'YES 要求OC目录中存在vault.plist文件'
-
+            RequireVault : 'YES 要求OC目录中存在vault.plist文件',
+            ExposeSensitiveData : '操作系统的敏感数据公开位掩码（总和）',
+            HaltLevel : 'EDK II调试级别位掩码（总和）在获取HaltLevel消息后导致CPU停止（停止执行）。可能的值与DisplayLevel值匹配',
+            ScanPolicy : '定义操作系统检测策略'
         }
 
     },
@@ -129,7 +138,18 @@ const SYSTEM_TIPS = {
             Automatic : 'NO 根据通用部分而不是使用DataHub，NVRAM和SMBIOS部分的值生成PlatformInfo',
             UpdateDataHub : 'NO 更新数据中心字段。这些字段是根据“Automatic”值从“Generic”或“DataHub”部分读取的',
             UpdateNVRAM : '更新与平台信息有关的NVRAM字段',
-            UpdateSMBIOS : '更新SMBIOS字段。这些字段是从“Generic”或“SMBIOS”部分读取的，具体取决于“Automatic”值'
+            UpdateSMBIOS : '更新SMBIOS字段。这些字段是从“Generic”或“SMBIOS”部分读取的，具体取决于“Automatic”值',
+            SpoofVendor : 'YES 仿冒制造商为 Acidanthera 来避免出现冲突'
+        },
+
+        Generic : {
+            SystemProductName : '',
+            MLB : '用 macserial 读取或生成',
+            ROM : '可以是任意 6 Byte MAC 地址, 如 0x112233000000',
+            SystemProductName : '用 macserial 读取或生成',
+            SystemSerialNumber : '用 macserial 读取或生成',
+            SystemUUID : '填入设备的硬件 UUID 以免造成 Windows 和其它软件的激活问题 (官方不再建议留空)'
+
         }
     },
 
@@ -173,7 +193,8 @@ const SYSTEM_TIPS = {
             RequestBootVarFallback : 'NO 请求将某些Boot前缀变量从OC_VENDOR_VARIABLE_GUID回退到EFI_GLOBAL_VARIABLE_GUID',
             RequestBootVarRouting : 'YES 从 EFI_GLOBAL_VARIABLE_GUID 中为 OC_VENDOR_VARIABLE_GUID 请求 redirectBoot 前缀变量 <br>启用此项以便能够在与 macOS 引导项设计上不兼容的固件中可靠地使用 启动磁盘 设置',
             SanitiseClearScreen : 'YES 修复 OpenCore 在高分屏中以 1024x768 显示的问题, 注意要同时开启 ConsoleControl 并将 ConsoleMode 的内容留空',
-            UnblockFsConnect : 'NO 惠普笔记本在 OpenCore 引导界面没有引导项时设置为 YES'
+            UnblockFsConnect : 'NO 惠普笔记本在 OpenCore 引导界面没有引导项时设置为 YES',
+            ExitBootServicesDelay : '在EXIT_BOOT_SERVICES事件后增加延迟（以微秒为单位）'
         }
     }
 
