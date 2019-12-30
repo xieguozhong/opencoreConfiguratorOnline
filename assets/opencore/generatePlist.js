@@ -156,6 +156,8 @@ function getMisc() {
 	//5 Security
 	miscContext += '<key>Security</key><dict>';
 	miscContext += '<key>AllowNvramReset</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowNvramReset']);
+	miscContext += '<key>AllowSetDefault</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowSetDefault']);
+	miscContext += '<key>AuthRestart</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AuthRestart']);
 	miscContext += '<key>ExposeSensitiveData</key><integer>' + toNumber(VUEAPP.Misc.Security['ExposeSensitiveData']) + '</integer>';
 	miscContext += '<key>HaltLevel</key><integer>' + toNumber(VUEAPP.Misc.Security['HaltLevel']) + '</integer>';
 	miscContext += '<key>RequireSignature</key>' + toBoolStringStrict(VUEAPP.Misc.Security['RequireSignature']);
@@ -185,10 +187,14 @@ function getNVRAM() {
 
 	//3 LegacyEnable
 	nvramContext += '<key>LegacyEnable</key>' + toBoolStringStrict(VUEAPP.NVRAM.root['LegacyEnable']);
+	nvramContext += '<key>LegacyOverwrite</key>' + toBoolStringStrict(VUEAPP.NVRAM.root['LegacyOverwrite']);
 
 	//4 LegacySchema
 	nvramContext += '<key>LegacySchema</key>';
 	nvramContext += getDeviceVolumeData(VUEAPP.NVRAM.LegacySchemaLeft, VUEAPP.NVRAM.LegacySchemaRight);
+
+	//5 WriteFlash
+	nvramContext += '<key>WriteFlash</key>' + toBoolStringStrict(VUEAPP.NVRAM.root['WriteFlash']);
 
 	return nvramContext + '</dict>';
 }

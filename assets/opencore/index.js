@@ -304,7 +304,7 @@ var VUEAPP = new Vue({
             Quirks : {
                 AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
                 DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectCsmRegion:false,
-                ProvideCustomSlide:false, SetupVirtualMap:false, ShrinkMemoryMap:false
+                ProvideCustomSlide:false, SetupVirtualMap:false, ShrinkMemoryMap:false, SignalAppleOS:false
             }
         },
         DeviceProperties : {
@@ -319,8 +319,8 @@ var VUEAPP = new Vue({
             Patch:[],
             Emulate:{Cpuid1Data : '',Cpuid1Mask :''},
             Quirks:{
-                AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, CustomSMBIOSGuid:false,
-                DisableIoMapper:false, ExternalDiskIcons:false, LapicKernelPanic:false, PanicNoKextDump:false,
+                AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, AppleXcpmForceBoost:false,CustomSMBIOSGuid:false,
+                DisableIoMapper:false, ExternalDiskIcons:false, IncreasePciBarSize:false,LapicKernelPanic:false, PanicNoKextDump:false,
                 PowerTimeoutKernelPanic:false, ThirdPartyDrives:false, XhciPortLimit:false
             }
         },
@@ -334,13 +334,13 @@ var VUEAPP = new Vue({
                 DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', Target:'0'
             },
             Security : {
-                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'',AllowNvramReset:false, RequireSignature:false, RequireVault:false
+                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'',AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,RequireSignature:false, RequireVault:false
             },
             Entries:[],
             Tools : []
         },
         NVRAM : {
-            root : { LegacyEnable : false},
+            root : { LegacyEnable : false, LegacyOverwrite:false, WriteFlash:false},
             AddLeft:[],
             AddRight:[],
             BlockLeft : [],
@@ -358,7 +358,7 @@ var VUEAPP = new Vue({
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             Generic : {
-                MLB:'', ROM:'', SpoofVendor:false, SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
+                MLB:'', ROM:'', SpoofVendor:false, SupportsCsm:false, SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             PlatformNVRAM : {
                 BID:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', MLB:'', ROM:''
@@ -379,8 +379,8 @@ var VUEAPP = new Vue({
 
             },
             Protocols : {
-                AppleBootPolicy:false, AppleEvent:false, AppleImageConversion:false, AppleKeyMap:false, AppleUserInterfaceTheme:false,
-                ConsoleControl:false, DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, UnicodeCollation:false
+                AppleBootPolicy:false, AppleEvent:false, AppleImageConversion:false, AppleKeyMap:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
+                ConsoleControl:false, DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks : {
                 AvoidHighAlloc:false, ClearScreenOnModeSwitch:false, ExitBootServicesDelay:'', IgnoreInvalidFlexRatio:false, IgnoreTextInGraphics:false,

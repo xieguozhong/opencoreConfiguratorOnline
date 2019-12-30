@@ -346,6 +346,10 @@
                                             <input type="checkbox" class="ace" v-model="Booter.Quirks.ShrinkMemoryMap" />
                                             <span class="lbl"> ShrinkMemoryMap</span>
                                         </label>
+                                        <label class="mintip" :title="title.Booter.Quirks.SignalAppleOS">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.SignalAppleOS" />
+                                            <span class="lbl"> SignalAppleOS</span>
+                                        </label>
                                     </div>
                                 </div>
 
@@ -565,6 +569,10 @@
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleXcpmExtraMsrs" />
                                             <span class="lbl"> AppleXcpmExtraMsrs</span>
                                         </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.AppleXcpmForceBoost">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleXcpmForceBoost" />
+                                            <span class="lbl"> AppleXcpmForceBoost</span>
+                                        </label>
                                         <label class="mintip" :title="title.Kernel.Quirks.CustomSMBIOSGuid">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.CustomSMBIOSGuid" />
                                             <span class="lbl"> CustomSMBIOSGuid</span>
@@ -573,13 +581,20 @@
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableIoMapper" />
                                             <span class="lbl"> DisableIoMapper</span>
                                         </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.ExternalDiskIcons">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ExternalDiskIcons" />
-                                            <span class="lbl"> ExternalDiskIcons</span>
-                                        </label>
+
                                     </div>
 
                                     <div class="checkbox">
+
+                                    	<label class="mintip" :title="title.Kernel.Quirks.ExternalDiskIcons">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ExternalDiskIcons" />
+                                            <span class="lbl"> ExternalDiskIcons</span>
+                                        </label>
+
+                                        <label class="mintip" :title="title.Kernel.Quirks.IncreasePciBarSize">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.IncreasePciBarSize" />
+                                            <span class="lbl"> IncreasePciBarSize</span>
+                                        </label>
 
                                         <label class="mintip" :title="title.Kernel.Quirks.LapicKernelPanic">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.LapicKernelPanic" />
@@ -767,6 +782,14 @@
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AllowNvramReset" />
 			                                            <span class="lbl"> AllowNvramReset</span>
 			                                        </label>
+			                                        <label class="mintip" :title="title.Misc.Security.AllowSetDefault">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AllowSetDefault" />
+			                                            <span class="lbl"> AllowSetDefault</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.Misc.Security.AuthRestart">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AuthRestart" />
+			                                            <span class="lbl"> AuthRestart</span>
+			                                        </label>
 			                                        <label class="mintip" :title="title.Misc.Security.RequireSignature">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.RequireSignature" />
 			                                            <span class="lbl"> RequireSignature</span>
@@ -878,6 +901,14 @@
                                             <input type="checkbox" class="ace" v-model="NVRAM.root.LegacyEnable" />
                                             <span class="lbl"> LegacyEnable</span>
                                         </label>
+                                        <label class="mintip" :title="title.NVRAM.LegacyOverwrite">
+                                            <input type="checkbox" class="ace" v-model="NVRAM.root.LegacyOverwrite" />
+                                            <span class="lbl"> LegacyOverwrite</span>
+                                        </label>
+                                        <label class="mintip" :title="title.NVRAM.WriteFlash">
+                                            <input type="checkbox" class="ace" v-model="NVRAM.root.WriteFlash" />
+                                            <span class="lbl"> WriteFlash</span>
+                                        </label>
                                     </div>
                                 </div>
 
@@ -926,6 +957,10 @@
 				                                    <label class="mintip" :title="title.PlatformInfo.root.SpoofVendor">
 				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.SpoofVendor" />
 				                                        <span class="lbl"> SpoofVendor</span>
+				                                    </label>
+				                                    <label class="mintip" :title="title.PlatformInfo.root.SupportsCsm">
+				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.SupportsCsm" />
+				                                        <span class="lbl"> SupportsCsm</span>
 				                                    </label>
 				                                </div>
 				                            </div>
@@ -1260,6 +1295,10 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleKeyMap" />
 			                                            <span class="lbl"> AppleKeyMap</span>
 			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Protocols.AppleSmcIo">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleSmcIo" />
+			                                            <span class="lbl"> AppleSmcIo</span>
+			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.Protocols.AppleUserInterfaceTheme">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleUserInterfaceTheme" />
 			                                            <span class="lbl"> AppleUserInterfaceTheme</span>
@@ -1283,6 +1322,10 @@
 			                                        <label class="mintip" :title="title.UEFI.Protocols.HashServices">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.HashServices" />
 			                                            <span class="lbl"> HashServices</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Protocols.OSInfo">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.OSInfo" />
+			                                            <span class="lbl"> OSInfo</span>
 			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.Protocols.UnicodeCollation">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.UnicodeCollation" />
@@ -1385,7 +1428,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Support OpenCore-0.5.3-RELEASE</span>
+							<span class="blue bolder">Support OpenCore-0.5.4-RELEASE Updated 2020/01/14</span>
 
 						</span>
 

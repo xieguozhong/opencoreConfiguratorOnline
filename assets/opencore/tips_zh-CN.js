@@ -41,7 +41,8 @@ const SYSTEM_TIPS = {
             ProtectCsmRegion: 'NO 用于修复人为制造和睡眠唤醒的问题, AvoidRuntimeDefrag 已经修复了这个问题所以请尽可能避免使用这个 Quirk',
             ProvideCustomSlide: 'YES 如果 Slide 值存在冲突, 此选项将强制 macOS 执行以下操作: 使用一个伪随机值。 只有在遇到 Only N/256 slide values are usable! 时需要',
             SetupVirtualMap: 'YES 将 SetVirtualAddresses 调用修复为虚拟地址',
-            ShrinkMemoryMap: 'NO 有巨大且不兼容内存映射的主板需要开启, 非必须不要使用'
+            ShrinkMemoryMap: 'NO 有巨大且不兼容内存映射的主板需要开启, 非必须不要使用',
+            SignalAppleOS: 'NO 报告通过OS Info加载的任何OS的macOS'
         },
         MmioWhitelist : {
             title : ''
@@ -69,9 +70,11 @@ const SYSTEM_TIPS = {
             AppleCpuPmCfgLock: 'NO 仅在 BIOS 中无法禁用 CFG-Lock 时才需要',
             AppleXcpmCfgLock: 'NO 仅在 BIOS 中无法禁用 CFG-Lock 时才需要',
             AppleXcpmExtraMsrs: 'NO 禁用奔腾和某些至强等不支持 CPU 所需的多个 MSR 访问',
+            AppleXcpmForceBoost : 'NO 在XCPM模式下强制发挥最佳性能',
             CustomSMBIOSGuid: 'NO 对 UpdateSMBIOSMode 自定义模式执行 GUID 修补, 用于戴尔笔记本电脑 (等同于 Clover 的 DellSMBIOSPatch)',
             DisableIoMapper: 'NO 需要绕过 VT-d 且 BIOS 中禁用时使用',
             ExternalDiskIcons: 'YES 硬盘图标补丁, macOS 将内部硬盘视为外接硬盘 (黄色) 时使用',
+            IncreasePciBarSize : 'NO 将IOPCIFamily中的32位PCI条尺寸从1 GB增加到4 GB',
             LapicKernelPanic: 'NO 禁用由 AP 核心 lapic 中断造成的内核崩溃, 通常用于惠普电脑 (等同于 Clover 的 Kernel LAPIC)',
             PanicNoKextDump: 'YES 在发生内核崩溃时阻止输出 Kext 列表, 提供可供排错参考的日志',
             ThirdPartyDrives: 'NO 将供应商修补程序应用于IOAHCIBlockStorage.kext，以启用第三方驱动器的本机功能，例如SSD上的TRIM或10.15及更高版本上的休眠支持',
@@ -112,6 +115,8 @@ const SYSTEM_TIPS = {
         },
         Security : {
             AllowNvramReset : 'NO 允许CMD + OPT + P + R处理并在引导选择器中启用显示NVRAM重置条目',
+            AllowSetDefault : 'NO 允许CTRL + Enter和CTRL + Index处理来设置启动选择器中的默认启动选项',
+            AuthRestart : 'NO 启用与VirtualSMC兼容的身份验证重新启动',
             RequireSignature : 'YES OC目录中的vault.plist需要vault.sig签名文件',
             RequireVault : 'YES 要求OC目录中存在vault.plist文件',
             ExposeSensitiveData : '操作系统的敏感数据公开位掩码（总和）',
@@ -123,7 +128,9 @@ const SYSTEM_TIPS = {
 
     NVRAM : {
         title : '用于注入 NVRAM (如引导标识符和 SIP)',
-        LegacyEnable: 'NO 启用从EFI卷根目录加载名为nvram.plist的NVRAM变量文件<br>1 没有原生 NVRAM 的设备设置为 YES<br>2 macOS 下硬件 NVRAM 工作「不」正常的设备设置为 YES<br>3 macOS 下硬件 NVRAM 工作正常的设备设置为'
+        LegacyEnable: 'NO 启用从EFI卷根目录加载名为nvram.plist的NVRAM变量文件<br>1 没有原生 NVRAM 的设备设置为 YES<br>2 macOS 下硬件 NVRAM 工作「不」正常的设备设置为 YES<br>3 macOS 下硬件 NVRAM 工作正常的设备设置为',
+        LegacyOverwrite : 'NO 允许覆盖nvram.plist中的固件变量',
+        WriteFlash : 'NO 允许为所有添加的变量写入闪存'
     },
 
     PlatformInfo : {
@@ -139,7 +146,8 @@ const SYSTEM_TIPS = {
             UpdateDataHub : 'NO 更新数据中心字段。这些字段是根据“Automatic”值从“Generic”或“DataHub”部分读取的',
             UpdateNVRAM : '更新与平台信息有关的NVRAM字段',
             UpdateSMBIOS : '更新SMBIOS字段。这些字段是从“Generic”或“SMBIOS”部分读取的，具体取决于“Automatic”值',
-            SpoofVendor : 'YES 仿冒制造商为 Acidanthera 来避免出现冲突'
+            SpoofVendor : 'YES 仿冒制造商为 Acidanthera 来避免出现冲突',
+            SupportsCsm : 'NO 在固件功能中强制CSM支持'
         },
 
         Generic : {
@@ -173,12 +181,14 @@ const SYSTEM_TIPS = {
             AppleEvent : 'NO 重新安装具有内置版本的Apple Event协议。这可用于确保VM或旧版Mac上的File Vault 2兼容性。',
             AppleImageConversion : 'NO 重新安装具有内置版本的Apple Image Conversion协议',
             AppleKeyMap : 'NO 安装具有内置版本的Apple Key Map协议',
+            AppleSmcIo : 'NO 重新安装具有内置版本的Apple SMC I / O协议',
             AppleUserInterfaceTheme : 'NO 重新安装具有内置版本的Apple用户界面主题协议',
             ConsoleControl: 'YES macOS 引导加载程序基于文本输出的控制台控制协议, 某些固件缺少该协议。当协议已经在固件中可用时, 需要设置此选项, 并且使用其他控制台控制选项, 例如 IgnoreTextInGraphics, SanitiseClearScreen 以及 ConsoleBehaviourUi 的 ConsoleBehaviourOs',
             DataHub: 'NO 重新安装数据库',
             DeviceProperties: 'NO 确保在 VM 或旧白苹果上完全兼容',
             FirmwareVolume: 'NO 修复 Filevault 的 UI 问题, 设置为 YES 可以获得更好地兼容 FileVault',
             HashServices: 'NO 修复运行 FileVault 时鼠标光标大小不正确的问题, 设置为 YES 可以更好地兼容 FileVault',
+            OSInfo : 'NO 强制使用内置版本重新安装OS Info协议。该协议通常用于从macOS引导程序，固件或其他应用程序接收通知',
             UnicodeCollation: 'NO 一些较旧的固件破坏了 Unicode 排序规则, 设置为 YES 可以修复这些系统上 UEFI Shell 的兼容性 (通常为用于 IvyBridge 或更旧的设备)'
         },
         Quirks : {
