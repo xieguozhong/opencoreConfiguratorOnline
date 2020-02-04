@@ -320,15 +320,15 @@ var VUEAPP = new Vue({
             Emulate:{Cpuid1Data : '',Cpuid1Mask :''},
             Quirks:{
                 AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, AppleXcpmForceBoost:false,CustomSMBIOSGuid:false,
-                DisableIoMapper:false, ExternalDiskIcons:false, IncreasePciBarSize:false,LapicKernelPanic:false, PanicNoKextDump:false,
+                DisableIoMapper:false, DummyPowerManagement:false, ExternalDiskIcons:false, IncreasePciBarSize:false,LapicKernelPanic:false, PanicNoKextDump:false,
                 PowerTimeoutKernelPanic:false, ThirdPartyDrives:false, XhciPortLimit:false
             }
         },
         Misc : {
             BlessOverride:[],
             Boot:{
-                ConsoleBehaviourOs:'', ConsoleBehaviourUi:'', ConsoleMode:'', HibernateMode:'None', Resolution:'', Timeout:'0',
-                HideSelf : false, PollAppleHotKeys: false, ShowPicker: false, UsePicker: false
+                ConsoleBehaviourOs:'', ConsoleBehaviourUi:'', ConsoleMode:'', HibernateMode:'None', Resolution:'', TakeoffDelay:'0',
+                Timeout:'0',BuiltinTextRenderer:false, HideSelf : false, PollAppleHotKeys: false, ShowPicker: false, UsePicker: false
             },
             Debug: {
                 DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', Target:'0'
@@ -358,7 +358,9 @@ var VUEAPP = new Vue({
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             Generic : {
-                MLB:'', ROM:'', SpoofVendor:false, SupportsCsm:false, SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
+                AdviseWindows : false,
+                MLB:'', ROM:'', SpoofVendor:false, //SupportsCsm:false, 
+                SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             PlatformNVRAM : {
                 BID:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', MLB:'', ROM:''

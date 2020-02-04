@@ -73,6 +73,7 @@ const SYSTEM_TIPS = {
             AppleXcpmForceBoost : 'NO 在XCPM模式下强制发挥最佳性能',
             CustomSMBIOSGuid: 'NO 对 UpdateSMBIOSMode 自定义模式执行 GUID 修补, 用于戴尔笔记本电脑 (等同于 Clover 的 DellSMBIOSPatch)',
             DisableIoMapper: 'NO 需要绕过 VT-d 且 BIOS 中禁用时使用',
+            DummyPowerManagement : 'NO 禁用AppleIntelCpuPower Management',
             ExternalDiskIcons: 'YES 硬盘图标补丁, macOS 将内部硬盘视为外接硬盘 (黄色) 时使用',
             IncreasePciBarSize : 'NO 将IOPCIFamily中的32位PCI条尺寸从1 GB增加到4 GB',
             LapicKernelPanic: 'NO 禁用由 AP 核心 lapic 中断造成的内核崩溃, 通常用于惠普电脑 (等同于 Clover 的 Kernel LAPIC)',
@@ -97,9 +98,11 @@ const SYSTEM_TIPS = {
 
         Boot : {
             HibernateMode: 'None 最好避免与黑苹果一同休眠',
+            BuiltinTextRenderer : 'NO 启用实验性内置文本渲染器',
             HideSelf: 'YES 在 OpenCore 的启动选择中隐藏自身 EFI 分区的启动项',
             PollAppleHotKeys: 'YES 允许在引导过程中使用苹果原生快捷键, 需要与 AppleGenericInput.efi 或 UsbKbDxe.efi 结合使用, 具体体验取决于固件',
             Timeout: '5 设置引导项等待时间',
+            TakeoffDelay : '0 处理选择器启动和操作热键之前执行的延迟（以微秒为单位）',
             ShowPicker: 'YES 显示 OpenCore 的 UI, 用于查看可用引导项, 设置为 NO 可以和 PollAppleHotKeys 配合提升体验',
             UsePicker: 'YES 使用 OpenCore 的默认 GUI, 如果您希望使用其他 GUI (暂时没有), 则设置为 NO',
             ConsoleBehaviourOs : '在操作系统负载时设置控制台控制行为',
@@ -145,12 +148,12 @@ const SYSTEM_TIPS = {
             Automatic : 'NO 根据通用部分而不是使用DataHub，NVRAM和SMBIOS部分的值生成PlatformInfo',
             UpdateDataHub : 'NO 更新数据中心字段。这些字段是根据“Automatic”值从“Generic”或“DataHub”部分读取的',
             UpdateNVRAM : '更新与平台信息有关的NVRAM字段',
-            UpdateSMBIOS : '更新SMBIOS字段。这些字段是从“Generic”或“SMBIOS”部分读取的，具体取决于“Automatic”值',
-            SpoofVendor : 'YES 仿冒制造商为 Acidanthera 来避免出现冲突',
-            SupportsCsm : 'NO 在固件功能中强制CSM支持'
+            UpdateSMBIOS : '更新SMBIOS字段。这些字段是从“Generic”或“SMBIOS”部分读取的，具体取决于“Automatic”值'
         },
 
         Generic : {
+			AdviseWindows : 'NO 在固件功能中强制Windows支持',
+            SpoofVendor : 'YES 仿冒制造商为 Acidanthera 来避免出现冲突',
             SystemProductName : '',
             MLB : '用 macserial 读取或生成',
             ROM : '可以是任意 6 Byte MAC 地址, 如 0x112233000000',

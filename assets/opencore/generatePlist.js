@@ -131,6 +131,7 @@ function getMisc() {
 
 	//2 Boot
 	miscContext += '<key>Boot</key><dict>';
+	miscContext += '<key>BuiltinTextRenderer</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['BuiltinTextRenderer']);
 	miscContext += '<key>ConsoleBehaviourOs</key>' + addCharstring(VUEAPP.Misc.Boot['ConsoleBehaviourOs']);
 	miscContext += '<key>ConsoleBehaviourUi</key>' + addCharstring(VUEAPP.Misc.Boot['ConsoleBehaviourUi']);
 	miscContext += '<key>ConsoleMode</key>' + addCharstring(VUEAPP.Misc.Boot['ConsoleMode']);
@@ -139,6 +140,7 @@ function getMisc() {
 	miscContext += '<key>PollAppleHotKeys</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['PollAppleHotKeys']);
 	miscContext += '<key>Resolution</key>' + addCharstring(VUEAPP.Misc.Boot['Resolution']);
 	miscContext += '<key>ShowPicker</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['ShowPicker']);
+	miscContext += '<key>TakeoffDelay</key><integer>' + toNumber(VUEAPP.Misc.Boot['TakeoffDelay']) + '</integer>';
 	miscContext += '<key>Timeout</key><integer>' + toNumber(VUEAPP.Misc.Boot['Timeout']) + '</integer>';
 	miscContext += '<key>UsePicker</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['UsePicker']);
 

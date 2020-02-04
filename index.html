@@ -581,6 +581,10 @@
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableIoMapper" />
                                             <span class="lbl"> DisableIoMapper</span>
                                         </label>
+                                         <label class="mintip" :title="title.Kernel.Quirks.DummyPowerManagement">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.DummyPowerManagement" />
+                                            <span class="lbl"> DummyPowerManagement</span>
+                                        </label>
 
                                     </div>
 
@@ -713,12 +717,19 @@
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.Resolution">
 			                                            Resolution<input type="text" class="form-control" v-model="Misc.Boot.Resolution"/>
 			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.TakeoffDelay">
+			                                            TakeoffDelay<input type="text" class="form-control" v-model="Misc.Boot.TakeoffDelay"/>
+			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.Timeout">
 			                                            Timeout<input type="text" class="form-control" v-model="Misc.Boot.Timeout"/>
 			                                        </div>
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px ">
+			                                    	<label class="mintip" :title="title.Misc.Boot.BuiltinTextRenderer">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.BuiltinTextRenderer" />
+			                                            <span class="lbl"> BuiltinTextRenderer</span>
+			                                        </label>
 			                                        <label class="mintip" :title="title.Misc.Boot.HideSelf">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.HideSelf" />
 			                                            <span class="lbl"> HideSelf</span>
@@ -954,14 +965,18 @@
 				                                </div>
 
 				                                <div class="checkbox" style="margin-top: 20px">
-				                                    <label class="mintip" :title="title.PlatformInfo.root.SpoofVendor">
-				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.SpoofVendor" />
+				                                	<label class="mintip" :title="title.PlatformInfo.Generic.AdviseWindows">
+				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.AdviseWindows" />
+				                                        <span class="lbl"> AdviseWindows</span>
+				                                    </label>
+				                                    <label class="mintip" :title="title.PlatformInfo.Generic.SpoofVendor">
+				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.SpoofVendor" />
 				                                        <span class="lbl"> SpoofVendor</span>
 				                                    </label>
-				                                    <label class="mintip" :title="title.PlatformInfo.root.SupportsCsm">
+				                                   <!--  <label class="mintip" :title="title.PlatformInfo.root.SupportsCsm">
 				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.SupportsCsm" />
 				                                        <span class="lbl"> SupportsCsm</span>
-				                                    </label>
+				                                    </label> -->
 				                                </div>
 				                            </div>
                                         </div>
@@ -1428,7 +1443,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Support OpenCore-0.5.4-RELEASE Updated 2020/01/14</span>
+							<span class="blue bolder">Support OpenCore-0.5.5-RELEASE Updated 2020/02/04</span>
 
 						</span>
 
