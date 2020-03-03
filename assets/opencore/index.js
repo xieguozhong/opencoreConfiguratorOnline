@@ -304,7 +304,7 @@ var VUEAPP = new Vue({
             Quirks : {
                 AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
                 DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectCsmRegion:false,
-                ProvideCustomSlide:false, SetupVirtualMap:false, ShrinkMemoryMap:false, SignalAppleOS:false
+                ProtectSecureBoot:false,ProvideCustomSlide:false, SetupVirtualMap:false, ShrinkMemoryMap:false, SignalAppleOS:false
             }
         },
         DeviceProperties : {
@@ -327,14 +327,14 @@ var VUEAPP = new Vue({
         Misc : {
             BlessOverride:[],
             Boot:{
-                ConsoleBehaviourOs:'', ConsoleBehaviourUi:'', ConsoleMode:'', HibernateMode:'None', Resolution:'', TakeoffDelay:'0',
-                Timeout:'0',BuiltinTextRenderer:false, HideSelf : false, PollAppleHotKeys: false, ShowPicker: false, UsePicker: false
+                HibernateMode:'None', PickerMode:'Builtin', TakeoffDelay:'0',
+                Timeout:'0', HideAuxiliary:false, HideSelf : false, PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
             },
             Debug: {
                 DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', Target:'0'
             },
             Security : {
-                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'',AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,RequireSignature:false, RequireVault:false
+                ExposeSensitiveData:'', HaltLevel:'', Vault:'Secure', ScanPolicy:'',AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false
             },
             Entries:[],
             Tools : []
@@ -376,18 +376,26 @@ var VUEAPP = new Vue({
         UEFI : {
             root : { ConnectDrivers : false},
             Drivers : [],
+			Audio : {
+				AudioSupport : false, AudioDevice : '', AudioCodec:0,AudioOut:0,MinimumVolume:20,PlayChime : false, VolumeAmplifier:0
+			},
             Input : {
                 KeyForgetThreshold:'', KeyMergeThreshold:'', KeySupport:false, KeySupportMode:'', KeySwap:false,  PointerSupport:false, PointerSupportMode:'', TimerResolution:''
 
             },
+            Output : {
+                TextRenderer:'BuiltinGraphics',ConsoleMode:'',Resolution:'',ClearScreenOnModeSwitch:false,IgnoreTextInGraphics:false,
+                ProvideConsoleGop:false,DirectGopRendering:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
+                SanitiseClearScreen:false
+            },
             Protocols : {
-                AppleBootPolicy:false, AppleEvent:false, AppleImageConversion:false, AppleKeyMap:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
-                ConsoleControl:false, DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
+                AppleAudio:false,AppleBootPolicy:false, AppleEvent:false, AppleImageConversion:false, AppleKeyMap:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
+                DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks : {
-                AvoidHighAlloc:false, ClearScreenOnModeSwitch:false, ExitBootServicesDelay:'', IgnoreInvalidFlexRatio:false, IgnoreTextInGraphics:false,
-                ProvideConsoleGop:false, ReconnectOnResChange:false,ReleaseUsbOwnership:false, ReplaceTabWithSpace:false, RequestBootVarFallback:false,
-                RequestBootVarRouting:false, SanitiseClearScreen:false ,UnblockFsConnect:false
+                ExitBootServicesDelay:'', IgnoreInvalidFlexRatio:false, 
+                ReleaseUsbOwnership:false,  RequestBootVarFallback:false,
+                RequestBootVarRouting:false, UnblockFsConnect:false
             }
         }
 
@@ -536,9 +544,17 @@ var VUEAPP = new Vue({
             }
             jQuery("#gridtable-UEFI-Drivers").trigger("reloadGrid");
 
+            //Audio
+            let AudioText = getValuesByKeyname(UEFIText, 'Audio');
+            this.getAndSetDictItem(AudioText, this.UEFI.Audio);
+
             //Input
             let InputText = getValuesByKeyname(UEFIText, 'Input');
             this.getAndSetDictItem(InputText, this.UEFI.Input);
+
+            //Output
+            let OutputText = getValuesByKeyname(UEFIText, 'Output');
+            this.getAndSetDictItem(OutputText, this.UEFI.Output);
 
             //Protocols
             let ProtocolsText = getValuesByKeyname(UEFIText, 'Protocols');

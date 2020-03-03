@@ -334,6 +334,10 @@
                                             <input type="checkbox" class="ace" v-model="Booter.Quirks.ProtectCsmRegion" />
                                             <span class="lbl"> ProtectCsmRegion</span>
                                         </label>
+										<label class="mintip" :title="title.Booter.Quirks.ProtectSecureBoot">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ProtectSecureBoot" />
+                                            <span class="lbl"> ProtectSecureBoot</span>
+                                        </label>
                                         <label class="mintip" :title="title.Booter.Quirks.ProvideCustomSlide">
                                             <input type="checkbox" class="ace" v-model="Booter.Quirks.ProvideCustomSlide" />
                                             <span class="lbl"> ProvideCustomSlide</span>
@@ -677,62 +681,58 @@
                                         <div id="tabbable_Misc_Boot" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="well">
 
-			                                    <div class="row">
-			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.ConsoleBehaviourOs">
-			                                            ConsoleBehaviourOs<!-- <input type="text" class="form-control" v-model="Misc.Boot.ConsoleBehaviourOs"/> -->
-			                                            <select class="form-control" v-model="Misc.Boot.ConsoleBehaviourOs">
-														<option value="">Empty string</option>
-														<option value="Text">Text</option>
-														<option value="Graphics">Graphics</option>
-														<option value="ForceText">ForceText</option>
-														<option value="ForceGraphics">ForceGraphics</option>
-														</select>
-			                                        </div>
-			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.ConsoleBehaviourUi">
-			                                            ConsoleBehaviourUi<!-- <input type="text" class="form-control" v-model="Misc.Boot.ConsoleBehaviourUi"/> -->
-			                                            <select class="form-control" v-model="Misc.Boot.ConsoleBehaviourUi">
-														<option value="">Empty string</option>
-														<option value="Text">Text</option>
-														<option value="Graphics">Graphics</option>
-														<option value="ForceText">ForceText</option>
-														<option value="ForceGraphics">ForceGraphics</option>
-														</select>
-			                                        </div>
-			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.ConsoleMode">
-			                                            ConsoleMode<input type="text" class="form-control" v-model="Misc.Boot.ConsoleMode"/>
-			                                        </div>
+			                                    <div class="row">			                                        
+			                                        
+			                                        
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.HibernateMode">
-			                                            HibernateMode<!-- <input type="text" class="form-control" v-model="Misc.Boot.HibernateMode"/> -->
+			                                            HibernateMode
 			                                            <select class="form-control" v-model="Misc.Boot.HibernateMode">
 														<option value="None">None</option>
 														<option value="Auto">Auto</option>
 														<option value="RTC">RTC</option>
 														<option value="NVRAM">NVRAM</option>
+														
 														</select>
 
 			                                        </div>
+
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerMode">
+			                                            PickerMode
+			                                            <select class="form-control" v-model="Misc.Boot.PickerMode">														
+														<option value="Builtin">Builtin</option>
+														<option value="External">External</option>
+														<option value="Apple">Apple</option>
+														</select>
+
+			                                        </div>
+
 			                                    </div>
 
 			                                    <div class="row" style="margin-top: 10px ">
-			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.Resolution">
-			                                            Resolution<input type="text" class="form-control" v-model="Misc.Boot.Resolution"/>
-			                                        </div>
+			                                        
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.TakeoffDelay">
 			                                            TakeoffDelay<input type="text" class="form-control" v-model="Misc.Boot.TakeoffDelay"/>
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.Timeout">
 			                                            Timeout<input type="text" class="form-control" v-model="Misc.Boot.Timeout"/>
 			                                        </div>
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerAttributes">
+			                                            PickerAttributes<input type="text" class="form-control" v-model="Misc.Boot.PickerAttributes"/>
+			                                        </div>
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px ">
-			                                    	<label class="mintip" :title="title.Misc.Boot.BuiltinTextRenderer">
-			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.BuiltinTextRenderer" />
-			                                            <span class="lbl"> BuiltinTextRenderer</span>
+			                                    	<label class="mintip" :title="title.Misc.Boot.HideAuxiliary">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.HideAuxiliary" />
+			                                            <span class="lbl"> HideAuxiliary</span>
 			                                        </label>
 			                                        <label class="mintip" :title="title.Misc.Boot.HideSelf">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.HideSelf" />
 			                                            <span class="lbl"> HideSelf</span>
+			                                        </label>
+													<label class="mintip" :title="title.Misc.Boot.PickerAudioAssist">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.PickerAudioAssist" />
+			                                            <span class="lbl"> PickerAudioAssist</span>
 			                                        </label>
 			                                        <label class="mintip" style="margin-left: 5px;" :title="title.Misc.Boot.PollAppleHotKeys">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.PollAppleHotKeys" />
@@ -742,10 +742,7 @@
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.ShowPicker" />
 			                                            <span class="lbl"> ShowPicker</span>
 			                                        </label>
-			                                        <label class="mintip" style="margin-left: 5px;" :title="title.Misc.Boot.UsePicker">
-			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.UsePicker" />
-			                                            <span class="lbl"> UsePicker</span>
-			                                        </label>
+			                                        
 			                                    </div>
 			                                </div>
                                         </div>
@@ -783,6 +780,15 @@
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.HaltLevel">
 			                                            HaltLevel<input type="text" class="form-control" v-model="Misc.Security.HaltLevel"/>
 			                                        </div>
+													<div class="col-xs-3 mintip" :title="title.Misc.Security.Vault">
+			                                            Vault
+			                                            <select class="form-control" v-model="Misc.Security.Vault">														
+														<option value="Optional">Optional</option>
+														<option value="Basic">Basic</option>
+														<option value="Secure">Secure</option>
+														</select>
+
+			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ScanPolicy">
 			                                            ScanPolicy<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
 			                                        </div>
@@ -801,14 +807,8 @@
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AuthRestart" />
 			                                            <span class="lbl"> AuthRestart</span>
 			                                        </label>
-			                                        <label class="mintip" :title="title.Misc.Security.RequireSignature">
-			                                            <input type="checkbox" class="ace" v-model="Misc.Security.RequireSignature" />
-			                                            <span class="lbl"> RequireSignature</span>
-			                                        </label>
-			                                        <label class="mintip" :title="title.Misc.Security.RequireVault">
-			                                            <input type="checkbox" class="ace" v-model="Misc.Security.RequireVault" />
-			                                            <span class="lbl"> RequireVault</span>
-			                                        </label>
+			                                        
+			                                        
 			                                    </div>
 			                                </div>
                                         </div>
@@ -1216,9 +1216,11 @@
                             	<div class="tabbable" >
                                     <ul class="nav nav-tabs">
                                         <li class="active" :title="title.UEFI.Drivers"><a data-toggle="tab" href="#tabbable_UEFI_Drivers" class="tablelia">Drivers</a></li>
-                                        <li :title="title.UEFI.Input"><a data-toggle="tab" href="#tabbable_UEFI_Input" class="tablelia">Input</a></li>
-                                        <li :title="title.UEFI.Protocols"><a data-toggle="tab" href="#tabbable_UEFI_Protocols" class="tablelia">Protocols</a></li>
-                                        <li :title="title.UEFI.Quirks"><a data-toggle="tab" href="#tabbable_UEFI_Quirks" class="tablelia">Quirks</a></li>
+										<li><a data-toggle="tab" href="#tabbable_UEFI_Audio" class="tablelia">Audio</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_Input" class="tablelia">Input</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_Output" class="tablelia">Output</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_Protocols" class="tablelia">Protocols</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_Quirks" class="tablelia">Quirks</a></li>
                                     </ul>
 
                                     <div class="tab-content" style="padding-right:18px;padding-left:2px;">
@@ -1249,6 +1251,45 @@
 			                                    <a id="btnadd-UEFI-Drivers"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
 			                                    <a id="btndel-UEFI-Drivers"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
 			                                </span>
+                                        </div>
+
+										<div id="tabbable_UEFI_Audio" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    
+												<div class="row">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioDevice">
+			                                        AudioDevice<input type="text" class="form-control" v-model="UEFI.Audio.AudioDevice">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioCodec">
+			                                        AudioCodec<input type="text" class="form-control" v-model="UEFI.Audio.AudioCodec">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioOut">
+			                                        AudioOut<input type="text" class="form-control" v-model="UEFI.Audio.AudioOut">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.MinimumVolume">
+			                                        MinimumVolume<input type="text" class="form-control" v-model="UEFI.Audio.MinimumVolume">
+			                                      </div>
+			                                    </div>
+			                                    <div class="row" style="margin-top: 10px">
+			                                        <div class="col-xs-3 mintip" :title="title.UEFI.Audio.VolumeAmplifier">
+			                                            VolumeAmplifier<input type="text" class="form-control" v-model="UEFI.Audio.VolumeAmplifier">
+			                                        </div>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.UEFI.Audio.AudioSupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.AudioSupport" />
+			                                            <span class="lbl"> AudioSupport</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Audio.PlayChime">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.PlayChime" />
+			                                            <span class="lbl"> PlayChime</span>
+			                                        </label>
+			                                        
+			                                    </div>
+
+
+			                                </div>
                                         </div>
 
                                         <div id="tabbable_UEFI_Input" class="tab-pane fade in" style="padding-bottom: 5px;">
@@ -1291,9 +1332,78 @@
 
 			                                </div>
                                         </div>
+
+
+                                        <div id="tabbable_UEFI_Output" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    
+												<div class="row">
+
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.TextRenderer">
+			                                            TextRenderer
+			                                            <select class="form-control" v-model="UEFI.Output.TextRenderer">
+														<option value="BuiltinGraphics">BuiltinGraphics</option>
+														<option value="SystemGraphics">SystemGraphics</option>
+														<option value="SystemText">SystemText</option>
+														<option value="SystemGeneric">SystemGeneric</option>
+														</select>
+
+			                                        </div>
+
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.ConsoleMode">
+			                                        ConsoleMode<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.Resolution">
+			                                        Resolution<input type="text" class="form-control" v-model="UEFI.Output.Resolution">
+			                                      </div>
+			                                      
+			                                    </div>
+			                                    
+			                                    
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.UEFI.Output.ClearScreenOnModeSwitch">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ClearScreenOnModeSwitch" />
+			                                            <span class="lbl"> ClearScreenOnModeSwitch</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.IgnoreTextInGraphics">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.IgnoreTextInGraphics" />
+			                                            <span class="lbl"> IgnoreTextInGraphics</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.ProvideConsoleGop">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ProvideConsoleGop" />
+			                                            <span class="lbl"> ProvideConsoleGop</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.DirectGopRendering">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.DirectGopRendering" />
+			                                            <span class="lbl"> DirectGopRendering</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.ReconnectOnResChange">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReconnectOnResChange" />
+			                                            <span class="lbl"> ReconnectOnResChange</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.ReplaceTabWithSpace">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReplaceTabWithSpace" />
+			                                            <span class="lbl"> ReplaceTabWithSpace</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.SanitiseClearScreen">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.SanitiseClearScreen" />
+			                                            <span class="lbl"> SanitiseClearScreen</span>
+			                                        </label>
+			                                        
+			                                    </div>
+
+
+			                                </div>
+                                        </div>
+
+
                                         <div id="tabbable_UEFI_Protocols" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="well">
 			                                    <div class="checkbox">
+			                                    	<label class="mintip" :title="title.UEFI.Protocols.AppleAudio">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleAudio" />
+			                                            <span class="lbl"> AppleAudio</span>
+			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.Protocols.AppleBootPolicy">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleBootPolicy" />
 			                                            <span class="lbl"> AppleBootPolicy</span>
@@ -1318,10 +1428,7 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.AppleUserInterfaceTheme" />
 			                                            <span class="lbl"> AppleUserInterfaceTheme</span>
 			                                        </label>
-			                                        <label class="mintip" :title="title.UEFI.Protocols.ConsoleControl">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.ConsoleControl" />
-			                                            <span class="lbl"> ConsoleControl</span>
-			                                        </label>
+			                                        
 			                                        <label class="mintip" :title="title.UEFI.Protocols.DataHub">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Protocols.DataHub" />
 			                                            <span class="lbl"> DataHub</span>
@@ -1359,38 +1466,20 @@
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px">
-			                                        <label class="mintip" class="mintip" :title="title.UEFI.Quirks.AvoidHighAlloc">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.AvoidHighAlloc" />
-			                                            <span class="lbl"> AvoidHighAlloc</span>
-			                                        </label>
-			                                        <label class="mintip" :title="title.UEFI.Quirks.ClearScreenOnModeSwitch">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ClearScreenOnModeSwitch" />
-			                                            <span class="lbl"> ClearScreenOnModeSwitch</span>
-			                                        </label>
+			                                        
+			                                        
 			                                        <label class="mintip" :title="title.UEFI.Quirks.IgnoreInvalidFlexRatio">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreInvalidFlexRatio" />
 			                                            <span class="lbl"> IgnoreInvalidFlexRatio</span>
 			                                        </label>
-			                                        <label class="mintip" :title="title.UEFI.Quirks.IgnoreTextInGraphics">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreTextInGraphics" />
-			                                            <span class="lbl"> IgnoreTextInGraphics</span>
-			                                        </label>
-			                                        <label class="mintip" :title="title.UEFI.Quirks.ProvideConsoleGop">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ProvideConsoleGop" />
-			                                            <span class="lbl"> ProvideConsoleGop</span>
-			                                        </label>
-			                                        <label class="mintip" :title="title.UEFI.Quirks.ReconnectOnResChange">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReconnectOnResChange" />
-			                                            <span class="lbl"> ReconnectOnResChange</span>
-			                                        </label>
+			                                        
+			                                        
+			                                        
 			                                        <label class="mintip" :title="title.UEFI.Quirks.ReleaseUsbOwnership">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReleaseUsbOwnership" />
 			                                            <span class="lbl"> ReleaseUsbOwnership</span>
 			                                        </label>
-			                                        <label class="mintip" :title="title.UEFI.Quirks.ReplaceTabWithSpace">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReplaceTabWithSpace" />
-			                                            <span class="lbl"> ReplaceTabWithSpace</span>
-			                                        </label>
+			                                        
 
 			                                        <label class="mintip" :title="title.UEFI.Quirks.RequestBootVarFallback">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarFallback" />
@@ -1401,10 +1490,7 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarRouting" />
 			                                            <span class="lbl"> RequestBootVarRouting</span>
 			                                        </label>
-			                                        <label class="mintip" :title="title.UEFI.Quirks.SanitiseClearScreen">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.SanitiseClearScreen" />
-			                                            <span class="lbl"> SanitiseClearScreen</span>
-			                                        </label>
+			                                        
 
 			                                        <label class="mintip" :title="title.UEFI.Quirks.UnblockFsConnect">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.UnblockFsConnect" />
@@ -1443,7 +1529,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Support OpenCore-0.5.5-RELEASE Updated 2020/02/04</span>
+							<span class="blue bolder">Only support OpenCore-0.5.6-RELEASE by 2020/03/03</span>
 
 						</span>
 

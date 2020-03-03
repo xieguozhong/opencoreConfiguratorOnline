@@ -39,6 +39,7 @@ const SYSTEM_TIPS = {
             EnableWriteUnprotector: 'YES 在执行期间删除 CR0 寄存器中的写入保护',
             ForceExitBootServices: 'NO 确保 ExitBootServices 即使在 MemoryMap 发生更改时也能调用成功, 除非有必要, 否则请勿使用',
             ProtectCsmRegion: 'NO 用于修复人为制造和睡眠唤醒的问题, AvoidRuntimeDefrag 已经修复了这个问题所以请尽可能避免使用这个 Quirk',
+			ProtectSecureBoot : 'NO 保护UEFI安全启动变量不被写入',
             ProvideCustomSlide: 'YES 如果 Slide 值存在冲突, 此选项将强制 macOS 执行以下操作: 使用一个伪随机值。 只有在遇到 Only N/256 slide values are usable! 时需要',
             SetupVirtualMap: 'YES 将 SetVirtualAddresses 调用修复为虚拟地址',
             ShrinkMemoryMap: 'NO 有巨大且不兼容内存映射的主板需要开启, 非必须不要使用',
@@ -98,17 +99,15 @@ const SYSTEM_TIPS = {
 
         Boot : {
             HibernateMode: 'None 最好避免与黑苹果一同休眠',
-            BuiltinTextRenderer : 'NO 启用实验性内置文本渲染器',
+            PickerMode : '选择用于引导管理的引导选择器 <br>1 Builtin -- 引导管理由OpenCore处理，使用了纯文本用户界面<br>2 External -- 如果可用，则使用外部引导管理协议。否则使用内置模式<br>3 Apple -- 如果可用，则使用Apple引导管理。否则使用内置模式',
+			HideAuxiliary : 'NO 默认情况下从选择器菜单隐藏辅助条目',
             HideSelf: 'YES 在 OpenCore 的启动选择中隐藏自身 EFI 分区的启动项',
             PollAppleHotKeys: 'YES 允许在引导过程中使用苹果原生快捷键, 需要与 AppleGenericInput.efi 或 UsbKbDxe.efi 结合使用, 具体体验取决于固件',
             Timeout: '5 设置引导项等待时间',
+			PickerAttributes : '0 设置选择器的特定属性',
+			PickerAudioAssist : 'NO 默认情况下在启动选择器中启用屏幕阅读器',
             TakeoffDelay : '0 处理选择器启动和操作热键之前执行的延迟（以微秒为单位）',
-            ShowPicker: 'YES 显示 OpenCore 的 UI, 用于查看可用引导项, 设置为 NO 可以和 PollAppleHotKeys 配合提升体验',
-            UsePicker: 'YES 使用 OpenCore 的默认 GUI, 如果您希望使用其他 GUI (暂时没有), 则设置为 NO',
-            ConsoleBehaviourOs : '在操作系统负载时设置控制台控制行为',
-            ConsoleBehaviourUi : '在OpenCore用户界面加载时设置控制台控件行为。有关详细信息，请参考ConsoleBehaviourOs描述',
-            ConsoleMode : '大多数固件上最好将此字段留空',
-            Resolution : '设置控制台输出屏幕分辨率, 如:1920x1080@32, 1920x1080, Max 或者 直接留空'
+            ShowPicker: 'YES 显示 OpenCore 的 UI, 用于查看可用引导项, 设置为 NO 可以和 PollAppleHotKeys 配合提升体验'
         },
         Debug : {
             DisableWatchDog : 'NO 某些固件可能无法成功快速启动操作系统，尤其是在调试模式下，这会导致看门狗定时器中止该过程。此选项关闭看门狗计时器',
@@ -120,10 +119,11 @@ const SYSTEM_TIPS = {
             AllowNvramReset : 'NO 允许CMD + OPT + P + R处理并在引导选择器中启用显示NVRAM重置条目',
             AllowSetDefault : 'NO 允许CTRL + Enter和CTRL + Index处理来设置启动选择器中的默认启动选项',
             AuthRestart : 'NO 启用与VirtualSMC兼容的身份验证重新启动',
-            RequireSignature : 'YES OC目录中的vault.plist需要vault.sig签名文件',
-            RequireVault : 'YES 要求OC目录中存在vault.plist文件',
+            
+            
             ExposeSensitiveData : '操作系统的敏感数据公开位掩码（总和）',
             HaltLevel : 'EDK II调试级别位掩码（总和）在获取HaltLevel消息后导致CPU停止（停止执行）。可能的值与DisplayLevel值匹配',
+			Vault : '在OpenCore中启用存储机制 <br>1 Optional -- 不需要任何东西，不执行任何保管库，不安全<br>2 Basic -- 要求OC目录中存在vault.plist文件。这提供了基本的文件系统完整性验证并可以防止意外的文件系统损坏<br>3 Secure -- 在OC目录中需要vault.sig签名文件作为vault.plist的文件。这包括基本完整性检查，但也尝试建立可信任的启动链',
             ScanPolicy : '定义操作系统检测策略'
         }
 
@@ -179,14 +179,38 @@ const SYSTEM_TIPS = {
             TimerResolution: '50000 固件时钟刷新的频率 (单位: 100纳秒) 华硕主板为自己的界面使用 60000 苹果使用 100000'
         },
 
+		Audio : {
+			AudioSupport : 'NO 通过连接到后端驱动程序来激活音频支持',
+			PlayChime : 'NO 在启动时播放提示音',
+            AudioDevice : '用于音频支持的指定音频控制器的设备路径',
+            AudioCodec : '指定音频控制器上的编解码器地址以支持音频',
+            AudioOut : '指定编解码器输出端口的索引从0开始',
+            MinimumVolume : '最小音量从0到100',
+            VolumeAmplifier : '系统体积到原始体积线性转换的乘法系数从0到1000'
+		},
+
+        Output : { 
+            TextRenderer:'为通过标准控制台输出的文本选择渲染器<br>1 BuiltinGraphics -- 切换到“图形”模式并将内置渲染器与自定义ConsoleControl一起使用<br>2 SystemGraphics -- 切换到“图形”模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>3 SystemText -- 切换到文本模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>4 SystemGeneric -- 将系统渲染器与系统ConsoleControl一起使用，并假设其行为正确', 
+            ConsoleMode:'按照WxH（例如80x24）格式的字符串指定的设置控制台输出模式', 
+            Resolution:'设置控制台输出屏幕分辨率<br>•设置为WxH @ Bpp（例如1920x1080 @ 32）或WxH（例如1920x1080）格式的字符串以请求自定义分辨率从GOP（如果有）<br>•空字符串 不更改屏幕分辨率<br>•Max 设置为最大以尝试使用最大的可用屏幕分辨率',
+            ClearScreenOnModeSwitch:'NO 从图形模式切换到文本模式时，某些固件仅清除部分屏幕，先前绘制的图像片段可见。此选项会先用黑色填充整个图形屏幕切换至文字模式', 
+            IgnoreTextInGraphics:'NO 选择固件可在图形和文本模式下在屏幕上输出文本。这通常是意外的，因为随机文本可能会出现在图形图像上并导致UI损坏。将此选项设置为true将当控制台控件处于不同于“文本”的模式时，丢弃所有文本输出', 
+            ProvideConsoleGop:'NO 确保控制台句柄上的GOP（图形输出协议）', 
+            DirectGopRendering:'NO 使用内置的图形输出协议渲染器进行控制台',
+            ReconnectOnResChange:'NO 更改屏幕分辨率后重新连接控制台控制器', 
+            ReplaceTabWithSpace:'NO 某些固件无法打印制表符甚至其后的所有内容，从而造成困难或无法使用UEFI Shell内置文本编辑器来编辑属性列表和其他文档。这个选项使控制台输出空间而不是选项卡', 
+            SanitiseClearScreen:'NO 某些固件在尝试清除时将屏幕分辨率重置为故障保护值（例如1024x768）使用大显示（例如2K或4K）时的屏幕内容。此选项尝试应用解决方法。' 
+        },
+
         Protocols : {
+            AppleAudio : 'NO 安装具有内置版本的Apple音频协议',
             AppleBootPolicy: 'NO 用于确保虚拟机或旧白苹果上兼容 APFS',
             AppleEvent : 'NO 重新安装具有内置版本的Apple Event协议。这可用于确保VM或旧版Mac上的File Vault 2兼容性。',
             AppleImageConversion : 'NO 重新安装具有内置版本的Apple Image Conversion协议',
             AppleKeyMap : 'NO 安装具有内置版本的Apple Key Map协议',
             AppleSmcIo : 'NO 重新安装具有内置版本的Apple SMC I / O协议',
             AppleUserInterfaceTheme : 'NO 重新安装具有内置版本的Apple用户界面主题协议',
-            ConsoleControl: 'YES macOS 引导加载程序基于文本输出的控制台控制协议, 某些固件缺少该协议。当协议已经在固件中可用时, 需要设置此选项, 并且使用其他控制台控制选项, 例如 IgnoreTextInGraphics, SanitiseClearScreen 以及 ConsoleBehaviourUi 的 ConsoleBehaviourOs',
+            
             DataHub: 'NO 重新安装数据库',
             DeviceProperties: 'NO 确保在 VM 或旧白苹果上完全兼容',
             FirmwareVolume: 'NO 修复 Filevault 的 UI 问题, 设置为 YES 可以获得更好地兼容 FileVault',
@@ -195,17 +219,15 @@ const SYSTEM_TIPS = {
             UnicodeCollation: 'NO 一些较旧的固件破坏了 Unicode 排序规则, 设置为 YES 可以修复这些系统上 UEFI Shell 的兼容性 (通常为用于 IvyBridge 或更旧的设备)'
         },
         Quirks : {
-            AvoidHighAlloc:'NO 主板无法正确访问 UEFI Boot Services 中更高内存的解决方法。除非有必要, 否则避免使用',
-            ClearScreenOnModeSwitch : 'NO 从图形模式切换到文本模式时, 某些固件仅清除屏幕的一部分, 导致屏幕上残留之前绘制的图片。 此选项会在切换到文本模式之前用黑色填充整个屏幕',
+            
+            
             IgnoreInvalidFlexRatio : 'NO BIOS 中无法禁用 MSR_FLEX_RATIO(0x194) 时开启',
-            IgnoreTextInGraphics : 'NO 修复不用 -v 开机时日志覆盖苹果标志输出的问题',
-            ProvideConsoleGop : 'YES macOS 引导加载程序要求 GOP (图形输出协议) 存在于控制台句柄上 如果选择启动项之后不出现 macOS 启动 Verbose 请启用',
-            ReconnectOnResChange : 'NO 有些固件在 GOP 分辨率改变后要求重新连接控制器才能输出文本, 开启这个选项会导致从 UEFI Shell 中启动 OpenCore 时直接黑屏, 尽量避免开启',
+            
             ReleaseUsbOwnership : 'NO 从固件驱动程序中释放 USB 控制器所属权, 除非您不知道自己在做什么, 否则避免使用。Clover 的等效设置是 FixOwnership',
-            ReplaceTabWithSpace : 'NO 取决于固件, 某些设备在 UEFI Shell 中编辑文件使用 Tab键 出问题时启用。注意, 此选项需要将 ConsoleControl 设置为 YES',
+            
             RequestBootVarFallback : 'NO 请求将某些Boot前缀变量从OC_VENDOR_VARIABLE_GUID回退到EFI_GLOBAL_VARIABLE_GUID',
             RequestBootVarRouting : 'YES 从 EFI_GLOBAL_VARIABLE_GUID 中为 OC_VENDOR_VARIABLE_GUID 请求 redirectBoot 前缀变量 <br>启用此项以便能够在与 macOS 引导项设计上不兼容的固件中可靠地使用 启动磁盘 设置',
-            SanitiseClearScreen : 'YES 修复 OpenCore 在高分屏中以 1024x768 显示的问题, 注意要同时开启 ConsoleControl 并将 ConsoleMode 的内容留空',
+            
             UnblockFsConnect : 'NO 惠普笔记本在 OpenCore 引导界面没有引导项时设置为 YES',
             ExitBootServicesDelay : '在EXIT_BOOT_SERVICES事件后增加延迟（以微秒为单位）'
         }
