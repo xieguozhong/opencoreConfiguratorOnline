@@ -38,12 +38,14 @@ const SYSTEM_TIPS = {
             EnableSafeModeSlide: 'YES 允许在安全模式下使用 Slide 值',
             EnableWriteUnprotector: 'YES 在执行期间删除 CR0 寄存器中的写入保护',
             ForceExitBootServices: 'NO 确保 ExitBootServices 即使在 MemoryMap 发生更改时也能调用成功, 除非有必要, 否则请勿使用',
-            ProtectCsmRegion: 'NO 用于修复人为制造和睡眠唤醒的问题, AvoidRuntimeDefrag 已经修复了这个问题所以请尽可能避免使用这个 Quirk',
+            ProtectMemoryRegions: 'NO 保护内存区域免受错误访问',
 			ProtectSecureBoot : 'NO 保护UEFI安全启动变量不被写入',
+			ProtectUefiServices : 'NO 保护UEFI服务不被固件覆盖',
             ProvideCustomSlide: 'YES 如果 Slide 值存在冲突, 此选项将强制 macOS 执行以下操作: 使用一个伪随机值。 只有在遇到 Only N/256 slide values are usable! 时需要',
+			RebuildAppleMemoryMap : 'NO 生成与macOS兼容的内存映射',
             SetupVirtualMap: 'YES 将 SetVirtualAddresses 调用修复为虚拟地址',
-            ShrinkMemoryMap: 'NO 有巨大且不兼容内存映射的主板需要开启, 非必须不要使用',
-            SignalAppleOS: 'NO 报告通过OS Info加载的任何OS的macOS'
+            SignalAppleOS: 'NO 报告通过OS Info加载的任何OS的macOS',
+            SyncRuntimePermissions: 'NO 更新运行时环境的内存权限'
         },
         MmioWhitelist : {
             title : ''
@@ -104,12 +106,14 @@ const SYSTEM_TIPS = {
             HideSelf: 'YES 在 OpenCore 的启动选择中隐藏自身 EFI 分区的启动项',
             PollAppleHotKeys: 'YES 允许在引导过程中使用苹果原生快捷键, 需要与 AppleGenericInput.efi 或 UsbKbDxe.efi 结合使用, 具体体验取决于固件',
             Timeout: '5 设置引导项等待时间',
+			ConsoleAttributes : '0 设置控制台的特定属性',
 			PickerAttributes : '0 设置选择器的特定属性',
 			PickerAudioAssist : 'NO 默认情况下在启动选择器中启用屏幕阅读器',
             TakeoffDelay : '0 处理选择器启动和操作热键之前执行的延迟（以微秒为单位）',
             ShowPicker: 'YES 显示 OpenCore 的 UI, 用于查看可用引导项, 设置为 NO 可以和 PollAppleHotKeys 配合提升体验'
         },
         Debug : {
+			AppleDebug : 'NO 启用boot.efi调试日志保存到OpenCore日志',
             DisableWatchDog : 'NO 某些固件可能无法成功快速启动操作系统，尤其是在调试模式下，这会导致看门狗定时器中止该过程。此选项关闭看门狗计时器',
             DisplayDelay : '0 屏幕上显示每条打印线后执行的微秒延迟',
             DisplayLevel : '0 屏幕上显示了EDK II调试级别位掩码（总和）。除非Target启用控制台（屏幕上）打印，否则屏幕上的调试输出将不可见',
@@ -169,6 +173,7 @@ const SYSTEM_TIPS = {
         ConnectDrivers: 'YES 强制加载 .efi 驱动程序, 更改为 NO 将自动连接 UEFI 驱动程序, 这样以获得更快的启动速度, 但并非所有驱动程序都可以自行连接, 某些文件系统驱动程序可能无法加载',
         Drivers: '在这里添加你的 .efi 驱动',
         Input : {
+			KeyFiltering : 'NO 启用键盘输入完整性检查',
             KeyForgetThreshold: '5 按住按键后每个键之间的时间间隔 (单位: 毫秒)',
             KeyMergeThreshold: '2 按住按键被重置的时间间隔 (单位: 毫秒)',
             KeySupport: 'YES 开启 OC 的内置键盘支持 使用 UsbKbDxe.efi 请设置为 NO',
@@ -192,6 +197,7 @@ const SYSTEM_TIPS = {
         Output : { 
             TextRenderer:'为通过标准控制台输出的文本选择渲染器<br>1 BuiltinGraphics -- 切换到“图形”模式并将内置渲染器与自定义ConsoleControl一起使用<br>2 SystemGraphics -- 切换到“图形”模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>3 SystemText -- 切换到文本模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>4 SystemGeneric -- 将系统渲染器与系统ConsoleControl一起使用，并假设其行为正确', 
             ConsoleMode:'按照WxH（例如80x24）格式的字符串指定的设置控制台输出模式', 
+			DirectGopCacheMode : '内置图形输出协议帧缓冲区的缓存模式',
             Resolution:'设置控制台输出屏幕分辨率<br>•设置为WxH @ Bpp（例如1920x1080 @ 32）或WxH（例如1920x1080）格式的字符串以请求自定义分辨率从GOP（如果有）<br>•空字符串 不更改屏幕分辨率<br>•Max 设置为最大以尝试使用最大的可用屏幕分辨率',
             ClearScreenOnModeSwitch:'NO 从图形模式切换到文本模式时，某些固件仅清除部分屏幕，先前绘制的图像片段可见。此选项会先用黑色填充整个图形屏幕切换至文字模式', 
             IgnoreTextInGraphics:'NO 选择固件可在图形和文本模式下在屏幕上输出文本。这通常是意外的，因为随机文本可能会出现在图形图像上并导致UI损坏。将此选项设置为true将当控制台控件处于不同于“文本”的模式时，丢弃所有文本输出', 
@@ -205,6 +211,7 @@ const SYSTEM_TIPS = {
         Protocols : {
             AppleAudio : 'NO 安装具有内置版本的Apple音频协议',
             AppleBootPolicy: 'NO 用于确保虚拟机或旧白苹果上兼容 APFS',
+			AppleDebugLog : 'NO 重新安装具有内置版本的Apple Debug Log协议',
             AppleEvent : 'NO 重新安装具有内置版本的Apple Event协议。这可用于确保VM或旧版Mac上的File Vault 2兼容性。',
             AppleImageConversion : 'NO 重新安装具有内置版本的Apple Image Conversion协议',
             AppleKeyMap : 'NO 安装具有内置版本的Apple Key Map协议',

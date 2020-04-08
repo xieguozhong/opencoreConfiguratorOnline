@@ -28,7 +28,8 @@ const GLOBAL_LANG = {
         del  : '删除',
         Error : '错误',
         enabled : '启用/禁用',
-        hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数'
+        hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数',
+		supportversion : '警告: 只支持OpenCore-0.5.7-RELEASE'
     },
 
     'en-US' : {
@@ -59,6 +60,7 @@ const GLOBAL_LANG = {
         del  : 'Delete',
         Error : 'Error',
         enabled : 'enabled/disabled',
-        hexstringlengthisodd : '<{@1}> is not a valid hexadecimal string, because the length of a hexadecimal string cannot be odd'
+        hexstringlengthisodd : '<{@1}> is not a valid hexadecimal string, because the length of a hexadecimal string cannot be odd',
+		supportversion : 'Warning: Only OpenCore-0.5.7-RELEASE is supported'
     }
 };

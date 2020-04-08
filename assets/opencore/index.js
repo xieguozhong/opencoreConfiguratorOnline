@@ -41,6 +41,9 @@ $(document).ready(function() {
       "positionClass": "toast-top-center"
     };
 
+	
+	showTipModal(VUEAPP.lang.supportversion, 'warning');
+
 
 });
 
@@ -303,8 +306,8 @@ var VUEAPP = new Vue({
             MmioWhitelist : [],
             Quirks : {
                 AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
-                DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectCsmRegion:false,
-                ProtectSecureBoot:false,ProvideCustomSlide:false, SetupVirtualMap:false, ShrinkMemoryMap:false, SignalAppleOS:false
+                DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectMemoryRegions:false,
+                ProtectSecureBoot:false,ProtectUefiServices:false,ProvideCustomSlide:false, RebuildAppleMemoryMap:false,SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false
             }
         },
         DeviceProperties : {
@@ -328,13 +331,13 @@ var VUEAPP = new Vue({
             BlessOverride:[],
             Boot:{
                 HibernateMode:'None', PickerMode:'Builtin', TakeoffDelay:'0',
-                Timeout:'0', HideAuxiliary:false, HideSelf : false, PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
+                Timeout:'0', HideAuxiliary:false, HideSelf : false, ConsoleAttributes:'0', PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
             },
             Debug: {
-                DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', Target:'0'
+                AppleDebug:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', Target:'0'
             },
             Security : {
-                ExposeSensitiveData:'', HaltLevel:'', Vault:'Secure', ScanPolicy:'',AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false
+                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false
             },
             Entries:[],
             Tools : []
@@ -377,19 +380,19 @@ var VUEAPP = new Vue({
             root : { ConnectDrivers : false},
             Drivers : [],
 			Audio : {
-				AudioSupport : false, AudioDevice : '', AudioCodec:0,AudioOut:0,MinimumVolume:20,PlayChime : false, VolumeAmplifier:0
+				AudioCodec:0, AudioDevice : '', AudioOut:0,AudioSupport : false,MinimumVolume:20,PlayChime : false, VolumeAmplifier:0
 			},
             Input : {
-                KeyForgetThreshold:'', KeyMergeThreshold:'', KeySupport:false, KeySupportMode:'', KeySwap:false,  PointerSupport:false, PointerSupportMode:'', TimerResolution:''
+                KeyFiltering:false,KeyForgetThreshold:'', KeyMergeThreshold:'', KeySupport:false, KeySupportMode:'', KeySwap:false,  PointerSupport:false, PointerSupportMode:'', TimerResolution:''
 
             },
             Output : {
-                TextRenderer:'BuiltinGraphics',ConsoleMode:'',Resolution:'',ClearScreenOnModeSwitch:false,IgnoreTextInGraphics:false,
-                ProvideConsoleGop:false,DirectGopRendering:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
-                SanitiseClearScreen:false
+                ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopCacheMode:'',DirectGopRendering:false,IgnoreTextInGraphics:false,
+                ProvideConsoleGop:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
+                Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics'
             },
             Protocols : {
-                AppleAudio:false,AppleBootPolicy:false, AppleEvent:false, AppleImageConversion:false, AppleKeyMap:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
+                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEvent:false, AppleImageConversion:false, AppleKeyMap:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks : {
