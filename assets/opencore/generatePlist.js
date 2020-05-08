@@ -131,24 +131,24 @@ function getMisc() {
 
 	//2 Boot
 	miscContext += '<key>Boot</key><dict>';
-	
-	
-	
-	
+
+
+
+	miscContext += '<key>ConsoleAttributes</key><integer>' + toNumber(VUEAPP.Misc.Boot['ConsoleAttributes']) + '</integer>';
 	miscContext += '<key>HibernateMode</key>' + addCharstring(VUEAPP.Misc.Boot['HibernateMode']);
-	
+
 	miscContext += '<key>HideAuxiliary</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['HideAuxiliary']);
 	miscContext += '<key>HideSelf</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['HideSelf']);
-	miscContext += '<key>ConsoleAttributes</key><integer>' + toNumber(VUEAPP.Misc.Boot['ConsoleAttributes']) + '</integer>';
+
 	miscContext += '<key>PickerAttributes</key><integer>' + toNumber(VUEAPP.Misc.Boot['PickerAttributes']) + '</integer>';
 	miscContext += '<key>PickerAudioAssist</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['PickerAudioAssist']);
 	miscContext += '<key>PickerMode</key>' + addCharstring(VUEAPP.Misc.Boot['PickerMode']);
 	miscContext += '<key>PollAppleHotKeys</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['PollAppleHotKeys']);
-	
+
 	miscContext += '<key>ShowPicker</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['ShowPicker']);
 	miscContext += '<key>TakeoffDelay</key><integer>' + toNumber(VUEAPP.Misc.Boot['TakeoffDelay']) + '</integer>';
 	miscContext += '<key>Timeout</key><integer>' + toNumber(VUEAPP.Misc.Boot['Timeout']) + '</integer>';
-	
+
 
 	//3 Debug
 	miscContext += '</dict><key>Debug</key><dict>';
@@ -167,8 +167,9 @@ function getMisc() {
 	miscContext += '<key>AllowNvramReset</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowNvramReset']);
 	miscContext += '<key>AllowSetDefault</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowSetDefault']);
 	miscContext += '<key>AuthRestart</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AuthRestart']);
+	miscContext += '<key>BootProtect</key>' + addCharstring(VUEAPP.Misc.Security['BootProtect']);
 	miscContext += '<key>ExposeSensitiveData</key><integer>' + toNumber(VUEAPP.Misc.Security['ExposeSensitiveData']) + '</integer>';
-	miscContext += '<key>HaltLevel</key><integer>' + toNumber(VUEAPP.Misc.Security['HaltLevel']) + '</integer>';	
+	miscContext += '<key>HaltLevel</key><integer>' + toNumber(VUEAPP.Misc.Security['HaltLevel']) + '</integer>';
 	miscContext += '<key>ScanPolicy</key><integer>' + toNumber(VUEAPP.Misc.Security['ScanPolicy']) + '</integer>';
 	miscContext += '<key>Vault</key>' + addCharstring(VUEAPP.Misc.Security['Vault']);
 
@@ -259,17 +260,24 @@ function getPlatformInfo() {
 function getUEFI() {
 	let uefiContext = '<key>UEFI</key><dict>';
 
-	//3 Audio
+	//APFS
+	uefiContext += '<key>APFS</key><dict>';
+	let ApfsDataType = {MinDate:'integer',MinVersion:'integer'};
+	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.APFS, ApfsDataType);
+	uefiContext += '</dict>';
+
+
+	// Audio
 	uefiContext += '<key>Audio</key><dict>';
 	let AudioDataType = {AudioCodec:'integer',AudioOut:'integer',MinimumVolume:'integer',VolumeAmplifier:'integer'};
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Audio, AudioDataType);
 	uefiContext += '</dict>';
 
-	//1 root
+	// root
 	uefiContext += '<key>ConnectDrivers</key>' + toBoolStringStrict(VUEAPP.UEFI.root['ConnectDrivers']);
 
 
-	//2 Drivers
+	// Drivers
 	uefiContext += '<key>Drivers</key>';
 	let dridata = VUEAPP.UEFI.Drivers, dristring = '';
 	//console.log(dridata);
@@ -279,29 +287,33 @@ function getUEFI() {
 	uefiContext += bothsidesAddarray(dristring);
 
 
-	
 
-	//4 Input
+
+	// Input
 	uefiContext += '<key>Input</key><dict>';
 	let inputDataType = {KeyForgetThreshold:'integer',KeyMergeThreshold:'integer',TimerResolution:'integer'};
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Input, inputDataType);
 	uefiContext += '</dict>';
 
-	//5 Output
+	// Output
 	uefiContext += '<key>Output</key><dict>';
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Output);
 	uefiContext += '</dict>';
 
-	//6 Protocols
-	uefiContext += '<key>Protocols</key><dict>';
-	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Protocols);
+	// ProtocolOverrides
+	uefiContext += '<key>ProtocolOverrides</key><dict>';
+	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.ProtocolOverrides);
 	uefiContext += '</dict>';
 
-	//7 Quirks
+	// Quirks
 	uefiContext += '<key>Quirks</key><dict>';
 	let quirksDataType = {ExitBootServicesDelay:'integer'}
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Quirks, quirksDataType);
 	uefiContext += '</dict>';
+
+	//ReservedMemory
+	uefiContext += '<key>ReservedMemory</key>';
+	uefiContext += genArrayDict(VUEAPP.UEFI.ReservedMemory,[],['Address','Size']);
 
 	return uefiContext + '</dict>';
 }

@@ -41,7 +41,7 @@ $(document).ready(function() {
       "positionClass": "toast-top-center"
     };
 
-	
+
 	showTipModal(VUEAPP.lang.supportversion, 'warning');
 
 
@@ -323,7 +323,7 @@ var VUEAPP = new Vue({
             Emulate:{Cpuid1Data : '',Cpuid1Mask :''},
             Quirks:{
                 AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, AppleXcpmForceBoost:false,CustomSMBIOSGuid:false,
-                DisableIoMapper:false, DummyPowerManagement:false, ExternalDiskIcons:false, IncreasePciBarSize:false,LapicKernelPanic:false, PanicNoKextDump:false,
+                DisableIoMapper:false, DisableRtcChecksum:false, DummyPowerManagement:false, ExternalDiskIcons:false, IncreasePciBarSize:false,LapicKernelPanic:false, PanicNoKextDump:false,
                 PowerTimeoutKernelPanic:false, ThirdPartyDrives:false, XhciPortLimit:false
             }
         },
@@ -337,7 +337,7 @@ var VUEAPP = new Vue({
                 AppleDebug:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', Target:'0'
             },
             Security : {
-                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false
+                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,BootProtect:'None'
             },
             Entries:[],
             Tools : []
@@ -362,7 +362,7 @@ var VUEAPP = new Vue({
             },
             Generic : {
                 AdviseWindows : false,
-                MLB:'', ROM:'', SpoofVendor:false, //SupportsCsm:false, 
+                MLB:'', ROM:'', SpoofVendor:false, //SupportsCsm:false,
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             PlatformNVRAM : {
@@ -379,6 +379,10 @@ var VUEAPP = new Vue({
         UEFI : {
             root : { ConnectDrivers : false},
             Drivers : [],
+			APFS : {
+				EnableJumpstart : false, HideVerbose :false, JumpstartHotPlug : false, MinDate : 0, MinVersion : 0
+			},
+
 			Audio : {
 				AudioCodec:0, AudioDevice : '', AudioOut:0,AudioSupport : false,MinimumVolume:20,PlayChime : false, VolumeAmplifier:0
 			},
@@ -391,15 +395,16 @@ var VUEAPP = new Vue({
                 ProvideConsoleGop:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
                 Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics'
             },
-            Protocols : {
-                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEvent:false, AppleImageConversion:false, AppleKeyMap:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
+            ProtocolOverrides : {
+                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEvent:false, AppleImageConversion:false, AppleKeyMap:false, AppleRtcRam:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks : {
-                ExitBootServicesDelay:'', IgnoreInvalidFlexRatio:false, 
+                ExitBootServicesDelay:'', IgnoreInvalidFlexRatio:false,
                 ReleaseUsbOwnership:false,  RequestBootVarFallback:false,
                 RequestBootVarRouting:false, UnblockFsConnect:false
-            }
+            },
+            ReservedMemory : []
         }
 
     },
@@ -547,6 +552,10 @@ var VUEAPP = new Vue({
             }
             jQuery("#gridtable-UEFI-Drivers").trigger("reloadGrid");
 
+			//APFS
+            let APFSText = getValuesByKeyname(UEFIText, 'APFS');
+            this.getAndSetDictItem(APFSText, this.UEFI.APFS);
+
             //Audio
             let AudioText = getValuesByKeyname(UEFIText, 'Audio');
             this.getAndSetDictItem(AudioText, this.UEFI.Audio);
@@ -559,13 +568,17 @@ var VUEAPP = new Vue({
             let OutputText = getValuesByKeyname(UEFIText, 'Output');
             this.getAndSetDictItem(OutputText, this.UEFI.Output);
 
-            //Protocols
-            let ProtocolsText = getValuesByKeyname(UEFIText, 'Protocols');
-            this.getAndSetDictItem(ProtocolsText, this.UEFI.Protocols);
+            //ProtocolOverrides
+            let ProtocolOverridesText = getValuesByKeyname(UEFIText, 'ProtocolOverrides');
+            this.getAndSetDictItem(ProtocolOverridesText, this.UEFI.ProtocolOverrides);
 
             //Quirks
             let QuirksText = getValuesByKeyname(UEFIText, 'Quirks');
             this.getAndSetDictItem(QuirksText, this.UEFI.Quirks);
+
+            //ReservedMemory
+            this.getPlistAndResetTableData(UEFIText, 'ReservedMemory', 'gridtable-UEFI-ReservedMemory', this.UEFI.ReservedMemory);
+
         }
 
         , initPlatformInfo : function () {

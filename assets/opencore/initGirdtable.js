@@ -248,13 +248,24 @@ function initGridTableKernel() {
 }
 
 function initGridTableUEFI() {
-	colNames = ['FileName'];
-	colModel = [
+	let colNames = ['FileName'];
+	let colModel = [
 		{name:'FileName',index:'FileName', width:150,editable: true,  sortable:false, formatter:plistEncode}
 	];
 	let objGT_UEFI_Drivers = jQuery('#gridtable-UEFI-Drivers');
 	GLOBAL_ARRAY_TABLE[0].push(objGT_UEFI_Drivers);
 	initGridTable(objGT_UEFI_Drivers, VUEAPP.UEFI.Drivers, colNames, colModel);
+
+	colNames = ['Address','Comment','Size','Enabled'];
+	colModel = [
+		{name:'Address',index:'Address', width:150,editable: true,  sortable:false, formatter:formatInteger},
+		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Size',index:'Size', width:100,editable: true,  sortable:false, formatter:formatInteger},
+		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
+	];
+	let objGT_UEFI_ReservedMemory = jQuery('#gridtable-UEFI-ReservedMemory');
+	GLOBAL_ARRAY_TABLE[0].push(objGT_UEFI_ReservedMemory);
+	initGridTable(objGT_UEFI_ReservedMemory, VUEAPP.UEFI.ReservedMemory, colNames, colModel);
 
 }
 

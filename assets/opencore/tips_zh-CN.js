@@ -76,6 +76,7 @@ const SYSTEM_TIPS = {
             AppleXcpmForceBoost : 'NO 在XCPM模式下强制发挥最佳性能',
             CustomSMBIOSGuid: 'NO 对 UpdateSMBIOSMode 自定义模式执行 GUID 修补, 用于戴尔笔记本电脑 (等同于 Clover 的 DellSMBIOSPatch)',
             DisableIoMapper: 'NO 需要绕过 VT-d 且 BIOS 中禁用时使用',
+			DisableRtcChecksum : '禁用 AppleRTC 中写入的主校验和 （0x58-0x59）',
             DummyPowerManagement : 'NO 禁用AppleIntelCpuPower Management',
             ExternalDiskIcons: 'YES 硬盘图标补丁, macOS 将内部硬盘视为外接硬盘 (黄色) 时使用',
             IncreasePciBarSize : 'NO 将IOPCIFamily中的32位PCI条尺寸从1 GB增加到4 GB',
@@ -123,7 +124,7 @@ const SYSTEM_TIPS = {
             AllowNvramReset : 'NO 允许CMD + OPT + P + R处理并在引导选择器中启用显示NVRAM重置条目',
             AllowSetDefault : 'NO 允许CTRL + Enter和CTRL + Index处理来设置启动选择器中的默认启动选项',
             AuthRestart : 'NO 启用与VirtualSMC兼容的身份验证重新启动',
-            
+            BootProtect :'None 尝试提供Bootloader持久性<br>1 None — 什么都不做<br>2 Bootstrap —创建或更新最高优先级\EFI\OC\Bootstrap\Bootstrap.efi引导选项（Boot9696）在引导加载程序启动时在UEFI变量存储中。 为了使此选项起作用，需要RequestBootVarRouting被启用',
             
             ExposeSensitiveData : '操作系统的敏感数据公开位掩码（总和）',
             HaltLevel : 'EDK II调试级别位掩码（总和）在获取HaltLevel消息后导致CPU停止（停止执行）。可能的值与DisplayLevel值匹配',
@@ -194,6 +195,14 @@ const SYSTEM_TIPS = {
             VolumeAmplifier : '系统体积到原始体积线性转换的乘法系数从0到1000'
 		},
 
+		APFS : {
+			EnableJumpstart : 'NO 从APFS容器加载嵌入式APFS驱动程序',
+				HideVerbose : 'NO 隐藏APFS驱动程序的详细输出',
+				JumpstartHotPlug : 'NO 为新连接的设备加载APFS驱动程序',
+				MinDate : '0 允许的最小APFS驱动程序日期',
+				MinVersion : '0 允许的最低APFS驱动程序版本'
+		},
+
         Output : { 
             TextRenderer:'为通过标准控制台输出的文本选择渲染器<br>1 BuiltinGraphics -- 切换到“图形”模式并将内置渲染器与自定义ConsoleControl一起使用<br>2 SystemGraphics -- 切换到“图形”模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>3 SystemText -- 切换到文本模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>4 SystemGeneric -- 将系统渲染器与系统ConsoleControl一起使用，并假设其行为正确', 
             ConsoleMode:'按照WxH（例如80x24）格式的字符串指定的设置控制台输出模式', 
@@ -208,13 +217,14 @@ const SYSTEM_TIPS = {
             SanitiseClearScreen:'NO 某些固件在尝试清除时将屏幕分辨率重置为故障保护值（例如1024x768）使用大显示（例如2K或4K）时的屏幕内容。此选项尝试应用解决方法。' 
         },
 
-        Protocols : {
+        ProtocolOverrides : {
             AppleAudio : 'NO 安装具有内置版本的Apple音频协议',
             AppleBootPolicy: 'NO 用于确保虚拟机或旧白苹果上兼容 APFS',
 			AppleDebugLog : 'NO 重新安装具有内置版本的Apple Debug Log协议',
             AppleEvent : 'NO 重新安装具有内置版本的Apple Event协议。这可用于确保VM或旧版Mac上的File Vault 2兼容性。',
             AppleImageConversion : 'NO 重新安装具有内置版本的Apple Image Conversion协议',
             AppleKeyMap : 'NO 安装具有内置版本的Apple Key Map协议',
+			AppleRtcRam : 'NO 重新安装具有内置版本的Apple RTC RAM协议',
             AppleSmcIo : 'NO 重新安装具有内置版本的Apple SMC I / O协议',
             AppleUserInterfaceTheme : 'NO 重新安装具有内置版本的Apple用户界面主题协议',
             
