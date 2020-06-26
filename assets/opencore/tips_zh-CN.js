@@ -8,7 +8,7 @@ const SYSTEM_TIPS = {
             title : '类型：plist 数组\n故障安全：空\n说明：从 OC/ACPI 目录中加载选定的表。\n\n1. 评论\n类型：plist 字符串\n故障安全：空字符串\n说明：用于为条目提供人类可读引用的任意 ASCII 字符串。是否使用此值是实现的。\n2. 已启用\n类型： 列表布尔\n故障安全：错误\n说明：除非设置为 true，否则不会添加此 ACPI 表。\n3. 路径\n类型：plist 字符串\n故障安全：空字符串\n说明：要作为 ACPI 表加载的文件路径。示例值包括 DSDT.aml、SubDir/SSDT-8.aml、SSDT-USBX.ml 等。'
         },
 
-        Block : {
+        Delete : {
             title : '屏蔽ACPI (DSDT, SSDT) 表, (可以删除此项, 大多数用户都用不到)'
         },
 
@@ -57,7 +57,7 @@ const SYSTEM_TIPS = {
         Add : {
             title : '设置设备属性'
         },
-        Block : {
+        Delete : {
             title : '用于删除设备属性 (可以删除此项, 大多数用户都用不到)'
         }
 
@@ -104,7 +104,7 @@ const SYSTEM_TIPS = {
             HibernateMode: 'None 最好避免与黑苹果一同休眠',
             PickerMode : '选择用于引导管理的引导选择器 <br>1 Builtin -- 引导管理由OpenCore处理，使用了纯文本用户界面<br>2 External -- 如果可用，则使用外部引导管理协议。否则使用内置模式<br>3 Apple -- 如果可用，则使用Apple引导管理。否则使用内置模式',
 			HideAuxiliary : 'NO 默认情况下从选择器菜单隐藏辅助条目',
-            HideSelf: 'YES 在 OpenCore 的启动选择中隐藏自身 EFI 分区的启动项',
+            
             PollAppleHotKeys: 'YES 允许在引导过程中使用苹果原生快捷键, 需要与 AppleGenericInput.efi 或 UsbKbDxe.efi 结合使用, 具体体验取决于固件',
             Timeout: '5 设置引导项等待时间',
 			ConsoleAttributes : '0 设置控制台的特定属性',
@@ -115,17 +115,19 @@ const SYSTEM_TIPS = {
         },
         Debug : {
 			AppleDebug : 'NO 启用boot.efi调试日志保存到OpenCore日志',
+			ApplePanic : 'NO 将macOS内核紧急情况保存到OpenCore根分区',
             DisableWatchDog : 'NO 某些固件可能无法成功快速启动操作系统，尤其是在调试模式下，这会导致看门狗定时器中止该过程。此选项关闭看门狗计时器',
             DisplayDelay : '0 屏幕上显示每条打印线后执行的微秒延迟',
             DisplayLevel : '0 屏幕上显示了EDK II调试级别位掩码（总和）。除非Target启用控制台（屏幕上）打印，否则屏幕上的调试输出将不可见',
+			SysReport : 'NO 在ESP文件夹上生成系统报告',
             Target : '0 启用的日志记录目标的位掩码（总和）。默认情况下，所有日志记录输出都是隐藏的，因此在需要调试时需要设置此选项'
         },
         Security : {
             AllowNvramReset : 'NO 允许CMD + OPT + P + R处理并在引导选择器中启用显示NVRAM重置条目',
             AllowSetDefault : 'NO 允许CTRL + Enter和CTRL + Index处理来设置启动选择器中的默认启动选项',
             AuthRestart : 'NO 启用与VirtualSMC兼容的身份验证重新启动',
+			BlacklistAppleUpdate : '忽略尝试更新Apple外设固件的引导选项（例如MultiUpdater.efi）',
             BootProtect :'None 尝试提供Bootloader持久性<br>1 None — 什么都不做<br>2 Bootstrap —创建或更新最高优先级\EFI\OC\Bootstrap\Bootstrap.efi引导选项（Boot9696）在引导加载程序启动时在UEFI变量存储中。 为了使此选项起作用，需要RequestBootVarRouting被启用',
-            
             ExposeSensitiveData : '操作系统的敏感数据公开位掩码（总和）',
             HaltLevel : 'EDK II调试级别位掩码（总和）在获取HaltLevel消息后导致CPU停止（停止执行）。可能的值与DisplayLevel值匹配',
 			Vault : '在OpenCore中启用存储机制 <br>1 Optional -- 不需要任何东西，不执行任何保管库，不安全<br>2 Basic -- 要求OC目录中存在vault.plist文件。这提供了基本的文件系统完整性验证并可以防止意外的文件系统损坏<br>3 Secure -- 在OC目录中需要vault.sig签名文件作为vault.plist的文件。这包括基本完整性检查，但也尝试建立可信任的启动链',
@@ -197,16 +199,15 @@ const SYSTEM_TIPS = {
 
 		APFS : {
 			EnableJumpstart : 'NO 从APFS容器加载嵌入式APFS驱动程序',
-				HideVerbose : 'NO 隐藏APFS驱动程序的详细输出',
-				JumpstartHotPlug : 'NO 为新连接的设备加载APFS驱动程序',
-				MinDate : '0 允许的最小APFS驱动程序日期',
-				MinVersion : '0 允许的最低APFS驱动程序版本'
+			HideVerbose : 'NO 隐藏APFS驱动程序的详细输出',
+			JumpstartHotPlug : 'NO 为新连接的设备加载APFS驱动程序',
+			MinDate : '0 允许的最小APFS驱动程序日期',
+			MinVersion : '0 允许的最低APFS驱动程序版本'
 		},
 
         Output : { 
             TextRenderer:'为通过标准控制台输出的文本选择渲染器<br>1 BuiltinGraphics -- 切换到“图形”模式并将内置渲染器与自定义ConsoleControl一起使用<br>2 SystemGraphics -- 切换到“图形”模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>3 SystemText -- 切换到文本模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>4 SystemGeneric -- 将系统渲染器与系统ConsoleControl一起使用，并假设其行为正确', 
-            ConsoleMode:'按照WxH（例如80x24）格式的字符串指定的设置控制台输出模式', 
-			DirectGopCacheMode : '内置图形输出协议帧缓冲区的缓存模式',
+            ConsoleMode:'按照WxH（例如80x24）格式的字符串指定的设置控制台输出模式', 			
             Resolution:'设置控制台输出屏幕分辨率<br>•设置为WxH @ Bpp（例如1920x1080 @ 32）或WxH（例如1920x1080）格式的字符串以请求自定义分辨率从GOP（如果有）<br>•空字符串 不更改屏幕分辨率<br>•Max 设置为最大以尝试使用最大的可用屏幕分辨率',
             ClearScreenOnModeSwitch:'NO 从图形模式切换到文本模式时，某些固件仅清除部分屏幕，先前绘制的图像片段可见。此选项会先用黑色填充整个图形屏幕切换至文字模式', 
             IgnoreTextInGraphics:'NO 选择固件可在图形和文本模式下在屏幕上输出文本。这通常是意外的，因为随机文本可能会出现在图形图像上并导致UI损坏。将此选项设置为true将当控制台控件处于不同于“文本”的模式时，丢弃所有文本输出', 
@@ -226,8 +227,7 @@ const SYSTEM_TIPS = {
             AppleKeyMap : 'NO 安装具有内置版本的Apple Key Map协议',
 			AppleRtcRam : 'NO 重新安装具有内置版本的Apple RTC RAM协议',
             AppleSmcIo : 'NO 重新安装具有内置版本的Apple SMC I / O协议',
-            AppleUserInterfaceTheme : 'NO 重新安装具有内置版本的Apple用户界面主题协议',
-            
+            AppleUserInterfaceTheme : 'NO 重新安装具有内置版本的Apple用户界面主题协议',            
             DataHub: 'NO 重新安装数据库',
             DeviceProperties: 'NO 确保在 VM 或旧白苹果上完全兼容',
             FirmwareVolume: 'NO 修复 Filevault 的 UI 问题, 设置为 YES 可以获得更好地兼容 FileVault',
@@ -236,16 +236,12 @@ const SYSTEM_TIPS = {
             UnicodeCollation: 'NO 一些较旧的固件破坏了 Unicode 排序规则, 设置为 YES 可以修复这些系统上 UEFI Shell 的兼容性 (通常为用于 IvyBridge 或更旧的设备)'
         },
         Quirks : {
-            
-            
-            IgnoreInvalidFlexRatio : 'NO BIOS 中无法禁用 MSR_FLEX_RATIO(0x194) 时开启',
-            
-            ReleaseUsbOwnership : 'NO 从固件驱动程序中释放 USB 控制器所属权, 除非您不知道自己在做什么, 否则避免使用。Clover 的等效设置是 FixOwnership',
-            
-            RequestBootVarFallback : 'NO 请求将某些Boot前缀变量从OC_VENDOR_VARIABLE_GUID回退到EFI_GLOBAL_VARIABLE_GUID',
+            IgnoreInvalidFlexRatio : 'NO BIOS 中无法禁用 MSR_FLEX_RATIO(0x194) 时开启',            
+            ReleaseUsbOwnership : 'NO 从固件驱动程序中释放 USB 控制器所属权, 除非您不知道自己在做什么, 否则避免使用。Clover 的等效设置是 FixOwnership',       
             RequestBootVarRouting : 'YES 从 EFI_GLOBAL_VARIABLE_GUID 中为 OC_VENDOR_VARIABLE_GUID 请求 redirectBoot 前缀变量 <br>启用此项以便能够在与 macOS 引导项设计上不兼容的固件中可靠地使用 启动磁盘 设置',
-            
             UnblockFsConnect : 'NO 惠普笔记本在 OpenCore 引导界面没有引导项时设置为 YES',
+			DeduplicateBootOrder : 'NO 在EFI_GLOBAL_VARIABLE_GUID中的BootOrder变量中删除重复的条目',
+			TscSyncTimeout : '尝试以指定的超时执行TSC同步',
             ExitBootServicesDelay : '在EXIT_BOOT_SERVICES事件后增加延迟（以微秒为单位）'
         }
     }

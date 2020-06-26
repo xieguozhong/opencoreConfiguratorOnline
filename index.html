@@ -194,7 +194,7 @@
                         		<div class="tabbable" >
 									<ul class="nav nav-tabs">
 										<li class="active" :title="title.ACPI.Add.title"><a data-toggle="tab" href="#tabbable_ACPI_Add" class="tablelia">Add</a></li>
-										<li :title="title.ACPI.Block.title"><a data-toggle="tab" href="#tabbable_ACPI_Block" class="tablelia">Block</a></li>
+										<li :title="title.ACPI.Delete.title"><a data-toggle="tab" href="#tabbable_ACPI_Delete" class="tablelia">Delete</a></li>
 										<li :title="title.ACPI.Patch.title"><a data-toggle="tab" href="#tabbable_ACPI_Patch" class="tablelia">Patch</a></li>
 									</ul>
 
@@ -210,14 +210,14 @@
 			                                </span>
 										</div>
 
-										<div id="tabbable_ACPI_Block" class="tab-pane fade" style="padding-bottom: 5px;">
-											<table id="gridtable-ACPI-Block"></table>
+										<div id="tabbable_ACPI_Delete" class="tab-pane fade" style="padding-bottom: 5px;">
+											<table id="gridtable-ACPI-Delete"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled-ACPI-Block"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy-ACPI-Block"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste-ACPI-Block"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd-ACPI-Block"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel-ACPI-Block"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<a id="btnenabled-ACPI-Delete"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-ACPI-Delete"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-ACPI-Delete"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-ACPI-Delete"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-ACPI-Delete"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
 			                                </span>
 										</div>
 
@@ -375,7 +375,7 @@
                             	<div class="tabbable" >
                                     <ul class="nav nav-tabs">
                                         <li class="active" :title="title.DeviceProperties.Add"><a data-toggle="tab" href="#tabbable_DeviceProperties_Add" class="tablelia">Add</a></li>
-                                        <li :title="title.DeviceProperties.Block"><a data-toggle="tab" href="#tabbable_DeviceProperties_Block" class="tablelia">Block</a></li>
+                                        <li :title="title.DeviceProperties.Delete"><a data-toggle="tab" href="#tabbable_DeviceProperties_Delete" class="tablelia">Delete</a></li>
 
                                     </ul>
 
@@ -404,24 +404,24 @@
 			                                </div>
                                         </div>
 
-                                        <div id="tabbable_DeviceProperties_Block" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                        <div id="tabbable_DeviceProperties_Delete" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="row">
 			                                    <div class="col-xs-6">
-			                                        <table id="gridtable-DeviceProperties-BlockLeft"></table>
+			                                        <table id="gridtable-DeviceProperties-DeleteLeft"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy-DeviceProperties-BlockLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste-DeviceProperties-BlockLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd-DeviceProperties-BlockLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel-DeviceProperties-BlockLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                            <a id="btncopy-DeviceProperties-DeleteLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-DeviceProperties-DeleteLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-DeviceProperties-DeleteLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-DeviceProperties-DeleteLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
 			                                        </span>
 			                                    </div>
 			                                    <div class="col-xs-6">
-			                                        <table id="gridtable-DeviceProperties-BlockRight"></table>
+			                                        <table id="gridtable-DeviceProperties-DeleteRight"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy-DeviceProperties-BlockRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste-DeviceProperties-BlockRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd-DeviceProperties-BlockRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel-DeviceProperties-BlockRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                            <a id="btncopy-DeviceProperties-DeleteRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-DeviceProperties-DeleteRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-DeviceProperties-DeleteRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-DeviceProperties-DeleteRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
 			                                        </span>
 			                                    </div>
 			                                </div>
@@ -742,10 +742,7 @@
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.HideAuxiliary" />
 			                                            <span class="lbl"> HideAuxiliary</span>
 			                                        </label>
-			                                        <label class="mintip" :title="title.Misc.Boot.HideSelf">
-			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.HideSelf" />
-			                                            <span class="lbl"> HideSelf</span>
-			                                        </label>
+			                                        
 													<label class="mintip" :title="title.Misc.Boot.PickerAudioAssist">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.PickerAudioAssist" />
 			                                            <span class="lbl"> PickerAudioAssist</span>
@@ -784,10 +781,22 @@
 			                                            <span class="lbl"> AppleDebug</span>
 			                                        </label>
 
+													<label class="mintip" :title="title.Misc.Debug.ApplePanic">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.ApplePanic" />
+			                                            <span class="lbl"> ApplePanic</span>
+			                                        </label>
+
+
 			                                        <label class="mintip" :title="title.Misc.Debug.DisableWatchDog">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.DisableWatchDog" />
 			                                            <span class="lbl"> DisableWatchDog</span>
 			                                        </label>
+
+													<label class="mintip" :title="title.Misc.Debug.SysReport">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.SysReport" />
+			                                            <span class="lbl"> SysReport</span>
+			                                        </label>
+
 			                                    </div>
 			                                </div>
                                         </div>
@@ -838,7 +847,10 @@
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AuthRestart" />
 			                                            <span class="lbl"> AuthRestart</span>
 			                                        </label>
-
+													<label class="mintip" :title="title.Misc.Security.BlacklistAppleUpdate">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.BlacklistAppleUpdate" />
+			                                            <span class="lbl"> BlacklistAppleUpdate</span>
+			                                        </label>
 
 			                                    </div>
 			                                </div>
@@ -859,7 +871,7 @@
                             	<div class="tabbable" >
                                     <ul class="nav nav-tabs">
                                         <li class="active" :title="title.NVRAM.Add"><a data-toggle="tab" href="#tabbable_NVRAM_Add" class="tablelia">Add</a></li>
-                                        <li :title="title.NVRAM.Block"><a data-toggle="tab" href="#tabbable_NVRAM_Block" class="tablelia">Block</a></li>
+                                        <li :title="title.NVRAM.Delete"><a data-toggle="tab" href="#tabbable_NVRAM_Delete" class="tablelia">Delete</a></li>
                                         <li :title="title.NVRAM.LegacySchema"><a data-toggle="tab" href="#tabbable_NVRAM_LegacySchema" class="tablelia">LegacySchema</a></li>
                                     </ul>
 
@@ -888,24 +900,24 @@
 			                                </div>
                                         </div>
 
-                                        <div id="tabbable_NVRAM_Block" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                        <div id="tabbable_NVRAM_Delete" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="row">
 			                                    <div class="col-xs-6">
-			                                        <table id="gridtable-NVRAM-BlockLeft"></table>
+			                                        <table id="gridtable-NVRAM-DeleteLeft"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy-NVRAM-BlockLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste-NVRAM-BlockLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd-NVRAM-BlockLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel-NVRAM-BlockLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                            <a id="btncopy-NVRAM-DeleteLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-DeleteLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-DeleteLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-DeleteLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
 			                                        </span>
 			                                    </div>
 			                                    <div class="col-xs-6">
-			                                        <table id="gridtable-NVRAM-BlockRight"></table>
+			                                        <table id="gridtable-NVRAM-DeleteRight"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy-NVRAM-BlockRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste-NVRAM-BlockRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd-NVRAM-BlockRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel-NVRAM-BlockRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                            <a id="btncopy-NVRAM-DeleteRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-DeleteRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-DeleteRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-DeleteRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
 			                                        </span>
 			                                    </div>
 			                                </div>
@@ -1440,9 +1452,7 @@
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.ConsoleMode">
 			                                        ConsoleMode<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
 			                                      </div>
-												  <div class="col-xs-3 mintip" :title="title.UEFI.Output.DirectGopCacheMode">
-			                                        DirectGopCacheMode<input type="text" class="form-control" v-model="UEFI.Output.DirectGopCacheMode">
-			                                      </div>
+												  
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.Resolution">
 			                                        Resolution<input type="text" class="form-control" v-model="UEFI.Output.Resolution">
 			                                      </div>
@@ -1561,10 +1571,18 @@
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Quirks.ExitBootServicesDelay">
 			                                        ExitBootServicesDelay<input type="text" class="form-control" v-model="UEFI.Quirks.ExitBootServicesDelay">
 			                                      </div>
+
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Quirks.TscSyncTimeout">
+			                                        TscSyncTimeout<input type="text" class="form-control" v-model="UEFI.Quirks.TscSyncTimeout">
+			                                      </div>
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px">
-
+													
+													<label class="mintip" :title="title.UEFI.Quirks.DeduplicateBootOrder">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.DeduplicateBootOrder" />
+			                                            <span class="lbl"> DeduplicateBootOrder</span>
+			                                        </label>
 
 			                                        <label class="mintip" :title="title.UEFI.Quirks.IgnoreInvalidFlexRatio">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreInvalidFlexRatio" />
@@ -1577,12 +1595,7 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReleaseUsbOwnership" />
 			                                            <span class="lbl"> ReleaseUsbOwnership</span>
 			                                        </label>
-
-
-			                                        <label class="mintip" :title="title.UEFI.Quirks.RequestBootVarFallback">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarFallback" />
-			                                            <span class="lbl"> RequestBootVarFallback</span>
-			                                        </label>
+		                                        
 
 			                                        <label class="mintip" :title="title.UEFI.Quirks.RequestBootVarRouting">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarRouting" />
@@ -1627,7 +1640,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Only support OpenCore-0.5.8-RELEASE Updated 2020/05/08</span>
+							<span class="blue bolder">Only support OpenCore-0.5.9-RELEASE Updated 2020/06/26</span>
 
 						</span>
 

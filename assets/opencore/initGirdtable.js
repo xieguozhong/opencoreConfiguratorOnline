@@ -23,7 +23,7 @@ function initGridTableACPI() {
 	];
 	initGridTable(objGT_ACPI_Add, VUEAPP.ACPI.Add, colNames, colModel);
 
-	//gridtable-ACPI-Block
+	//gridtable-ACPI-Delete
 	colNames = ['Comment', 'OemTableId','TableLength','TableSignature','All','Enabled'];
 	colModel = [
 		{name:'Comment',index:'Comment',width:90, editable:true, sortable:false, formatter:plistEncode},
@@ -33,9 +33,9 @@ function initGridTableACPI() {
 		{name:'All',index:'All', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,formatter:enabledFormat, fixed:true, align:'center'},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
-	let objGT_ACPI_Block = jQuery('#gridtable-ACPI-Block');
-	GLOBAL_ARRAY_TABLE[0].push(objGT_ACPI_Block);
-	initGridTable(objGT_ACPI_Block, VUEAPP.ACPI.Block, colNames, colModel);
+	let objGT_ACPI_Delete = jQuery('#gridtable-ACPI-Delete');
+	GLOBAL_ARRAY_TABLE[0].push(objGT_ACPI_Delete);
+	initGridTable(objGT_ACPI_Delete, VUEAPP.ACPI.Delete, colNames, colModel);
 
 	//gridtable-ACPI-Patch
 	colNames = ['Comment','Count','Find','Limit','Mask','OemTableId','Replace','ReplaceMask','Skip','TableLength','TableSignature','Enabled'];
@@ -135,19 +135,19 @@ function initGridTableDeviceProperties() {
     }).trigger("reloadGrid");
 
 
-	//BlockLeft
+	//DeleteLeft
     colNames = ['Devices', 'id'];
 	colModel = [
 		{name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'id',index:'id', editable: false, hidden:true,key:true}
 	];
 
-	let objGT_DeviceProperties_BlockLeft = jQuery('#gridtable-DeviceProperties-BlockLeft');
-	GLOBAL_ARRAY_TABLE[1].push(objGT_DeviceProperties_BlockLeft);
-	initGridTable(objGT_DeviceProperties_BlockLeft, VUEAPP.DeviceProperties.BlockLeft, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
+	let objGT_DeviceProperties_DeleteLeft = jQuery('#gridtable-DeviceProperties-DeleteLeft');
+	GLOBAL_ARRAY_TABLE[1].push(objGT_DeviceProperties_DeleteLeft);
+	initGridTable(objGT_DeviceProperties_DeleteLeft, VUEAPP.DeviceProperties.DeleteLeft, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
 
 
-	//BlockRight
+	//DeleteRight
     colNames = ['Volume', 'Type', 'pid', 'id'];
 	colModel = [
 		{name:'Volume',index:'Volume', width:150,editable: true, sortable:false, formatter:plistEncode},
@@ -155,14 +155,14 @@ function initGridTableDeviceProperties() {
 		{name:'pid',index:'pid', editable: false, hidden:true},
         {name:'id',index:'id', editable: false,key:true, hidden:true}
 	];
-	let objGT_DeviceProperties_BlockRight = jQuery('#gridtable-DeviceProperties-BlockRight');
-	GLOBAL_ARRAY_TABLE[1].push(objGT_DeviceProperties_BlockRight);
-	initGridTable(objGT_DeviceProperties_BlockRight, VUEAPP.DeviceProperties.BlockRight, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
+	let objGT_DeviceProperties_DeleteRight = jQuery('#gridtable-DeviceProperties-DeleteRight');
+	GLOBAL_ARRAY_TABLE[1].push(objGT_DeviceProperties_DeleteRight);
+	initGridTable(objGT_DeviceProperties_DeleteRight, VUEAPP.DeviceProperties.DeleteRight, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
 
 	//增加行选中事件
-	objGT_DeviceProperties_BlockLeft.jqGrid('setGridParam',{
+	objGT_DeviceProperties_DeleteLeft.jqGrid('setGridParam',{
         onSelectRow : function (rowid) {
-        	initSubGridTable(rowid, "#gridtable-DeviceProperties-BlockRight", VUEAPP.DeviceProperties, 'Block');
+        	initSubGridTable(rowid, "#gridtable-DeviceProperties-DeleteRight", VUEAPP.DeviceProperties, 'Delete');
         }
     }).trigger("reloadGrid"); //重新载入
 
@@ -305,18 +305,18 @@ function initGridTableNVRAM() {
     }).trigger("reloadGrid");
 
 
-    //BlockLeft
+    //DeleteLeft
     colNames = ['Devices', 'id'];
     colModel = [
         {name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
         {name:'id',index:'id', editable: false, hidden:true,key:true}
     ];
-    let objGT_NVRAM_BlockLeft = jQuery('#gridtable-NVRAM-BlockLeft');
-    GLOBAL_ARRAY_TABLE[1].push(objGT_NVRAM_BlockLeft);
-    initGridTable(objGT_NVRAM_BlockLeft, VUEAPP.NVRAM.BlockLeft, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
+    let objGT_NVRAM_DeleteLeft = jQuery('#gridtable-NVRAM-DeleteLeft');
+    GLOBAL_ARRAY_TABLE[1].push(objGT_NVRAM_DeleteLeft);
+    initGridTable(objGT_NVRAM_DeleteLeft, VUEAPP.NVRAM.DeleteLeft, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
 
 
-    //BlockRight
+    //DeleteRight
     colNames = ['Volume', 'Type', 'pid','id'];
     colModel = [
         {name:'Volume',index:'Volume', width:150,editable: true, sortable:false, formatter:plistEncode},
@@ -324,14 +324,14 @@ function initGridTableNVRAM() {
         {name:'pid',index:'pid', hidden:true, editable: false},
         {name:'id',index:'id', hidden:true, editable: false, key:true}
     ];
-    let objGT_NVRAM_BlockRight = jQuery('#gridtable-NVRAM-BlockRight');
-    GLOBAL_ARRAY_TABLE[1].push(objGT_NVRAM_BlockRight);
-    initGridTable(objGT_NVRAM_BlockRight, VUEAPP.NVRAM.BlockRight, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
+    let objGT_NVRAM_DeleteRight = jQuery('#gridtable-NVRAM-DeleteRight');
+    GLOBAL_ARRAY_TABLE[1].push(objGT_NVRAM_DeleteRight);
+    initGridTable(objGT_NVRAM_DeleteRight, VUEAPP.NVRAM.DeleteRight, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
 
     //增加行选中事件
-    objGT_NVRAM_BlockLeft.jqGrid('setGridParam',{
+    objGT_NVRAM_DeleteLeft.jqGrid('setGridParam',{
         onSelectRow : function (rowid) {
-            initSubGridTable(rowid, "#gridtable-NVRAM-BlockRight", VUEAPP.NVRAM, 'Block');
+            initSubGridTable(rowid, "#gridtable-NVRAM-DeleteRight", VUEAPP.NVRAM, 'Delete');
         }
     }).trigger("reloadGrid"); //重新载入
 

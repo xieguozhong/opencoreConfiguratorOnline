@@ -1,7 +1,7 @@
 
 function getAllPlist() {
-	//console.log(VUEAPP.ACPI.Block);
-	//console.log(genArrayDict(VUEAPP.ACPI.Block, ['OemTableId','TableSignature'],['TableLength']));
+	//console.log(VUEAPP.ACPI.Delete);
+	//console.log(genArrayDict(VUEAPP.ACPI.Delete, ['OemTableId','TableSignature'],['TableLength']));
 
 	let plistContext = '<?xml version="1.0" encoding="UTF-8"?>';
 	plistContext += '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">';
@@ -45,9 +45,9 @@ function genACPI() {
 	//Add
 	acpiContext += '<key>Add</key>';
 	acpiContext += genArrayDict(VUEAPP.ACPI.Add);
-	//Block
-	acpiContext += '<key>Block</key>';
-	acpiContext += genArrayDict(VUEAPP.ACPI.Block, ['OemTableId','TableSignature'],['TableLength']);
+	//Delete
+	acpiContext += '<key>Delete</key>';
+	acpiContext += genArrayDict(VUEAPP.ACPI.Delete, ['OemTableId','TableSignature'],['TableLength']);
 
 	//Patch
 	acpiContext += '<key>Patch</key>';
@@ -81,9 +81,9 @@ function getDeviceProperties() {
 	DPContext += '<key>Add</key>';
 	DPContext += getDeviceData(VUEAPP.DeviceProperties.AddLeft, VUEAPP.DeviceProperties.AddRight);
 
-	//Block
-	DPContext += '<key>Block</key>';
-	DPContext += getDeviceVolumeData(VUEAPP.DeviceProperties.BlockLeft, VUEAPP.DeviceProperties.BlockRight);
+	//Delete
+	DPContext += '<key>Delete</key>';
+	DPContext += getDeviceVolumeData(VUEAPP.DeviceProperties.DeleteLeft, VUEAPP.DeviceProperties.DeleteRight);
 
 	return DPContext + '</dict>';
 }
@@ -138,7 +138,7 @@ function getMisc() {
 	miscContext += '<key>HibernateMode</key>' + addCharstring(VUEAPP.Misc.Boot['HibernateMode']);
 
 	miscContext += '<key>HideAuxiliary</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['HideAuxiliary']);
-	miscContext += '<key>HideSelf</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['HideSelf']);
+	
 
 	miscContext += '<key>PickerAttributes</key><integer>' + toNumber(VUEAPP.Misc.Boot['PickerAttributes']) + '</integer>';
 	miscContext += '<key>PickerAudioAssist</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['PickerAudioAssist']);
@@ -153,9 +153,11 @@ function getMisc() {
 	//3 Debug
 	miscContext += '</dict><key>Debug</key><dict>';
 	miscContext += '<key>AppleDebug</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['AppleDebug']);
+	miscContext += '<key>ApplePanic</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['ApplePanic']);
 	miscContext += '<key>DisableWatchDog</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['DisableWatchDog']);
 	miscContext += '<key>DisplayDelay</key><integer>' + toNumber(VUEAPP.Misc.Debug['DisplayDelay']) + '</integer>';
 	miscContext += '<key>DisplayLevel</key><integer>' + toNumber(VUEAPP.Misc.Debug['DisplayLevel']) + '</integer>';
+	miscContext += '<key>SysReport</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['SysReport']);
 	miscContext += '<key>Target</key><integer>' + toNumber(VUEAPP.Misc.Debug['Target']) + '</integer>';
 
 	//4 Entries
@@ -167,6 +169,7 @@ function getMisc() {
 	miscContext += '<key>AllowNvramReset</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowNvramReset']);
 	miscContext += '<key>AllowSetDefault</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowSetDefault']);
 	miscContext += '<key>AuthRestart</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AuthRestart']);
+	miscContext += '<key>BlacklistAppleUpdate</key>' + toBoolStringStrict(VUEAPP.Misc.Security['BlacklistAppleUpdate']);
 	miscContext += '<key>BootProtect</key>' + addCharstring(VUEAPP.Misc.Security['BootProtect']);
 	miscContext += '<key>ExposeSensitiveData</key><integer>' + toNumber(VUEAPP.Misc.Security['ExposeSensitiveData']) + '</integer>';
 	miscContext += '<key>HaltLevel</key><integer>' + toNumber(VUEAPP.Misc.Security['HaltLevel']) + '</integer>';
@@ -190,9 +193,9 @@ function getNVRAM() {
 	nvramContext += '<key>Add</key>';
 	nvramContext += getDeviceData(VUEAPP.NVRAM.AddLeft, VUEAPP.NVRAM.AddRight);
 
-	//2 Block
-	nvramContext += '<key>Block</key>';
-	nvramContext += getDeviceVolumeData(VUEAPP.NVRAM.BlockLeft, VUEAPP.NVRAM.BlockRight);
+	//2 Delete
+	nvramContext += '<key>Delete</key>';
+	nvramContext += getDeviceVolumeData(VUEAPP.NVRAM.DeleteLeft, VUEAPP.NVRAM.DeleteRight);
 
 	//3 LegacyEnable
 	nvramContext += '<key>LegacyEnable</key>' + toBoolStringStrict(VUEAPP.NVRAM.root['LegacyEnable']);
@@ -307,7 +310,7 @@ function getUEFI() {
 
 	// Quirks
 	uefiContext += '<key>Quirks</key><dict>';
-	let quirksDataType = {ExitBootServicesDelay:'integer'}
+	let quirksDataType = {ExitBootServicesDelay:'integer',TscSyncTimeout:'integer'}
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Quirks, quirksDataType);
 	uefiContext += '</dict>';
 
@@ -337,7 +340,13 @@ function getDeviceVolumeData(leftData, rightData) {
 		strreturn += getSubDeviceVolumeData(leftData[it]['id'], rightData);
 	}
 
-	return strreturn + '</dict>';
+	
+	if(strreturn === '<dict>') {
+		return '<dict/>';
+	} else {
+		return strreturn + '</dict>';
+	}
+
 }
 
 function getSubDeviceVolumeData(pid, rightData) {
@@ -424,8 +433,14 @@ function getDeviceData(leftData, rightData) {
 		strreturn += addKey(leftData[it]['Devices']);
 		strreturn += getSubDeviceData(leftData[it]['id'], rightData)
 	}
+	
+	if(strreturn === '<dict>') {
+		return '<dict/>';
+	} else {
+		return strreturn + '</dict>';
+	}
 
-	return strreturn + '</dict>';
+	
 }
 
 function getSubDeviceData(pid, rightData) {
@@ -470,7 +485,11 @@ function getBoolens(boolData) {
 		strreturn += toBoolStringStrict(boolData[it]);
 	}
 
-	return strreturn + '</dict>';
+	if(strreturn === '<dict>') {
+		return '<dict/>';
+	} else {
+		return strreturn + '</dict>';
+	}
 }
 
 /**

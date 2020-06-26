@@ -297,7 +297,7 @@ var VUEAPP = new Vue({
         configisfull : false,           //是否full模式
         ACPI : {
             Add : [],
-            Block : [],
+            Delete : [],
             Patch : [] ,
             Quirks : {
                 FadtEnableReset:false, NormalizeHeaders:false, RebaseRegions:false, ResetHwSig:false, ResetLogoStatus:false}
@@ -313,8 +313,8 @@ var VUEAPP = new Vue({
         DeviceProperties : {
             AddLeft:[],
             AddRight:[],
-            BlockLeft : [],
-            BlockRight : []
+            DeleteLeft : [],
+            DeleteRight : []
         },
         Kernel : {
             Add:[],
@@ -331,13 +331,13 @@ var VUEAPP = new Vue({
             BlessOverride:[],
             Boot:{
                 HibernateMode:'None', PickerMode:'Builtin', TakeoffDelay:'0',
-                Timeout:'0', HideAuxiliary:false, HideSelf : false, ConsoleAttributes:'0', PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
+                Timeout:'0', HideAuxiliary:false,  ConsoleAttributes:'0', PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
             },
             Debug: {
-                AppleDebug:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', Target:'0'
+                AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', SysReport:false, Target:'0'
             },
             Security : {
-                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,BootProtect:'None'
+                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,BlacklistAppleUpdate:false,BootProtect:'None'
             },
             Entries:[],
             Tools : []
@@ -346,8 +346,8 @@ var VUEAPP = new Vue({
             root : { LegacyEnable : false, LegacyOverwrite:false, WriteFlash:false},
             AddLeft:[],
             AddRight:[],
-            BlockLeft : [],
-            BlockRight : [],
+            DeleteLeft : [],
+            DeleteRight : [],
             LegacySchemaLeft : [],
             LegacySchemaRight : []
         },
@@ -391,7 +391,7 @@ var VUEAPP = new Vue({
 
             },
             Output : {
-                ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopCacheMode:'',DirectGopRendering:false,IgnoreTextInGraphics:false,
+                ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,IgnoreTextInGraphics:false,
                 ProvideConsoleGop:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
                 Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics'
             },
@@ -400,9 +400,8 @@ var VUEAPP = new Vue({
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks : {
-                ExitBootServicesDelay:'', IgnoreInvalidFlexRatio:false,
-                ReleaseUsbOwnership:false,  RequestBootVarFallback:false,
-                RequestBootVarRouting:false, UnblockFsConnect:false
+                DeduplicateBootOrder:false,ExitBootServicesDelay:0, IgnoreInvalidFlexRatio:false,
+                ReleaseUsbOwnership:false,  RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
             },
             ReservedMemory : []
         }
@@ -468,8 +467,8 @@ var VUEAPP = new Vue({
 
             this.NVRAM.AddLeft.length = 0;
             this.NVRAM.AddRight.length = 0;
-            this.NVRAM.BlockLeft.length = 0;
-            this.NVRAM.BlockRight.length = 0;
+            this.NVRAM.DeleteLeft.length = 0;
+            this.NVRAM.DeleteRight.length = 0;
             this.NVRAM.LegacySchemaLeft.length = 0;
             this.NVRAM.LegacySchemaRight.length = 0;
 
@@ -497,23 +496,23 @@ var VUEAPP = new Vue({
             //选中第一条记录
             jQuery("#gridtable-NVRAM-AddLeft").jqGrid('setSelection',0, true);
 
-            //BlockLeft
-            let BlockText = getValuesByKeyname(NVRAMText, 'Block')
-            let arrayParent2 = getKeyarrayZIkey(BlockText);
+            //DeleteLeft
+            let DeleteText = getValuesByKeyname(NVRAMText, 'Delete')
+            let arrayParent2 = getKeyarrayZIkey(DeleteText);
 
             for(let j=0,len=arrayParent2.length;j<len;j++) {
-                this.NVRAM.BlockLeft.push({id:j, Devices:arrayParent2[j]});
+                this.NVRAM.DeleteLeft.push({id:j, Devices:arrayParent2[j]});
             }
 
 
-            subarray = getKeyarrayZIarray(BlockText);
+            subarray = getKeyarrayZIarray(DeleteText);
             for(let it in subarray) {
                 subarray[it]['id'] = it;
-                this.NVRAM.BlockRight.push(subarray[it]);
+                this.NVRAM.DeleteRight.push(subarray[it]);
             }
-            jQuery("#gridtable-NVRAM-BlockLeft").trigger("reloadGrid");
-            jQuery("#gridtable-NVRAM-BlockRight").trigger("reloadGrid");
-            jQuery("#gridtable-NVRAM-BlockLeft").jqGrid('setSelection',0, true);
+            jQuery("#gridtable-NVRAM-DeleteLeft").trigger("reloadGrid");
+            jQuery("#gridtable-NVRAM-DeleteRight").trigger("reloadGrid");
+            jQuery("#gridtable-NVRAM-DeleteLeft").jqGrid('setSelection',0, true);
 
             //LegacySchemaLeft
             let LegacySchemaText = getValuesByKeyname(NVRAMText, 'LegacySchema')
@@ -660,8 +659,8 @@ var VUEAPP = new Vue({
         , initDeviceProperties : function () {
             this.DeviceProperties.AddLeft.length = 0;
             this.DeviceProperties.AddRight.length = 0;
-            this.DeviceProperties.BlockLeft.length = 0;
-            this.DeviceProperties.BlockRight.length = 0;
+            this.DeviceProperties.DeleteLeft.length = 0;
+            this.DeviceProperties.DeleteRight.length = 0;
 
             let text = getValuesByKeyname(VUEAPP.plistcontext, 'DeviceProperties', true);
             //console.log(text);
@@ -683,24 +682,24 @@ var VUEAPP = new Vue({
             //选中第一条记录
             jQuery("#gridtable-DeviceProperties-AddLeft").jqGrid('setSelection',0, true);
 
-            //Block
-            let BlockText = getValuesByKeyname(text, 'Block')
-            let arrayParent2 = getKeyarrayZIkey(BlockText);
+            //Delete
+            let DeleteText = getValuesByKeyname(text, 'Delete')
+            let arrayParent2 = getKeyarrayZIkey(DeleteText);
             //console.log(arrayParent2);
             for(let i=0,len=arrayParent2.length;i<len;i++) {
-                this.DeviceProperties.BlockLeft.push({id:i, Devices:arrayParent2[i]});
+                this.DeviceProperties.DeleteLeft.push({id:i, Devices:arrayParent2[i]});
             }
 
 
-            subArray = getKeyarrayZIarray(BlockText);
+            subArray = getKeyarrayZIarray(DeleteText);
             for(let it in subArray) {
                 subArray[it]['id']=it;
-                this.DeviceProperties.BlockRight.push(subArray[it]);
+                this.DeviceProperties.DeleteRight.push(subArray[it]);
             }
 
-            jQuery("#gridtable-DeviceProperties-BlockLeft").trigger("reloadGrid");
-            jQuery("#gridtable-DeviceProperties-BlockRight").trigger("reloadGrid");
-            jQuery("#gridtable-DeviceProperties-BlockLeft").jqGrid('setSelection',0, true);
+            jQuery("#gridtable-DeviceProperties-DeleteLeft").trigger("reloadGrid");
+            jQuery("#gridtable-DeviceProperties-DeleteRight").trigger("reloadGrid");
+            jQuery("#gridtable-DeviceProperties-DeleteLeft").jqGrid('setSelection',0, true);
 
         }
 
@@ -717,7 +716,7 @@ var VUEAPP = new Vue({
         , initACPI : function () {
             let acpiText = getValuesByKeyname(VUEAPP.plistcontext, 'ACPI', true);
             this.getPlistAndResetTableData(acpiText, 'Add', 'gridtable-ACPI-Add', this.ACPI.Add);
-            this.getPlistAndResetTableData(acpiText, 'Block', 'gridtable-ACPI-Block', this.ACPI.Block);
+            this.getPlistAndResetTableData(acpiText, 'Delete', 'gridtable-ACPI-Delete', this.ACPI.Delete);
             this.getPlistAndResetTableData(acpiText, 'Patch', 'gridtable-ACPI-Patch', this.ACPI.Patch);
 
             let QuirksText = getValuesByKeyname(acpiText, 'Quirks');

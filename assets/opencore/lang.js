@@ -29,7 +29,7 @@ const GLOBAL_LANG = {
         Error : '错误',
         enabled : '启用/禁用',
         hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数',
-		supportversion : '警告: 只支持OpenCore-0.5.8-RELEASE'
+		supportversion : '警告: 只支持OpenCore-0.5.9-RELEASE'
     },
 
     'en-US' : {
