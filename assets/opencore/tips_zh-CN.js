@@ -42,6 +42,7 @@ const SYSTEM_TIPS = {
 			ProtectSecureBoot : 'NO 保护UEFI安全启动变量不被写入',
 			ProtectUefiServices : 'NO 保护UEFI服务不被固件覆盖',
             ProvideCustomSlide: 'YES 如果 Slide 值存在冲突, 此选项将强制 macOS 执行以下操作: 使用一个伪随机值。 只有在遇到 Only N/256 slide values are usable! 时需要',
+			ProvideMaxSlide : '0 在内存不足时提供自定义的KASLR Slide',
 			RebuildAppleMemoryMap : 'NO 生成与macOS兼容的内存映射',
             SetupVirtualMap: 'YES 将 SetVirtualAddresses 调用修复为虚拟地址',
             SignalAppleOS: 'NO 报告通过OS Info加载的任何OS的macOS',
@@ -119,6 +120,7 @@ const SYSTEM_TIPS = {
             DisableWatchDog : 'NO 某些固件可能无法成功快速启动操作系统，尤其是在调试模式下，这会导致看门狗定时器中止该过程。此选项关闭看门狗计时器',
             DisplayDelay : '0 屏幕上显示每条打印线后执行的微秒延迟',
             DisplayLevel : '0 屏幕上显示了EDK II调试级别位掩码（总和）。除非Target启用控制台（屏幕上）打印，否则屏幕上的调试输出将不可见',
+			SerialInit : 'NO 执行串口初始化',
 			SysReport : 'NO 在ESP文件夹上生成系统报告',
             Target : '0 启用的日志记录目标的位掩码（总和）。默认情况下，所有日志记录输出都是隐藏的，因此在需要调试时需要设置此选项'
         },
@@ -126,7 +128,7 @@ const SYSTEM_TIPS = {
             AllowNvramReset : 'NO 允许CMD + OPT + P + R处理并在引导选择器中启用显示NVRAM重置条目',
             AllowSetDefault : 'NO 允许CTRL + Enter和CTRL + Index处理来设置启动选择器中的默认启动选项',
             AuthRestart : 'NO 启用与VirtualSMC兼容的身份验证重新启动',
-			BlacklistAppleUpdate : '忽略尝试更新Apple外设固件的引导选项（例如MultiUpdater.efi）',
+			
             BootProtect :'None 尝试提供Bootloader持久性<br>1 None — 什么都不做<br>2 Bootstrap —创建或更新最高优先级\EFI\OC\Bootstrap\Bootstrap.efi引导选项（Boot9696）在引导加载程序启动时在UEFI变量存储中。 为了使此选项起作用，需要RequestBootVarRouting被启用',
             ExposeSensitiveData : '操作系统的敏感数据公开位掩码（总和）',
             HaltLevel : 'EDK II调试级别位掩码（总和）在获取HaltLevel消息后导致CPU停止（停止执行）。可能的值与DisplayLevel值匹配',
@@ -199,6 +201,7 @@ const SYSTEM_TIPS = {
 
 		APFS : {
 			EnableJumpstart : 'NO 从APFS容器加载嵌入式APFS驱动程序',
+			GlobalConnect : 'NO 在APFS加载期间执行完整的设备连接',
 			HideVerbose : 'NO 隐藏APFS驱动程序的详细输出',
 			JumpstartHotPlug : 'NO 为新连接的设备加载APFS驱动程序',
 			MinDate : '0 允许的最小APFS驱动程序日期',
@@ -215,7 +218,8 @@ const SYSTEM_TIPS = {
             DirectGopRendering:'NO 使用内置的图形输出协议渲染器进行控制台',
             ReconnectOnResChange:'NO 更改屏幕分辨率后重新连接控制台控制器', 
             ReplaceTabWithSpace:'NO 某些固件无法打印制表符甚至其后的所有内容，从而造成困难或无法使用UEFI Shell内置文本编辑器来编辑属性列表和其他文档。这个选项使控制台输出空间而不是选项卡', 
-            SanitiseClearScreen:'NO 某些固件在尝试清除时将屏幕分辨率重置为故障保护值（例如1024x768）使用大显示（例如2K或4K）时的屏幕内容。此选项尝试应用解决方法。' 
+            SanitiseClearScreen:'NO 某些固件在尝试清除时将屏幕分辨率重置为故障保护值（例如1024x768）使用大显示（例如2K或4K）时的屏幕内容。此选项尝试应用解决方法。',
+			UgaPassThrough : 'NO 在GOP协议之上提供UGA协议实例'
         },
 
         ProtocolOverrides : {
@@ -223,6 +227,7 @@ const SYSTEM_TIPS = {
             AppleBootPolicy: 'NO 用于确保虚拟机或旧白苹果上兼容 APFS',
 			AppleDebugLog : 'NO 重新安装具有内置版本的Apple Debug Log协议',
             AppleEvent : 'NO 重新安装具有内置版本的Apple Event协议。这可用于确保VM或旧版Mac上的File Vault 2兼容性。',
+			AppleFramebufferInfo : 'NO 重新安装具有内置版本的Apple Framebuffer Info协议。 这可以用来覆盖VM或旧版Mac上的帧缓冲信息，以提高与旧版EfiBoot的兼容性，例如macOS 10.4',
             AppleImageConversion : 'NO 重新安装具有内置版本的Apple Image Conversion协议',
             AppleKeyMap : 'NO 安装具有内置版本的Apple Key Map协议',
 			AppleRtcRam : 'NO 重新安装具有内置版本的Apple RTC RAM协议',

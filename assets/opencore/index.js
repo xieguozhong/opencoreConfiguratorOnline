@@ -61,6 +61,12 @@ function bindAllButton() {
         bindClick(GLOBAL_ARRAY_TABLE[1][i]);
     }
 
+    //绑定btnEdit-Misc-Security-ScanPolicy按钮
+    $("#btnEdit-Misc-Security-ScanPolicy").on("click",function(){
+        //console.log('hello');
+        $('#editScanPolicyModal').modal('show');
+    });
+
 
 
     function bindClick(currentGridTable) {
@@ -174,6 +180,8 @@ function bindAllButton() {
             }
 
         });
+
+
 
     }
 
@@ -307,7 +315,7 @@ var VUEAPP = new Vue({
             Quirks : {
                 AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
                 DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectMemoryRegions:false,
-                ProtectSecureBoot:false,ProtectUefiServices:false,ProvideCustomSlide:false, RebuildAppleMemoryMap:false,SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false
+                ProtectSecureBoot:false,ProtectUefiServices:false,ProvideCustomSlide:false, ProvideMaxSlide:0, RebuildAppleMemoryMap:false,SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false
             }
         },
         DeviceProperties : {
@@ -334,10 +342,10 @@ var VUEAPP = new Vue({
                 Timeout:'0', HideAuxiliary:false,  ConsoleAttributes:'0', PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
             },
             Debug: {
-                AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', SysReport:false, Target:'0'
+                AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', SerialInit:false, SysReport:false, Target:'0'
             },
             Security : {
-                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,BlacklistAppleUpdate:false,BootProtect:'None'
+                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,BootProtect:'None'
             },
             Entries:[],
             Tools : []
@@ -380,7 +388,7 @@ var VUEAPP = new Vue({
             root : { ConnectDrivers : false},
             Drivers : [],
 			APFS : {
-				EnableJumpstart : false, HideVerbose :false, JumpstartHotPlug : false, MinDate : 0, MinVersion : 0
+				EnableJumpstart : false, GlobalConnect:false, HideVerbose :false, JumpstartHotPlug : false, MinDate : 0, MinVersion : 0
 			},
 
 			Audio : {
@@ -393,10 +401,10 @@ var VUEAPP = new Vue({
             Output : {
                 ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,IgnoreTextInGraphics:false,
                 ProvideConsoleGop:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
-                Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics'
+                Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UgaPassThrough:false
             },
             ProtocolOverrides : {
-                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEvent:false, AppleImageConversion:false, AppleKeyMap:false, AppleRtcRam:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
+                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEvent:false, AppleFramebufferInfo:false,AppleImageConversion:false, AppleKeyMap:false, AppleRtcRam:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks : {

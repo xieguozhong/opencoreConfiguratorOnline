@@ -293,6 +293,15 @@
 
                                 <h3 class="header smaller lighter blue"> Quirks</h3>
                                 <div class="well">
+
+                                	<div class="row">
+                                        <div class="col-xs-3 mintip" :title="title.Booter.Quirks.ProvideMaxSlide">
+                                            ProvideMaxSlide<input type="text" class="form-control" v-model="Booter.Quirks.ProvideMaxSlide"/>
+                                        </div>
+                                       
+                                    </div>
+
+                                	
                                     <div class="checkbox">
 
                                         <label class="mintip" :title="title.Booter.Quirks.AvoidRuntimeDefrag">
@@ -792,6 +801,11 @@
 			                                            <span class="lbl"> DisableWatchDog</span>
 			                                        </label>
 
+													<label class="mintip" :title="title.Misc.Debug.SerialInit">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.SerialInit" />
+			                                            <span class="lbl"> SerialInit</span>
+			                                        </label>
+
 													<label class="mintip" :title="title.Misc.Debug.SysReport">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.SysReport" />
 			                                            <span class="lbl"> SysReport</span>
@@ -820,7 +834,7 @@
 
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ScanPolicy">
-			                                            ScanPolicy<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
+			                                            ScanPolicy<a id="btnEdit-Misc-Security-ScanPolicy" style="text-decoration:none">&nbsp;&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
 			                                        </div>
 													<div class="col-xs-3 mintip" :title="title.Misc.Security.BootProtect">
 			                                            BootProtect
@@ -847,10 +861,7 @@
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AuthRestart" />
 			                                            <span class="lbl"> AuthRestart</span>
 			                                        </label>
-													<label class="mintip" :title="title.Misc.Security.BlacklistAppleUpdate">
-			                                            <input type="checkbox" class="ace" v-model="Misc.Security.BlacklistAppleUpdate" />
-			                                            <span class="lbl"> BlacklistAppleUpdate</span>
-			                                        </label>
+													
 
 			                                    </div>
 			                                </div>
@@ -1331,6 +1342,10 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.EnableJumpstart" />
 			                                            <span class="lbl"> EnableJumpstart</span>
 			                                        </label>
+													<label class="mintip" :title="title.UEFI.APFS.GlobalConnect">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.GlobalConnect" />
+			                                            <span class="lbl"> GlobalConnect</span>
+			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.APFS.HideVerbose">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.HideVerbose" />
 			                                            <span class="lbl"> HideVerbose</span>
@@ -1489,6 +1504,10 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.SanitiseClearScreen" />
 			                                            <span class="lbl"> SanitiseClearScreen</span>
 			                                        </label>
+													<label class="mintip" :title="title.UEFI.Output.UgaPassThrough">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.UgaPassThrough" />
+			                                            <span class="lbl"> UgaPassThrough</span>
+			                                        </label>
 
 			                                    </div>
 
@@ -1515,6 +1534,10 @@
 			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleEvent">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleEvent" />
 			                                            <span class="lbl"> AppleEvent</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleFramebufferInfo">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleFramebufferInfo" />
+			                                            <span class="lbl"> AppleFramebufferInfo</span>
 			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleImageConversion">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleImageConversion" />
@@ -1640,7 +1663,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Only support OpenCore-0.5.9-RELEASE Updated 2020/06/26</span>
+							<span class="blue bolder">Only support OpenCore-0.6.0-RELEASE Updated 2020/08/12</span>
 
 						</span>
 
@@ -1670,6 +1693,63 @@
                         <div class="modal-footer ">
                             <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{lang.close}}</button>
                             <button type="button" class="btn btn-primary btn-sm" onclick="startPaste();">{{lang.starPaste}}</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="editScanPolicyModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- 模态框主体 -->
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="message-text" class="control-label"><b>请勾选需要的选项，然后点击确定按钮吧</b></label><br><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000001" />
+                                     	<span class="lbl"> 限定为⽂件系统</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000002" />
+                                     	<span class="lbl"> 限定为设备类型</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000100"/>
+                                     	<span class="lbl"> 允许扫描 APFS ⽂件系统</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000200"/>
+                                     	<span class="lbl"> 允许扫描 HFS ⽂件系统</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000400"/>
+                                     	<span class="lbl"> 允许扫描 EFI System Partition/ESP ⽂件系统</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000800"/>
+                                     	<span class="lbl"> 允许扫描 NTFS ⽂件系统</span></label><br>
+
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00001000"/>
+                                     	<span class="lbl"> 允许扫描 EXT ⽂件系统</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00010000"/>
+                                     	<span class="lbl"> 允许扫描 SATA 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00020000"/>
+                                     	<span class="lbl"> 允许扫描 SAS 和 Mac NVMe 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00040000"/>
+                                     	<span class="lbl"> 允许扫描 SCSI 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00080000"/>
+                                     	<span class="lbl"> 允许扫描 NVMe 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00100000"/>
+                                     	<span class="lbl"> 允许扫描 CD/DVD 设备</span></label><br>
+
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00200000"/>
+                                     	<span class="lbl"> 允许扫描 USB 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00400000"/>
+                                     	<span class="lbl"> 允许扫描 FireWire 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00800000"/>
+                                     	<span class="lbl"> 允许扫描读卡器设备</span></label><br>
+			                          
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 模态框底部 -->
+                        <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{lang.close}}</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="pasteScanPolicyValue();">{{lang.starPaste}}</button>
                         </div>
 
                     </div>

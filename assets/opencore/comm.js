@@ -572,6 +572,22 @@ function showTextareaModal(content) {
 
 }
 
+function pasteScanPolicyValue(content) {
+
+    let sv = 0;
+    $.each($('#editScanPolicyModal input:checkbox:checked'), function() {
+        sv = sv + parseInt($(this).val(),16);
+        
+    })
+    if(sv > 0) {
+        VUEAPP.Misc.Security.ScanPolicy = sv;
+    }
+    
+    
+    $('#editScanPolicyModal').modal('hide');
+
+}
+
 // fillLangString('my {@1} is {@2}', 'name', 'mady')
 function fillLangString(context) {
 	for(let i=1,len=arguments.length;i<len;i++) {

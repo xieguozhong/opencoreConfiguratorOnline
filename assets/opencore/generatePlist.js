@@ -69,7 +69,8 @@ function getBooter() {
 
 
 	//Quirks
-	BooterContext += '<key>Quirks</key>' + getBoolens(VUEAPP.Booter.Quirks);
+	let thedt = {ProvideMaxSlide:'integer'};
+	BooterContext += '<key>Quirks</key><dict>' + getStringorboolorinterger(VUEAPP.Booter.Quirks, thedt) + '</dict>';
 
 	return BooterContext + '</dict>';
 }
@@ -157,6 +158,7 @@ function getMisc() {
 	miscContext += '<key>DisableWatchDog</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['DisableWatchDog']);
 	miscContext += '<key>DisplayDelay</key><integer>' + toNumber(VUEAPP.Misc.Debug['DisplayDelay']) + '</integer>';
 	miscContext += '<key>DisplayLevel</key><integer>' + toNumber(VUEAPP.Misc.Debug['DisplayLevel']) + '</integer>';
+	miscContext += '<key>SerialInit</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['SerialInit']);
 	miscContext += '<key>SysReport</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['SysReport']);
 	miscContext += '<key>Target</key><integer>' + toNumber(VUEAPP.Misc.Debug['Target']) + '</integer>';
 
@@ -169,7 +171,7 @@ function getMisc() {
 	miscContext += '<key>AllowNvramReset</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowNvramReset']);
 	miscContext += '<key>AllowSetDefault</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowSetDefault']);
 	miscContext += '<key>AuthRestart</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AuthRestart']);
-	miscContext += '<key>BlacklistAppleUpdate</key>' + toBoolStringStrict(VUEAPP.Misc.Security['BlacklistAppleUpdate']);
+	
 	miscContext += '<key>BootProtect</key>' + addCharstring(VUEAPP.Misc.Security['BootProtect']);
 	miscContext += '<key>ExposeSensitiveData</key><integer>' + toNumber(VUEAPP.Misc.Security['ExposeSensitiveData']) + '</integer>';
 	miscContext += '<key>HaltLevel</key><integer>' + toNumber(VUEAPP.Misc.Security['HaltLevel']) + '</integer>';
