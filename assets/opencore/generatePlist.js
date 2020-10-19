@@ -102,18 +102,36 @@ function getKernel() {
 
 	//Emulate
 	keContext += '<key>Emulate</key><dict>';
+	keContext += '<key>DummyPowerManagement</key>';
+	keContext += toBoolStringStrict(VUEAPP.Kernel.Emulate['DummyPowerManagement']);
 	keContext += '<key>Cpuid1Data</key>';
 	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Data']) + '</data>';
 	keContext += '<key>Cpuid1Mask</key>';
 	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Mask']) + '</data>';
+	keContext += '<key>MaxKernel</key>' + addCharstring(VUEAPP.Kernel.Emulate['MaxKernel']);
+	keContext += '<key>MinKernel</key>' + addCharstring(VUEAPP.Kernel.Emulate['MinKernel']);
+	keContext += '</dict>';
+
+	//Force
+	keContext += '<key>Force</key>';
+	keContext += genArrayDict(VUEAPP.Kernel.Force);
 
 	//Patch
-	keContext += '</dict><key>Patch</key>';
+	keContext += '<key>Patch</key>';
 	keContext += genArrayDict(VUEAPP.Kernel.Patch,['Find','Mask','Replace','ReplaceMask'],['Count','Limit','Skip']);
 
 	//Quirks
 	keContext += '<key>Quirks</key>';
 	keContext += getBoolens(VUEAPP.Kernel.Quirks);
+
+	//Scheme
+	keContext += '<key>Scheme</key><dict>';
+	keContext += '<key>FuzzyMatch</key>';
+	keContext += toBoolStringStrict(VUEAPP.Kernel.Scheme['FuzzyMatch']);
+	keContext += '<key>KernelArch</key>' + addCharstring(VUEAPP.Kernel.Scheme['KernelArch']);
+	keContext += '<key>KernelCache</key>' + addCharstring(VUEAPP.Kernel.Scheme['KernelCache']);
+	keContext += '</dict>';
+
 
 	return keContext + '</dict>';
 }
@@ -170,12 +188,20 @@ function getMisc() {
 	miscContext += '<key>Security</key><dict>';
 	miscContext += '<key>AllowNvramReset</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowNvramReset']);
 	miscContext += '<key>AllowSetDefault</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowSetDefault']);
+	miscContext += '<key>ApECID</key><integer>' + toNumber(VUEAPP.Misc.Security['ApECID']) + '</integer>';
 	miscContext += '<key>AuthRestart</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AuthRestart']);
 	
 	miscContext += '<key>BootProtect</key>' + addCharstring(VUEAPP.Misc.Security['BootProtect']);
+	miscContext += '<key>DmgLoading</key>' + addCharstring(VUEAPP.Misc.Security['DmgLoading']); 
+	miscContext += '<key>EnablePassword</key>' + toBoolStringStrict(VUEAPP.Misc.Security['EnablePassword']);
 	miscContext += '<key>ExposeSensitiveData</key><integer>' + toNumber(VUEAPP.Misc.Security['ExposeSensitiveData']) + '</integer>';
 	miscContext += '<key>HaltLevel</key><integer>' + toNumber(VUEAPP.Misc.Security['HaltLevel']) + '</integer>';
+	miscContext += '<key>PasswordHash</key>';
+	miscContext += '<data>' + hextoBase64(VUEAPP.Misc.Security['PasswordHash']) + '</data>';
+	miscContext += '<key>PasswordSalt</key>';
+	miscContext += '<data>' + hextoBase64(VUEAPP.Misc.Security['PasswordSalt']) + '</data>';
 	miscContext += '<key>ScanPolicy</key><integer>' + toNumber(VUEAPP.Misc.Security['ScanPolicy']) + '</integer>';
+	miscContext += '<key>SecureBootModel</key>' + addCharstring(VUEAPP.Misc.Security['SecureBootModel']);
 	miscContext += '<key>Vault</key>' + addCharstring(VUEAPP.Misc.Security['Vault']);
 
 	//6 Tools
@@ -220,37 +246,35 @@ function getPlatformInfo() {
 	//0 Automatic
 	pfiContext += '<key>Automatic</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['Automatic']);
 
-	//1 DataHub
+	//1 Generic
+	pfiContext += '<key>Generic</key><dict>';
+	let gdatatype = {ROM:'data',ProcessorType:'integer'};
+	pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.Generic, gdatatype);
+	pfiContext += '</dict>';
+
+	
 	if(configisfull === true) {
+
+		//2 DataHub
 		pfiContext += '<key>DataHub</key><dict>';
 		let thedt = {ARTFrequency:'integer', BoardRevision:'data',DevicePathsSupported:'integer',FSBFrequency:'integer', InitialTSC:'integer',SmcBranch:'data',SmcPlatform:'data'
 				,SmcRevision:'data',StartupPowerEvents:'integer'};
 		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.DataHub, thedt);
 		pfiContext += '</dict>';
-	}
 
-
-	//2 Generic
-	pfiContext += '<key>Generic</key><dict>';
-	let gdatatype = {ROM:'data'};
-	pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.Generic, gdatatype);
-	pfiContext += '</dict>';
-
-	//3 PlatformNVRAM
-	if(configisfull === true) {
+		//3 PlatformNVRAM
 		pfiContext += '<key>PlatformNVRAM</key><dict>';
 		let pfndatatype = {FirmwareFeatures:'data',FirmwareFeaturesMask:'data',ROM:'data'};
 		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.PlatformNVRAM, pfndatatype);
 		pfiContext += '</dict>';
-	}
 
-	//4 SMBIOS
-	if(configisfull === true) {
+		//4 SMBIOS
 		pfiContext += '<key>SMBIOS</key><dict>';
 		let smbiosdatatype = {BoardType:'integer',ChassisType:'integer',FirmwareFeatures:'data',FirmwareFeaturesMask:'data',MemoryFormFactor:'integer'
 					,PlatformFeature:'integer',ProcessorType:'integer',SmcVersion:'data'};
 		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.SMBIOS, smbiosdatatype);
 		pfiContext += '</dict>';
+
 	}
 
 	//5 root
@@ -512,6 +536,10 @@ function getBoolens(boolData) {
 	<key>Path</key>
 	<string>SSDT-1.aml</string>
 </dict>
+genArrayDict(		arrayDictData,  数据
+					dataFileds,     要转换为base64的字段列表
+					intFileds       要转换为整形的字段列表
+					)
 **/
 function genArrayDict(arrayDictData, dataFileds, intFileds) {
 	if(dataFileds === undefined) dataFileds =[];

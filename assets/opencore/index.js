@@ -328,10 +328,13 @@ var VUEAPP = new Vue({
             Add:[],
             Block:[],
             Patch:[],
-            Emulate:{Cpuid1Data : '',Cpuid1Mask :''},
+            Emulate:{Cpuid1Data : '',Cpuid1Mask :'', MaxKernel:'', MinKernel:'',DummyPowerManagement:false},
+            Scheme:{KernelArch : '',KernelCache :'',FuzzyMatch:false},
+            Force:[],
             Quirks:{
                 AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, AppleXcpmForceBoost:false,CustomSMBIOSGuid:false,
-                DisableIoMapper:false, DisableRtcChecksum:false, DummyPowerManagement:false, ExternalDiskIcons:false, IncreasePciBarSize:false,LapicKernelPanic:false, PanicNoKextDump:false,
+                DisableIoMapper:false, DisableLinkeditJettison:false,DisableRtcChecksum:false, ExtendBTFeatureFlags:false, ExternalDiskIcons:false, IncreasePciBarSize:false,
+                LapicKernelPanic:false, LegacyCommpage:false, PanicNoKextDump:false,
                 PowerTimeoutKernelPanic:false, ThirdPartyDrives:false, XhciPortLimit:false
             }
         },
@@ -345,7 +348,8 @@ var VUEAPP = new Vue({
                 AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', SerialInit:false, SysReport:false, Target:'0'
             },
             Security : {
-                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,BootProtect:'None'
+                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,BootProtect:'None',
+                ApECID : '',DmgLoading:'Signed',EnablePassword:false,PasswordHash:'',PasswordSalt:'',SecureBootModel:'Default'
             },
             Entries:[],
             Tools : []
@@ -369,8 +373,8 @@ var VUEAPP = new Vue({
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             Generic : {
-                AdviseWindows : false,
-                MLB:'', ROM:'', SpoofVendor:false, //SupportsCsm:false,
+                AdviseWindows : false,SystemMemoryStatus:'Auto',
+                MLB:'', ProcessorType:'',ROM:'', SpoofVendor:false, //SupportsCsm:false,
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             PlatformNVRAM : {
@@ -404,7 +408,8 @@ var VUEAPP = new Vue({
                 Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UgaPassThrough:false
             },
             ProtocolOverrides : {
-                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEvent:false, AppleFramebufferInfo:false,AppleImageConversion:false, AppleKeyMap:false, AppleRtcRam:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
+                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEvent:false, AppleFramebufferInfo:false,AppleImageConversion:false,
+                AppleImg4Verification:false, AppleKeyMap:false, AppleRtcRam:false,AppleSecureBoot:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks : {
@@ -654,6 +659,7 @@ var VUEAPP = new Vue({
             this.getPlistAndResetTableData(text, 'Add', 'gridtable-Kernel-Add', this.Kernel.Add);
             this.getPlistAndResetTableData(text, 'Block', 'gridtable-Kernel-Block', this.Kernel.Block);
             this.getPlistAndResetTableData(text, 'Patch', 'gridtable-Kernel-Patch', this.Kernel.Patch);
+            this.getPlistAndResetTableData(text, 'Force', 'gridtable-Kernel-Force', this.Kernel.Force);
 
             let EmulateText = getValuesByKeyname(text, 'Emulate');
             this.getAndSetDictItem(EmulateText, this.Kernel.Emulate);
@@ -661,6 +667,8 @@ var VUEAPP = new Vue({
             let QuirksText = getValuesByKeyname(text, 'Quirks');
             this.getAndSetDictItem(QuirksText, this.Kernel.Quirks);
 
+            let SchemeText = getValuesByKeyname(text, 'Scheme');
+            this.getAndSetDictItem(SchemeText, this.Kernel.Scheme);
 
         }
 

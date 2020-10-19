@@ -77,19 +77,29 @@ const SYSTEM_TIPS = {
             AppleXcpmForceBoost : 'NO 在XCPM模式下强制发挥最佳性能',
             CustomSMBIOSGuid: 'NO 对 UpdateSMBIOSMode 自定义模式执行 GUID 修补, 用于戴尔笔记本电脑 (等同于 Clover 的 DellSMBIOSPatch)',
             DisableIoMapper: 'NO 需要绕过 VT-d 且 BIOS 中禁用时使用',
+            DisableLinkeditJettison : '禁用__LINKEDIT抛售代码。此选项使Lilu.kext以及可能的其他功能在macOS Big Sur中以最佳性能运行而无需keepsyms = 1引导参数',
 			DisableRtcChecksum : '禁用 AppleRTC 中写入的主校验和 （0x58-0x59）',
-            DummyPowerManagement : 'NO 禁用AppleIntelCpuPower Management',
+            ExtendBTFeatureFlags : 'NO 将FeatureFlags设置为0x0F，以获得Bluetooth的全部功能，包括Continuity。注意：此选项替代了BT4LEContinuityFixup.kext，由于更新太晚而无法正常运行修补进度。',
             ExternalDiskIcons: 'YES 硬盘图标补丁, macOS 将内部硬盘视为外接硬盘 (黄色) 时使用',
             IncreasePciBarSize : 'NO 将IOPCIFamily中的32位PCI条尺寸从1 GB增加到4 GB',
             LapicKernelPanic: 'NO 禁用由 AP 核心 lapic 中断造成的内核崩溃, 通常用于惠普电脑 (等同于 Clover 的 Kernel LAPIC)',
+            LegacyCommpage : 'NO 将默认的64位combpage bcopy实现替换为不需要的实现SSSE3，对旧平台有用。 这可以防止由于没有可用内容而导致上一次恐慌不匹配的commpage不需要SSSE3的64位bcopy函数。',
             PanicNoKextDump: 'YES 在发生内核崩溃时阻止输出 Kext 列表, 提供可供排错参考的日志',
             ThirdPartyDrives: 'NO 将供应商修补程序应用于IOAHCIBlockStorage.kext，以启用第三方驱动器的本机功能，例如SSD上的TRIM或10.15及更高版本上的休眠支持',
             PowerTimeoutKernelPanic : 'YES 修复 macOS Catalina 中由于设备电源状态变化超时而导致的内核崩溃',
             XhciPortLimit: 'YES 这实际上是 15 端口限制补丁, 不建议依赖, 因为这不是 USB 的最佳解决方案。有能力的情况下请选择定制 USB, 这个选项用于没有定制 USB 的设备'
         },
+        Scheme : {
+            KernelArch : 'Auto 如果可用，首选指定的内核体系结构（Auto，i386，i386-user32，x86_64）',
+            KernelCache : 'Auto 如果可用，首选指定的内核缓存类型（自动，无缓存，Mkext，预链接）',
+            FuzzyMatch : 'NO 在可用时将内核缓存与不同的校验和一起使用'
+        },
         Emulate : {
+			DummyPowerManagement : 'NO 禁用AppleIntelCpuPowerManagement',
             Cpuid1Data : '为不支持的CPU进行仿冒以加载电源管理,比如Haswell-E的处理器为: F2060300 00000000 00000000 00000000',
-            Cpuid1Mask : '为不支持的CPU进行仿冒以加载电源管理,比如Haswell-E的处理器为: 010A0000 00000000 00000000 00000000'
+            Cpuid1Mask : '为不支持的CPU进行仿冒以加载电源管理,比如Haswell-E的处理器为: 010A0000 00000000 00000000 00000000',
+			MaxKernel: '模拟CPUID并在指定的macOS版本或更老版本上应用DummyPowerManagement',
+			MinKernel: '模拟CPUID并在指定的macOS版本或更新版本上应用DummyPowerManagement'
         }
     },
 
@@ -128,8 +138,13 @@ const SYSTEM_TIPS = {
             AllowNvramReset : 'NO 允许CMD + OPT + P + R处理并在引导选择器中启用显示NVRAM重置条目',
             AllowSetDefault : 'NO 允许CTRL + Enter和CTRL + Index处理来设置启动选择器中的默认启动选项',
             AuthRestart : 'NO 启用与VirtualSMC兼容的身份验证重新启动',
-			
+			ApECID : '苹果飞地标识符',
             BootProtect :'None 尝试提供Bootloader持久性<br>1 None — 什么都不做<br>2 Bootstrap —创建或更新最高优先级\EFI\OC\Bootstrap\Bootstrap.efi引导选项（Boot9696）在引导加载程序启动时在UEFI变量存储中。 为了使此选项起作用，需要RequestBootVarRouting被启用',
+            Signed : 'Signed 定义用于macOS恢复的磁盘映像（DMG）加载策略',
+            EnablePassword:'NO 启用密码保护以允许敏感操作',
+            PasswordHash:'设置EnabledPassword时使用的密码哈希',
+            PasswordSalt:'设置EnabledPassword时使用的密码盐',
+            SecureBootModel:'Default Apple安全启动硬件模型',
             ExposeSensitiveData : '操作系统的敏感数据公开位掩码（总和）',
             HaltLevel : 'EDK II调试级别位掩码（总和）在获取HaltLevel消息后导致CPU停止（停止执行）。可能的值与DisplayLevel值匹配',
 			Vault : '在OpenCore中启用存储机制 <br>1 Optional -- 不需要任何东西，不执行任何保管库，不安全<br>2 Basic -- 要求OC目录中存在vault.plist文件。这提供了基本的文件系统完整性验证并可以防止意外的文件系统损坏<br>3 Secure -- 在OC目录中需要vault.sig签名文件作为vault.plist的文件。这包括基本完整性检查，但也尝试建立可信任的启动链',
@@ -162,9 +177,11 @@ const SYSTEM_TIPS = {
 
         Generic : {
 			AdviseWindows : 'NO 在固件功能中强制Windows支持',
+            SystemMemoryStatus:'指示系统内存是否可以在PlatformFeature中升级。 这控制可见度“关于此Mac”中的“内存”选项卡',
             SpoofVendor : 'YES 仿冒制造商为 Acidanthera 来避免出现冲突',
             SystemProductName : '',
             MLB : '用 macserial 读取或生成',
+            ProcessorType:'0 处理器主要类型和次要类型的组合',
             ROM : '可以是任意 6 Byte MAC 地址, 如 0x112233000000',
             SystemProductName : '用 macserial 读取或生成',
             SystemSerialNumber : '用 macserial 读取或生成',
@@ -229,8 +246,10 @@ const SYSTEM_TIPS = {
             AppleEvent : 'NO 重新安装具有内置版本的Apple Event协议。这可用于确保VM或旧版Mac上的File Vault 2兼容性。',
 			AppleFramebufferInfo : 'NO 重新安装具有内置版本的Apple Framebuffer Info协议。 这可以用来覆盖VM或旧版Mac上的帧缓冲信息，以提高与旧版EfiBoot的兼容性，例如macOS 10.4',
             AppleImageConversion : 'NO 重新安装具有内置版本的Apple Image Conversion协议',
+            AppleImg4Verification:'NO 重新安装具有内置版本的Apple IMG4 Verification协议。 该协议用于验证Apple安全启动使用的im4m清单文件',
             AppleKeyMap : 'NO 安装具有内置版本的Apple Key Map协议',
 			AppleRtcRam : 'NO 重新安装具有内置版本的Apple RTC RAM协议',
+            AppleSecureBoot:'NO 重新安装具有内置版本的Apple Secure Boot协议',
             AppleSmcIo : 'NO 重新安装具有内置版本的Apple SMC I / O协议',
             AppleUserInterfaceTheme : 'NO 重新安装具有内置版本的Apple用户界面主题协议',            
             DataHub: 'NO 重新安装数据库',

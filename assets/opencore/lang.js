@@ -1,10 +1,10 @@
 
 const GLOBAL_LANG = {
     'zh-CN' : {
-        down : '下载',
+        down : '保存',
         copy : '复制',
         no_file : '没有配置文件 ...',
-        choose : '导入',
+        choose : '打开',
         change : '更换',
         alertfileerror : '只能导入后缀为plist的文件',
         toNumberError : '整形格式的数据被错误的输入了字符串"{@1}", 可能导致配置文件错误, 请检查',
@@ -29,14 +29,14 @@ const GLOBAL_LANG = {
         Error : '错误',
         enabled : '启用/禁用',
         hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数',
-		supportversion : '警告: 只支持OpenCore-0.6.0-RELEASE'
+		supportversion : '注意: 本版只支持官方发布的OpenCore-0.6.2-RELEASE'
     },
 
     'en-US' : {
-        down : 'Down',
+        down : 'Save',
         copy : 'Copy',
         no_file : 'No config files ...',
-        choose : 'Import',
+        choose : 'Open',
         change : 'Change',
         alertfileerror : 'Only files with suffix plist can be imported',
         toNumberError : 'The data in the plastic format was incorrectly entered in the string "{@1}", which may cause the configuration file to be wrong. Please check it',
@@ -61,6 +61,6 @@ const GLOBAL_LANG = {
         Error : 'Error',
         enabled : 'enabled/disabled',
         hexstringlengthisodd : '<{@1}> is not a valid hexadecimal string, because the length of a hexadecimal string cannot be odd',
-		supportversion : 'Warning: Only OpenCore-0.6.0-RELEASE is supported'
+		supportversion : 'Warning: Only OpenCore-0.6.2-RELEASE is supported'
     }
 };

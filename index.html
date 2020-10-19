@@ -193,9 +193,9 @@
 
                         		<div class="tabbable" >
 									<ul class="nav nav-tabs">
-										<li class="active" :title="title.ACPI.Add.title"><a data-toggle="tab" href="#tabbable_ACPI_Add" class="tablelia">Add</a></li>
-										<li :title="title.ACPI.Delete.title"><a data-toggle="tab" href="#tabbable_ACPI_Delete" class="tablelia">Delete</a></li>
-										<li :title="title.ACPI.Patch.title"><a data-toggle="tab" href="#tabbable_ACPI_Patch" class="tablelia">Patch</a></li>
+										<li class="active"><a data-toggle="tab" href="#tabbable_ACPI_Add" class="tablelia">Add</a></li>
+										<li><a data-toggle="tab" href="#tabbable_ACPI_Delete" class="tablelia">Delete</a></li>
+										<li><a data-toggle="tab" href="#tabbable_ACPI_Patch" class="tablelia">Patch</a></li>
 									</ul>
 
 									<div class="tab-content" style="padding-right:3px;padding-left:2px;">
@@ -383,8 +383,8 @@
 
                             	<div class="tabbable" >
                                     <ul class="nav nav-tabs">
-                                        <li class="active" :title="title.DeviceProperties.Add"><a data-toggle="tab" href="#tabbable_DeviceProperties_Add" class="tablelia">Add</a></li>
-                                        <li :title="title.DeviceProperties.Delete"><a data-toggle="tab" href="#tabbable_DeviceProperties_Delete" class="tablelia">Delete</a></li>
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_DeviceProperties_Add" class="tablelia">Add</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_DeviceProperties_Delete" class="tablelia">Delete</a></li>
 
                                     </ul>
 
@@ -448,10 +448,12 @@
 
                             	<div class="tabbable" >
                                     <ul class="nav nav-tabs">
-                                        <li class="active" :title="title.Kernel.Add"><a data-toggle="tab" href="#tabbable_Kernel_Add" class="tablelia">Add</a></li>
-                                        <li :title="title.Kernel.Block"><a data-toggle="tab" href="#tabbable_Kernel_Block" class="tablelia">Block</a></li>
-                                        <li :title="title.Kernel.Patch"><a data-toggle="tab" href="#tabbable_Kernel_Patch" class="tablelia">Patch</a></li>
-                                        <li :title="title.Kernel.Emulate"><a data-toggle="tab" href="#tabbable_Kernel_Emulate" class="tablelia">Emulate</a></li>
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_Kernel_Add" class="tablelia">Add</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Block" class="tablelia">Block</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Patch" class="tablelia">Patch</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Force" class="tablelia">Force</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Emulate" class="tablelia">Emulate</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Scheme" class="tablelia">Scheme</a></li>
                                     </ul>
 
                                     <div class="tab-content" style="padding-right:18px;padding-left:2px;">
@@ -564,10 +566,80 @@
 			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.Cpuid1Mask">
 			                                            Cpuid1Mask<input type="text" class="form-control" v-model="Kernel.Emulate.Cpuid1Mask"/>
 			                                        </div>
+
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.MaxKernel">
+			                                            MaxKernel<input type="text" class="form-control" v-model="Kernel.Emulate.MaxKernel"/>
+			                                        </div>
+
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.MinKernel">
+			                                            MinKernel<input type="text" class="form-control" v-model="Kernel.Emulate.MinKernel"/>
+			                                        </div>
 			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.Kernel.Emulate.DummyPowerManagement">
+			                                            <input type="checkbox" class="ace" v-model="Kernel.Emulate.DummyPowerManagement" />
+			                                            <span class="lbl"> DummyPowerManagement</span>
+			                                        </label>
+													
+
+			                                    </div>
+
+
 		                                	</div>
 
                                        	</div>
+
+                                       	<div id="tabbable_Kernel_Scheme" class="tab-pane fade in" style="padding-bottom: 5px;">
+
+			                                <div class="well">
+			                                    <div class="row">
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Scheme.KernelArch">
+			                                            KernelArch
+			                                            <select class="form-control" v-model="Kernel.Scheme.KernelArch">
+														<option value="Auto">Auto</option>
+														<option value="i386">i386</option>
+														<option value="i386-user32">i386-user32</option>
+														<option value="x86_64">x86_64</option>
+														</select>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Scheme.KernelCache">
+			                                            KernelCache
+			                                            <select class="form-control" v-model="Kernel.Scheme.KernelCache">
+														<option value="Auto">Auto</option>
+														<option value="Cacheless">Cacheless</option>
+														<option value="Mkext">Mkext</option>
+														<option value="Prelinked">Prelinked</option>
+														</select>
+			                                        </div>
+
+			                                       
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.Kernel.Scheme.FuzzyMatch">
+			                                            <input type="checkbox" class="ace" v-model="Kernel.Scheme.FuzzyMatch" />
+			                                            <span class="lbl"> FuzzyMatch</span>
+			                                        </label>
+													
+
+			                                    </div>
+
+
+		                                	</div>
+
+                                       	</div>
+
+                                       	<div id="tabbable_Kernel_Force" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Kernel-Force"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-Kernel-Force"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-Kernel-Force"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Kernel-Force"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Kernel-Force"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-Kernel-Force"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
 
 
                                     </div>
@@ -603,13 +675,17 @@
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableIoMapper" />
                                             <span class="lbl"> DisableIoMapper</span>
                                         </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.DisableLinkeditJettison">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableLinkeditJettison" />
+                                            <span class="lbl"> DisableLinkeditJettison</span>
+                                        </label>
 										<label class="mintip" :title="title.Kernel.Quirks.DisableRtcChecksum">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableRtcChecksum" />
                                             <span class="lbl"> DisableRtcChecksum</span>
                                         </label>
-                                         <label class="mintip" :title="title.Kernel.Quirks.DummyPowerManagement">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.DummyPowerManagement" />
-                                            <span class="lbl"> DummyPowerManagement</span>
+                                         <label class="mintip" :title="title.Kernel.Quirks.ExtendBTFeatureFlags">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ExtendBTFeatureFlags" />
+                                            <span class="lbl"> ExtendBTFeatureFlags</span>
                                         </label>
 
                                     </div>
@@ -629,6 +705,10 @@
                                         <label class="mintip" :title="title.Kernel.Quirks.LapicKernelPanic">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.LapicKernelPanic" />
                                             <span class="lbl"> LapicKernelPanic</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.LegacyCommpage">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.LegacyCommpage" />
+                                            <span class="lbl"> LegacyCommpage</span>
                                         </label>
                                         <label class="mintip" :title="title.Kernel.Quirks.PanicNoKextDump">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.PanicNoKextDump" />
@@ -659,12 +739,12 @@
 
 								<div class="tabbable" >
                                     <ul class="nav nav-tabs">
-                                        <li class="active" :title="title.Misc.BlessOverride"><a data-toggle="tab" href="#tabbable_Misc_BlessOverride" class="tablelia">BlessOverride</a></li>
-                                        <li :title="title.Misc.Entries"><a data-toggle="tab" href="#tabbable_Misc_Entries" class="tablelia">Entries</a></li>
-                                        <li :title="title.Misc.Tools"><a data-toggle="tab" href="#tabbable_Misc_Tools" class="tablelia">Tools</a></li>
-                                        <li :title="title.Misc.Boot"><a data-toggle="tab" href="#tabbable_Misc_Boot" class="tablelia">Boot</a></li>
-                                        <li :title="title.Misc.Debug"><a data-toggle="tab" href="#tabbable_Misc_Debug" class="tablelia">Debug</a></li>
-                                        <li :title="title.Misc.Security"><a data-toggle="tab" href="#tabbable_Misc_Security" class="tablelia">Security</a></li>
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_Misc_BlessOverride" class="tablelia">BlessOverride</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Entries" class="tablelia">Entries</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Tools" class="tablelia">Tools</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Boot" class="tablelia">Boot</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Debug" class="tablelia">Debug</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Security" class="tablelia">Security</a></li>
 
                                     </ul>
 
@@ -821,6 +901,9 @@
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ExposeSensitiveData">
 			                                            ExposeSensitiveData<input type="text" class="form-control" v-model="Misc.Security.ExposeSensitiveData"/>
 			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ApECID">
+			                                            ApECID<input type="text" class="form-control" v-model="Misc.Security.ApECID"/>
+			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.HaltLevel">
 			                                            HaltLevel<input type="text" class="form-control" v-model="Misc.Security.HaltLevel"/>
 			                                        </div>
@@ -841,9 +924,44 @@
 			                                            <select class="form-control" v-model="Misc.Security.BootProtect">
 														<option value="None">None</option>
 														<option value="Bootstrap">Bootstrap</option>
-
 														</select>
-
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.DmgLoading">
+			                                            DmgLoading
+			                                            <select class="form-control" v-model="Misc.Security.DmgLoading">
+														<option value="Disabled">Disabled</option>
+														<option value="Signed">Signed</option>
+														<option value="Any">Any</option>
+														</select>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.SecureBootModel">
+			                                            SecureBootModel
+			                                            <select class="form-control" v-model="Misc.Security.SecureBootModel">
+														<option value="Default">Default</option>
+														<option value="Disabled">Disabled</option>
+														<option value="j137">j137</option>
+														<option value="j680">j680</option>
+														<option value="j132">j132</option>
+														<option value="j174">j174</option>
+														<option value="j140k">j140k</option>
+														<option value="j780">j780</option>
+														<option value="j213">j213</option>
+														<option value="j140a">j140a</option>
+														<option value="j152f">j152f</option>
+														<option value="j160">j160</option>
+														<option value="j230k">j230k</option>
+														<option value="j214k">j214k</option>
+														<option value="j223">j223</option>
+														<option value="j215">j215</option>
+														<option value="j185">j185</option>
+														<option value="j185f">j185f</option>
+														</select>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.PasswordHash">
+			                                            PasswordHash<input type="text" class="form-control" v-model="Misc.Security.PasswordHash"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.PasswordSalt">
+			                                            PasswordSalt<input type="text" class="form-control" v-model="Misc.Security.PasswordSalt"/>
 			                                        </div>
 
 			                                    </div>
@@ -860,6 +978,10 @@
 			                                        <label class="mintip" :title="title.Misc.Security.AuthRestart">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AuthRestart" />
 			                                            <span class="lbl"> AuthRestart</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.Misc.Security.EnablePassword">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.EnablePassword" />
+			                                            <span class="lbl"> EnablePassword</span>
 			                                        </label>
 													
 
@@ -881,9 +1003,9 @@
 
                             	<div class="tabbable" >
                                     <ul class="nav nav-tabs">
-                                        <li class="active" :title="title.NVRAM.Add"><a data-toggle="tab" href="#tabbable_NVRAM_Add" class="tablelia">Add</a></li>
-                                        <li :title="title.NVRAM.Delete"><a data-toggle="tab" href="#tabbable_NVRAM_Delete" class="tablelia">Delete</a></li>
-                                        <li :title="title.NVRAM.LegacySchema"><a data-toggle="tab" href="#tabbable_NVRAM_LegacySchema" class="tablelia">LegacySchema</a></li>
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_NVRAM_Add" class="tablelia">Add</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_NVRAM_Delete" class="tablelia">Delete</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_NVRAM_LegacySchema" class="tablelia">LegacySchema</a></li>
                                     </ul>
 
                                     <div class="tab-content" style="padding-right:18px;padding-left:2px;">
@@ -1016,6 +1138,18 @@
 				                                    <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemUUID">
 				                                        SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
 				                                    </div>
+				                                    <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ProcessorType">
+				                                    ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ProcessorType">
+				                                  	</div>
+				                                    <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemMemoryStatus">
+				                                        SystemMemoryStatus
+				                                        <select class="form-control" v-model="PlatformInfo.Generic.SystemMemoryStatus">
+														<option value="Auto">Auto</option>
+														<option value="Upgradable">Upgradable</option>
+														<option value="Soldered">Soldered</option>
+														
+														</select>
+				                                    </div>
 				                                </div>
 
 				                                <div class="checkbox" style="margin-top: 20px">
@@ -1107,6 +1241,7 @@
 				                                  <div class="col-xs-3">
 				                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.MLB">
 				                                  </div>
+
 				                                </div>
 				                                <div class="row" style="margin-top: 10px">
 				                                    <div class="col-xs-3">
@@ -1543,6 +1678,10 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleImageConversion" />
 			                                            <span class="lbl"> AppleImageConversion</span>
 			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleImg4Verification">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleImg4Verification" />
+			                                            <span class="lbl"> AppleImg4Verification</span>
+			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleKeyMap">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleKeyMap" />
 			                                            <span class="lbl"> AppleKeyMap</span>
@@ -1550,6 +1689,10 @@
 													<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleRtcRam">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleRtcRam" />
 			                                            <span class="lbl"> AppleRtcRam</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleSecureBoot">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleSecureBoot" />
+			                                            <span class="lbl"> AppleSecureBoot</span>
 			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleSmcIo">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleSmcIo" />
@@ -1663,7 +1806,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Only support OpenCore-0.6.0-RELEASE Updated 2020/08/12</span>
+							<span class="blue bolder">Only support OpenCore-0.6.2-RELEASE Updated 2020/10/19</span>
 
 						</span>
 

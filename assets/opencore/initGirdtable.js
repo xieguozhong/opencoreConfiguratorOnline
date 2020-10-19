@@ -243,6 +243,24 @@ function initGridTableKernel() {
 	initGridTable(objGT_Kernel_Patch, VUEAPP.Kernel.Patch, colNames, colModel, 0, tableHeight);
 
 
+	//Force
+	colNames = ['Arch','BundlePath', 'Comment','Identifier','ExecutablePath','MaxKernel','MinKernel','PlistPath','Enabled'];
+	colModel = [
+		{name:'Arch',index:'Arch', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'BundlePath',index:'BundlePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Comment',index:'Comment', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
+		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'ExecutablePath',index:'ExecutablePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MaxKernel',index:'MaxKernel', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
+		{name:'MinKernel',index:'MinKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'PlistPath',index:'PlistPath', width:75,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},		
+		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true, align:'center',formatter:enabledFormat}
+	];
+	let objGT_Kernel_Force = jQuery('#gridtable-Kernel-Force');
+	GLOBAL_ARRAY_TABLE[0].push(objGT_Kernel_Force);
+	initGridTable(objGT_Kernel_Force, VUEAPP.Kernel.Force, colNames, colModel, 0, tableHeight);
+
+
 
 
 }
