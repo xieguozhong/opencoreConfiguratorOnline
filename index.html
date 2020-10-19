@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+        <meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+		<title>OpenCore Configurator On Line</title>
+		<meta name="description" content="OpenCore Configurator" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="assets/css/jquery-ui.min.css" />
+		<link rel="stylesheet" href="assets/css/ui.jqgrid.min.css" />
+		<link rel="stylesheet" href="assets/css/fonts.googleapis.com.css" />
+		<link rel="stylesheet" href="assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="assets/css/jquery.minimalTips.css" />
+		<link rel="stylesheet" href="assets/css/toastr.min.css" />
+		<style type="text/css">
+			th div {text-align : center;}
+			.ctrlicon {
+				width:12px; height:12px; cursor: pointer;
+			}
+			.tablelia {
+				font-size: 18px;
+				color: #478FCA!important;
+				font-weight: lighter;
+			}
+
+			.well {
+			    min-height: 14px;
+			    padding: 10px;
+			    margin-bottom: 5px;
+			}
+
+			.tab-content {
+			    padding: 12px 12px;
+			}
+
+
+
+		</style>
+	</head>
+
+	<body class="no-skin">
+		<div id="navbar" class="navbar navbar-default ace-save-state">
+
+			<div class="navbar-container ace-save-state" id="navbar-container">
+				<div class="navbar-header pull-left">
+					<a href="index.html" class="navbar-brand">
+						<small>
+							<i class="fa fa-leaf"></i>
+							OpenCore Configurator On Line
+						</small>
+					</a>
+				</div>
+			</div><!-- /.navbar-container -->
+
+		</div>
+
+		<div class="main-container ace-save-state" id="main-container">
+
+			<div id="sidebar" class="sidebar responsive ace-save-state">
+
+				<ul class="nav nav-list">
+
+					<li class="open">
+						<a >
+							<i class="menu-icon fa fa-list"></i>
+							<span class="menu-text"> SECTIONS </span>
+						</a>
+
+						<b class="arrow"></b>
+
+						<ul class="submenu">
+
+							<li v-bind:class="{ active: root === 'ACPI' }">
+								<a href="#" v-on:click="setRoot('ACPI')" :title="title.ACPI.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									ACPI
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'Booter' }">
+								<a href="#" v-on:click="setRoot('Booter')" :title="title.Booter.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Booter
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'DeviceProperties' }">
+								<a href="#" v-on:click="setRoot('DeviceProperties')" :title="title.DeviceProperties.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									DeviceProperties
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'Kernel' }">
+								<a href="#" v-on:click="setRoot('Kernel')" :title="title.Kernel.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Kernel
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'Misc' }">
+								<a href="#" v-on:click="setRoot('Misc')" :title="title.Misc.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Misc
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'NVRAM' }">
+								<a href="#" v-on:click="setRoot('NVRAM')" :title="title.NVRAM.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									NVRAM
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'PlatformInfo' }">
+								<a href="#" v-on:click="setRoot('PlatformInfo')" :title="title.PlatformInfo.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									PlatformInfo
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'UEFI' }">
+								<a href="#" v-on:click="setRoot('UEFI')" :title="title.UEFI.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									UEFI
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+
+						</ul>
+					</li>
+
+
+
+				</ul><!-- /.nav-list -->
+
+				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+				</div>
+
+			</div>
+
+			<div class="main-content" >
+				<div class="main-content-inner">
+					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+						<ul class="breadcrumb">
+							<li>
+								<i class="ace-icon fa fa-home home-icon"></i>
+								<a href="#">Home</a>
+							</li>
+							<li class="active">{{root}}</li>
+						</ul><!-- /.breadcrumb -->
+
+						<div class="nav-search" style="width:270px;margin-right: 140px" >
+							<input type="file" id="id-input-file-2" />
+						</div><!-- /.nav-search -->
+                        <div class="pull-right">
+
+                            <button class="btn btn-minier btn-success" onclick="savePlist();">{{lang.down}}</button>&nbsp; &nbsp;
+                            <button class="btn btn-minier btn-success" onclick="copyPlist();">{{lang.copy}}</button>&nbsp;
+							<label class="mintip" :title="title.PlatformInfo.configisfull">
+								<input v-model="configisfull" type="checkbox" class="ace" />
+								<span class="lbl"> Full</span>
+							</label>
+                        </div>
+					</div>
+
+					<div class="page-content" style="padding-right:0px;padding-left:0px;">
+                    <div class="container-fluid" >
+
+                        <div class="row" v-show="root === 'ACPI'" >
+							<div class="col-xs-12" >
+
+                        		<div class="tabbable" >
+									<ul class="nav nav-tabs">
+										<li class="active"><a data-toggle="tab" href="#tabbable_ACPI_Add" class="tablelia">Add</a></li>
+										<li><a data-toggle="tab" href="#tabbable_ACPI_Delete" class="tablelia">Delete</a></li>
+										<li><a data-toggle="tab" href="#tabbable_ACPI_Patch" class="tablelia">Patch</a></li>
+									</ul>
+
+									<div class="tab-content" style="padding-right:3px;padding-left:2px;">
+										<div id="tabbable_ACPI_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+											<table id="gridtable-ACPI-Add"></table>
+			                                <span class="grey pull-right" >
+			                                	<a id="btnenabled-ACPI-Add"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-ACPI-Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-ACPI-Add"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-ACPI-Add"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-ACPI-Add"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+										</div>
+
+										<div id="tabbable_ACPI_Delete" class="tab-pane fade" style="padding-bottom: 5px;">
+											<table id="gridtable-ACPI-Delete"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-ACPI-Delete"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-ACPI-Delete"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-ACPI-Delete"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-ACPI-Delete"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-ACPI-Delete"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+										</div>
+
+										<div id="tabbable_ACPI_Patch" class="tab-pane fade" style="padding-bottom: 5px;">
+											<table id="gridtable-ACPI-Patch"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-ACPI-Patch"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-ACPI-Patch"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-ACPI-Patch"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-ACPI-Patch"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-ACPI-Patch"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+										</div>
+
+									</div>
+								</div>
+
+
+
+                                <h3 class="header smaller lighter blue"> Quirks</h3>
+
+                                <div class="checkbox well">
+                                    <label class="mintip" :title="title.ACPI.Quirks.FadtEnableReset">
+                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.FadtEnableReset" />
+                                        <span class="lbl" > FadtEnableReset</span>
+                                    </label>
+                                    <label class="mintip" :title="title.ACPI.Quirks.NormalizeHeaders">
+                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.NormalizeHeaders" />
+                                        <span class="lbl"> NormalizeHeaders</span>
+                                    </label>
+                                    <label class="mintip" :title="title.ACPI.Quirks.RebaseRegions">
+                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.RebaseRegions" />
+                                        <span class="lbl"> RebaseRegions</span>
+                                    </label>
+                                    <label class="mintip" :title="title.ACPI.Quirks.ResetHwSig">
+                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.ResetHwSig" />
+                                        <span class="lbl"> ResetHwSig</span>
+                                    </label>
+                                    <label class="mintip" :title="title.ACPI.Quirks.ResetLogoStatus">
+                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.ResetLogoStatus" />
+                                        <span class="lbl"> ResetLogoStatus</span>
+                                    </label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" v-show="root === 'Booter'" >
+                        	<div class="col-xs-12">
+
+                        		<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" :title="title.Booter.MmioWhitelist.title"><a data-toggle="tab" href="#tabbable_Booter_MmioWhitelist" class="tablelia">MmioWhitelist</a></li>
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:3px;padding-left:2px;">
+
+                                        <div id="tabbable_Booter_MmioWhitelist" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Booter-MmioWhitelist"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-Booter-MmioWhitelist"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-Booter-MmioWhitelist"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Booter-MmioWhitelist"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Booter-MmioWhitelist"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-Booter-MmioWhitelist"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <h3 class="header smaller lighter blue"> Quirks</h3>
+                                <div class="well">
+
+                                	<div class="row">
+                                        <div class="col-xs-3 mintip" :title="title.Booter.Quirks.ProvideMaxSlide">
+                                            ProvideMaxSlide<input type="text" class="form-control" v-model="Booter.Quirks.ProvideMaxSlide"/>
+                                        </div>
+                                       
+                                    </div>
+
+                                	
+                                    <div class="checkbox">
+
+                                        <label class="mintip" :title="title.Booter.Quirks.AvoidRuntimeDefrag">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.AvoidRuntimeDefrag" />
+                                            <span class="lbl"> AvoidRuntimeDefrag</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Booter.Quirks.DevirtualiseMmio">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.DevirtualiseMmio" />
+                                            <span class="lbl"> DevirtualiseMmio</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Booter.Quirks.DisableSingleUser">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.DisableSingleUser" />
+                                            <span class="lbl"> DisableSingleUser</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Booter.Quirks.DiscardHibernateMap">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.DiscardHibernateMap" />
+                                            <span class="lbl"> DiscardHibernateMap</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Booter.Quirks.DisableVariableWrite">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.DisableVariableWrite" />
+                                            <span class="lbl"> DisableVariableWrite</span>
+                                        </label>
+
+                                        <label class="mintip" :title="title.Booter.Quirks.EnableSafeModeSlide">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.EnableSafeModeSlide" />
+                                            <span class="lbl"> EnableSafeModeSlide</span>
+                                        </label>
+                                        </div>
+                                        <div class="checkbox">
+                                        <label class="mintip" :title="title.Booter.Quirks.EnableWriteUnprotector">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.EnableWriteUnprotector" />
+                                            <span class="lbl"> EnableWriteUnprotector</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Booter.Quirks.ForceExitBootServices">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ForceExitBootServices" />
+                                            <span class="lbl"> ForceExitBootServices</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Booter.Quirks.ProtectMemoryRegions">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ProtectMemoryRegions" />
+                                            <span class="lbl"> ProtectMemoryRegions</span>
+                                        </label>
+										<label class="mintip" :title="title.Booter.Quirks.ProtectSecureBoot">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ProtectSecureBoot" />
+                                            <span class="lbl"> ProtectSecureBoot</span>
+                                        </label>
+										<label class="mintip" :title="title.Booter.Quirks.ProtectUefiServices">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ProtectUefiServices" />
+                                            <span class="lbl"> ProtectUefiServices</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Booter.Quirks.ProvideCustomSlide">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ProvideCustomSlide" />
+                                            <span class="lbl"> ProvideCustomSlide</span>
+                                        </label>
+										<label class="mintip" :title="title.Booter.Quirks.RebuildAppleMemoryMap">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.RebuildAppleMemoryMap" />
+                                            <span class="lbl"> RebuildAppleMemoryMap</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Booter.Quirks.SetupVirtualMap">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.SetupVirtualMap" />
+                                            <span class="lbl"> SetupVirtualMap</span>
+                                        </label>
+
+                                        <label class="mintip" :title="title.Booter.Quirks.SignalAppleOS">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.SignalAppleOS" />
+                                            <span class="lbl"> SignalAppleOS</span>
+                                        </label>
+										<label class="mintip" :title="title.Booter.Quirks.SyncRuntimePermissions">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.SyncRuntimePermissions" />
+                                            <span class="lbl"> SyncRuntimePermissions</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                        	</div>
+                    	</div>
+
+                        <div class="row" v-show="root === 'DeviceProperties'">
+                            <div class="col-xs-12">
+
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_DeviceProperties_Add" class="tablelia">Add</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_DeviceProperties_Delete" class="tablelia">Delete</a></li>
+
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_DeviceProperties_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-DeviceProperties-AddLeft"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-DeviceProperties-AddLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-DeviceProperties-AddLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-DeviceProperties-AddLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-DeviceProperties-AddLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-DeviceProperties-AddRight"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-DeviceProperties-AddRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-DeviceProperties-AddRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-DeviceProperties-AddRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-DeviceProperties-AddRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_DeviceProperties_Delete" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-DeviceProperties-DeleteLeft"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-DeviceProperties-DeleteLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-DeviceProperties-DeleteLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-DeviceProperties-DeleteLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-DeviceProperties-DeleteLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-DeviceProperties-DeleteRight"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-DeviceProperties-DeleteRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-DeviceProperties-DeleteRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-DeviceProperties-DeleteRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-DeviceProperties-DeleteRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" v-show="root === 'Kernel'">
+                            <div class="col-xs-12">
+
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_Kernel_Add" class="tablelia">Add</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Block" class="tablelia">Block</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Patch" class="tablelia">Patch</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Force" class="tablelia">Force</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Emulate" class="tablelia">Emulate</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Scheme" class="tablelia">Scheme</a></li>
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_Kernel_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Kernel-Add"></table>
+                                            <span class="grey pull-left">
+                                            	<select style="height: 17px" onchange="addkexts(this);">
+												<option value="">List of Kexts</option>
+												<option value='Lilu.kext'>Lilu.kext</option>
+												<option value='VirtualSMC.kext'>VirtualSMC.kext</option>
+												<option value='FakeSMC.kext'>FakeSMC.kext</option>
+												<option value='WhateverGreen.kext'>WhateverGreen.kext</option>
+												<option value='AppleALC.kext'>AppleALC.kext</option>
+												<option value='ACPIBatteryManager.kext'>ACPIBatteryManager.kext</option>
+												<option value='AHCI_3rdParty_eSATA.kext'>AHCI_3rdParty_eSATA.kext</option>
+												<option value='AHCI_3rdParty_SATA.kext'>AHCI_3rdParty_SATA.kext</option>
+												<option value='AHCI_Intel_Generic_SATA.kext'>AHCI_Intel_Generic_SATA.kext</option>
+												<option value='AirportBrcmFixup.kext'>AirportBrcmFixup.kext</option>
+												<option value='AnyAppleUSBKeyboard.kext'>AnyAppleUSBKeyboard.kext</option>
+												<option value='AnyAppleUSBMouse.kext'>AnyAppleUSBMouse.kext</option>
+												<option value='AppleACPIPS2Nub.kext'>AppleACPIPS2Nub.kext</option>
+												<option value='AppleBacklightFixup.kext'>AppleBacklightFixup.kext</option>
+												<option value='AppleIGB.kext'>AppleIGB.kext</option>
+												<option value='AppleIntelE1000e.kext'>AppleIntelE1000e.kext</option>
+												<option value='ApplePS2SmartTouchPad.kext'>ApplePS2SmartTouchPad.kext</option>
+												<option value='AsusSMC.kext'>AsusSMC.kext</option>
+												<option value='AtherosE2200Ethernet.kext'>AtherosE2200Ethernet.kext</option>
+												<option value='BrcmFirmwareData.kext'>BrcmFirmwareData.kext</option>
+												<option value='BrcmFirmwareRepo.kext'>BrcmFirmwareRepo.kext</option>
+												<option value='BrcmPatchRAM.kext'>BrcmPatchRAM.kext</option>
+												<option value='BrcmPatchRAM2.kext'>BrcmPatchRAM2.kext</option>
+												<option value='BrcmWLFixup.kext'>BrcmWLFixup.kext</option>
+												<option value='BT4LEContinuityFixup.kext'>BT4LEContinuityFixup.kext</option>
+												<option value='CodecCommander.kext'>CodecCommander.kext</option>
+												<option value='CoreDisplayFixup.kext'>CoreDisplayFixup.kext</option>
+												<option value='CPUFriend.kext'>CPUFriend.kext</option>
+												<option value='CPUFriendDataProvider.kext'>CPUFriendDataProvider.kext</option>
+												<option value='HibernationFixup.kext'>HibernationFixup.kext</option>
+												<option value='HoRNDIS.kext'>HoRNDIS.kext</option>
+												<option value='IntelMausi.kext'>IntelMausi.kext</option>
+												<option value='IntelMausiEthernet.kext'>IntelMausiEthernet.kext</option>
+												<option value='NoTouchID.kext'>NoTouchID.kext</option>
+												<option value='NullCPUPowerManagement.kext'>NullCPUPowerManagement.kext</option>
+												<option value='RealtekRTL8100.kext'>RealtekRTL8100.kext</option>
+												<option value='RealtekRTL8111.kext'>RealtekRTL8111.kext</option>
+												<option value='SATA-100-series-unsupported.kext'>SATA-100-series-unsupported.kext</option>
+												<option value='SATA-200-series-unsupported.kext'>SATA-200-series-unsupported.kext</option>
+												<option value='SATA-RAID-unsupported.kext'>SATA-RAID-unsupported.kext</option>
+												<option value='SMCBatteryManager.kext'>SMCBatteryManager.kext</option>
+												<option value='SMCLightSensor.kext'>SMCLightSensor.kext</option>
+												<option value='SMCProcessor.kext'>SMCProcessor.kext</option>
+												<option value='SMCSuperIO.kext'>SMCSuperIO.kext</option>
+												<option value='SystemProfilerMemoryFixup.kext'>SystemProfilerMemoryFixup.kext</option>
+												<option value='USBInjectAll.kext'>USBInjectAll.kext</option>
+												<option value='USBPorts.kext'>USBPorts.kext</option>
+												<option value='VoodooHDA.kext'>VoodooHDA.kext</option>
+												<option value='VoodooI2C.kext'>VoodooI2C.kext</option>
+												<option value='VoodooI2CAtmelMXT.kext'>VoodooI2CAtmelMXT.kext</option>
+												<option value='VoodooI2CELAN.kext'>VoodooI2CELAN.kext</option>
+												<option value='VoodooI2CFTE.kext'>VoodooI2CFTE.kext</option>
+												<option value='VoodooI2CHID.kext'>VoodooI2CHID.kext</option>
+												<option value='VoodooI2CSynaptics.kext'>VoodooI2CSynaptics.kext</option>
+												<option value='VoodooI2CUPDDEngine.kext'>VoodooI2CUPDDEngine.kext</option>
+												<option value='VoodooPS2Controller.kext'>VoodooPS2Controller.kext</option>
+												<option value='XHCI-200-series-injector.kext'>XHCI-200-series-injector.kext</option>
+												<option value='XHCI-300-series-injector.kext'>XHCI-300-series-injector.kext</option>
+												<option value='XHCI-unsupported.kext'>XHCI-unsupported.kext</option>
+												</select>
+                                            </span>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-Kernel-Add"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-Kernel-Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Kernel-Add"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Kernel-Add"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-Kernel-Add"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_Kernel_Block" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Kernel-Block"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-Kernel-Block"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-Kernel-Block"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Kernel-Block"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Kernel-Block"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-Kernel-Block"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_Kernel_Patch" class="tab-pane fade in" style="padding-bottom: 5px;">
+
+			                                <table id="gridtable-Kernel-Patch"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-Kernel-Patch"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-Kernel-Patch"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Kernel-Patch"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Kernel-Patch"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-Kernel-Patch"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_Kernel_Emulate" class="tab-pane fade in" style="padding-bottom: 5px;">
+
+			                                <div class="well">
+			                                    <div class="row">
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.Cpuid1Data">
+			                                            Cpuid1Data<input type="text" class="form-control" v-model="Kernel.Emulate.Cpuid1Data"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.Cpuid1Mask">
+			                                            Cpuid1Mask<input type="text" class="form-control" v-model="Kernel.Emulate.Cpuid1Mask"/>
+			                                        </div>
+
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.MaxKernel">
+			                                            MaxKernel<input type="text" class="form-control" v-model="Kernel.Emulate.MaxKernel"/>
+			                                        </div>
+
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.MinKernel">
+			                                            MinKernel<input type="text" class="form-control" v-model="Kernel.Emulate.MinKernel"/>
+			                                        </div>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.Kernel.Emulate.DummyPowerManagement">
+			                                            <input type="checkbox" class="ace" v-model="Kernel.Emulate.DummyPowerManagement" />
+			                                            <span class="lbl"> DummyPowerManagement</span>
+			                                        </label>
+													
+
+			                                    </div>
+
+
+		                                	</div>
+
+                                       	</div>
+
+                                       	<div id="tabbable_Kernel_Scheme" class="tab-pane fade in" style="padding-bottom: 5px;">
+
+			                                <div class="well">
+			                                    <div class="row">
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Scheme.KernelArch">
+			                                            KernelArch
+			                                            <select class="form-control" v-model="Kernel.Scheme.KernelArch">
+														<option value="Auto">Auto</option>
+														<option value="i386">i386</option>
+														<option value="i386-user32">i386-user32</option>
+														<option value="x86_64">x86_64</option>
+														</select>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Scheme.KernelCache">
+			                                            KernelCache
+			                                            <select class="form-control" v-model="Kernel.Scheme.KernelCache">
+														<option value="Auto">Auto</option>
+														<option value="Cacheless">Cacheless</option>
+														<option value="Mkext">Mkext</option>
+														<option value="Prelinked">Prelinked</option>
+														</select>
+			                                        </div>
+
+			                                       
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.Kernel.Scheme.FuzzyMatch">
+			                                            <input type="checkbox" class="ace" v-model="Kernel.Scheme.FuzzyMatch" />
+			                                            <span class="lbl"> FuzzyMatch</span>
+			                                        </label>
+													
+
+			                                    </div>
+
+
+		                                	</div>
+
+                                       	</div>
+
+                                       	<div id="tabbable_Kernel_Force" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Kernel-Force"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-Kernel-Force"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-Kernel-Force"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Kernel-Force"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Kernel-Force"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-Kernel-Force"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+
+                                <h3 class="header smaller lighter blue"> Quirks</h3>
+                                <div class="well">
+                                    <div class="checkbox">
+
+                                        <label class="mintip" :title="title.Kernel.Quirks.AppleCpuPmCfgLock">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleCpuPmCfgLock" />
+                                            <span class="lbl"> AppleCpuPmCfgLock</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.AppleXcpmCfgLock">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleXcpmCfgLock" />
+                                            <span class="lbl"> AppleXcpmCfgLock</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.AppleXcpmExtraMsrs">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleXcpmExtraMsrs" />
+                                            <span class="lbl"> AppleXcpmExtraMsrs</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.AppleXcpmForceBoost">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleXcpmForceBoost" />
+                                            <span class="lbl"> AppleXcpmForceBoost</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.CustomSMBIOSGuid">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.CustomSMBIOSGuid" />
+                                            <span class="lbl"> CustomSMBIOSGuid</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.DisableIoMapper">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableIoMapper" />
+                                            <span class="lbl"> DisableIoMapper</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.DisableLinkeditJettison">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableLinkeditJettison" />
+                                            <span class="lbl"> DisableLinkeditJettison</span>
+                                        </label>
+										<label class="mintip" :title="title.Kernel.Quirks.DisableRtcChecksum">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableRtcChecksum" />
+                                            <span class="lbl"> DisableRtcChecksum</span>
+                                        </label>
+                                         <label class="mintip" :title="title.Kernel.Quirks.ExtendBTFeatureFlags">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ExtendBTFeatureFlags" />
+                                            <span class="lbl"> ExtendBTFeatureFlags</span>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="checkbox">
+
+                                    	<label class="mintip" :title="title.Kernel.Quirks.ExternalDiskIcons">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ExternalDiskIcons" />
+                                            <span class="lbl"> ExternalDiskIcons</span>
+                                        </label>
+
+                                        <label class="mintip" :title="title.Kernel.Quirks.IncreasePciBarSize">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.IncreasePciBarSize" />
+                                            <span class="lbl"> IncreasePciBarSize</span>
+                                        </label>
+
+                                        <label class="mintip" :title="title.Kernel.Quirks.LapicKernelPanic">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.LapicKernelPanic" />
+                                            <span class="lbl"> LapicKernelPanic</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.LegacyCommpage">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.LegacyCommpage" />
+                                            <span class="lbl"> LegacyCommpage</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.PanicNoKextDump">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.PanicNoKextDump" />
+                                            <span class="lbl"> PanicNoKextDump</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.PowerTimeoutKernelPanic">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.PowerTimeoutKernelPanic" />
+                                            <span class="lbl"> PowerTimeoutKernelPanic</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.ThirdPartyDrives">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ThirdPartyDrives" />
+                                            <span class="lbl"> ThirdPartyDrives</span>
+                                        </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.XhciPortLimit">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.XhciPortLimit" />
+                                            <span class="lbl"> XhciPortLimit</span>
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row" v-show="root === 'Misc'">
+
+                            <div class="col-xs-12">
+
+								<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_Misc_BlessOverride" class="tablelia">BlessOverride</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Entries" class="tablelia">Entries</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Tools" class="tablelia">Tools</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Boot" class="tablelia">Boot</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Debug" class="tablelia">Debug</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Security" class="tablelia">Security</a></li>
+
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_Misc_BlessOverride" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Misc-BlessOverride"></table>
+			                                <span class="grey pull-right">
+			                                    <a id="btncopy-Misc-BlessOverride"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Misc-BlessOverride"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Misc-BlessOverride"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-Misc-BlessOverride"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_Misc_Entries" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Misc-Entries"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-Misc-Entries"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-Misc-Entries"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Misc-Entries"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Misc-Entries"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-Misc-Entries"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
+                                        <div id="tabbable_Misc_Tools" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable-Misc-Tools"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-Misc-Tools"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-Misc-Tools"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-Misc-Tools"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-Misc-Tools"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-Misc-Tools"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
+                                        <div id="tabbable_Misc_Boot" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+			                                    <div class="row">
+
+
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.HibernateMode">
+			                                            HibernateMode
+			                                            <select class="form-control" v-model="Misc.Boot.HibernateMode">
+														<option value="None">None</option>
+														<option value="Auto">Auto</option>
+														<option value="RTC">RTC</option>
+														<option value="NVRAM">NVRAM</option>
+
+														</select>
+
+			                                        </div>
+
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerMode">
+			                                            PickerMode
+			                                            <select class="form-control" v-model="Misc.Boot.PickerMode">
+														<option value="Builtin">Builtin</option>
+														<option value="External">External</option>
+														<option value="Apple">Apple</option>
+														</select>
+
+			                                        </div>
+
+			                                    </div>
+
+			                                    <div class="row" style="margin-top: 10px ">
+
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.TakeoffDelay">
+			                                            TakeoffDelay<input type="text" class="form-control" v-model="Misc.Boot.TakeoffDelay"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.Timeout">
+			                                            Timeout<input type="text" class="form-control" v-model="Misc.Boot.Timeout"/>
+			                                        </div>
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.ConsoleAttributes">
+			                                            ConsoleAttributes<input type="text" class="form-control" v-model="Misc.Boot.ConsoleAttributes"/>
+			                                        </div>
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerAttributes">
+			                                            PickerAttributes<input type="text" class="form-control" v-model="Misc.Boot.PickerAttributes"/>
+			                                        </div>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px ">
+			                                    	<label class="mintip" :title="title.Misc.Boot.HideAuxiliary">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.HideAuxiliary" />
+			                                            <span class="lbl"> HideAuxiliary</span>
+			                                        </label>
+			                                        
+													<label class="mintip" :title="title.Misc.Boot.PickerAudioAssist">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.PickerAudioAssist" />
+			                                            <span class="lbl"> PickerAudioAssist</span>
+			                                        </label>
+			                                        <label class="mintip" style="margin-left: 5px;" :title="title.Misc.Boot.PollAppleHotKeys">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.PollAppleHotKeys" />
+			                                            <span class="lbl"> PollAppleHotKeys</span>
+			                                        </label>
+			                                        <label class="mintip" style="margin-left: 5px;" :title="title.Misc.Boot.ShowPicker">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.ShowPicker" />
+			                                            <span class="lbl"> ShowPicker</span>
+			                                        </label>
+
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_Misc_Debug" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+			                                    <div class="row">
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.DisplayDelay">
+			                                            DisplayDelay<input type="text" class="form-control" v-model="Misc.Debug.DisplayDelay"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.DisplayLevel">
+			                                            DisplayLevel<input type="text" class="form-control" v-model="Misc.Debug.DisplayLevel"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.Target">
+			                                            Target<input type="text" class="form-control" v-model="Misc.Debug.Target"/>
+			                                        </div>
+			                                    </div>
+
+			                                   <div class="checkbox" style="margin-top: 20px ">
+													<label class="mintip" :title="title.Misc.Debug.AppleDebug">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.AppleDebug" />
+			                                            <span class="lbl"> AppleDebug</span>
+			                                        </label>
+
+													<label class="mintip" :title="title.Misc.Debug.ApplePanic">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.ApplePanic" />
+			                                            <span class="lbl"> ApplePanic</span>
+			                                        </label>
+
+
+			                                        <label class="mintip" :title="title.Misc.Debug.DisableWatchDog">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.DisableWatchDog" />
+			                                            <span class="lbl"> DisableWatchDog</span>
+			                                        </label>
+
+													<label class="mintip" :title="title.Misc.Debug.SerialInit">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.SerialInit" />
+			                                            <span class="lbl"> SerialInit</span>
+			                                        </label>
+
+													<label class="mintip" :title="title.Misc.Debug.SysReport">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.SysReport" />
+			                                            <span class="lbl"> SysReport</span>
+			                                        </label>
+
+			                                    </div>
+			                                </div>
+                                        </div>
+                                        <div id="tabbable_Misc_Security" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+			                                    <div class="row">
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ExposeSensitiveData">
+			                                            ExposeSensitiveData<input type="text" class="form-control" v-model="Misc.Security.ExposeSensitiveData"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ApECID">
+			                                            ApECID<input type="text" class="form-control" v-model="Misc.Security.ApECID"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.HaltLevel">
+			                                            HaltLevel<input type="text" class="form-control" v-model="Misc.Security.HaltLevel"/>
+			                                        </div>
+													<div class="col-xs-3 mintip" :title="title.Misc.Security.Vault">
+			                                            Vault
+			                                            <select class="form-control" v-model="Misc.Security.Vault">
+														<option value="Optional">Optional</option>
+														<option value="Basic">Basic</option>
+														<option value="Secure">Secure</option>
+														</select>
+
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ScanPolicy">
+			                                            ScanPolicy<a id="btnEdit-Misc-Security-ScanPolicy" style="text-decoration:none">&nbsp;&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
+			                                        </div>
+													<div class="col-xs-3 mintip" :title="title.Misc.Security.BootProtect">
+			                                            BootProtect
+			                                            <select class="form-control" v-model="Misc.Security.BootProtect">
+														<option value="None">None</option>
+														<option value="Bootstrap">Bootstrap</option>
+														</select>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.DmgLoading">
+			                                            DmgLoading
+			                                            <select class="form-control" v-model="Misc.Security.DmgLoading">
+														<option value="Disabled">Disabled</option>
+														<option value="Signed">Signed</option>
+														<option value="Any">Any</option>
+														</select>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.SecureBootModel">
+			                                            SecureBootModel
+			                                            <select class="form-control" v-model="Misc.Security.SecureBootModel">
+														<option value="Default">Default</option>
+														<option value="Disabled">Disabled</option>
+														<option value="j137">j137</option>
+														<option value="j680">j680</option>
+														<option value="j132">j132</option>
+														<option value="j174">j174</option>
+														<option value="j140k">j140k</option>
+														<option value="j780">j780</option>
+														<option value="j213">j213</option>
+														<option value="j140a">j140a</option>
+														<option value="j152f">j152f</option>
+														<option value="j160">j160</option>
+														<option value="j230k">j230k</option>
+														<option value="j214k">j214k</option>
+														<option value="j223">j223</option>
+														<option value="j215">j215</option>
+														<option value="j185">j185</option>
+														<option value="j185f">j185f</option>
+														</select>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.PasswordHash">
+			                                            PasswordHash<input type="text" class="form-control" v-model="Misc.Security.PasswordHash"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.PasswordSalt">
+			                                            PasswordSalt<input type="text" class="form-control" v-model="Misc.Security.PasswordSalt"/>
+			                                        </div>
+
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.Misc.Security.AllowNvramReset">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AllowNvramReset" />
+			                                            <span class="lbl"> AllowNvramReset</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.Misc.Security.AllowSetDefault">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AllowSetDefault" />
+			                                            <span class="lbl"> AllowSetDefault</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.Misc.Security.AuthRestart">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AuthRestart" />
+			                                            <span class="lbl"> AuthRestart</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.Misc.Security.EnablePassword">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.EnablePassword" />
+			                                            <span class="lbl"> EnablePassword</span>
+			                                        </label>
+													
+
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" v-show="root === 'NVRAM'">
+
+                            <div class="col-xs-12">
+
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_NVRAM_Add" class="tablelia">Add</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_NVRAM_Delete" class="tablelia">Delete</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_NVRAM_LegacySchema" class="tablelia">LegacySchema</a></li>
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_NVRAM_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-AddLeft"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-AddLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-AddLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-AddLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-AddLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-AddRight"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-AddRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-AddRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-AddRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-AddRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_NVRAM_Delete" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-DeleteLeft"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-DeleteLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-DeleteLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-DeleteLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-DeleteLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-DeleteRight"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-DeleteRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-DeleteRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-DeleteRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-DeleteRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_NVRAM_LegacySchema" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-LegacySchemaLeft"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-LegacySchemaLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable-NVRAM-LegacySchemaRight"></table>
+			                                        <span class="grey pull-right">
+			                                            <a id="btncopy-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+					                                    <a id="btnpaste-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+					                                    <a id="btnadd-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+					                                    <a id="btndel-NVRAM-LegacySchemaRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h3 class="header smaller lighter blue"></h3>
+                                <div class="well">
+                                    <div class="checkbox">
+                                        <label class="mintip" :title="title.NVRAM.LegacyEnable">
+                                            <input type="checkbox" class="ace" v-model="NVRAM.root.LegacyEnable" />
+                                            <span class="lbl"> LegacyEnable</span>
+                                        </label>
+                                        <label class="mintip" :title="title.NVRAM.LegacyOverwrite">
+                                            <input type="checkbox" class="ace" v-model="NVRAM.root.LegacyOverwrite" />
+                                            <span class="lbl"> LegacyOverwrite</span>
+                                        </label>
+                                        <label class="mintip" :title="title.NVRAM.WriteFlash">
+                                            <input type="checkbox" class="ace" v-model="NVRAM.root.WriteFlash" />
+                                            <span class="lbl"> WriteFlash</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" v-show="root === 'PlatformInfo'">
+                        	<div class="col-xs-12">
+
+                        		<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" id="li_PlatformInfo_Generic"><a data-toggle="tab" href="#tabbable_PlatformInfo_Generic" class="tablelia" id="button_PlatformInfo_Generic">Generic</a></li>
+                                        <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_DataHub" class="tablelia">DataHub</a></li>
+                                        <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_PlatformNVRAM" class="tablelia">PlatformNVRAM</a></li>
+                                        <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_SMBIOS" class="tablelia">SMBIOS</a></li>
+
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                    	<div id="tabbable_PlatformInfo_Generic" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.MLB">
+				                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
+				                                  </div>
+				                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ROM">
+				                                    ROM<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
+				                                  </div>
+				                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemProductName">
+				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
+				                                  </div>
+				                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemSerialNumber">
+				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
+				                                  </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemUUID">
+				                                        SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
+				                                    </div>
+				                                    <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ProcessorType">
+				                                    ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ProcessorType">
+				                                  	</div>
+				                                    <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemMemoryStatus">
+				                                        SystemMemoryStatus
+				                                        <select class="form-control" v-model="PlatformInfo.Generic.SystemMemoryStatus">
+														<option value="Auto">Auto</option>
+														<option value="Upgradable">Upgradable</option>
+														<option value="Soldered">Soldered</option>
+														
+														</select>
+				                                    </div>
+				                                </div>
+
+				                                <div class="checkbox" style="margin-top: 20px">
+				                                	<label class="mintip" :title="title.PlatformInfo.Generic.AdviseWindows">
+				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.AdviseWindows" />
+				                                        <span class="lbl"> AdviseWindows</span>
+				                                    </label>
+				                                    <label class="mintip" :title="title.PlatformInfo.Generic.SpoofVendor">
+				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.SpoofVendor" />
+				                                        <span class="lbl"> SpoofVendor</span>
+				                                    </label>
+				                                   <!--  <label class="mintip" :title="title.PlatformInfo.root.SupportsCsm">
+				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.SupportsCsm" />
+				                                        <span class="lbl"> SupportsCsm</span>
+				                                    </label> -->
+				                                </div>
+				                            </div>
+                                        </div>
+
+                                        <div id="tabbable_PlatformInfo_DataHub" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                  <div class="col-xs-3">
+				                                    ARTFrequency<input type="text" class="form-control" v-model="PlatformInfo.DataHub.ARTFrequency">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    BoardProduct<input type="text" class="form-control" v-model="PlatformInfo.DataHub.BoardProduct">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    BoardRevision<input type="text" class="form-control" v-model="PlatformInfo.DataHub.BoardRevision">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    DevicePathsSupported<input type="text" class="form-control" v-model="PlatformInfo.DataHub.DevicePathsSupported">
+				                                  </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                  <div class="col-xs-3">
+				                                    FSBFrequency<input type="text" class="form-control" v-model="PlatformInfo.DataHub.FSBFrequency">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    InitialTSC<input type="text" class="form-control" v-model="PlatformInfo.DataHub.InitialTSC">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    PlatformName<input type="text" class="form-control" v-model="PlatformInfo.DataHub.PlatformName">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SmcBranch<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcBranch">
+				                                  </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                  <div class="col-xs-3">
+				                                    SmcPlatform<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcPlatform">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SmcRevision<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcRevision">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    StartupPowerEvents<input type="text" class="form-control" v-model="PlatformInfo.DataHub.StartupPowerEvents">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemProductName">
+				                                  </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                  <div class="col-xs-3">
+				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemSerialNumber">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemUUID">
+				                                  </div>
+				                                </div>
+				                            </div>
+                                        </div>
+
+
+
+                                        <div id="tabbable_PlatformInfo_PlatformNVRAM" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                  <div class="col-xs-3">
+				                                    BID<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.BID">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeatures">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeaturesMask">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.MLB">
+				                                  </div>
+
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3">
+				                                        ROM<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ROM">
+				                                    </div>
+				                                </div>
+				                            </div>
+                                        </div>
+
+                                        <div id="tabbable_PlatformInfo_SMBIOS" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                    <div class="col-xs-3">
+				                                    BIOSReleaseDate<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSReleaseDate">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BIOSVendor<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSVendor">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BIOSVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardAssetTag<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardAssetTag">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3">
+				                                    BoardLocationInChassis<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardLocationInChassis">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardManufacturer">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardProduct<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardProduct">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardSerialNumber">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3">
+				                                    BoardType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardType">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisAssetTag<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisAssetTag">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisManufacturer">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3">
+				                                    ChassisSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisSerialNumber">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisType">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.FirmwareFeatures">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3">
+				                                    FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.FirmwareFeaturesMask">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    MemoryFormFactor<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.MemoryFormFactor">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    PlatformFeature<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.PlatformFeature">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ProcessorType">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3">
+				                                    SmcVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SmcVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemFamily<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemFamily">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemManufacturer">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemProductName">
+				                                    </div>
+				                                </div>
+				                                <div class="row" style="margin-top: 10px">
+				                                    <div class="col-xs-3">
+				                                    SystemSKUNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemSKUNumber">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemSerialNumber">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemUUID">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemVersion">
+				                                    </div>
+				                                </div>
+				                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+	                            <h3 class="header smaller lighter blue"> </h3>
+	                            <div class="well">
+	                                <div class="row">
+	                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.root.UpdateSMBIOSMode">
+	                                    UpdateSMBIOSMode<!-- <input type="text" class="form-control" v-model="PlatformInfo.root.UpdateSMBIOSMode"> -->
+	                                    <select class="form-control" v-model="PlatformInfo.root.UpdateSMBIOSMode">
+										<option value="Create" :title='title.PlatformInfo.root.Create'>Create</option>
+										<option value="TryOverwrite" :title='title.PlatformInfo.root.TryOverwrite'>TryOverwrite</option>
+										<option value="Overwrite" :title='title.PlatformInfo.root.Overwrite'>Overwrite</option>
+										<option value="Custom" :title='title.PlatformInfo.root.Custom'>Custom</option>
+										</select>
+	                                  </div>
+	                                </div>
+
+	                                <div class="checkbox" style="margin-top: 20px">
+	                                    <label class="mintip" :title="title.PlatformInfo.root.Automatic">
+	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.Automatic" />
+	                                        <span class="lbl"> Automatic</span>
+	                                    </label>
+	                                    <label class="mintip" :title="title.PlatformInfo.root.UpdateDataHub">
+	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.UpdateDataHub" />
+	                                        <span class="lbl"> UpdateDataHub</span>
+	                                    </label>
+	                                    <label class="mintip" :title="title.PlatformInfo.root.UpdateNVRAM">
+	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.UpdateNVRAM" />
+	                                        <span class="lbl"> UpdateNVRAM</span>
+	                                    </label>
+	                                    <label class="mintip" :title="title.PlatformInfo.root.UpdateSMBIOS">
+	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.UpdateSMBIOS" />
+	                                        <span class="lbl"> UpdateSMBIOS</span>
+	                                    </label>
+
+	                                </div>
+	                            </div>
+
+
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" v-show="root === 'UEFI'">
+                            <div class="col-xs-12">
+
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" :title="title.UEFI.Drivers"><a data-toggle="tab" href="#tabbable_UEFI_Drivers" class="tablelia">Drivers</a></li>
+										<li><a data-toggle="tab" href="#tabbable_UEFI_ReservedMemory" class="tablelia">ReservedMemory</a></li>
+										<li><a data-toggle="tab" href="#tabbable_UEFI_APFS" class="tablelia">APFS</a></li>
+										<li><a data-toggle="tab" href="#tabbable_UEFI_Audio" class="tablelia">Audio</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_Input" class="tablelia">Input</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_Output" class="tablelia">Output</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_ProtocolOverrides" class="tablelia">ProtocolOverrides</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_Quirks" class="tablelia">Quirks</a></li>
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_UEFI_Drivers" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable-UEFI-Drivers"></table>
+                                            <span class="grey pull-left">
+                                            	<select style="height: 17px" onchange="addRowUEFIDrivers(this);">
+												<option value="">List of Drivers</option>
+												<option value="ApfsDriverLoader.efi" >ApfsDriverLoader.efi</option>
+												<option value="FwRuntimeServices.efi">FwRuntimeServices.efi</option>
+												<option value="VirtualSmc.efi">VirtualSmc.efi</option>
+												<option value="HfsPlus.efi">HfsPlus.efi</option>
+												<option value="UsbKbDxe.efi">UsbKbDxe.efi</option>
+												<option value="VBoxHfs.efi">VBoxHfs.efi</option>
+												<option value="EmuVariableRuntimeDxe.efi">EmuVariableRuntimeDxe.efi</option>
+												<option value="MemoryAllocation.efi">MemoryAllocation.efi</option>
+												<option value="apfs.efi">apfs.efi</option>
+												<option value="NvmExpressDxe.efi">NvmExpressDxe.efi</option>
+												<option value="SMCHelper.efi">SMCHelper.efi</option>
+												<option value="AptioMemoryFix.efi">AptioMemoryFix.efi</option>
+												</select>
+                                            </span>
+			                                <span class="grey pull-right">
+
+			                                    <a id="btncopy-UEFI-Drivers"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-UEFI-Drivers"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-UEFI-Drivers"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-UEFI-Drivers"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+										</div>
+
+
+										<div id="tabbable_UEFI_ReservedMemory" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable-UEFI-ReservedMemory"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled-UEFI-ReservedMemory"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy-UEFI-ReservedMemory"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste-UEFI-ReservedMemory"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd-UEFI-ReservedMemory"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+			                                    <a id="btndel-UEFI-ReservedMemory"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
+
+
+
+										<div id="tabbable_UEFI_APFS" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+												<div class="row">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.APFS.MinDate">
+			                                        MinDate<input type="text" class="form-control" v-model="UEFI.APFS.MinDate">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.APFS.MinVersion">
+			                                        MinVersion<input type="text" class="form-control" v-model="UEFI.APFS.MinVersion">
+			                                      </div>
+
+			                                    </div>
+
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.UEFI.APFS.EnableJumpstart">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.EnableJumpstart" />
+			                                            <span class="lbl"> EnableJumpstart</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.APFS.GlobalConnect">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.GlobalConnect" />
+			                                            <span class="lbl"> GlobalConnect</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.APFS.HideVerbose">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.HideVerbose" />
+			                                            <span class="lbl"> HideVerbose</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.APFS.JumpstartHotPlug">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.JumpstartHotPlug" />
+			                                            <span class="lbl"> JumpstartHotPlug</span>
+			                                        </label>
+
+			                                    </div>
+
+
+			                                </div>
+                                        </div>
+
+
+										<div id="tabbable_UEFI_Audio" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+												<div class="row">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioDevice">
+			                                        AudioDevice<input type="text" class="form-control" v-model="UEFI.Audio.AudioDevice">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioCodec">
+			                                        AudioCodec<input type="text" class="form-control" v-model="UEFI.Audio.AudioCodec">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioOut">
+			                                        AudioOut<input type="text" class="form-control" v-model="UEFI.Audio.AudioOut">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.MinimumVolume">
+			                                        MinimumVolume<input type="text" class="form-control" v-model="UEFI.Audio.MinimumVolume">
+			                                      </div>
+			                                    </div>
+			                                    <div class="row" style="margin-top: 10px">
+			                                        <div class="col-xs-3 mintip" :title="title.UEFI.Audio.VolumeAmplifier">
+			                                            VolumeAmplifier<input type="text" class="form-control" v-model="UEFI.Audio.VolumeAmplifier">
+			                                        </div>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.UEFI.Audio.AudioSupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.AudioSupport" />
+			                                            <span class="lbl"> AudioSupport</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Audio.PlayChime">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.PlayChime" />
+			                                            <span class="lbl"> PlayChime</span>
+			                                        </label>
+
+			                                    </div>
+
+
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_UEFI_Input" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    <div class="row">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeyForgetThreshold">
+			                                        KeyForgetThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyForgetThreshold">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeyMergeThreshold">
+			                                        KeyMergeThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyMergeThreshold">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeySupportMode">
+			                                        KeySupportMode<input type="text" class="form-control" v-model="UEFI.Input.KeySupportMode">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.PointerSupportMode">
+			                                        PointerSupportMode<input type="text" class="form-control" v-model="UEFI.Input.PointerSupportMode">
+			                                      </div>
+			                                    </div>
+			                                    <div class="row" style="margin-top: 10px">
+			                                        <div class="col-xs-3 mintip" :title="title.UEFI.Input.TimerResolution">
+			                                            TimerResolution<input type="text" class="form-control" v-model="UEFI.Input.TimerResolution">
+			                                        </div>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+													<label class="mintip" :title="title.UEFI.Input.KeyFiltering">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeyFiltering" />
+			                                            <span class="lbl"> KeyFiltering</span>
+			                                        </label>
+
+			                                        <label class="mintip" :title="title.UEFI.Input.KeySupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeySupport" />
+			                                            <span class="lbl"> KeySupport</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Input.KeySwap">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeySwap" />
+			                                            <span class="lbl"> KeySwap</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Input.PointerSupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.PointerSupport" />
+			                                            <span class="lbl"> PointerSupport</span>
+			                                        </label>
+			                                    </div>
+
+
+			                                </div>
+                                        </div>
+
+
+                                        <div id="tabbable_UEFI_Output" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+												<div class="row">
+
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.TextRenderer">
+			                                            TextRenderer
+			                                            <select class="form-control" v-model="UEFI.Output.TextRenderer">
+														<option value="BuiltinGraphics">BuiltinGraphics</option>
+														<option value="SystemGraphics">SystemGraphics</option>
+														<option value="SystemText">SystemText</option>
+														<option value="SystemGeneric">SystemGeneric</option>
+														</select>
+
+			                                        </div>
+
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.ConsoleMode">
+			                                        ConsoleMode<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
+			                                      </div>
+												  
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.Resolution">
+			                                        Resolution<input type="text" class="form-control" v-model="UEFI.Output.Resolution">
+			                                      </div>
+
+			                                    </div>
+
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.UEFI.Output.ClearScreenOnModeSwitch">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ClearScreenOnModeSwitch" />
+			                                            <span class="lbl"> ClearScreenOnModeSwitch</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.IgnoreTextInGraphics">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.IgnoreTextInGraphics" />
+			                                            <span class="lbl"> IgnoreTextInGraphics</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.ProvideConsoleGop">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ProvideConsoleGop" />
+			                                            <span class="lbl"> ProvideConsoleGop</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.DirectGopRendering">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.DirectGopRendering" />
+			                                            <span class="lbl"> DirectGopRendering</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.ReconnectOnResChange">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReconnectOnResChange" />
+			                                            <span class="lbl"> ReconnectOnResChange</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.ReplaceTabWithSpace">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReplaceTabWithSpace" />
+			                                            <span class="lbl"> ReplaceTabWithSpace</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.SanitiseClearScreen">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.SanitiseClearScreen" />
+			                                            <span class="lbl"> SanitiseClearScreen</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.Output.UgaPassThrough">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.UgaPassThrough" />
+			                                            <span class="lbl"> UgaPassThrough</span>
+			                                        </label>
+
+			                                    </div>
+
+
+			                                </div>
+                                        </div>
+
+
+                                        <div id="tabbable_UEFI_ProtocolOverrides" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    <div class="checkbox">
+			                                    	<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleAudio">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleAudio" />
+			                                            <span class="lbl"> AppleAudio</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleBootPolicy">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleBootPolicy" />
+			                                            <span class="lbl"> AppleBootPolicy</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleDebugLog">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleDebugLog" />
+			                                            <span class="lbl"> AppleDebugLog</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleEvent">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleEvent" />
+			                                            <span class="lbl"> AppleEvent</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleFramebufferInfo">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleFramebufferInfo" />
+			                                            <span class="lbl"> AppleFramebufferInfo</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleImageConversion">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleImageConversion" />
+			                                            <span class="lbl"> AppleImageConversion</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleImg4Verification">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleImg4Verification" />
+			                                            <span class="lbl"> AppleImg4Verification</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleKeyMap">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleKeyMap" />
+			                                            <span class="lbl"> AppleKeyMap</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleRtcRam">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleRtcRam" />
+			                                            <span class="lbl"> AppleRtcRam</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleSecureBoot">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleSecureBoot" />
+			                                            <span class="lbl"> AppleSecureBoot</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleSmcIo">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleSmcIo" />
+			                                            <span class="lbl"> AppleSmcIo</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleUserInterfaceTheme">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleUserInterfaceTheme" />
+			                                            <span class="lbl"> AppleUserInterfaceTheme</span>
+			                                        </label>
+
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.DataHub">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.DataHub" />
+			                                            <span class="lbl"> DataHub</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.DeviceProperties">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.DeviceProperties" />
+			                                            <span class="lbl"> DeviceProperties</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.FirmwareVolume">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.FirmwareVolume" />
+			                                            <span class="lbl"> FirmwareVolume</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.HashServices">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.HashServices" />
+			                                            <span class="lbl"> HashServices</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.OSInfo">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.OSInfo" />
+			                                            <span class="lbl"> OSInfo</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.UnicodeCollation">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.UnicodeCollation" />
+			                                            <span class="lbl"> UnicodeCollation</span>
+			                                        </label>
+
+			                                    </div>
+			                                </div>
+                                        </div>
+                                        <div id="tabbable_UEFI_Quirks" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    <div class="row">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Quirks.ExitBootServicesDelay">
+			                                        ExitBootServicesDelay<input type="text" class="form-control" v-model="UEFI.Quirks.ExitBootServicesDelay">
+			                                      </div>
+
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Quirks.TscSyncTimeout">
+			                                        TscSyncTimeout<input type="text" class="form-control" v-model="UEFI.Quirks.TscSyncTimeout">
+			                                      </div>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+													
+													<label class="mintip" :title="title.UEFI.Quirks.DeduplicateBootOrder">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.DeduplicateBootOrder" />
+			                                            <span class="lbl"> DeduplicateBootOrder</span>
+			                                        </label>
+
+			                                        <label class="mintip" :title="title.UEFI.Quirks.IgnoreInvalidFlexRatio">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreInvalidFlexRatio" />
+			                                            <span class="lbl"> IgnoreInvalidFlexRatio</span>
+			                                        </label>
+
+
+
+			                                        <label class="mintip" :title="title.UEFI.Quirks.ReleaseUsbOwnership">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReleaseUsbOwnership" />
+			                                            <span class="lbl"> ReleaseUsbOwnership</span>
+			                                        </label>
+		                                        
+
+			                                        <label class="mintip" :title="title.UEFI.Quirks.RequestBootVarRouting">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarRouting" />
+			                                            <span class="lbl"> RequestBootVarRouting</span>
+			                                        </label>
+
+
+			                                        <label class="mintip" :title="title.UEFI.Quirks.UnblockFsConnect">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.UnblockFsConnect" />
+			                                            <span class="lbl"> UnblockFsConnect</span>
+			                                        </label>
+
+			                                    </div>
+
+			                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <h3 class="header smaller lighter blue"></h3>
+                                <div class="well">
+                                    <div class="checkbox">
+                                        <label class="mintip" :title="title.UEFI.ConnectDrivers">
+                                            <input type="checkbox" class="ace" v-model="UEFI.root.ConnectDrivers" />
+                                            <span class="lbl"> ConnectDrivers</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+					</div><!-- /.page-content -->
+
+				</div><!-- /.main-content-inner -->
+			</div><!-- /.main-content -->
+
+			<div class="footer">
+				<div class="footer-inner">
+					<div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">Only support OpenCore-0.6.2-RELEASE Updated 2020/10/19</span>
+
+						</span>
+
+					</div>
+				</div>
+			</div>
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+			</a>
+
+            <div class="modal fade" id="inputModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- 模态框主体 -->
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="message-text" class="control-label">{{lang.pasteMessage}}</label>
+                                    <textarea class="form-control" id="textarea_plist_paste" rows="15" cols="40" v-model="textarea_content"></textarea>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 模态框底部 -->
+                        <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{lang.close}}</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="startPaste();">{{lang.starPaste}}</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="editScanPolicyModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- 模态框主体 -->
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="message-text" class="control-label"><b>请勾选需要的选项，然后点击确定按钮吧</b></label><br><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000001" />
+                                     	<span class="lbl"> 限定为⽂件系统</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000002" />
+                                     	<span class="lbl"> 限定为设备类型</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000100"/>
+                                     	<span class="lbl"> 允许扫描 APFS ⽂件系统</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000200"/>
+                                     	<span class="lbl"> 允许扫描 HFS ⽂件系统</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000400"/>
+                                     	<span class="lbl"> 允许扫描 EFI System Partition/ESP ⽂件系统</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000800"/>
+                                     	<span class="lbl"> 允许扫描 NTFS ⽂件系统</span></label><br>
+
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00001000"/>
+                                     	<span class="lbl"> 允许扫描 EXT ⽂件系统</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00010000"/>
+                                     	<span class="lbl"> 允许扫描 SATA 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00020000"/>
+                                     	<span class="lbl"> 允许扫描 SAS 和 Mac NVMe 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00040000"/>
+                                     	<span class="lbl"> 允许扫描 SCSI 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00080000"/>
+                                     	<span class="lbl"> 允许扫描 NVMe 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00100000"/>
+                                     	<span class="lbl"> 允许扫描 CD/DVD 设备</span></label><br>
+
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00200000"/>
+                                     	<span class="lbl"> 允许扫描 USB 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00400000"/>
+                                     	<span class="lbl"> 允许扫描 FireWire 设备</span></label><br>
+                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00800000"/>
+                                     	<span class="lbl"> 允许扫描读卡器设备</span></label><br>
+			                          
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 模态框底部 -->
+                        <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{lang.close}}</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="pasteScanPolicyValue();">{{lang.starPaste}}</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+		</div><!-- /.main-container -->
+
+        <!-- <script>
+            let lang = navigator.language;
+            console.log('lang=' + lang);
+            // if( lang === undefined) {
+            //     lang = "zh-CN";
+            // }
+            // document.write("<script src='assets/opencore/lang-" + lang + ".js'><\/script>");
+        </script> -->
+
+		<script src="assets/opencore/lang.js"></script>
+		<script src="assets/opencore/tips_zh-CN.js"></script>
+		<script src="assets/js/jquery-2.1.4.min.js"></script>
+		<script src="assets/js/jquery-ui.custom.min.js"></script>
+		<script src="assets/js/jquery.jqGrid.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+		<script src="assets/js/ace-elements.min.js"></script>
+		<script src="assets/js/ace.min.js"></script>
+		<script src="assets/js/vue.min.js"></script>
+        <script src="assets/js/FileSaver.min.js"></script>
+        <script src="assets/js/jquery.format.js"></script>
+        <script src="assets/js/clipboard.min.js"></script>
+        <script src="assets/js/jquery.minimalTips.min.js"></script>
+        <script src="assets/js/toastr.min.js"></script>
+		<script src="assets/opencore/comm.js"></script>
+		<script src="assets/opencore/initGirdtable.js"></script>
+		<script src="assets/opencore/index.js"></script>
+        <script src="assets/opencore/generatePlist.js"></script>
+
+
+	</body>
+</html>
