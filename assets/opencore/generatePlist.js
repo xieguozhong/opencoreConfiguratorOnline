@@ -1,7 +1,5 @@
 
 function getAllPlist() {
-	//console.log(VUEAPP.ACPI.Delete);
-	//console.log(genArrayDict(VUEAPP.ACPI.Delete, ['OemTableId','TableSignature'],['TableLength']));
 
 	let plistContext = '<?xml version="1.0" encoding="UTF-8"?>';
 	plistContext += '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">';
@@ -44,14 +42,14 @@ function genACPI() {
 	let acpiContext = '<key>ACPI</key><dict>';
 	//Add
 	acpiContext += '<key>Add</key>';
-	acpiContext += genArrayDict(VUEAPP.ACPI.Add);
+	acpiContext += genArrayDict('ACPI_Add', VUEAPP.ACPI.Add);
 	//Delete
 	acpiContext += '<key>Delete</key>';
-	acpiContext += genArrayDict(VUEAPP.ACPI.Delete, ['OemTableId','TableSignature'],['TableLength']);
+	acpiContext += genArrayDict('ACPI_Delete', VUEAPP.ACPI.Delete, ['OemTableId','TableSignature'],['TableLength']);
 
 	//Patch
 	acpiContext += '<key>Patch</key>';
-	acpiContext += genArrayDict(VUEAPP.ACPI.Patch, ['Find','Mask','OemTableId','Replace','ReplaceMask','TableSignature'],['Count','Limit','Skip','TableLength']);
+	acpiContext += genArrayDict('ACPI_Patch', VUEAPP.ACPI.Patch, ['Find','Mask','OemTableId','Replace','ReplaceMask','TableSignature'],['Count','Limit','Skip','TableLength']);
 
 	//Quirks
 	acpiContext += '<key>Quirks</key>' + getBoolens(VUEAPP.ACPI.Quirks);
@@ -65,7 +63,7 @@ function getBooter() {
 
 	//MmioWhitelist
 	BooterContext += '<key>MmioWhitelist</key>';
-	BooterContext += genArrayDict(VUEAPP.Booter.MmioWhitelist,[],['Address']);
+	BooterContext += genArrayDict('Booter_MmioWhitelist', VUEAPP.Booter.MmioWhitelist,[],['Address']);
 
 
 	//Quirks
@@ -80,11 +78,11 @@ function getDeviceProperties() {
 
 	//Add
 	DPContext += '<key>Add</key>';
-	DPContext += getDeviceData(VUEAPP.DeviceProperties.AddLeft, VUEAPP.DeviceProperties.AddRight);
+	DPContext += getDeviceData(getRewriteLRData('DeviceProperties_AddLeft', VUEAPP.DeviceProperties.AddLeft), getRewriteLRData('DeviceProperties_AddRight',VUEAPP.DeviceProperties.AddRight));
 
 	//Delete
 	DPContext += '<key>Delete</key>';
-	DPContext += getDeviceVolumeData(VUEAPP.DeviceProperties.DeleteLeft, VUEAPP.DeviceProperties.DeleteRight);
+	DPContext += getDeviceVolumeData(getRewriteLRData('DeviceProperties_DeleteLeft', VUEAPP.DeviceProperties.DeleteLeft), getRewriteLRData('DeviceProperties_DeleteRight', VUEAPP.DeviceProperties.DeleteRight));
 
 	return DPContext + '</dict>';
 }
@@ -94,11 +92,11 @@ function getKernel() {
 
 	//Add
 	keContext += '<key>Add</key>';
-	keContext += genArrayDict(VUEAPP.Kernel.Add);
+	keContext += genArrayDict('Kernel_Add', VUEAPP.Kernel.Add);
 
 	//Block
 	keContext += '<key>Block</key>';
-	keContext += genArrayDict(VUEAPP.Kernel.Block);
+	keContext += genArrayDict('Kernel_Block', VUEAPP.Kernel.Block);
 
 	//Emulate
 	keContext += '<key>Emulate</key><dict>';
@@ -114,11 +112,11 @@ function getKernel() {
 
 	//Force
 	keContext += '<key>Force</key>';
-	keContext += genArrayDict(VUEAPP.Kernel.Force);
+	keContext += genArrayDict('Kernel_Force', VUEAPP.Kernel.Force);
 
 	//Patch
 	keContext += '<key>Patch</key>';
-	keContext += genArrayDict(VUEAPP.Kernel.Patch,['Find','Mask','Replace','ReplaceMask'],['Count','Limit','Skip']);
+	keContext += genArrayDict('Kernel_Patch', VUEAPP.Kernel.Patch,['Find','Mask','Replace','ReplaceMask'],['Count','Limit','Skip']);
 
 	//Quirks
 	keContext += '<key>Quirks</key>';
@@ -182,7 +180,7 @@ function getMisc() {
 
 	//4 Entries
 	miscContext += '</dict><key>Entries</key>';
-	miscContext += genArrayDict(VUEAPP.Misc.Entries);
+	miscContext += genArrayDict('Misc_Entries', VUEAPP.Misc.Entries);
 
 	//5 Security
 	miscContext += '<key>Security</key><dict>';
@@ -206,7 +204,7 @@ function getMisc() {
 
 	//6 Tools
 	miscContext += '</dict><key>Tools</key>';
-	miscContext += genArrayDict(VUEAPP.Misc.Tools);
+	miscContext += genArrayDict('Misc_Tools', VUEAPP.Misc.Tools);
 
 
 
@@ -219,11 +217,11 @@ function getNVRAM() {
 
 	//1 Add
 	nvramContext += '<key>Add</key>';
-	nvramContext += getDeviceData(VUEAPP.NVRAM.AddLeft, VUEAPP.NVRAM.AddRight);
+	nvramContext += getDeviceData(getRewriteLRData('NVRAM_AddLeft', VUEAPP.NVRAM.AddLeft), getRewriteLRData('NVRAM_AddRight', VUEAPP.NVRAM.AddRight));
 
 	//2 Delete
 	nvramContext += '<key>Delete</key>';
-	nvramContext += getDeviceVolumeData(VUEAPP.NVRAM.DeleteLeft, VUEAPP.NVRAM.DeleteRight);
+	nvramContext += getDeviceVolumeData(getRewriteLRData('NVRAM_DeleteLeft', VUEAPP.NVRAM.DeleteLeft), getRewriteLRData('NVRAM_DeleteRight', VUEAPP.NVRAM.DeleteRight));
 
 	//3 LegacyEnable
 	nvramContext += '<key>LegacyEnable</key>' + toBoolStringStrict(VUEAPP.NVRAM.root['LegacyEnable']);
@@ -231,7 +229,7 @@ function getNVRAM() {
 
 	//4 LegacySchema
 	nvramContext += '<key>LegacySchema</key>';
-	nvramContext += getDeviceVolumeData(VUEAPP.NVRAM.LegacySchemaLeft, VUEAPP.NVRAM.LegacySchemaRight);
+	nvramContext += getDeviceVolumeData(getRewriteLRData('NVRAM_LegacySchemaLeft', VUEAPP.NVRAM.LegacySchemaLeft), getRewriteLRData('NVRAM_LegacySchemaRight', VUEAPP.NVRAM.LegacySchemaRight));
 
 	//5 WriteFlash
 	nvramContext += '<key>WriteFlash</key>' + toBoolStringStrict(VUEAPP.NVRAM.root['WriteFlash']);
@@ -342,7 +340,7 @@ function getUEFI() {
 
 	//ReservedMemory
 	uefiContext += '<key>ReservedMemory</key>';
-	uefiContext += genArrayDict(VUEAPP.UEFI.ReservedMemory,[],['Address','Size']);
+	uefiContext += genArrayDict('UEFI_ReservedMemory', VUEAPP.UEFI.ReservedMemory,[],['Address','Size']);
 
 	return uefiContext + '</dict>';
 }
@@ -536,18 +534,25 @@ function getBoolens(boolData) {
 	<key>Path</key>
 	<string>SSDT-1.aml</string>
 </dict>
-genArrayDict(		arrayDictData,  数据
+genArrayDict(		tablekey，      表格在GLOBAL_ARRAY_TABLE中的key
+					arrayDictData,  数据
 					dataFileds,     要转换为base64的字段列表
 					intFileds       要转换为整形的字段列表
 					)
 **/
-function genArrayDict(arrayDictData, dataFileds, intFileds) {
+function genArrayDict(tablekey, arrayDictData, dataFileds, intFileds) {
 	if(dataFileds === undefined) dataFileds =[];
 	if(intFileds === undefined) intFileds =[];
 
 	if(arrayDictData.length === 0) {
 		return '<array/>'
 	}
+
+	//为了实现拖动行功能，这里把VUE里面的数据覆盖一遍前台的数据，按前台的顺序来
+	let currentTableData = GLOBAL_ARRAY_TABLE[0][tablekey].jqGrid('getRowData');
+	arrayDictData = rewriteData(currentTableData, arrayDictData);
+
+
 	let tmpreturn = '';
 	for(let i=0,len=arrayDictData.length;i<len;i++) {
 		tmpreturn += '<dict>';
@@ -567,17 +572,16 @@ function genArrayDict(arrayDictData, dataFileds, intFileds) {
                 } else {
                     tmpreturn += '<data>' + hextoBase64(itemData) + '</data>';
                 }
-
-                continue;
             }
             // 如果在整形字段列表中
-            if(intFileds.indexOf(it) >= 0) {
+            else if(intFileds.indexOf(it) >= 0) {
                 tmpreturn += '<integer>' + toNumber(itemData) + '</integer>';
-                continue;
             }
-
-            //否则就是其他string date boolean了
-            tmpreturn += addvtype(itemData);
+			//否则就是其他string date boolean了
+			else {
+				tmpreturn += addvtype(itemData);
+			}
+            
 
 		}
 		tmpreturn += '</dict>';
@@ -624,4 +628,20 @@ function addvtype(valu) {
 
 	}
 
+}
+
+//用左边的数据重写右边的数据并返回右边的数据
+function rewriteData(leftdata, rightdata) {
+	for(let i=0,len=leftdata.length;i<len;i++) {
+		for(let it in leftdata[i]) {
+			rightdata[i][it] = leftdata[i][it];
+		}
+	}
+	return rightdata;
+}
+
+//用在左右两边表格的地方
+function getRewriteLRData(tablekey, rightdata) {
+	let currentTableData = GLOBAL_ARRAY_TABLE[1][tablekey].jqGrid('getRowData');
+	return rewriteData(currentTableData, rightdata)
 }
