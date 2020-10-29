@@ -53,12 +53,12 @@ $(document).ready(function() {
 function bindAllButton() {
 
 
-    for(let i=0,len=GLOBAL_ARRAY_TABLE[0].length;i<len;i++ ) {
-        bindClick(GLOBAL_ARRAY_TABLE[0][i]);
+    for(let it in GLOBAL_ARRAY_TABLE[0]) {
+        bindClick(GLOBAL_ARRAY_TABLE[0][it]);
     }
 
-    for(let i=0,len=GLOBAL_ARRAY_TABLE[1].length;i<len;i++ ) {
-        bindClick(GLOBAL_ARRAY_TABLE[1][i]);
+    for(let it in GLOBAL_ARRAY_TABLE[1]) {
+        bindClick(GLOBAL_ARRAY_TABLE[1][it]);
     }
 
     //绑定btnEdit-Misc-Security-ScanPolicy按钮
@@ -180,8 +180,6 @@ function bindAllButton() {
             }
 
         });
-
-
 
     }
 

@@ -171,7 +171,7 @@
 							<li class="active">{{root}}</li>
 						</ul><!-- /.breadcrumb -->
 
-						<div class="nav-search" style="width:270px;margin-right: 160px" >
+						<div class="nav-search" style="width:270px;margin-right: 140px" >
 							<input type="file" id="id-input-file-2" />
 						</div><!-- /.nav-search -->
                         <div class="pull-right">
@@ -180,7 +180,7 @@
                             <button class="btn btn-minier btn-success" onclick="copyPlist();">{{lang.copy}}</button>&nbsp;
 							<label class="mintip" :title="title.PlatformInfo.configisfull">
 								<input v-model="configisfull" type="checkbox" class="ace" />
-								<span class="lbl"> Custom</span>
+								<span class="lbl"> Full</span>
 							</label>
                         </div>
 					</div>
@@ -284,7 +284,7 @@
 			                                    <a id="btncopy-Booter-MmioWhitelist"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
 			                                    <a id="btnpaste-Booter-MmioWhitelist"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
 			                                    <a id="btnadd-Booter-MmioWhitelist"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel-Booter-MmioWhitelist"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+												<a id="btndel-Booter-MmioWhitelist"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
 			                                </span>
                                         </div>
 
@@ -1161,10 +1161,6 @@
 				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.SpoofVendor" />
 				                                        <span class="lbl"> SpoofVendor</span>
 				                                    </label>
-				                                   <!--  <label class="mintip" :title="title.PlatformInfo.root.SupportsCsm">
-				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.SupportsCsm" />
-				                                        <span class="lbl"> SupportsCsm</span>
-				                                    </label> -->
 				                                </div>
 				                            </div>
                                         </div>
