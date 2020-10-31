@@ -605,3 +605,9 @@ function stringToJSON(str) {
 	}
 	return objreturn;
 }
+
+//根据表哥关键字去全局变量 GLOBAL_ARRAY_TABLE 中取表格对象
+function getJqgridObjectbyKey(tbkey) {
+    let obj = GLOBAL_ARRAY_TABLE[0][tbkey];
+    return obj === undefined ? GLOBAL_ARRAY_TABLE[1][tbkey] : obj;
+}

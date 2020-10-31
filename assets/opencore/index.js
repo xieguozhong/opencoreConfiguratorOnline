@@ -73,16 +73,19 @@ function bindAllButton() {
 
 
         let gridtableid = currentGridTable.attr('id');
-        let buttonBehind = gridtableid.slice(9);
+        let buttonBehind = gridtableid.slice(10);
+        
 
         // 1 绑定所有的增加按钮
-        $("#btnadd" + buttonBehind).on("click",function(){
+        $("#btnadd_" + buttonBehind).on("click",function(){
 
             //如果是右边表格, 先检查左边有没有选中, 如果没有, 不做任何反应
             if(buttonBehind.substr(-5) === 'Right') {
-                let gridid = '#gridtable' + buttonBehind.replace('Right','Left');
+                
+                
+                let theGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
 
-                let selectedId = jQuery(gridid).jqGrid("getGridParam", "selrow");
+                let selectedId = theGrid.jqGrid("getGridParam", "selrow");
                 if(selectedId !== null) {
                     currentGridTable.jqGrid('addRowData', MAXROWID ++ , {pid:selectedId}, 'last');
                 }
@@ -97,7 +100,7 @@ function bindAllButton() {
 
 
         // 2 绑定所有的删除按钮
-        $("#btndel" + buttonBehind).on("click",function(){
+        $("#btndel_" + buttonBehind).on("click",function(){
 
             let selectedIds = currentGridTable.jqGrid('getGridParam','selarrrow');
 
@@ -116,7 +119,8 @@ function bindAllButton() {
 
                 //如果删除左边表格, 要隐藏右边表格
                 if(buttonBehind.substr(-4) === 'Left') {
-                    let rightGrid = jQuery('#' + gridtableid.replace('Left', 'Right'));
+                    
+                    let rightGrid = getJqgridObjectbyKey(buttonBehind.replace('Left', 'Right'));
                     let rowIds = rightGrid.getDataIDs();
                     for(let i=0,len=rowIds.length;i<len;i++) {
                         rightGrid.setRowData(rowIds[i],null,{display: 'none'});
@@ -134,7 +138,7 @@ function bindAllButton() {
 
 
         // 3 绑定所有的复制按钮
-        $("#btncopy" + buttonBehind).on("click",function(){
+        $("#btncopy_" + buttonBehind).on("click",function(){
 
             //先清空剪贴板
             let selectedId = currentGridTable.jqGrid("getGridParam", "selarrrow");
@@ -143,16 +147,29 @@ function bindAllButton() {
                 showTipModal(VUEAPP.lang.checkdatafirst, 'error');
                 return;
             }
-            let rowData, strdata = '';
-            for(let i=0,len=selectedId.length;i<len;i++) {
-                rowData = currentGridTable.jqGrid('getRowData', selectedId[i]);
-                if(i > 0) {
-                    strdata += ',';
-                }
-                strdata += JSON.stringify(rowData);
+            let rowData, arrStrdata = [], leftSelectedId;
+
+            //如果是右边表格, 只要复制左边选中行下面的数据即可
+            if(buttonBehind.substr(-5) === 'Right') {               
+                
+                let leftGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
+
+                leftSelectedId = leftGrid.jqGrid("getGridParam", "selrow");
+                
             }
 
-            copyDatatoClipboard('[' + strdata + ']');
+            for(let i=0,len=selectedId.length;i<len;i++) {
+                rowData = currentGridTable.jqGrid('getRowData', selectedId[i]);
+                
+                if(leftSelectedId === undefined || leftSelectedId == rowData.pid) {
+                    arrStrdata.push(JSON.stringify(rowData));
+                } 
+                
+                
+                
+            }
+            
+            copyDatatoClipboard('[' + arrStrdata.join() + ']');
 
             showTipModal(VUEAPP.lang.copydatasuccess, 'success');
 
@@ -160,13 +177,13 @@ function bindAllButton() {
         });
 
         // 4 绑定所有的粘贴按钮
-        $("#btnpaste" + buttonBehind).on("click",function(){
+        $("#btnpaste_" + buttonBehind).on("click",function(){
             VUEAPP.current_paste_tableid = gridtableid;
             showTextareaModal();
         });
 
         // 5 绑定所有的 启用/禁用 按钮
-        $("#btnenabled" + buttonBehind).on("click",function(){
+        $("#btnenabled_" + buttonBehind).on("click",function(){
             let selectedIds = currentGridTable.jqGrid("getGridParam", "selarrrow");
 
 
@@ -190,7 +207,7 @@ function bindAllButton() {
 
 function addRowUEFIDrivers(drivers) {
     if(drivers.value !== '') {
-        let thetable = jQuery('#gridtable-UEFI-Drivers');
+        let thetable = getJqgridObjectbyKey("UEFI_Drivers")
         thetable.jqGrid('addRowData', MAXROWID++, {FileName:drivers.value}, 'last');
         drivers.value = '';
     }
@@ -268,7 +285,7 @@ function addkexts(kext) {
         ['SystemProfilerMemoryFixup.kext','SystemProfilerMemoryFixup.kext','Contents/MacOS/SystemProfilerMemoryFixup','Contents/Info.plist']
         ];
 
-    let thetable = jQuery("#gridtable-Kernel-Add");
+    let thetable = getJqgridObjectbyKey("Kernel_Add");
 
     for(let i=0,len=allKext.length;i<len;i++) {
 
@@ -448,6 +465,7 @@ var VUEAPP = new Vue({
 
         // 初始化所有表格
         , initAllData : function () {
+            GLOBAL_ARRAY_TABLE[2] = {};
             this.initACPI();
             this.setRoot('ACPI');
 
@@ -502,10 +520,10 @@ var VUEAPP = new Vue({
                 this.NVRAM.AddRight.push(subarray[it]);
             }
 
-            jQuery("#gridtable-NVRAM-AddLeft").trigger("reloadGrid");
-            jQuery("#gridtable-NVRAM-AddRight").trigger("reloadGrid");
+            getJqgridObjectbyKey("NVRAM_AddLeft").trigger("reloadGrid");
+            getJqgridObjectbyKey("NVRAM_AddRight").trigger("reloadGrid");
             //选中第一条记录
-            jQuery("#gridtable-NVRAM-AddLeft").jqGrid('setSelection',0, true);
+            getJqgridObjectbyKey("NVRAM_AddLeft").jqGrid('setSelection',0, true);
 
             //DeleteLeft
             let DeleteText = getValuesByKeyname(NVRAMText, 'Delete')
@@ -521,9 +539,9 @@ var VUEAPP = new Vue({
                 subarray[it]['id'] = it;
                 this.NVRAM.DeleteRight.push(subarray[it]);
             }
-            jQuery("#gridtable-NVRAM-DeleteLeft").trigger("reloadGrid");
-            jQuery("#gridtable-NVRAM-DeleteRight").trigger("reloadGrid");
-            jQuery("#gridtable-NVRAM-DeleteLeft").jqGrid('setSelection',0, true);
+            getJqgridObjectbyKey("NVRAM_DeleteLeft").trigger("reloadGrid");
+            getJqgridObjectbyKey("NVRAM_DeleteRight").trigger("reloadGrid");
+            getJqgridObjectbyKey("NVRAM_DeleteLeft").jqGrid('setSelection',0, true);
 
             //LegacySchemaLeft
             let LegacySchemaText = getValuesByKeyname(NVRAMText, 'LegacySchema')
@@ -540,9 +558,9 @@ var VUEAPP = new Vue({
                 subarray[it]['id'] = it;
                 this.NVRAM.LegacySchemaRight.push(subarray[it]);
             }
-            jQuery("#gridtable-NVRAM-LegacySchemaLeft").trigger("reloadGrid");
-            jQuery("#gridtable-NVRAM-LegacySchemaRight").trigger("reloadGrid");
-            jQuery("#gridtable-NVRAM-LegacySchemaLeft").jqGrid('setSelection',0, true);
+            getJqgridObjectbyKey("NVRAM_LegacySchemaLeft").trigger("reloadGrid");
+            getJqgridObjectbyKey("NVRAM_LegacySchemaRight").trigger("reloadGrid");
+            getJqgridObjectbyKey("NVRAM_LegacySchemaLeft").jqGrid('setSelection',0, true);
 
 
         }
@@ -560,7 +578,8 @@ var VUEAPP = new Vue({
             for(let i=0,len=arrayDrivers.length;i<len;i++) {
                 this.UEFI.Drivers.push({ FileName : arrayDrivers[i]['Volume']}) ;
             }
-            jQuery("#gridtable-UEFI-Drivers").trigger("reloadGrid");
+            
+            getJqgridObjectbyKey('UEFI_Drivers').trigger("reloadGrid");
 
 			//APFS
             let APFSText = getValuesByKeyname(UEFIText, 'APFS');
@@ -587,7 +606,7 @@ var VUEAPP = new Vue({
             this.getAndSetDictItem(QuirksText, this.UEFI.Quirks);
 
             //ReservedMemory
-            this.getPlistAndResetTableData(UEFIText, 'ReservedMemory', 'gridtable-UEFI-ReservedMemory', this.UEFI.ReservedMemory);
+            this.getPlistAndResetTableData(UEFIText, 'ReservedMemory', 'UEFI_ReservedMemory', this.UEFI.ReservedMemory);
 
         }
 
@@ -630,12 +649,12 @@ var VUEAPP = new Vue({
             for(let i=0,len=arrayBlessOverride.length;i<len;i++) {
                 this.Misc.BlessOverride.push({ ScanningPaths : arrayBlessOverride[i]['Volume']}) ;
             }
-            jQuery("#gridtable-Misc-BlessOverride").trigger("reloadGrid");
+            getJqgridObjectbyKey("Misc_BlessOverride").trigger("reloadGrid");
 
             //Entries
-            this.getPlistAndResetTableData(MiscText, 'Entries', 'gridtable-Misc-Entries', this.Misc.Entries);
+            this.getPlistAndResetTableData(MiscText, 'Entries', 'Misc_Entries', this.Misc.Entries);
             //Tools
-            this.getPlistAndResetTableData(MiscText, 'Tools', 'gridtable-Misc-Tools', this.Misc.Tools);
+            this.getPlistAndResetTableData(MiscText, 'Tools', 'Misc_Tools', this.Misc.Tools);
             //Boot
             let BootText = getValuesByKeyname(MiscText, 'Boot');
             this.getAndSetDictItem(BootText, this.Misc.Boot);
@@ -654,10 +673,10 @@ var VUEAPP = new Vue({
 
         , initKernel : function () {
             let text = getValuesByKeyname(VUEAPP.plistcontext, 'Kernel', true);
-            this.getPlistAndResetTableData(text, 'Add', 'gridtable-Kernel-Add', this.Kernel.Add);
-            this.getPlistAndResetTableData(text, 'Block', 'gridtable-Kernel-Block', this.Kernel.Block);
-            this.getPlistAndResetTableData(text, 'Patch', 'gridtable-Kernel-Patch', this.Kernel.Patch);
-            this.getPlistAndResetTableData(text, 'Force', 'gridtable-Kernel-Force', this.Kernel.Force);
+            this.getPlistAndResetTableData(text, 'Add', 'Kernel_Add', this.Kernel.Add);
+            this.getPlistAndResetTableData(text, 'Block', 'Kernel_Block', this.Kernel.Block);
+            this.getPlistAndResetTableData(text, 'Patch', 'Kernel_Patch', this.Kernel.Patch);
+            this.getPlistAndResetTableData(text, 'Force', 'Kernel_Force', this.Kernel.Force);
 
             let EmulateText = getValuesByKeyname(text, 'Emulate');
             this.getAndSetDictItem(EmulateText, this.Kernel.Emulate);
@@ -691,10 +710,10 @@ var VUEAPP = new Vue({
                 //console.log(subArray[it]);
                 this.DeviceProperties.AddRight.push(subArray[it]);
             }
-            jQuery("#gridtable-DeviceProperties-AddLeft").trigger("reloadGrid");
-            jQuery("#gridtable-DeviceProperties-AddRight").trigger("reloadGrid");
+            getJqgridObjectbyKey("DeviceProperties_AddLeft").trigger("reloadGrid");
+            getJqgridObjectbyKey("DeviceProperties_AddRight").trigger("reloadGrid");
             //选中第一条记录
-            jQuery("#gridtable-DeviceProperties-AddLeft").jqGrid('setSelection',0, true);
+            getJqgridObjectbyKey("DeviceProperties_AddLeft").jqGrid('setSelection',0, true);
 
             //Delete
             let DeleteText = getValuesByKeyname(text, 'Delete')
@@ -711,16 +730,16 @@ var VUEAPP = new Vue({
                 this.DeviceProperties.DeleteRight.push(subArray[it]);
             }
 
-            jQuery("#gridtable-DeviceProperties-DeleteLeft").trigger("reloadGrid");
-            jQuery("#gridtable-DeviceProperties-DeleteRight").trigger("reloadGrid");
-            jQuery("#gridtable-DeviceProperties-DeleteLeft").jqGrid('setSelection',0, true);
+            getJqgridObjectbyKey("DeviceProperties_DeleteLeft").trigger("reloadGrid");
+            getJqgridObjectbyKey("DeviceProperties_DeleteRight").trigger("reloadGrid");
+            getJqgridObjectbyKey("DeviceProperties_DeleteLeft").jqGrid('setSelection',0, true);
 
         }
 
 
         , initBooter : function () {
             let text = getValuesByKeyname(VUEAPP.plistcontext, 'Booter', true);
-            this.getPlistAndResetTableData(text, 'MmioWhitelist', 'gridtable-Booter-MmioWhitelist', this.Booter.MmioWhitelist);
+            this.getPlistAndResetTableData(text, 'MmioWhitelist', 'Booter_MmioWhitelist', this.Booter.MmioWhitelist);
 
             let QuirksText = getValuesByKeyname(text, 'Quirks');
             this.getAndSetDictItem(QuirksText, this.Booter.Quirks);
@@ -729,9 +748,9 @@ var VUEAPP = new Vue({
 
         , initACPI : function () {
             let acpiText = getValuesByKeyname(VUEAPP.plistcontext, 'ACPI', true);
-            this.getPlistAndResetTableData(acpiText, 'Add', 'gridtable-ACPI-Add', this.ACPI.Add);
-            this.getPlistAndResetTableData(acpiText, 'Delete', 'gridtable-ACPI-Delete', this.ACPI.Delete);
-            this.getPlistAndResetTableData(acpiText, 'Patch', 'gridtable-ACPI-Patch', this.ACPI.Patch);
+            this.getPlistAndResetTableData(acpiText, 'Add', 'ACPI_Add', this.ACPI.Add);
+            this.getPlistAndResetTableData(acpiText, 'Delete', 'ACPI_Delete', this.ACPI.Delete);
+            this.getPlistAndResetTableData(acpiText, 'Patch', 'ACPI_Patch', this.ACPI.Patch);
 
             let QuirksText = getValuesByKeyname(acpiText, 'Quirks');
             this.getAndSetDictItem(QuirksText, this.ACPI.Quirks);
@@ -742,14 +761,14 @@ var VUEAPP = new Vue({
         }
 
         // 获取plist中array的值并更新到table表格中
-        , getPlistAndResetTableData : function (context, keyname, gridid, gridData) {
+        , getPlistAndResetTableData : function (context, keyname, gridkey, gridData) {
 
             let arrayAdd = parrayToJSarray(getValuesByKeyname(context, keyname));
             gridData.length = 0;
             for(let it in arrayAdd) {
                 gridData.push(arrayAdd[it]);
             }
-            jQuery("#" + gridid).trigger("reloadGrid");
+            getJqgridObjectbyKey(gridkey).trigger("reloadGrid");
         }
 
 
@@ -785,8 +804,10 @@ function startPaste() {
 		return;
 	}
 
- 	let ids = VUEAPP.current_paste_tableid.split('-');
-    let objGridTable = jQuery('#gridtable-' + ids[1] + '-' + ids[2]);
+    
+ 	let ids = VUEAPP.current_paste_tableid.split('_');
+    
+    let objGridTable = getJqgridObjectbyKey(ids[1] + '_' + ids[2]);
 
     //检查数据复制源和复制的格式是否一致
     let arrayColNames = objGridTable.jqGrid('getGridParam','colNames');
@@ -800,8 +821,8 @@ function startPaste() {
 
     //如果是右边表格, 要多做几个处理,1 检查左边是否选中, 2 修改pid 3 删除id
     if(ids[2].substr(-5) === 'Right') {
-        let leftgridid = '#gridtable-' + ids[1] + '-' + ids[2].replace('Right','Left');
-        let leftSelectedId = $(leftgridid).jqGrid("getGridParam", "selrow");
+        let leftgrid = getJqgridObjectbyKey(ids[1] + '_' + ids[2].replace('Right','Left'));
+        let leftSelectedId = leftgrid.jqGrid("getGridParam", "selrow");
 
 
         if(leftSelectedId === null) {
