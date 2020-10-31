@@ -541,16 +541,23 @@ genArrayDict(		tablekey，      表格在GLOBAL_ARRAY_TABLE中的key
 					)
 **/
 function genArrayDict(tablekey, arrayDictData, dataFileds, intFileds) {
-	if(dataFileds === undefined) dataFileds =[];
-	if(intFileds === undefined) intFileds =[];
 
 	if(arrayDictData.length === 0) {
 		return '<array/>'
 	}
 
-	//为了实现拖动行功能，这里把VUE里面的数据覆盖一遍前台的数据，按前台的顺序来
-	let currentTableData = GLOBAL_ARRAY_TABLE[0][tablekey].jqGrid('getRowData');
-	arrayDictData = rewriteData(currentTableData, arrayDictData);
+	if(dataFileds === undefined) dataFileds =[];
+	if(intFileds === undefined) intFileds =[];
+
+
+	if(GLOBAL_ARRAY_TABLE[2][tablekey] === true) {
+		//console.log(tablekey + '要替换');
+		//为了实现拖动行功能，这里把VUE里面的数据覆盖一遍前台的数据，按前台的顺序来
+		let currentTableData = GLOBAL_ARRAY_TABLE[0][tablekey].jqGrid('getRowData');
+		arrayDictData = rewriteData(currentTableData, arrayDictData);
+	}
+
+	
 
 
 	let tmpreturn = '';
@@ -642,6 +649,13 @@ function rewriteData(leftdata, rightdata) {
 
 //用在左右两边表格的地方
 function getRewriteLRData(tablekey, rightdata) {
-	let currentTableData = GLOBAL_ARRAY_TABLE[1][tablekey].jqGrid('getRowData');
-	return rewriteData(currentTableData, rightdata)
+	//替换数据前先看看表格有没有被拖动，没有拖动就不替换
+	if(GLOBAL_ARRAY_TABLE[2][tablekey] === true) {
+		
+		let currentTableData = GLOBAL_ARRAY_TABLE[1][tablekey].jqGrid('getRowData');
+		return rewriteData(currentTableData, rightdata)
+	} else {
+		return rightdata;
+	}
+	
 }
