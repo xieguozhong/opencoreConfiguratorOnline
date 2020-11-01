@@ -23,7 +23,7 @@ $(document).ready(function() {
     });
 
 
-
+    //初始化表格
     initGridTableACPI();
     initGridTableBooter();
     initGridTableDeviceProperties();
@@ -32,16 +32,19 @@ $(document).ready(function() {
     initGridTableNVRAM();
     initGridTableUEFI();
 
+    //绑定所有按钮
     bindAllButton();
 
+    //初始化提示插件
     $.minimalTips();
 
+    //设置提示插件
     toastr.options = {
       "closeButton": true,
       "positionClass": "toast-top-center"
     };
 
-
+    //显示适用于版本信息
 	showTipModal(VUEAPP.lang.supportversion, 'warning');
 
 
@@ -292,6 +295,7 @@ function addkexts(kext) {
         if(allKext[i][0] === kext.value) {
 
             thetable.jqGrid('addRowData', MAXROWID++, {
+                Arch : 'x86_64',
                 BundlePath : allKext[i][1],
                 Comment : '',
                 Enabled : "YES",

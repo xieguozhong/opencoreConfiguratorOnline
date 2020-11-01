@@ -1,4 +1,8 @@
-var GLOBAL_TABLE_WIDTH = 0, GLOBAL_TABLE_HEIGHT = 0, GLOBAL_TABLE_HALF_WIDTH = 0, GLOBAL_ARRAY_TABLE=[{},{},{}], MAXROWID = 500;
+var GLOBAL_TABLE_WIDTH = 0,  			//表格的宽度
+	GLOBAL_TABLE_HEIGHT = 0, 			//表格的高度
+	GLOBAL_TABLE_HALF_WIDTH = 0, 		//半表格的宽度
+	GLOBAL_ARRAY_TABLE=[{},{},{}],      //用于存储所有初始化好的表格，0是全宽表格，1是半宽表格，2是被拖动过的表格记录
+	MAXROWID = 500;						//表格点新增时的jqgrid的id
 
 
 
@@ -195,14 +199,16 @@ function initGridTableKernel() {
 
 	let tableHeight = parseInt(GLOBAL_TABLE_HEIGHT * 0.44);
 	//Add
-	let colNames = ['BundlePath', 'Comment','ExecutablePath','MaxKernel','MinKernel','PlistPath','Enabled'];
+	let colNames = ['Arch','BundlePath', 'Comment','ExecutablePath','PlistPath','MaxKernel','MinKernel','Enabled'];
 	let colModel = [
+		{name:'Arch',index:'Arch', width:150,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
 		{name:'BundlePath',index:'BundlePath', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'ExecutablePath',index:'ExecutablePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		
+		{name:'PlistPath',index:'PlistPath', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'MaxKernel',index:'MaxKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'MinKernel',index:'MinKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'PlistPath',index:'PlistPath', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Kernel_Add = jQuery('#gridtable_Kernel_Add');

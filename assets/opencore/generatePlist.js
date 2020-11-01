@@ -534,6 +534,7 @@ function getBoolens(boolData) {
 	<key>Path</key>
 	<string>SSDT-1.aml</string>
 </dict>
+根据tablekey去表格中读取数据并组装成字符串返回
 genArrayDict(		tablekey，      表格在GLOBAL_ARRAY_TABLE中的key
 					arrayDictData,  数据
 					dataFileds,     要转换为base64的字段列表
@@ -584,7 +585,7 @@ function genArrayDict(tablekey, arrayDictData, dataFileds, intFileds) {
             else if(intFileds.indexOf(it) >= 0) {
                 tmpreturn += '<integer>' + toNumber(itemData) + '</integer>';
             }
-			//否则就是其他string date boolean了
+			//否则就是其他string boolean了
 			else {
 				tmpreturn += addvtype(itemData);
 			}
@@ -619,20 +620,16 @@ function addvtype(valu) {
 	//复选框被勾选后会变成YES, NO
 	if(valu === 'YES') {
 		return '<true/>';
-	}
-	if(valu === 'NO') {
+	} else if(valu === 'NO') {
 		return '<false/>';
 	}
-	let tf = typeof(valu);
-	//console.log('|' + valu + '|=' + tf);
-	switch(tf) {
-		case 'string':
-			return addCharstring(valu);
-			break;
-		case 'boolean':
-			return toBoolStringStrict(valu);
-			break;
 
+	let tf = typeof(valu);
+
+	if(tf === 'string') {
+		return addCharstring(valu);
+	} else if(tf === 'boolean') {
+		return toBoolStringStrict(valu);
 	}
 
 }
