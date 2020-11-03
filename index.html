@@ -329,8 +329,7 @@
                                             <input type="checkbox" class="ace" v-model="Booter.Quirks.EnableSafeModeSlide" />
                                             <span class="lbl"> EnableSafeModeSlide</span>
                                         </label>
-                                        </div>
-                                        <div class="checkbox">
+                                    
                                         <label class="mintip" :title="title.Booter.Quirks.EnableWriteUnprotector">
                                             <input type="checkbox" class="ace" v-model="Booter.Quirks.EnableWriteUnprotector" />
                                             <span class="lbl"> EnableWriteUnprotector</span>
@@ -688,13 +687,13 @@
                                             <span class="lbl"> ExtendBTFeatureFlags</span>
                                         </label>
 
-                                    </div>
-
-                                    <div class="checkbox">
-
                                     	<label class="mintip" :title="title.Kernel.Quirks.ExternalDiskIcons">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.ExternalDiskIcons" />
                                             <span class="lbl"> ExternalDiskIcons</span>
+										</label>
+										<label class="mintip" :title="title.Kernel.Quirks.ForceSecureBootScheme">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ForceSecureBootScheme" />
+                                            <span class="lbl"> ForceSecureBootScheme</span>
                                         </label>
 
                                         <label class="mintip" :title="title.Kernel.Quirks.IncreasePciBarSize">
@@ -1110,7 +1109,8 @@
                         		<div class="tabbable" >
                                     <ul class="nav nav-tabs">
                                         <li class="active" id="li_PlatformInfo_Generic"><a data-toggle="tab" href="#tabbable_PlatformInfo_Generic" class="tablelia" id="button_PlatformInfo_Generic">Generic</a></li>
-                                        <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_DataHub" class="tablelia">DataHub</a></li>
+										<li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_DataHub" class="tablelia">DataHub</a></li>
+										<li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_Memory" class="tablelia">Memory</a></li>
                                         <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_PlatformNVRAM" class="tablelia">PlatformNVRAM</a></li>
                                         <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_SMBIOS" class="tablelia">SMBIOS</a></li>
 
@@ -1121,35 +1121,34 @@
                                     	<div id="tabbable_PlatformInfo_Generic" class="tab-pane fade in active" style="padding-bottom: 5px;">
                                             <div class="well">
 				                                <div class="row">
-				                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.MLB">
-				                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
-				                                  </div>
-				                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ROM">
-				                                    ROM<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
-				                                  </div>
-				                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemProductName">
-				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
-				                                  </div>
-				                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemSerialNumber">
-				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
-				                                  </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
-				                                    <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemUUID">
-				                                        SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
-				                                    </div>
-				                                    <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ProcessorType">
-				                                    ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ProcessorType">
-				                                  	</div>
-				                                    <div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemMemoryStatus">
-				                                        SystemMemoryStatus
-				                                        <select class="form-control" v-model="PlatformInfo.Generic.SystemMemoryStatus">
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.MLB">
+													MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
+													</div>
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ROM">
+													ROM<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
+													</div>
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemProductName">
+													SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
+													</div>
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemSerialNumber">
+													SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
+													</div>
+				                                
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemUUID">
+														SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
+													</div>
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ProcessorType">
+													ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ProcessorType">
+													</div>
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemMemoryStatus">
+														SystemMemoryStatus
+														<select class="form-control" v-model="PlatformInfo.Generic.SystemMemoryStatus">
 														<option value="Auto">Auto</option>
 														<option value="Upgradable">Upgradable</option>
 														<option value="Soldered">Soldered</option>
 														
 														</select>
-				                                    </div>
+													</div>
 				                                </div>
 
 				                                <div class="checkbox" style="margin-top: 20px">
@@ -1180,8 +1179,7 @@
 				                                  <div class="col-xs-3">
 				                                    DevicePathsSupported<input type="text" class="form-control" v-model="PlatformInfo.DataHub.DevicePathsSupported">
 				                                  </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
+				                                
 				                                  <div class="col-xs-3">
 				                                    FSBFrequency<input type="text" class="form-control" v-model="PlatformInfo.DataHub.FSBFrequency">
 				                                  </div>
@@ -1194,8 +1192,7 @@
 				                                  <div class="col-xs-3">
 				                                    SmcBranch<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcBranch">
 				                                  </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
+				                                
 				                                  <div class="col-xs-3">
 				                                    SmcPlatform<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcPlatform">
 				                                  </div>
@@ -1208,8 +1205,7 @@
 				                                  <div class="col-xs-3">
 				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemProductName">
 				                                  </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
+				                                
 				                                  <div class="col-xs-3">
 				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemSerialNumber">
 				                                  </div>
@@ -1218,31 +1214,72 @@
 				                                  </div>
 				                                </div>
 				                            </div>
-                                        </div>
+										</div>
+										
+
+										<div id="tabbable_PlatformInfo_Memory" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable_PlatformInfo_MemoryDevices"></table>
+											<span class="grey pull-right" >
+												<a id="btnenabled_PlatformInfo_MemoryDevices"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+												<a id="btncopy_PlatformInfo_MemoryDevices"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+												<a id="btnpaste_PlatformInfo_MemoryDevices"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+												<a id="btnadd_PlatformInfo_MemoryDevices"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+												<a id="btndel_PlatformInfo_MemoryDevices"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+											</span>
+
+											<div class="well" style="margin-top: 25px">
+				                                <div class="row">
+													<div class="col-xs-3">
+														DataWidth<input type="text" class="form-control" v-model="PlatformInfo.Memory.DataWidth">
+													</div>
+													<div class="col-xs-3">
+														ErrorCorrection<input type="text" class="form-control" v-model="PlatformInfo.Memory.ErrorCorrection">
+													</div>
+													<div class="col-xs-3">
+														FormFactor<input type="text" class="form-control" v-model="PlatformInfo.Memory.FormFactor">
+													</div>
+													<div class="col-xs-3">
+														MaxCapacity<input type="text" class="form-control" v-model="PlatformInfo.Memory.MaxCapacity">
+													</div>
+													<div class="col-xs-3">
+														TotalWidth<input type="text" class="form-control" v-model="PlatformInfo.Memory.TotalWidth">
+													</div>
+													<div class="col-xs-3">
+														Type<input type="text" class="form-control" v-model="PlatformInfo.Memory.Type">
+													</div>
+													<div class="col-xs-3">
+														TypeDetail<input type="text" class="form-control" v-model="PlatformInfo.Memory.TypeDetail">
+													</div>
+
+												</div>
+											</div>
+											
+										</div>
+										
 
 
 
                                         <div id="tabbable_PlatformInfo_PlatformNVRAM" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="well">
 				                                <div class="row">
-				                                  <div class="col-xs-3">
-				                                    BID<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.BID">
-				                                  </div>
-				                                  <div class="col-xs-3">
-				                                    FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeatures">
-				                                  </div>
-				                                  <div class="col-xs-3">
-				                                    FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeaturesMask">
-				                                  </div>
-				                                  <div class="col-xs-3">
-				                                    MLB<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.MLB">
-				                                  </div>
-
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
-				                                    <div class="col-xs-3">
-				                                        ROM<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ROM">
-				                                    </div>
+													<div class="col-xs-3">
+														BID<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.BID">
+													</div>
+													<div class="col-xs-3">
+														FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeatures">
+													</div>
+													<div class="col-xs-3">
+														FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeaturesMask">
+													</div>
+													<div class="col-xs-3">
+														MLB<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.MLB">
+													</div>
+													<div class="col-xs-3">
+														ROM<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ROM">
+													</div>
+													<div class="col-xs-3">
+														SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.SystemUUID">
+													</div>
 				                                </div>
 				                            </div>
                                         </div>
@@ -1262,8 +1299,7 @@
 				                                    <div class="col-xs-3">
 				                                    BoardAssetTag<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardAssetTag">
 				                                    </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
+				                                
 				                                    <div class="col-xs-3">
 				                                    BoardLocationInChassis<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardLocationInChassis">
 				                                    </div>
@@ -1276,8 +1312,7 @@
 				                                    <div class="col-xs-3">
 				                                    BoardSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardSerialNumber">
 				                                    </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
+				                                
 				                                    <div class="col-xs-3">
 				                                    BoardType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardType">
 				                                    </div>
@@ -1290,8 +1325,7 @@
 				                                    <div class="col-xs-3">
 				                                    ChassisManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisManufacturer">
 				                                    </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
+				                                
 				                                    <div class="col-xs-3">
 				                                    ChassisSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisSerialNumber">
 				                                    </div>
@@ -1304,22 +1338,18 @@
 				                                    <div class="col-xs-3">
 				                                    FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.FirmwareFeatures">
 				                                    </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
+				                                
 				                                    <div class="col-xs-3">
 				                                    FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.FirmwareFeaturesMask">
 				                                    </div>
-				                                    <div class="col-xs-3">
-				                                    MemoryFormFactor<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.MemoryFormFactor">
-				                                    </div>
+				                                    
 				                                    <div class="col-xs-3">
 				                                    PlatformFeature<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.PlatformFeature">
 				                                    </div>
 				                                    <div class="col-xs-3">
 				                                    ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ProcessorType">
 				                                    </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
+				                                
 				                                    <div class="col-xs-3">
 				                                    SmcVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SmcVersion">
 				                                    </div>
@@ -1332,8 +1362,7 @@
 				                                    <div class="col-xs-3">
 				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemProductName">
 				                                    </div>
-				                                </div>
-				                                <div class="row" style="margin-top: 10px">
+				                                
 				                                    <div class="col-xs-3">
 				                                    SystemSKUNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemSKUNumber">
 				                                    </div>
@@ -1357,7 +1386,7 @@
 	                            <div class="well">
 	                                <div class="row">
 	                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.root.UpdateSMBIOSMode">
-	                                    UpdateSMBIOSMode<!-- <input type="text" class="form-control" v-model="PlatformInfo.root.UpdateSMBIOSMode"> -->
+	                                    UpdateSMBIOSMode
 	                                    <select class="form-control" v-model="PlatformInfo.root.UpdateSMBIOSMode">
 										<option value="Create" :title='title.PlatformInfo.root.Create'>Create</option>
 										<option value="TryOverwrite" :title='title.PlatformInfo.root.TryOverwrite'>TryOverwrite</option>
@@ -1371,6 +1400,10 @@
 	                                    <label class="mintip" :title="title.PlatformInfo.root.Automatic">
 	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.Automatic" />
 	                                        <span class="lbl"> Automatic</span>
+										</label>
+										<label class="mintip" :title="title.PlatformInfo.root.CustomMemory">
+	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.CustomMemory" />
+	                                        <span class="lbl"> CustomMemory</span>
 	                                    </label>
 	                                    <label class="mintip" :title="title.PlatformInfo.root.UpdateDataHub">
 	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.UpdateDataHub" />
@@ -1622,6 +1655,10 @@
 			                                        <label class="mintip" :title="title.UEFI.Output.DirectGopRendering">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.DirectGopRendering" />
 			                                            <span class="lbl"> DirectGopRendering</span>
+													</label>
+													<label class="mintip" :title="title.UEFI.Output.ForceResolution">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ForceResolution" />
+			                                            <span class="lbl"> ForceResolution</span>
 			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.Output.ReconnectOnResChange">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReconnectOnResChange" />
@@ -1802,7 +1839,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Only support OpenCore-0.6.2-RELEASE Updated 2020/10/19</span>
+							<span class="blue bolder">Only support OpenCore-0.6.3-RELEASE Updated 2020/11/03</span>
 
 						</span>
 

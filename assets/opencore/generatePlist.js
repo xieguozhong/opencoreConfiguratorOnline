@@ -243,6 +243,7 @@ function getPlatformInfo() {
 
 	//0 Automatic
 	pfiContext += '<key>Automatic</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['Automatic']);
+	pfiContext += '<key>CustomMemory</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['CustomMemory']);
 
 	//1 Generic
 	pfiContext += '<key>Generic</key><dict>';
@@ -253,29 +254,40 @@ function getPlatformInfo() {
 	
 	if(configisfull === true) {
 
-		//2 DataHub
+		//DataHub
 		pfiContext += '<key>DataHub</key><dict>';
 		let thedt = {ARTFrequency:'integer', BoardRevision:'data',DevicePathsSupported:'integer',FSBFrequency:'integer', InitialTSC:'integer',SmcBranch:'data',SmcPlatform:'data'
 				,SmcRevision:'data',StartupPowerEvents:'integer'};
 		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.DataHub, thedt);
 		pfiContext += '</dict>';
 
-		//3 PlatformNVRAM
+		//Memory
+		pfiContext += '<key>Memory</key><dict>';
+		thedt = {DataWidth:'integer',ErrorCorrection:'integer',FormFactor:'integer',MaxCapacity:'integer',TotalWidth:'integer',Type:'integer',TypeDetail:'integer'};
+		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.Memory, thedt);
+		pfiContext += '<key>Devices</key>';
+		pfiContext += genArrayDict('PlatformInfo_MemoryDevices', VUEAPP.PlatformInfo.Memory.Devices,[],['Size','Speed']);
+		pfiContext += '</dict>';
+
+		//PlatformNVRAM
 		pfiContext += '<key>PlatformNVRAM</key><dict>';
 		let pfndatatype = {FirmwareFeatures:'data',FirmwareFeaturesMask:'data',ROM:'data'};
 		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.PlatformNVRAM, pfndatatype);
 		pfiContext += '</dict>';
 
-		//4 SMBIOS
+		//SMBIOS
 		pfiContext += '<key>SMBIOS</key><dict>';
-		let smbiosdatatype = {BoardType:'integer',ChassisType:'integer',FirmwareFeatures:'data',FirmwareFeaturesMask:'data',MemoryFormFactor:'integer'
-					,PlatformFeature:'integer',ProcessorType:'integer',SmcVersion:'data'};
+		let smbiosdatatype = {BoardType:'integer',ChassisType:'integer',FirmwareFeatures:'data',FirmwareFeaturesMask:'data',
+		PlatformFeature:'integer',ProcessorType:'integer',SmcVersion:'data'};
 		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.SMBIOS, smbiosdatatype);
 		pfiContext += '</dict>';
 
+		
+
+
 	}
 
-	//5 root
+	//root
 	pfiContext += '<key>UpdateDataHub</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['UpdateDataHub']);
 	pfiContext += '<key>UpdateNVRAM</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['UpdateNVRAM']);
 	pfiContext += '<key>UpdateSMBIOS</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['UpdateSMBIOS']);
@@ -413,13 +425,19 @@ function getSubDeviceVolumeData(pid, rightData) {
 function getStringorboolorinterger(theData, dataType) {
 	if(dataType === undefined) dataType = {};
 
-	let strreturn = "";
+	let strreturn = "", vueitDatatype;
 
 	for(let it in theData) {
+
+		
+		vueitDatatype = typeof(theData[it]);
+		if(vueitDatatype == 'object') continue; //如果碰到数组直接跳过
+
+
 		strreturn += addKey(it);
 
 		//如果数据类型是BOOLEAN
-		if(typeof(theData[it]) === 'boolean') {
+		if(vueitDatatype === 'boolean') {
 			strreturn += (theData[it] === true ? '<true/>' : '<false/>');
 		} else {
 			let itDataType = dataType[it];

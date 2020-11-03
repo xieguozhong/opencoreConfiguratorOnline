@@ -187,7 +187,7 @@ function initGridTableBooter() {
 
 	let objGT_Booter_MmioWhitelist = jQuery('#gridtable_Booter_MmioWhitelist');
 	GLOBAL_ARRAY_TABLE[0]['Booter_MmioWhitelist'] = objGT_Booter_MmioWhitelist;
-	initGridTable(objGT_Booter_MmioWhitelist, VUEAPP.Booter.MmioWhitelist, colNames, colModel, 0, parseInt(GLOBAL_TABLE_HEIGHT * 0.44));
+	initGridTable(objGT_Booter_MmioWhitelist, VUEAPP.Booter.MmioWhitelist, colNames, colModel, GLOBAL_TABLE_WIDTH-15, parseInt(GLOBAL_TABLE_HEIGHT * 0.44));
 
 	
 	
@@ -198,6 +198,7 @@ function initGridTableBooter() {
 function initGridTableKernel() {
 
 	let tableHeight = parseInt(GLOBAL_TABLE_HEIGHT * 0.44);
+	let kernelTableWidth = GLOBAL_TABLE_WIDTH - 15;
 	//Add
 	let colNames = ['Arch','BundlePath', 'Comment','ExecutablePath','PlistPath','MaxKernel','MinKernel','Enabled'];
 	let colModel = [
@@ -213,7 +214,7 @@ function initGridTableKernel() {
 	];
 	let objGT_Kernel_Add = jQuery('#gridtable_Kernel_Add');
 	GLOBAL_ARRAY_TABLE[0]['Kernel_Add'] = objGT_Kernel_Add;
-	initGridTable(objGT_Kernel_Add, VUEAPP.Kernel.Add, colNames, colModel, 0, tableHeight);
+	initGridTable(objGT_Kernel_Add, VUEAPP.Kernel.Add, colNames, colModel, kernelTableWidth, tableHeight);
 
 
 	//Block
@@ -228,7 +229,7 @@ function initGridTableKernel() {
 	];
 	let objGT_Kernel_Block = jQuery('#gridtable_Kernel_Block');
 	GLOBAL_ARRAY_TABLE[0]['Kernel_Block'] = objGT_Kernel_Block;
-	initGridTable(objGT_Kernel_Block, VUEAPP.Kernel.Block, colNames, colModel, 0, tableHeight);
+	initGridTable(objGT_Kernel_Block, VUEAPP.Kernel.Block, colNames, colModel, kernelTableWidth, tableHeight);
 
 
 	//Patch
@@ -251,7 +252,7 @@ function initGridTableKernel() {
 	];
 	let objGT_Kernel_Patch = jQuery('#gridtable_Kernel_Patch');
 	GLOBAL_ARRAY_TABLE[0]['Kernel_Patch'] = objGT_Kernel_Patch;
-	initGridTable(objGT_Kernel_Patch, VUEAPP.Kernel.Patch, colNames, colModel, 0, tableHeight);
+	initGridTable(objGT_Kernel_Patch, VUEAPP.Kernel.Patch, colNames, colModel, kernelTableWidth, tableHeight);
 
 
 	//Force
@@ -269,11 +270,29 @@ function initGridTableKernel() {
 	];
 	let objGT_Kernel_Force = jQuery('#gridtable_Kernel_Force');
 	GLOBAL_ARRAY_TABLE[0]['Kernel_Force'] = objGT_Kernel_Force;
-	initGridTable(objGT_Kernel_Force, VUEAPP.Kernel.Force, colNames, colModel, 0, tableHeight);
+	initGridTable(objGT_Kernel_Force, VUEAPP.Kernel.Force, colNames, colModel, kernelTableWidth, tableHeight);
 
 
 
 
+}
+
+function initGridTablePlatformInfo() {
+	colNames = ['AssetTag','BankLocator','DeviceLocator','Manufacturer','PartNumber','SerialNumber','Size','Speed']; 
+	colModel = [
+		{name:'AssetTag',index:'AssetTag', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'BankLocator',index:'BankLocator', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'DeviceLocator',index:'DeviceLocator', width:100,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Manufacturer',index:'Manufacturer', width:100,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'PartNumber',index:'PartNumber', width:100,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'SerialNumber',index:'SerialNumber', width:100,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Size',index:'Size', width:100,editable: true,  sortable:false, formatter:formatInteger},
+		{name:'Speed',index:'Speed', width:100,editable: true,  sortable:false, formatter:formatInteger}
+
+	];
+	let objGT_PlatformInfo_MemoryDevices = jQuery('#gridtable_PlatformInfo_MemoryDevices');
+	GLOBAL_ARRAY_TABLE[0]['PlatformInfo_MemoryDevices'] = objGT_PlatformInfo_MemoryDevices;
+	initGridTable(objGT_PlatformInfo_MemoryDevices, VUEAPP.PlatformInfo.Memory.Devices, colNames, colModel, GLOBAL_TABLE_WIDTH - 15);
 }
 
 function initGridTableUEFI() {
@@ -299,7 +318,10 @@ function initGridTableUEFI() {
 }
 
 function initGridTableNVRAM() {
-	let colNames = ['Devices', 'id'];
+	let colNames = ['Devices', 'id'],
+	tableWidth = GLOBAL_TABLE_HALF_WIDTH - 7
+	;
+
 	//console.log(tableWidth);
     let colModel = [
         {name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
@@ -308,7 +330,7 @@ function initGridTableNVRAM() {
 
     let objGT_NVRAM_AddLeft = jQuery('#gridtable_NVRAM_AddLeft');
     GLOBAL_ARRAY_TABLE[1]['NVRAM_AddLeft'] = objGT_NVRAM_AddLeft;
-    initGridTable(objGT_NVRAM_AddLeft, VUEAPP.NVRAM.AddLeft, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
+    initGridTable(objGT_NVRAM_AddLeft, VUEAPP.NVRAM.AddLeft, colNames, colModel, tableWidth);
 
 
     //AddRight
@@ -322,7 +344,7 @@ function initGridTableNVRAM() {
     ];
     let objGT_NVRAM_AddRight = jQuery('#gridtable_NVRAM_AddRight');
     GLOBAL_ARRAY_TABLE[1]['NVRAM_AddRight'] = objGT_NVRAM_AddRight;
-    initGridTable(objGT_NVRAM_AddRight, VUEAPP.NVRAM.AddRight, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
+    initGridTable(objGT_NVRAM_AddRight, VUEAPP.NVRAM.AddRight, colNames, colModel, tableWidth);
 
 
 
@@ -342,7 +364,7 @@ function initGridTableNVRAM() {
     ];
     let objGT_NVRAM_DeleteLeft = jQuery('#gridtable_NVRAM_DeleteLeft');
     GLOBAL_ARRAY_TABLE[1]['NVRAM_DeleteLeft'] = objGT_NVRAM_DeleteLeft;
-    initGridTable(objGT_NVRAM_DeleteLeft, VUEAPP.NVRAM.DeleteLeft, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
+    initGridTable(objGT_NVRAM_DeleteLeft, VUEAPP.NVRAM.DeleteLeft, colNames, colModel, tableWidth);
 
 
     //DeleteRight
@@ -355,7 +377,7 @@ function initGridTableNVRAM() {
     ];
     let objGT_NVRAM_DeleteRight = jQuery('#gridtable_NVRAM_DeleteRight');
     GLOBAL_ARRAY_TABLE[1]['NVRAM_DeleteRight'] = objGT_NVRAM_DeleteRight;
-    initGridTable(objGT_NVRAM_DeleteRight, VUEAPP.NVRAM.DeleteRight, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
+    initGridTable(objGT_NVRAM_DeleteRight, VUEAPP.NVRAM.DeleteRight, colNames, colModel, tableWidth);
 
     //增加行选中事件
     objGT_NVRAM_DeleteLeft.jqGrid('setGridParam',{
@@ -372,7 +394,7 @@ function initGridTableNVRAM() {
     ];
     let objGT_NVRAM_LegacySchemaLeft = jQuery('#gridtable_NVRAM_LegacySchemaLeft');
     GLOBAL_ARRAY_TABLE[1]['NVRAM_LegacySchemaLeft'] = objGT_NVRAM_LegacySchemaLeft;
-    initGridTable(objGT_NVRAM_LegacySchemaLeft, VUEAPP.NVRAM.LegacySchemaLeft, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
+    initGridTable(objGT_NVRAM_LegacySchemaLeft, VUEAPP.NVRAM.LegacySchemaLeft, colNames, colModel, tableWidth);
 
 
     //LegacySchemaRight
@@ -385,7 +407,7 @@ function initGridTableNVRAM() {
     ];
     let objGT_NVRAM_LegacySchemaRight = jQuery('#gridtable_NVRAM_LegacySchemaRight');
     GLOBAL_ARRAY_TABLE[1]['NVRAM_LegacySchemaRight'] = objGT_NVRAM_LegacySchemaRight;
-    initGridTable(objGT_NVRAM_LegacySchemaRight, VUEAPP.NVRAM.LegacySchemaRight, colNames, colModel, GLOBAL_TABLE_HALF_WIDTH);
+    initGridTable(objGT_NVRAM_LegacySchemaRight, VUEAPP.NVRAM.LegacySchemaRight, colNames, colModel, tableWidth);
 
     //增加行选中事件
     objGT_NVRAM_LegacySchemaLeft.jqGrid('setGridParam',{

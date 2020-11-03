@@ -66,7 +66,7 @@ const SYSTEM_TIPS = {
 
     Kernel : {
         title : '用于说明 OpenCore 的具体加密信息, 配置 Kext 加载顺序以及屏蔽驱动',
-        Add_title : '这里是你指定要加载哪些 Kext 以及仿冒 CPU ID 的地方, \n这里的顺序非常重要, 所以请确保 Lilu.Kext 始终在第一位! \n其他优先级更高的 Kext 为 Lilu 的插件, \n如 VirtualSMC, AppleALC, WhateverGreen 等。(有些驱动里面还包含插件驱动, 如: VoodooI2C, VoodooPS2 注意要把里面的插件也全部列出)',
+        Add_title : '这里是你指定要加载哪些 Kext 以及仿冒 CPU ID 的地方, <br>这里的顺序非常重要, 所以请确保 Lilu.Kext 始终在第一位! <br>其他优先级更高的 Kext 为 Lilu 的插件, <br>如 VirtualSMC, AppleALC, WhateverGreen 等。(有些驱动里面还包含插件驱动, 如: VoodooI2C, VoodooPS2 注意要把里面的插件也全部列出)',
         Block_title : '屏蔽系统里的 Kext',
         Patch_title : '这是你要添加系统内核补丁, Kext 补丁, 和 AMD CPU 补丁的地方。(等同于 Clover 的 KextToPatch 和 KernelToPatch)',
         Emulate_title : '小兵博客没写这项啊, 所以我也不知道',
@@ -81,6 +81,7 @@ const SYSTEM_TIPS = {
 			DisableRtcChecksum : '禁用 AppleRTC 中写入的主校验和 （0x58-0x59）',
             ExtendBTFeatureFlags : 'NO 将FeatureFlags设置为0x0F，以获得Bluetooth的全部功能，包括Continuity。注意：此选项替代了BT4LEContinuityFixup.kext，由于更新太晚而无法正常运行修补进度。',
             ExternalDiskIcons: 'YES 硬盘图标补丁, macOS 将内部硬盘视为外接硬盘 (黄色) 时使用',
+            ForceSecureBootScheme:'NO 强制使用x86方案进行IMG4验证。<br>注意：当使用与x86legacy不同的SecureBootModel时，在虚拟机上需要此选项',
             IncreasePciBarSize : 'NO 将IOPCIFamily中的32位PCI条尺寸从1 GB增加到4 GB',
             LapicKernelPanic: 'NO 禁用由 AP 核心 lapic 中断造成的内核崩溃, 通常用于惠普电脑 (等同于 Clover 的 Kernel LAPIC)',
             LegacyCommpage : 'NO 将默认的64位combpage bcopy实现替换为不需要的实现SSSE3，对旧平台有用。 这可以防止由于没有可用内容而导致上一次恐慌不匹配的commpage不需要SSSE3的64位bcopy函数。',
@@ -170,6 +171,7 @@ const SYSTEM_TIPS = {
             Overwrite : '如果适合新大小，则覆盖现有的gEfiSmbiosTableGuid和gEfiSmbiosTable3Guid数据。否则以未指定状态中止',
             Custom : '将第一个SMBIOS表（gEfiSmbiosTableGuid）写入gOcCustomSmbiosTableGuid，以解决固件在ExitBootServices覆盖SMBIOS内容的问题。否则等效于创建。要求修补AppleSmbios.kext和AppleACPIPlatform.kext以便从另一个GUID读取：“ EB9D2D31”-“ EB9D2D35”（ASCII），由CustomSMBIOSGuid自动完成',
             Automatic : 'NO 根据通用部分而不是使用DataHub，NVRAM和SMBIOS部分的值生成PlatformInfo',
+            CustomMemory:'NO 使用“内存”部分中定义的自定义内存配置。这将完全替换SMBIOS中的任何现有内存配置，并且仅在UpdateSMBIOS设置为true时才处于活动状态',
             UpdateDataHub : 'NO 更新数据中心字段。这些字段是根据“Automatic”值从“Generic”或“DataHub”部分读取的',
             UpdateNVRAM : '更新与平台信息有关的NVRAM字段',
             UpdateSMBIOS : '更新SMBIOS字段。这些字段是从“Generic”或“SMBIOS”部分读取的，具体取决于“Automatic”值'
@@ -233,6 +235,7 @@ const SYSTEM_TIPS = {
             IgnoreTextInGraphics:'NO 选择固件可在图形和文本模式下在屏幕上输出文本。这通常是意外的，因为随机文本可能会出现在图形图像上并导致UI损坏。将此选项设置为true将当控制台控件处于不同于“文本”的模式时，丢弃所有文本输出', 
             ProvideConsoleGop:'NO 确保控制台句柄上的GOP（图形输出协议）', 
             DirectGopRendering:'NO 使用内置的图形输出协议渲染器进行控制台',
+            ForceResolution:'NO 在默认情况下（例如在旧版Intel GMA和第一代Intel HD Graphics（Ironlake / Arrandale）上）无法使用所需分辨率的情况下，强制设置分辨率。将“分辨率”设置为“最大”将尝试从连接的显示器的EDID中获取最大的可用分辨率',
             ReconnectOnResChange:'NO 更改屏幕分辨率后重新连接控制台控制器', 
             ReplaceTabWithSpace:'NO 某些固件无法打印制表符甚至其后的所有内容，从而造成困难或无法使用UEFI Shell内置文本编辑器来编辑属性列表和其他文档。这个选项使控制台输出空间而不是选项卡', 
             SanitiseClearScreen:'NO 某些固件在尝试清除时将屏幕分辨率重置为故障保护值（例如1024x768）使用大显示（例如2K或4K）时的屏幕内容。此选项尝试应用解决方法。',
