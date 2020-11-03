@@ -10,7 +10,7 @@ const GLOBAL_LANG = {
         toNumberError : '整形格式的数据被错误的输入了字符串"{@1}", 可能导致配置文件错误, 请检查',
         DeviceError : '增加或修改配置行后请按回车键提交, 不需要的空行请删除, 否则可能导致配置文件格式错误',
         copyplistSuccess : '已成功复制到剪贴板中, 请手动粘贴到EFI的config.plist文件中',
-        downplistSuccess : '已成功下载config.plist文件, 请把它手动拷贝到EFI/OC目录下覆盖旧文件, 注意备份',
+        downplistSuccess : '已成功下载配置文件, 请把它更名成“config.plist”并手动拷贝到EFI/OC目录下覆盖旧文件, 注意备份',
         pasteMessage : '请按 Command+V 或者在下面框中点右键选择粘贴, 然后点击下面的 确定 按钮',
         checkdatafirst : '请先勾选要复制的数据行',
         copydatasuccess : '数据行复制成功',
@@ -29,7 +29,7 @@ const GLOBAL_LANG = {
         Error : '错误',
         enabled : '启用/禁用',
         hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数',
-		supportversion : '注意: 本版只支持官方发布的OpenCore-0.6.2-RELEASE'
+		supportversion : '注意: 当前版本保存后的plist文件只适用于官方发布的OpenCore-0.6.3-RELEASE'
     },
 
     'en-US' : {
@@ -61,6 +61,6 @@ const GLOBAL_LANG = {
         Error : 'Error',
         enabled : 'enabled/disabled',
         hexstringlengthisodd : '<{@1}> is not a valid hexadecimal string, because the length of a hexadecimal string cannot be odd',
-		supportversion : 'Warning: Only OpenCore-0.6.2-RELEASE is supported'
+		supportversion : 'Warning: Only OpenCore-0.6.3-RELEASE is supported'
     }
 };

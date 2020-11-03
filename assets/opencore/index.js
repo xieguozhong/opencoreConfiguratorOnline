@@ -30,6 +30,7 @@ $(document).ready(function() {
     initGridTableKernel();
     initGridTableMisc();
     initGridTableNVRAM();
+    initGridTablePlatformInfo();
     initGridTableUEFI();
 
     //绑定所有按钮
@@ -352,7 +353,8 @@ var VUEAPP = new Vue({
             Force:[],
             Quirks:{
                 AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, AppleXcpmForceBoost:false,CustomSMBIOSGuid:false,
-                DisableIoMapper:false, DisableLinkeditJettison:false,DisableRtcChecksum:false, ExtendBTFeatureFlags:false, ExternalDiskIcons:false, IncreasePciBarSize:false,
+                DisableIoMapper:false, DisableLinkeditJettison:false,DisableRtcChecksum:false, ExtendBTFeatureFlags:false, ExternalDiskIcons:false, 
+                ForceSecureBootScheme:false,IncreasePciBarSize:false,
                 LapicKernelPanic:false, LegacyCommpage:false, PanicNoKextDump:false,
                 PowerTimeoutKernelPanic:false, ThirdPartyDrives:false, XhciPortLimit:false
             }
@@ -384,7 +386,7 @@ var VUEAPP = new Vue({
         },
         PlatformInfo : {
             root : {
-                Automatic:false, UpdateDataHub:false, UpdateNVRAM:false, UpdateSMBIOS:false, UpdateSMBIOSMode : 'Create'
+                Automatic:false, CustomMemory:false,UpdateDataHub:false, UpdateNVRAM:false, UpdateSMBIOS:false, UpdateSMBIOSMode : 'Create'
             },
             DataHub : {
                 ARTFrequency:'', BoardProduct:'', BoardRevision:'', DevicePathsSupported:'', FSBFrequency:'',
@@ -397,12 +399,17 @@ var VUEAPP = new Vue({
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             PlatformNVRAM : {
-                BID:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', MLB:'', ROM:''
+                BID:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', MLB:'', ROM:'',SystemUUID:''
             },
+            Memory : {
+                DataWidth:'',ErrorCorrection:'',FormFactor:'',MaxCapacity:'',TotalWidth:'',Type:'',TypeDetail:'',
+                Devices : []
+            },
+
             SMBIOS : {
                 BIOSReleaseDate:'', BIOSVendor:'', BIOSVersion:'', BoardAssetTag:'', BoardLocationInChassis:'', BoardManufacturer:'',
                 BoardProduct:'', BoardSerialNumber:'', BoardType:'', BoardVersion:'', ChassisAssetTag:'', ChassisManufacturer:'',
-                ChassisSerialNumber:'', ChassisType:'', ChassisVersion:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', MemoryFormFactor:'',
+                ChassisSerialNumber:'', ChassisType:'', ChassisVersion:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', 
                 PlatformFeature:'', ProcessorType:'', SmcVersion:'', SystemFamily:'', SystemManufacturer:'',
                 SystemProductName:'', SystemSKUNumber:'', SystemSerialNumber:'', SystemUUID:'', SystemVersion:''
             }
@@ -422,7 +429,7 @@ var VUEAPP = new Vue({
 
             },
             Output : {
-                ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,IgnoreTextInGraphics:false,
+                ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,IgnoreTextInGraphics:false,
                 ProvideConsoleGop:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
                 Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UgaPassThrough:false
             },
@@ -484,10 +491,14 @@ var VUEAPP = new Vue({
 
         // 获取并设置dict的值和bool值
         , getAndSetDictItem(context, vueData) {
-
+            let dataType = '';
             for(let it in vueData) {
-                if(typeof(vueData[it]) === "boolean") {
+                dataType = typeof(vueData[it]);
+                
+                if(dataType === "boolean") {
                     Vue.set(vueData, it, partrue(getValuesByKeyname(context, it)));
+                } else if(dataType === "object"){
+                    //如果是数组，什么都不干
                 } else {
                     Vue.set(vueData, it, getValuesByKeyname(context, it));
                 }
@@ -640,6 +651,11 @@ var VUEAPP = new Vue({
             //SMBIOS
             let SMBIOSText = getValuesByKeyname(ipiText, 'SMBIOS');
             this.getAndSetDictItem(SMBIOSText, this.PlatformInfo.SMBIOS);
+
+            //Memory
+            let MemoryText = getValuesByKeyname(ipiText, 'Memory');
+            this.getAndSetDictItem(MemoryText, this.PlatformInfo.Memory,true);
+            this.getPlistAndResetTableData(MemoryText, 'Devices', 'PlatformInfo_MemoryDevices', this.PlatformInfo.Memory.Devices);
 
         }
 
