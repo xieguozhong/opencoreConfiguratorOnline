@@ -582,8 +582,8 @@ function genArrayDict(tablekey, arrayDictData, dataFileds, intFileds) {
 	let tmpreturn = '';
 	for(let i=0,len=arrayDictData.length;i<len;i++) {
 		tmpreturn += '<dict>';
-		//console.log(arrayDictData[i]);
-		for(let it in arrayDictData[i]) {
+		
+		for(let it in arrayDictData[0]) {   //字段顺序跟着第一行数据的字段顺序走，防止后增加的行的字段顺序和前面的不同
 			if(it === 'id' || it === 'pid') {
 				continue;
 			}

@@ -66,12 +66,13 @@ function initGridTableACPI() {
 }
 
 function initGridTableMisc() {
-	let colNames = ['Arguments','Comment','Name','Path','Enabled'];
+	let colNames = ['Arguments','Comment','Name','Path','Auxiliary','Enabled'];
 	let colModel = [
 		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Name',index:'Name', width:100,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Path',index:'Path', width:400,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Auxiliary',index:'Auxiliary', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Misc_Entries = jQuery('#gridtable_Misc_Entries');
@@ -91,12 +92,13 @@ function initGridTableMisc() {
 
 
 	//Tools
-	colNames = ['Arguments','Comment','Name','Path','Enabled'];
+	colNames = ['Arguments','Comment','Name','Path','Auxiliary','Enabled'];
 	colModel = [
 		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Name',index:'Name', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Path',index:'Path', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Auxiliary',index:'Auxiliary', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Misc_Tools = jQuery('#gridtable_Misc_Tools');
@@ -202,7 +204,7 @@ function initGridTableKernel() {
 	//Add
 	let colNames = ['Arch','BundlePath', 'Comment','ExecutablePath','PlistPath','MaxKernel','MinKernel','Enabled'];
 	let colModel = [
-		{name:'Arch',index:'Arch', width:150,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
 		{name:'BundlePath',index:'BundlePath', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'ExecutablePath',index:'ExecutablePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
@@ -218,9 +220,9 @@ function initGridTableKernel() {
 
 
 	//Block
-	colNames = ['Comment','Identifier', 'MaxKernel','MinKernel','Enabled'];
+	colNames = ['Arch','Comment','Identifier', 'MaxKernel','MinKernel','Enabled'];
 	colModel = [
-
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'MaxKernel',index:'MaxKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
@@ -233,9 +235,9 @@ function initGridTableKernel() {
 
 
 	//Patch
-	colNames = ['Base','Comment', 'Count','Find','Identifier','Limit','Mask','MaxKernel', 'MinKernel','Replace','ReplaceMask','Skip','Enabled'];
+	colNames = ['Arch','Base','Comment', 'Count','Find','Identifier','Limit','Mask','MaxKernel', 'MinKernel','Replace','ReplaceMask','Skip','Enabled'];
 	colModel = [
-
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
 		{name:'Base',index:'Base', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Count',index:'Count', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:formatInteger},
@@ -258,13 +260,13 @@ function initGridTableKernel() {
 	//Force
 	colNames = ['Arch','BundlePath', 'Comment','Identifier','ExecutablePath','MaxKernel','MinKernel','PlistPath','Enabled'];
 	colModel = [
-		{name:'Arch',index:'Arch', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
 		{name:'BundlePath',index:'BundlePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'Comment',index:'Comment', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
+		{name:'Comment',index:'Comment', width:100,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
 		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'ExecutablePath',index:'ExecutablePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'MaxKernel',index:'MaxKernel', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
-		{name:'MinKernel',index:'MinKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MinKernel',index:'MinKernel', width:50,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'PlistPath',index:'PlistPath', width:75,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},		
 		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true, align:'center',formatter:enabledFormat}
 	];
@@ -301,14 +303,34 @@ function initGridTableUEFI() {
 		{name:'FileName',index:'FileName', width:150,editable: true,  sortable:false, formatter:plistEncode}
 	];
 	let objGT_UEFI_Drivers = jQuery('#gridtable_UEFI_Drivers');
+
 	GLOBAL_ARRAY_TABLE[0]['UEFI_Drivers'] = objGT_UEFI_Drivers;
 	initGridTable(objGT_UEFI_Drivers, VUEAPP.UEFI.Drivers, colNames, colModel);
 
-	colNames = ['Address','Comment','Size','Enabled'];
+	let typeValues = {
+		Reserved:'Reserved',
+		LoaderCode:'LoaderCode',
+		LoaderData:'LoaderData',
+		BootServiceCode:'BootServiceCode',
+		BootServiceData:'BootServiceData',
+		RuntimeCode:'RuntimeCode',
+		RuntimeData:'RuntimeData',
+		Available:'Available',
+		Persistent:'Persistent',
+		UnusableMemory:'UnusableMemory',
+		ACPIReclaimMemory:'ACPIReclaimMemory',
+		ACPIMemoryNVS:'ACPIMemoryNVS',
+		MemoryMappedIO:'MemoryMappedIO',
+		MemoryMappedIOPortSpace:'MemoryMappedIOPortSpace',
+		PalCode:'PalCode'
+	};
+	
+	colNames = ['Address','Comment','Size','Type','Enabled'];
 	colModel = [
 		{name:'Address',index:'Address', width:150,editable: true,  sortable:false, formatter:formatInteger},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Size',index:'Size', width:100,editable: true,  sortable:false, formatter:formatInteger},
+		{name:'Type',index:'Type', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:typeValues}},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_UEFI_ReservedMemory = jQuery('#gridtable_UEFI_ReservedMemory');
