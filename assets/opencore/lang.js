@@ -29,6 +29,7 @@ const GLOBAL_LANG = {
         Error : '错误',
         enabled : '启用/禁用',
         hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数',
+        pleasecheckmessage : '请勾选需要的选项，然后点击 确定 按钮, 放弃请点击 关闭 按钮',
 		supportversion : '注意: 当前版本保存后的plist文件只适用于官方发布的OpenCore-0.6.3-RELEASE'
     },
 
@@ -61,6 +62,7 @@ const GLOBAL_LANG = {
         Error : 'Error',
         enabled : 'enabled/disabled',
         hexstringlengthisodd : '<{@1}> is not a valid hexadecimal string, because the length of a hexadecimal string cannot be odd',
-		supportversion : 'Warning: Only OpenCore-0.6.3-RELEASE is supported'
+        pleasecheckmessage : 'Please check the required options, and then click the OK button, to give up, please click the Close button',
+		supportversion : 'Note: The plist file saved in the current version is only applicable to the officially released OpenCore-0.6.3-RELEASE'
     }
 };

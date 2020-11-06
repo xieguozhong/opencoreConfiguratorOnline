@@ -13,7 +13,7 @@ $(document).ready(function() {
             reader.readAsText(files[0]);
             reader.onload = function () {
             	VUEAPP['plistcontext'] = formatContext(this.result);
-            	//console.log(VUEAPP['plistcontext']);
+            	//consolelog(VUEAPP['plistcontext']);
             	VUEAPP.initAllData();
         	}
             return true;
@@ -51,7 +51,14 @@ $(document).ready(function() {
 
 });
 
-
+//获取指定数量的0字符串
+function getZero(total) {
+    let zero = '';
+    for(let i=0;i<total;i++) {
+        zero += '0';
+    }
+    return zero;
+}
 
 //绑定所有的按钮的clicks事件
 function bindAllButton() {
@@ -64,13 +71,6 @@ function bindAllButton() {
     for(let it in GLOBAL_ARRAY_TABLE[1]) {
         bindClick(GLOBAL_ARRAY_TABLE[1][it]);
     }
-
-    //绑定btnEdit-Misc-Security-ScanPolicy按钮
-    $("#btnEdit-Misc-Security-ScanPolicy").on("click",function(){
-        //console.log('hello');
-        $('#editScanPolicyModal').modal('show');
-    });
-
 
 
     function bindClick(currentGridTable) {
@@ -202,6 +202,8 @@ function bindAllButton() {
 
         });
 
+        
+
     }
 
 
@@ -308,7 +310,7 @@ function addkexts(kext) {
         }
     }
     kext.value = '';
-    //console.log(kext.value);
+    //consolelog(kext.value);
     delete allKext;
 }
 
@@ -443,13 +445,82 @@ var VUEAPP = new Vue({
                 ReleaseUsbOwnership:false,  RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
             },
             ReservedMemory : []
+        },
+
+        Assist : {
+            last_checkbox_ids : [],     //记录最后显示的是那个数据
+
+            pagePublic_List : [],      //前台页面循环用
+            pagePublic_Selected : [],  
+
+            ScanPolicy_List : [
+                {val : '0x00000001', des : '限定为⽂件系统（OC_SCAN_FILE_SYSTEM_LOCK）'},
+                {val : '0x00000002', des : '限定为设备类型（OC_SCAN_DEVICE_LOCK）'},
+                {val : '0x00000100', des : '允许扫描 APFS ⽂件系统（OC_SCAN_ALLOW_FS_APFS）'},
+                {val : '0x00000200', des : '允许扫描 HFS ⽂件系统（OC_SCAN_ALLOW_FS_HFS）'},
+                {val : '0x00000400', des : '允许扫描 EFI System Partition/ESP ⽂件系统（OC_SCAN_ALLOW_FS_ESP）'},
+                {val : '0x00000800', des : '允许扫描 NTFS（Windows）⽂件系统（OC_SCAN_ALLOW_FS_NTFS）'},
+                {val : '0x00001000', des : '允许扫描 EXT（Linux）⽂件系统（OC_SCAN_ALLOW_FS_EXT）'},
+                {val : '0x00010000', des : '允许扫描 SATA 设备（OC_SCAN_ALLOW_DEVICE_SATA）'},
+                {val : '0x00020000', des : '允许扫描 SAS 和 Mac NVMe 设备（OC_SCAN_ALLOW_DEVICE_SASEX）'},
+                {val : '0x00040000', des : '允许扫描 SCSI 设备（OC_SCAN_ALLOW_DEVICE_SCSI）'},
+                {val : '0x00080000', des : '允许扫描 NVMe 设备（OC_SCAN_ALLOW_DEVICE_NVME）'},
+                {val : '0x00100000', des : '允许扫描 CD/DVD 旧SATA 设备（OC_SCAN_ALLOW_DEVICE_ATAPI）'},
+                {val : '0x00200000', des : '允许扫描 USB 设备（OC_SCAN_ALLOW_DEVICE_USB）'},
+                {val : '0x00400000', des : '允许扫描 FireWire 设备（OC_SCAN_ALLOW_DEVICE_FIREWIRE）'},
+                {val : '0x00800000', des : '允许扫描读卡器设备（OC_SCAN_ALLOW_DEVICE_SDCARD）'},
+                {val : '0x01000000', des : '允许扫描PCI设备（OC_SCAN_ALLOW_DEVICE_PCI）'}
+            ],
+            
+
+            ExposeSensitiveData_List : [
+                {val : '0x01', des : '将可打印的引导程序路径公开为UEFI变量'},
+                {val : '0x02', des : '将OpenCore版本公开为UEFI变量'},
+                {val : '0x04', des : '在引导选择器菜单标题中公开OpenCore版本'},
+                {val : '0x08', des : '将OEM信息公开为一组UEFI变量'}
+            ]
+
+            ,DisplayLevel_List : [
+                {val : '0x00000002', des : 'DEBUG_WARN in DEBUG, NOOPT, RELEASE'},
+                {val : '0x00000040', des : 'DEBUG_INFO in DEBUG, NOOPT'},
+                {val : '0x00400000', des : 'DEBUG_VERBOSE in custom builds'},
+                {val : '0x80000000', des : 'DEBUG_ERROR in DEBUG, NOOPT, RELEASE'}
+            ]
+
+            ,Target_List : [
+
+                {val : '0x01', des : '启用日志记录，否则所有日志将被丢弃'},
+                {val : '0x02', des : '启用基本控制台（屏幕上）日志记录'},
+                {val : '0x04', des : '启用日志记录到数据中心'},
+                {val : '0x08', des : '启用串行端口日志记录'},
+                {val : '0x10', des : '启用UEFI变量记录'},
+                {val : '0x20', des : '启用非易失性UEFI变量日志记录'},
+                {val : '0x40', des : '启用记录到文件'}
+            ]
+
+            ,PickerAttributes_List : [
+                {val : '0x0001', des : 'OC_ATTR_USE_VOLUME_ICON，为启动项提供自定义图标'},
+                {val : '0x0002', des : 'OC_ATTR_USE_DISK_LABEL_FILE，为启动项提供定制的呈现标题'},
+                {val : '0x0004', des : 'OC_ATTR_USE_GENERIC_LABEL_IMAGE，为没有自定义条目的引导条目提供了预定义的标签图像'},
+                {val : '0x0008', des : 'OC_ATTR_USE_ALTERNATE_ICONS，将已使用图标集更改为备用图标（如果支持）'}
+            ]
+
+            ,TypeDetail_List : [
+                {val : '0x0002', des : '其它'},
+                {val : '0x0004', des : '未知'},
+                {val : '0x0080', des : '同步'},
+                {val : '0x2000', des : '已注册（已缓存）'},
+                {val : '0x4000', des : '未缓存（未注册）'}
+            ]
+            
+            
         }
 
     },
 
     created : function () {
         let syslang = navigator.language;
-        //console.log(GLOBAL_LANG[syslang]);
+        //consolelog(GLOBAL_LANG[syslang]);
         if(syslang === undefined || GLOBAL_LANG[syslang] === undefined) {
             this.lang = GLOBAL_LANG['en-US'];
         } else {
@@ -487,6 +558,8 @@ var VUEAPP = new Vue({
             this.initNVRAM();
             this.initPlatformInfo();
             this.initUEFI();
+
+            this.plistcontext = '';
         }
 
         // 获取并设置dict的值和bool值
@@ -637,7 +710,7 @@ var VUEAPP = new Vue({
             //如果DataHub为空, 就不显示datahub , PlatformNVRAM SMBIOS 三项目
             this.configisfull = DataHubText === '' ? false : true;
 
-            //console.log('DataHubText=' + DataHubText);
+            //consolelog('DataHubText=' + DataHubText);
             this.getAndSetDictItem(DataHubText, this.PlatformInfo.DataHub);
 
             //Generic
@@ -716,7 +789,7 @@ var VUEAPP = new Vue({
             this.DeviceProperties.DeleteRight.length = 0;
 
             let text = getValuesByKeyname(VUEAPP.plistcontext, 'DeviceProperties', true);
-            //console.log(text);
+            //consolelog(text);
             let AddText = getValuesByKeyname(text, 'Add');
             //Add
             let arrayParent = getParentKeys(AddText);
@@ -727,7 +800,7 @@ var VUEAPP = new Vue({
             let subArray = getSubKeys(AddText);
             for(let it in subArray) {
                 subArray[it]['id'] = it;
-                //console.log(subArray[it]);
+                //consolelog(subArray[it]);
                 this.DeviceProperties.AddRight.push(subArray[it]);
             }
             getJqgridObjectbyKey("DeviceProperties_AddLeft").trigger("reloadGrid");
@@ -738,7 +811,7 @@ var VUEAPP = new Vue({
             //Delete
             let DeleteText = getValuesByKeyname(text, 'Delete')
             let arrayParent2 = getKeyarrayZIkey(DeleteText);
-            //console.log(arrayParent2);
+            //consolelog(arrayParent2);
             for(let i=0,len=arrayParent2.length;i<len;i++) {
                 this.DeviceProperties.DeleteLeft.push({id:i, Devices:arrayParent2[i]});
             }
@@ -789,6 +862,95 @@ var VUEAPP = new Vue({
                 gridData.push(arrayAdd[it]);
             }
             getJqgridObjectbyKey(gridkey).trigger("reloadGrid");
+        }
+
+        // 弹出多选窗口按钮点击事件
+        , btncheckboxclick :function (event, vlen) {
+            
+            let buttonids = event.currentTarget.id.split('_');
+            
+            // 1 为要显示的页面添加可选框数据列表 current_checkbox_id
+            if(this.Assist.last_checkbox_ids[2] === buttonids[2] && this.Assist.last_checkbox_ids[3] === buttonids[3]) {
+                consolelog('上次页面和将要显示的页面相同，不做数据填充');
+            } else {
+                consolelog('上次页面和将要显示的页面不相同，做数据填充处理');
+                this.Assist.pagePublic_List = this.Assist[buttonids[3] + '_List'];
+                this.Assist.last_checkbox_ids = buttonids;
+                this.Assist.pagePublic_Selected = [];
+            }
+            
+
+            // 2 获取页面上输入框中的值
+            let pageinputvalue = this[buttonids[1]][buttonids[2]][buttonids[3]];
+
+            //如果页面输入框中的值为空，就清空已经选中的项目
+            if((pageinputvalue > 0) === false) {
+                this.Assist.pagePublic_Selected = [];
+                $('#divMuCheckboxPageModal').modal('show');
+                return;
+            } 
+            
+            // 4 如果勾选的值和页面输入框中的值相等   
+            if(pageinputvalue == this.getCheckedTotal()) {
+                $('#divMuCheckboxPageModal').modal('show');
+                consolelog('勾选值和页面值相等，不做自动勾选处理');
+                return;
+            }
+
+            let piv16 = parseInt(pageinputvalue).toString(16), itval,
+            ckdict = {
+                '1':['1'],
+                '2':['2'],
+                '3':['1','2'],
+                '4':['4'],
+                '5':['1','4'],
+                '6':['2','4'],
+                '7':['1','2','4'],
+                '8':['8'],
+                '9':['1','8'],
+                'a':['2','8'],   //10
+                'b':['1','2','8'],//11
+                'c':['4','8'],//12
+                'd':['1','4','8'],//13
+                'e':['2','4','8'],//14
+                'f':['1','2','4','8']//15
+            };
+            this.Assist.pagePublic_Selected = [];
+
+            
+            if(vlen === undefined || vlen === 0) {
+                vlen = 8;
+            }
+
+            for(let i=piv16.length-1,k=1;i>=0;i--,k++) {
+                if(piv16[i] === '0') continue;
+        
+                itval = ckdict[piv16[i]];
+                for(let j=0;j<itval.length;j++) {
+                    this.Assist.pagePublic_Selected.push('0x' + getZero(vlen-k) + itval[j] + getZero(k-1));
+                }
+                
+            }
+
+            
+            $('#divMuCheckboxPageModal').modal('show');
+        }
+
+        //勾选页面点击确定按钮事件
+        , checkboxPageBtnOKclick : function () {              
+            this[this.Assist.last_checkbox_ids[1]][this.Assist.last_checkbox_ids[2]][this.Assist.last_checkbox_ids[3]] = this.getCheckedTotal();
+            $('#divMuCheckboxPageModal').modal('hide');
+        }
+
+        //获取勾选项的合计值，以10进制返回
+        , getCheckedTotal : function () {
+            let pagetotal = 0;
+            for(let i=0,len=this.Assist.pagePublic_Selected.length;i<len;i++) {
+                //consolelog(checklist[i]);
+                pagetotal += parseInt(this.Assist.pagePublic_Selected[i],16);
+            }
+            //consolelog('勾选值=' + pagetotal);
+            return pagetotal;
         }
 
 

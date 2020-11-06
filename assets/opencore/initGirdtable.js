@@ -344,7 +344,7 @@ function initGridTableNVRAM() {
 	tableWidth = GLOBAL_TABLE_HALF_WIDTH - 7
 	;
 
-	//console.log(tableWidth);
+	//consolelog(tableWidth);
     let colModel = [
         {name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
         {name:'id',index:'id', editable: false, hidden:true,key:true}
