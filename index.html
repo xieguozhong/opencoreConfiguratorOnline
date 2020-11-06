@@ -821,7 +821,8 @@
 			                                            ConsoleAttributes<input type="text" class="form-control" v-model="Misc.Boot.ConsoleAttributes"/>
 			                                        </div>
 													<div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerAttributes">
-			                                            PickerAttributes<input type="text" class="form-control" v-model="Misc.Boot.PickerAttributes"/>
+			                                            PickerAttributes<a id="btncheckbox_Misc_Boot_PickerAttributes" style="text-decoration:none" v-on:click="btncheckboxclick($event,4)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerAttributes"/>
 			                                        </div>
 			                                    </div>
 
@@ -856,10 +857,12 @@
 			                                            DisplayDelay<input type="text" class="form-control" v-model="Misc.Debug.DisplayDelay"/>
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.DisplayLevel">
-			                                            DisplayLevel<input type="text" class="form-control" v-model="Misc.Debug.DisplayLevel"/>
+			                                            DisplayLevel<a id="btncheckbox_Misc_Debug_DisplayLevel" style="text-decoration:none" v-on:click="btncheckboxclick($event)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Debug.DisplayLevel"/>
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.Target">
-			                                            Target<input type="text" class="form-control" v-model="Misc.Debug.Target"/>
+			                                            Target<a id="btncheckbox_Misc_Debug_Target" style="text-decoration:none" v-on:click="btncheckboxclick($event,2)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Debug.Target"/>
 			                                        </div>
 			                                    </div>
 
@@ -898,7 +901,8 @@
 
 			                                    <div class="row">
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ExposeSensitiveData">
-			                                            ExposeSensitiveData<input type="text" class="form-control" v-model="Misc.Security.ExposeSensitiveData"/>
+			                                            ExposeSensitiveData<a id="btncheckbox_Misc_Security_ExposeSensitiveData" style="text-decoration:none" v-on:click="btncheckboxclick($event,2)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Security.ExposeSensitiveData"/>
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ApECID">
 			                                            ApECID<input type="text" class="form-control" v-model="Misc.Security.ApECID"/>
@@ -916,7 +920,9 @@
 
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ScanPolicy">
-			                                            ScanPolicy<a id="btnEdit-Misc-Security-ScanPolicy" style="text-decoration:none">&nbsp;&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
+														ScanPolicy<a id="btncheckbox_Misc_Security_ScanPolicy" style="text-decoration:none" v-on:click="btncheckboxclick($event)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+															<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
 			                                        </div>
 													<div class="col-xs-3 mintip" :title="title.Misc.Security.BootProtect">
 			                                            BootProtect
@@ -938,22 +944,23 @@
 			                                            <select class="form-control" v-model="Misc.Security.SecureBootModel">
 														<option value="Default">Default</option>
 														<option value="Disabled">Disabled</option>
-														<option value="j137">j137</option>
-														<option value="j680">j680</option>
-														<option value="j132">j132</option>
-														<option value="j174">j174</option>
-														<option value="j140k">j140k</option>
-														<option value="j780">j780</option>
-														<option value="j213">j213</option>
-														<option value="j140a">j140a</option>
-														<option value="j152f">j152f</option>
-														<option value="j160">j160</option>
-														<option value="j230k">j230k</option>
-														<option value="j214k">j214k</option>
-														<option value="j223">j223</option>
-														<option value="j215">j215</option>
-														<option value="j185">j185</option>
-														<option value="j185f">j185f</option>
+														<option value="j137">j137 — iMacPro1,1 (December 2017)</option>
+														<option value="j680">j680 — MacBookPro15,1 (July 2018)</option>
+														<option value="j132">j132 — MacBookPro15,2 (July 2018)</option>
+														<option value="j174">j174 — Macmini8,1 (October 2018)</option>
+														<option value="j140k">j140k — MacBookAir8,1 (October 2018)</option>
+														<option value="j780">j780 — MacBookPro15,3 (May 2019)</option>
+														<option value="j213">j213 — MacBookPro15,4 (July 2019)</option>
+														<option value="j140a">j140a — MacBookAir8,2 (July 2019)</option>
+														<option value="j152f">j152f — MacBookPro16,1 (November 2019)</option>
+														<option value="j160">j160 — MacPro7,1 (December 2019)</option>
+														<option value="j230k">j230k — MacBookAir9,1 (March 2020)</option>
+														<option value="j214k">j214k — MacBookPro16,2 (May 2020)</option>
+														<option value="j223">j223 — MacBookPro16,3 (May 2020)</option>
+														<option value="j215">j215 — MacBookPro16,4 (June 2020)</option>
+														<option value="j185">j185 — iMac20,1 (August 2020)</option>
+														<option value="j185f">j185f — iMac20,2 (August 2020)</option>
+														<option value="x86legacy">x86legacy — Macs and VMs without T2 chip minimum macOS 11.0</option>
 														</select>
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.PasswordHash">
@@ -1248,7 +1255,8 @@
 														Type<input type="text" class="form-control" v-model="PlatformInfo.Memory.Type">
 													</div>
 													<div class="col-xs-3">
-														TypeDetail<input type="text" class="form-control" v-model="PlatformInfo.Memory.TypeDetail">
+														TypeDetail<a id="btncheckbox_PlatformInfo_Memory_TypeDetail" style="text-decoration:none" v-on:click="btncheckboxclick($event,4)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="PlatformInfo.Memory.TypeDetail">
 													</div>
 
 												</div>
@@ -1876,7 +1884,7 @@
             </div>
 
 
-            <div class="modal fade" id="editScanPolicyModal">
+            <div class="modal fade" id="divMuCheckboxPageModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
@@ -1884,39 +1892,10 @@
                         <div class="modal-body">
                             <form>
                                 <div class="form-group">
-                                    <label for="message-text" class="control-label"><b>请勾选需要的选项，然后点击确定按钮吧</b></label><br><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000001" />
-                                     	<span class="lbl"> 限定为⽂件系统</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000002" />
-                                     	<span class="lbl"> 限定为设备类型</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000100"/>
-                                     	<span class="lbl"> 允许扫描 APFS ⽂件系统</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000200"/>
-                                     	<span class="lbl"> 允许扫描 HFS ⽂件系统</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000400"/>
-                                     	<span class="lbl"> 允许扫描 EFI System Partition/ESP ⽂件系统</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00000800"/>
-                                     	<span class="lbl"> 允许扫描 NTFS ⽂件系统</span></label><br>
-
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00001000"/>
-                                     	<span class="lbl"> 允许扫描 EXT ⽂件系统</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00010000"/>
-                                     	<span class="lbl"> 允许扫描 SATA 设备</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00020000"/>
-                                     	<span class="lbl"> 允许扫描 SAS 和 Mac NVMe 设备</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00040000"/>
-                                     	<span class="lbl"> 允许扫描 SCSI 设备</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00080000"/>
-                                     	<span class="lbl"> 允许扫描 NVMe 设备</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00100000"/>
-                                     	<span class="lbl"> 允许扫描 CD/DVD 设备</span></label><br>
-
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00200000"/>
-                                     	<span class="lbl"> 允许扫描 USB 设备</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00400000"/>
-                                     	<span class="lbl"> 允许扫描 FireWire 设备</span></label><br>
-                                    <label class="mintip" ><input type="checkbox" class="ace" value="0x00800000"/>
-                                     	<span class="lbl"> 允许扫描读卡器设备</span></label><br>
+									<label for="message-text" class="control-label"><b>{{lang.pleasecheckmessage}}</b></label><br><br>
+									<div v-for="it in Assist.pagePublic_List">
+										<label>&nbsp;&nbsp;<input type="checkbox" class="ace" v-model="Assist.pagePublic_Selected" :value="it.val" /><span class="lbl"> {{it.des}}</span></label><br>									
+									</div>                
 			                          
                                 </div>
                             </form>
@@ -1925,12 +1904,14 @@
                         <!-- 模态框底部 -->
                         <div class="modal-footer ">
                             <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{lang.close}}</button>
-                            <button type="button" class="btn btn-primary btn-sm" onclick="pasteScanPolicyValue();">{{lang.starPaste}}</button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="checkboxPageBtnOKclick">{{lang.starPaste}}</button>
                         </div>
 
                     </div>
                 </div>
-            </div>
+			</div>
+			
+			
 
 		</div><!-- /.main-container -->
 

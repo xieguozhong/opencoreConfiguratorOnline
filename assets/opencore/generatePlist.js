@@ -239,7 +239,7 @@ function getNVRAM() {
 
 function getPlatformInfo() {
 	let pfiContext = '<key>PlatformInfo</key><dict>', configisfull = VUEAPP.configisfull;
-	//console.log(configisfull);
+	//consolelog(configisfull);
 
 	//0 Automatic
 	pfiContext += '<key>Automatic</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['Automatic']);
@@ -319,7 +319,7 @@ function getUEFI() {
 	// Drivers
 	uefiContext += '<key>Drivers</key>';
 	let dridata = VUEAPP.UEFI.Drivers, dristring = '';
-	//console.log(dridata);
+	//consolelog(dridata);
 	for(let i=0,len=dridata.length;i<len;i++) {
 		dristring += addCharstring(dridata[i]['FileName']);
 	}
@@ -387,7 +387,7 @@ function getDeviceVolumeData(leftData, rightData) {
 
 function getSubDeviceVolumeData(pid, rightData) {
 	let strreturn = '';
-	//console.log(rightData);
+	//consolelog(rightData);
 	for(let it in rightData) {
 		if(rightData[it]['pid'] == pid) {  //<string>MaximumBootBeepVolume</string>
 
@@ -466,7 +466,7 @@ function getStringorboolorinterger(theData, dataType) {
 
 function getDeviceData(leftData, rightData) {
 	let strreturn = '<dict>';
-	//console.log(leftData);
+	//consolelog(leftData);
 	for(let it in leftData) {
 		if(leftData[it]['Devices'] === undefined) {
 			showTipModal(VUEAPP.lang.DeviceError, 'warning');
@@ -486,11 +486,11 @@ function getDeviceData(leftData, rightData) {
 }
 
 function getSubDeviceData(pid, rightData) {
-	//console.log(rightData);
+	//consolelog(rightData);
 	let subcontext = "<dict>"
 	for(let i=0,len=rightData.length;i<len;i++) {
 		if(rightData[i].pid == pid) {
-			//console.log(rightData[i].Value);
+			//consolelog(rightData[i].Value);
 			if(rightData[i].Value === undefined) {
 				showTipModal(VUEAPP.lang.DeviceError, 'warning');
 			}
@@ -570,7 +570,7 @@ function genArrayDict(tablekey, arrayDictData, dataFileds, intFileds) {
 
 
 	if(GLOBAL_ARRAY_TABLE[2][tablekey] === true) {
-		//console.log(tablekey + '要替换');
+		//consolelog(tablekey + '要替换');
 		//为了实现拖动行功能，这里把VUE里面的数据覆盖一遍前台的数据，按前台的顺序来
 		let currentTableData = GLOBAL_ARRAY_TABLE[0][tablekey].jqGrid('getRowData');
 		arrayDictData = rewriteData(currentTableData, arrayDictData);

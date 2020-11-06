@@ -572,21 +572,7 @@ function showTextareaModal(content) {
 
 }
 
-function pasteScanPolicyValue(content) {
 
-    let sv = 0;
-    $.each($('#editScanPolicyModal input:checkbox:checked'), function() {
-        sv = sv + parseInt($(this).val(),16);
-        
-    })
-    if(sv > 0) {
-        VUEAPP.Misc.Security.ScanPolicy = sv;
-    }
-    
-    
-    $('#editScanPolicyModal').modal('hide');
-
-}
 
 // fillLangString('my {@1} is {@2}', 'name', 'mady')
 function fillLangString(context) {
@@ -610,4 +596,8 @@ function stringToJSON(str) {
 function getJqgridObjectbyKey(tbkey) {
     let obj = GLOBAL_ARRAY_TABLE[0][tbkey];
     return obj === undefined ? GLOBAL_ARRAY_TABLE[1][tbkey] : obj;
+}
+
+function consolelog(msg) {
+    //console.log(msg);
 }
