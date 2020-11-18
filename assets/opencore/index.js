@@ -51,6 +51,32 @@ $(document).ready(function() {
 
 });
 
+function addFile(fileid) {
+    //console.log(fileid)
+    let file = document.getElementById(fileid), files;
+    let thetablename,thetable;
+    if(fileid === "File_ACPI_Add") {
+        thetablename = "ACPI_Add";        
+    } else if(fileid === "File_UEFI_Drivers") {
+        thetablename = "UEFI_Drivers";        
+    }
+
+    thetable = getJqgridObjectbyKey(thetablename);
+
+	for(var i=0; i<file.files.length; i++){
+		files = file.files[i];
+        let newData;
+        if(thetablename === "ACPI_Add") {
+            newData = { Comment : files.name, Path : files.name, Enabled : "YES"};
+        } else if(thetablename === "UEFI_Drivers") {
+            newData = { FileName : files.name };
+        }
+        
+        thetable.jqGrid('addRowData', MAXROWID++, newData, 'last');
+
+	}
+}
+
 //获取指定数量的0字符串
 function getZero(total) {
     let zero = '';

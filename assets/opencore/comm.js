@@ -306,16 +306,16 @@ function getValuesByKeyname(context, keyname, istop) {
     switch(theNextKey) {
         case '<array/>':
             return '';
-            break;
+            
         case '<dict/>':
             return '';
-            break;
+            
         case '<true/>':
             return true;
-            break;
+            
         case '<false/>':
             return false;
-            break;
+            
         case '<data>':
             isData = true;
             break;

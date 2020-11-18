@@ -201,6 +201,11 @@
 									<div class="tab-content" style="padding-right:3px;padding-left:2px;">
 										<div id="tabbable_ACPI_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
 											<table id="gridtable_ACPI_Add"></table>
+											<span class="grey pull-left" >
+												<label for="File_ACPI_Add"><img src="assets/opencore/png/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
+													<input type="file" id="File_ACPI_Add" style="position:absolute;clip:rect(0 0 0 0);" onchange="addFile(this.id);" multiple>
+												</label>
+											</span>
 			                                <span class="grey pull-right" >
 			                                	<a id="btnenabled_ACPI_Add"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
 			                                    <a id="btncopy_ACPI_Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
@@ -1454,24 +1459,13 @@
                                     <div class="tab-content" style="padding-right:18px;padding-left:2px;">
 
                                         <div id="tabbable_UEFI_Drivers" class="tab-pane fade in active" style="padding-bottom: 5px;">
-                                            <table id="gridtable_UEFI_Drivers"></table>
-                                            <span class="grey pull-left">
-                                            	<select style="height: 17px" onchange="addRowUEFIDrivers(this);">
-												<option value="">List of Drivers</option>
-												<option value="ApfsDriverLoader.efi" >ApfsDriverLoader.efi</option>
-												<option value="FwRuntimeServices.efi">FwRuntimeServices.efi</option>
-												<option value="VirtualSmc.efi">VirtualSmc.efi</option>
-												<option value="HfsPlus.efi">HfsPlus.efi</option>
-												<option value="UsbKbDxe.efi">UsbKbDxe.efi</option>
-												<option value="VBoxHfs.efi">VBoxHfs.efi</option>
-												<option value="EmuVariableRuntimeDxe.efi">EmuVariableRuntimeDxe.efi</option>
-												<option value="MemoryAllocation.efi">MemoryAllocation.efi</option>
-												<option value="apfs.efi">apfs.efi</option>
-												<option value="NvmExpressDxe.efi">NvmExpressDxe.efi</option>
-												<option value="SMCHelper.efi">SMCHelper.efi</option>
-												<option value="AptioMemoryFix.efi">AptioMemoryFix.efi</option>
-												</select>
-                                            </span>
+											<table id="gridtable_UEFI_Drivers"></table>
+											<span class="grey pull-left" >
+												<label for="File_UEFI_Drivers"><img src="assets/opencore/png/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
+													<input type="file" id="File_UEFI_Drivers" style="position:absolute;clip:rect(0 0 0 0);" onchange="addFile(this.id);" multiple>
+												</label>
+											</span>
+                                            
 			                                <span class="grey pull-right">
 
 			                                    <a id="btncopy_UEFI_Drivers"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
