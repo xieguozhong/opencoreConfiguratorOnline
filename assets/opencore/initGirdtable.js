@@ -2,7 +2,7 @@ var GLOBAL_TABLE_WIDTH = 0,  			//表格的宽度
 	GLOBAL_TABLE_HEIGHT = 0, 			//表格的高度
 	GLOBAL_TABLE_HALF_WIDTH = 0, 		//半表格的宽度
 	GLOBAL_ARRAY_TABLE=[{},{},{}],      //用于存储所有初始化好的表格，0是全宽表格，1是半宽表格，2是被拖动过的表格记录
-	MAXROWID = 500;						//表格点新增时的jqgrid的id
+	MAXROWID = 500;						//表格点新增时的jqgrid的id起始值，如果谁的配置有500行，那么会产生bug
 
 
 

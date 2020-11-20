@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="assets/css/jquery-ui.min.css" />
 		<link rel="stylesheet" href="assets/css/ui.jqgrid.min.css" />
 		<link rel="stylesheet" href="assets/css/fonts.googleapis.com.css" />
-		<link rel="stylesheet" href="assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+		<link rel="stylesheet" href="assets/css/ace.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
 		<link rel="stylesheet" href="assets/css/jquery.minimalTips.css" />
@@ -201,6 +201,11 @@
 									<div class="tab-content" style="padding-right:3px;padding-left:2px;">
 										<div id="tabbable_ACPI_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
 											<table id="gridtable_ACPI_Add"></table>
+											<span class="grey pull-left" >
+												<label for="File_ACPI_Add"><img src="assets/opencore/png/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
+													<input type="file" id="File_ACPI_Add" style="position:absolute;clip:rect(0 0 0 0);" onchange="addFile(this.id);" multiple>
+												</label>
+											</span>
 			                                <span class="grey pull-right" >
 			                                	<a id="btnenabled_ACPI_Add"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
 			                                    <a id="btncopy_ACPI_Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
@@ -1454,24 +1459,13 @@
                                     <div class="tab-content" style="padding-right:18px;padding-left:2px;">
 
                                         <div id="tabbable_UEFI_Drivers" class="tab-pane fade in active" style="padding-bottom: 5px;">
-                                            <table id="gridtable_UEFI_Drivers"></table>
-                                            <span class="grey pull-left">
-                                            	<select style="height: 17px" onchange="addRowUEFIDrivers(this);">
-												<option value="">List of Drivers</option>
-												<option value="ApfsDriverLoader.efi" >ApfsDriverLoader.efi</option>
-												<option value="FwRuntimeServices.efi">FwRuntimeServices.efi</option>
-												<option value="VirtualSmc.efi">VirtualSmc.efi</option>
-												<option value="HfsPlus.efi">HfsPlus.efi</option>
-												<option value="UsbKbDxe.efi">UsbKbDxe.efi</option>
-												<option value="VBoxHfs.efi">VBoxHfs.efi</option>
-												<option value="EmuVariableRuntimeDxe.efi">EmuVariableRuntimeDxe.efi</option>
-												<option value="MemoryAllocation.efi">MemoryAllocation.efi</option>
-												<option value="apfs.efi">apfs.efi</option>
-												<option value="NvmExpressDxe.efi">NvmExpressDxe.efi</option>
-												<option value="SMCHelper.efi">SMCHelper.efi</option>
-												<option value="AptioMemoryFix.efi">AptioMemoryFix.efi</option>
-												</select>
-                                            </span>
+											<table id="gridtable_UEFI_Drivers"></table>
+											<span class="grey pull-left" >
+												<label for="File_UEFI_Drivers"><img src="assets/opencore/png/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
+													<input type="file" id="File_UEFI_Drivers" style="position:absolute;clip:rect(0 0 0 0);" onchange="addFile(this.id);" multiple>
+												</label>
+											</span>
+                                            
 			                                <span class="grey pull-right">
 
 			                                    <a id="btncopy_UEFI_Drivers"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
@@ -1583,7 +1577,14 @@
 			                                        KeyMergeThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyMergeThreshold">
 			                                      </div>
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeySupportMode">
-			                                        KeySupportMode<input type="text" class="form-control" v-model="UEFI.Input.KeySupportMode">
+													KeySupportMode
+													<select class="form-control" v-model="UEFI.Input.KeySupportMode">
+														<option value=""></option>
+														<option value="Auto">Auto</option>
+														<option value="V1">V1</option>
+														<option value="V2">V2</option>
+														<option value="AMI">AMI</option>
+														</select>
 			                                      </div>
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.PointerSupportMode">
 			                                        PointerSupportMode<input type="text" class="form-control" v-model="UEFI.Input.PointerSupportMode">
@@ -1629,6 +1630,7 @@
 			                                            TextRenderer
 			                                            <select class="form-control" v-model="UEFI.Output.TextRenderer">
 														<option value="BuiltinGraphics">BuiltinGraphics</option>
+														<option value="BuiltinText">BuiltinText</option>
 														<option value="SystemGraphics">SystemGraphics</option>
 														<option value="SystemText">SystemText</option>
 														<option value="SystemGeneric">SystemGeneric</option>
@@ -1641,8 +1643,8 @@
 			                                      </div>
 												  
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.Resolution">
-			                                        Resolution<input type="text" class="form-control" v-model="UEFI.Output.Resolution">
-			                                      </div>
+			                                        Resolution<input type="text" class="form-control" id="INPUT_UEFI_Output_Resolution" v-model="UEFI.Output.Resolution">
+												</div>
 
 			                                    </div>
 
@@ -1927,7 +1929,7 @@
 		<script src="assets/opencore/lang.js"></script>
 		<script src="assets/opencore/tips_zh-CN.js"></script>
 		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery-ui.custom.min.js"></script>
+		<script src="assets/js/jquery-ui.custom.min.js"></script>		
 		<script src="assets/js/jquery.jqGrid.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
 		<script src="assets/js/ace-elements.min.js"></script>
@@ -1937,12 +1939,12 @@
         <script src="assets/js/jquery.format.js"></script>
         <script src="assets/js/clipboard.min.js"></script>
         <script src="assets/js/jquery.minimalTips.min.js"></script>
-        <script src="assets/js/toastr.min.js"></script>
+		<script src="assets/js/toastr.min.js"></script>
+		<script src="assets/js/jquery.autocomplete.min.js"></script>
 		<script src="assets/opencore/comm.js"></script>
 		<script src="assets/opencore/initGirdtable.js"></script>
 		<script src="assets/opencore/index.js"></script>
-        <script src="assets/opencore/generatePlist.js"></script>
-
+		<script src="assets/opencore/generatePlist.js"></script>
 
 	</body>
 </html>

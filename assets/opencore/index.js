@@ -48,8 +48,48 @@ $(document).ready(function() {
     //显示适用于版本信息
 	showTipModal(VUEAPP.lang.supportversion, 'warning');
 
+    //可输可选项填充
+    let ResolutionData = ['Max','640x480','800x480','960x540','1280x1024','800x600','1024x600',
+    '1280x720','1024x768','1280x800','1366x768','1400x1050','1440x900','1920x1080',
+    '1600x1200','1680x1050','2560x1440','2048x1536','1920x1200','2560x1600',
+    '3840×2160','4096×2160','5120×2880'];
+    
+    $( "#INPUT_UEFI_Output_Resolution" ).autocomplete({
+        minLength: 0,
+        max:5,
+        mustMatch : true,
+        source: ResolutionData
+    });
 
+    
+    
 });
+
+function addFile(fileid) {
+    //console.log(fileid)
+    let file = document.getElementById(fileid), files;
+    let thetablename,thetable;
+    if(fileid === "File_ACPI_Add") {
+        thetablename = "ACPI_Add";        
+    } else if(fileid === "File_UEFI_Drivers") {
+        thetablename = "UEFI_Drivers";        
+    }
+
+    thetable = getJqgridObjectbyKey(thetablename);
+
+	for(let i=0; i<file.files.length; i++){
+		files = file.files[i];
+        let newData;
+        if(thetablename === "ACPI_Add") {
+            newData = { Comment : files.name, Path : files.name, Enabled : "YES"};
+        } else if(thetablename === "UEFI_Drivers") {
+            newData = { FileName : files.name };
+        }
+        
+        thetable.jqGrid('addRowData', MAXROWID++, newData, 'last');
+
+	}
+}
 
 //获取指定数量的0字符串
 function getZero(total) {
@@ -211,14 +251,7 @@ function bindAllButton() {
 
 }
 
-function addRowUEFIDrivers(drivers) {
-    if(drivers.value !== '') {
-        let thetable = getJqgridObjectbyKey("UEFI_Drivers")
-        thetable.jqGrid('addRowData', MAXROWID++, {FileName:drivers.value}, 'last');
-        drivers.value = '';
-    }
 
-}
 
 function addkexts(kext) {
 
@@ -451,7 +484,7 @@ var VUEAPP = new Vue({
             last_checkbox_ids : [],     //记录最后显示的是那个数据
 
             pagePublic_List : [],      //前台页面循环用
-            pagePublic_Selected : [],  
+            pagePublic_Selected : [],  //控制哪些被勾选
 
             ScanPolicy_List : [
                 {val : '0x00000001', des : '限定为⽂件系统（OC_SCAN_FILE_SYSTEM_LOCK）'},
@@ -571,7 +604,7 @@ var VUEAPP = new Vue({
                 if(dataType === "boolean") {
                     Vue.set(vueData, it, partrue(getValuesByKeyname(context, it)));
                 } else if(dataType === "object"){
-                    //如果是数组，什么都不干
+                    //如果是数组，什么都不干，任其继续进入下一轮循环
                 } else {
                     Vue.set(vueData, it, getValuesByKeyname(context, it));
                 }
@@ -957,7 +990,7 @@ var VUEAPP = new Vue({
     }
 })
 
-
+//保存按钮
 function savePlist() {
     let xmlcontext = getAllPlist();
     let blob = new Blob([xmlcontext], {type: "text/plain;charset=utf-8"});
@@ -965,12 +998,14 @@ function savePlist() {
     showTipModal(VUEAPP.lang.downplistSuccess, 'success');
 }
 
+//复制按钮
 function copyPlist() {
 	let xmlcontext = getAllPlist();
 	copyDatatoClipboard(xmlcontext);
 	showTipModal(VUEAPP.lang.copyplistSuccess, 'success');
 }
 
+//数据行粘贴
 function startPaste() {
     VUEAPP.textarea_content = VUEAPP.textarea_content.trim();
 	if(VUEAPP.textarea_content === '') {

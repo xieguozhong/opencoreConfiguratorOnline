@@ -487,7 +487,7 @@ function getDeviceData(leftData, rightData) {
 
 function getSubDeviceData(pid, rightData) {
 	//consolelog(rightData);
-	let subcontext = "<dict>"
+	let subcontext = "<dict>", rightDataType = '';
 	for(let i=0,len=rightData.length;i<len;i++) {
 		if(rightData[i].pid == pid) {
 			//consolelog(rightData[i].Value);
@@ -498,20 +498,21 @@ function getSubDeviceData(pid, rightData) {
 			subcontext += addKey(rightData[i].Key);
 
 			//如果数据类型是DATA, 转成BASE64
-			if(rightData[i].Type === 'data') {
+			rightDataType = rightData[i].Type;
+			if(rightDataType === 'data') {
 				subcontext += '<data>' + hextoBase64(rightData[i].Value) + '</data>';
 			}
 			//如果是BOOL, 转成<true/>或者 <false/>
-			else if(rightData[i].Type === 'bool') {
+			else if(rightDataType === 'bool') {
 				subcontext += toBoolString(rightData[i].Value);
-			} else if(rightData[i].Type === 'integer' ) {
+			} else if(rightDataType === 'integer' ) {
 				subcontext += '<integer>' + toNumber(rightData[i].Value) + '</integer>';
-			} else if(rightData[i].Type === 'real') {
+			} else if(rightDataType === 'real') {
 				subcontext += '<real>' + toNumber(rightData[i].Value) + '</real>';
 			}
 			//如果是其他就直接用数据类型包裹值
 			else {
-				subcontext += '<' + rightData[i].Type + '>' + plistEncode(rightData[i].Value) + '</' + rightData[i].Type + '>';
+				subcontext += '<' + rightDataType + '>' + plistEncode(rightData[i].Value) + '</' + rightDataType + '>';
 			}
 		}
 	}
