@@ -48,18 +48,18 @@ $(document).ready(function() {
     //显示适用于版本信息
 	showTipModal(VUEAPP.lang.supportversion, 'warning');
 
-    //可输可选项填充
-    let ResolutionData = ['Max','640x480','800x480','960x540','1280x1024','800x600','1024x600',
-    '1280x720','1024x768','1280x800','1366x768','1400x1050','1440x900','1920x1080',
-    '1600x1200','1680x1050','2560x1440','2048x1536','1920x1200','2560x1600',
-    '3840×2160','4096×2160','5120×2880'];
+    // //可输可选项填充
+    // let ResolutionData = ['Max','640x480','800x480','960x540','1280x1024','800x600','1024x600',
+    // '1280x720','1024x768','1280x800','1366x768','1400x1050','1440x900','1920x1080',
+    // '1600x1200','1680x1050','2560x1440','2048x1536','1920x1200','2560x1600',
+    // '3840×2160','4096×2160','5120×2880'];
     
-    $( "#INPUT_UEFI_Output_Resolution" ).autocomplete({
-        minLength: 0,
-        max:5,
-        mustMatch : true,
-        source: ResolutionData
-    });
+    // $( "#INPUT_UEFI_Output_Resolution" ).autocomplete({
+    //     minLength: 0,
+    //     max:5,
+    //     mustMatch : true,
+    //     source: ResolutionData
+    // });
 
     
     
