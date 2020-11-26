@@ -46,7 +46,9 @@ $(document).ready(function() {
     };
 
     //显示适用于版本信息
-	showTipModal(VUEAPP.lang.supportversion, 'warning');
+    showTipModal(VUEAPP.lang.supportversion, 'warning');
+    
+    $("#id-input-file-2").removeAttr("disabled");
 
     // //可输可选项填充
     // let ResolutionData = ['Max','640x480','800x480','960x540','1280x1024','800x600','1024x600',
@@ -148,14 +150,32 @@ function bindAllButton() {
 
             let selectedIds = currentGridTable.jqGrid('getGridParam','selarrrow');
 
-            //如果有选中行, 说明有数据被删除
+            //如果有选中行, 说明可以进行删除操作
             if(selectedIds.length > 0) {
-                let deleteIds = [];
+                let deleteIds = [], rowData, leftSelectedId;
+
+                //如果是右边表格, 只要删除左边选中行下面的数据即可
+                if(buttonBehind.substr(-5) === 'Right') {
+                    let leftGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
+
+                    leftSelectedId = leftGrid.jqGrid("getGridParam", "selrow");
+                }
+
                 for(let i=0,len=selectedIds.length;i<len;i++) {
-                    deleteIds.push(parseInt(selectedIds[i]));
+                    
+                    if(leftSelectedId === undefined) {
+                        deleteIds.push(parseInt(selectedIds[i]));
+                    } else {
+                        rowData = currentGridTable.jqGrid('getRowData', selectedIds[i]);
+                        if(leftSelectedId == rowData.pid) {
+                            deleteIds.push(parseInt(selectedIds[i]));
+                        }
+                    }
+                    
                 }
                 deleteIds.sort(sortNumber);
-                let len = deleteIds.length - 1;
+                let len = deleteIds.length - 1;     
+
                 for(let i=len;i>=0;i--) {
 
                     currentGridTable.jqGrid('delRowData', deleteIds[i]);
@@ -203,11 +223,16 @@ function bindAllButton() {
             }
 
             for(let i=0,len=selectedId.length;i<len;i++) {
-                rowData = currentGridTable.jqGrid('getRowData', selectedId[i]);
                 
-                if(leftSelectedId === undefined || leftSelectedId == rowData.pid) {
+                
+                if(leftSelectedId === undefined) {
                     arrStrdata.push(JSON.stringify(rowData));
-                } 
+                } else {
+                    rowData = currentGridTable.jqGrid('getRowData', selectedId[i]);
+                    if(leftSelectedId == rowData.pid) {
+                        arrStrdata.push(JSON.stringify(rowData));
+                    }
+                }
                 
                 
                 
