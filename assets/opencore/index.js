@@ -223,18 +223,11 @@ function bindAllButton() {
             }
 
             for(let i=0,len=selectedId.length;i<len;i++) {
+                rowData = currentGridTable.jqGrid('getRowData', selectedId[i]);
                 
-                
-                if(leftSelectedId === undefined) {
+                if(leftSelectedId === undefined || leftSelectedId == rowData.pid) {
                     arrStrdata.push(JSON.stringify(rowData));
-                } else {
-                    rowData = currentGridTable.jqGrid('getRowData', selectedId[i]);
-                    if(leftSelectedId == rowData.pid) {
-                        arrStrdata.push(JSON.stringify(rowData));
-                    }
                 }
-                
-                
                 
             }
             
