@@ -385,8 +385,9 @@ var VUEAPP = new Vue({
             },
         Booter : {
             MmioWhitelist : [],
+            Patch : [],
             Quirks : {
-                AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
+                AllowRelocationBlock:false,AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
                 DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectMemoryRegions:false,
                 ProtectSecureBoot:false,ProtectUefiServices:false,ProvideCustomSlide:false, ProvideMaxSlide:0, RebuildAppleMemoryMap:false,SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false
             }
@@ -422,7 +423,8 @@ var VUEAPP = new Vue({
                 AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', SerialInit:false, SysReport:false, Target:'0'
             },
             Security : {
-                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,BootProtect:'None',
+                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,
+                BlacklistAppleUpdate:false,BootProtect:'None',
                 ApECID : '',DmgLoading:'Signed',EnablePassword:false,PasswordHash:'',PasswordSalt:'',SecureBootModel:'Default'
             },
             Entries:[],
@@ -475,7 +477,7 @@ var VUEAPP = new Vue({
 			},
 
 			Audio : {
-				AudioCodec:0, AudioDevice : '', AudioOut:0,AudioSupport : false,MinimumVolume:20,PlayChime : false, VolumeAmplifier:0
+				AudioCodec:0, AudioDevice : '', AudioOut:0,AudioSupport : false,MinimumVolume:20,PlayChime : '', VolumeAmplifier:0
 			},
             Input : {
                 KeyFiltering:false,KeyForgetThreshold:'', KeyMergeThreshold:'', KeySupport:false, KeySupportMode:'', KeySwap:false,  PointerSupport:false, PointerSupportMode:'', TimerResolution:''
@@ -882,7 +884,12 @@ var VUEAPP = new Vue({
 
 
         , initBooter : function () {
+
             let text = getValuesByKeyname(VUEAPP.plistcontext, 'Booter', true);
+            
+            this.getPlistAndResetTableData(text, 'Patch', 'Booter_Patch', this.Booter.Patch);
+
+            
             this.getPlistAndResetTableData(text, 'MmioWhitelist', 'Booter_MmioWhitelist', this.Booter.MmioWhitelist);
 
             let QuirksText = getValuesByKeyname(text, 'Quirks');

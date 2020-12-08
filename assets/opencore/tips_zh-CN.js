@@ -30,6 +30,7 @@ const SYSTEM_TIPS = {
     Booter : {
         title : '用于设置 FwRuntimeServices.efi (Slide 值计算, KASLR)',
         Quirks : {
+            AllowRelocationBlock:'NO 允许通过重定位块引导macOS',
             AvoidRuntimeDefrag: 'YES 修复 UEFI 的运行服务, 例如日期, 时间, NVRAM, 电源控制等',
             DevirtualiseMmio: 'NO 减少 Stolen 内存占用空间，扩大 Slide = N 值的范围，但可能与主板不兼容。通常用于 APTIO V 固件 (Broadwell +)',
             DisableSingleUser: 'NO 禁止 Cmd + S 和 -s 的使用，使设备更加接近于 T2 白苹果',
@@ -139,6 +140,7 @@ const SYSTEM_TIPS = {
             AllowNvramReset : 'NO 允许CMD + OPT + P + R处理并在引导选择器中启用显示NVRAM重置条目',
             AllowSetDefault : 'NO 允许CTRL + Enter和CTRL + Index处理来设置启动选择器中的默认启动选项',
             AuthRestart : 'NO 启用与VirtualSMC兼容的身份验证重新启动',
+            BlacklistAppleUpdate:'NO 忽略尝试更新Apple外围设备固件的引导选项（例如 MultiUpdater.efi）',
 			ApECID : '苹果飞地标识符',
             BootProtect :'None 尝试提供Bootloader持久性<br>1 None — 什么都不做<br>2 Bootstrap —创建或更新最高优先级\EFI\OC\Bootstrap\Bootstrap.efi引导选项（Boot9696）在引导加载程序启动时在UEFI变量存储中。 为了使此选项起作用，需要RequestBootVarRouting被启用',
             Signed : 'Signed 定义用于macOS恢复的磁盘映像（DMG）加载策略',
@@ -210,7 +212,7 @@ const SYSTEM_TIPS = {
 
 		Audio : {
 			AudioSupport : 'NO 通过连接到后端驱动程序来激活音频支持',
-			PlayChime : 'NO 在启动时播放提示音',
+			PlayChime : '空 在启动时播放提示音 <br>•Auto —当StartupMute NVRAM变量不存在或设置为00时启用提示音<br>•Enabled-无条件启用提示音<br>•Disabled-无条件禁用提示音',
             AudioDevice : '用于音频支持的指定音频控制器的设备路径',
             AudioCodec : '指定音频控制器上的编解码器地址以支持音频',
             AudioOut : '指定编解码器输出端口的索引从0开始',
