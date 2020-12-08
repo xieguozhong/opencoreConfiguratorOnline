@@ -191,8 +191,46 @@ function initGridTableBooter() {
 	GLOBAL_ARRAY_TABLE[0]['Booter_MmioWhitelist'] = objGT_Booter_MmioWhitelist;
 	initGridTable(objGT_Booter_MmioWhitelist, VUEAPP.Booter.MmioWhitelist, colNames, colModel, GLOBAL_TABLE_WIDTH-15, parseInt(GLOBAL_TABLE_HEIGHT * 0.44));
 
-	
-	
+	//Patch
+	// <key>Arch</key>
+	// 			<string>Any</string>
+	// <key>Comment</key>
+	// 			<string>macOS to hacOS</string>
+	//<key>Count</key>
+	// 			<integer>1</integer>
+	//<key>Enabled</key>
+	// 			<false/>
+	// <key>Find</key>
+	// 			<data>bWFjT1M=</data>
+	//<key>Identifier</key>
+	// 			<string>Apple</string>
+	//<key>Limit</key>
+	// 			<integer>0</integer>
+	//<key>Mask</key>
+	// 			<data></data>
+	//<key>Replace</key>
+	// 			<data>aGFjT1M=</data>
+	//<key>ReplaceMask</key>
+	// 			<data></data>
+	//<key>Skip</key>
+	// 			<integer>0</integer>
+	colNames = ['Arch','Comment', 'Count','Find','Identifier','Limit','Mask','Replace','ReplaceMask','Skip','Enabled'];
+	colModel = [
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
+		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Count',index:'Count', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:formatInteger},
+		{name:'Find',index:'Find', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Limit',index:'Limit', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:formatInteger},
+		{name:'Mask',index:'Mask', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Replace',index:'Replace', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'ReplaceMask',index:'ReplaceMask', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Skip',index:'Skip', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:formatInteger},
+		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true, align:'center',formatter:enabledFormat}
+	];
+	let objGT_Booter_Patch = jQuery('#gridtable_Booter_Patch');
+	GLOBAL_ARRAY_TABLE[0]['Booter_Patch'] = objGT_Booter_Patch;
+	initGridTable(objGT_Booter_Patch, VUEAPP.Booter.Patch, colNames, colModel, GLOBAL_TABLE_WIDTH-15, parseInt(GLOBAL_TABLE_HEIGHT * 0.44));
 
 
 }

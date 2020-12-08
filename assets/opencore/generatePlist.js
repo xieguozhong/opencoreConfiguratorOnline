@@ -61,6 +61,10 @@ function genACPI() {
 function getBooter() {
 	let BooterContext = '<key>Booter</key><dict>';
 
+	//Patch
+	BooterContext += '<key>Patch</key>';
+	BooterContext += genArrayDict('Booter_Patch', VUEAPP.Booter.Patch,['Find','Mask','Replace','ReplaceMask'],['Count','Limit','Skip']);
+
 	//MmioWhitelist
 	BooterContext += '<key>MmioWhitelist</key>';
 	BooterContext += genArrayDict('Booter_MmioWhitelist', VUEAPP.Booter.MmioWhitelist,[],['Address']);
@@ -188,6 +192,7 @@ function getMisc() {
 	miscContext += '<key>AllowSetDefault</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowSetDefault']);
 	miscContext += '<key>ApECID</key><integer>' + toNumber(VUEAPP.Misc.Security['ApECID']) + '</integer>';
 	miscContext += '<key>AuthRestart</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AuthRestart']);
+	miscContext += '<key>BlacklistAppleUpdate</key>' + toBoolStringStrict(VUEAPP.Misc.Security['BlacklistAppleUpdate']);
 	
 	miscContext += '<key>BootProtect</key>' + addCharstring(VUEAPP.Misc.Security['BootProtect']);
 	miscContext += '<key>DmgLoading</key>' + addCharstring(VUEAPP.Misc.Security['DmgLoading']); 

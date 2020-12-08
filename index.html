@@ -281,12 +281,24 @@
 
                         		<div class="tabbable" >
                                     <ul class="nav nav-tabs">
-                                        <li class="active" :title="title.Booter.MmioWhitelist.title"><a data-toggle="tab" href="#tabbable_Booter_MmioWhitelist" class="tablelia">MmioWhitelist</a></li>
+										<li class="active"><a data-toggle="tab" href="#tabbable_Booter_Patch" class="tablelia">Patch</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Booter_MmioWhitelist" class="tablelia">MmioWhitelist</a></li>
                                     </ul>
 
-                                    <div class="tab-content" style="padding-right:3px;padding-left:2px;">
+									<div class="tab-content" style="padding-right:3px;padding-left:2px;">
+										
+										<div id="tabbable_Booter_Patch" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable_Booter_Patch"></table>
+			                                <span class="grey pull-right">
+			                                	<a id="btnenabled_Booter_Patch"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
+			                                    <a id="btncopy_Booter_Patch"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
+			                                    <a id="btnpaste_Booter_Patch"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
+			                                    <a id="btnadd_Booter_Patch"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
+												<a id="btndel_Booter_Patch"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                </span>
+                                        </div>
 
-                                        <div id="tabbable_Booter_MmioWhitelist" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                        <div id="tabbable_Booter_MmioWhitelist" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <table id="gridtable_Booter_MmioWhitelist"></table>
 			                                <span class="grey pull-right">
 			                                	<a id="btnenabled_Booter_MmioWhitelist"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
@@ -312,6 +324,11 @@
 
                                 	
                                     <div class="checkbox">
+
+										<label class="mintip" :title="title.Booter.Quirks.AllowRelocationBlock">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.AllowRelocationBlock" />
+                                            <span class="lbl"> AllowRelocationBlock</span>
+                                        </label>
 
                                         <label class="mintip" :title="title.Booter.Quirks.AvoidRuntimeDefrag">
                                             <input type="checkbox" class="ace" v-model="Booter.Quirks.AvoidRuntimeDefrag" />
@@ -993,6 +1010,10 @@
 			                                        <label class="mintip" :title="title.Misc.Security.AuthRestart">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AuthRestart" />
 			                                            <span class="lbl"> AuthRestart</span>
+													</label>
+													<label class="mintip" :title="title.Misc.Security.BlacklistAppleUpdate">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.BlacklistAppleUpdate" />
+			                                            <span class="lbl"> BlacklistAppleUpdate</span>
 			                                        </label>
 			                                        <label class="mintip" :title="title.Misc.Security.EnablePassword">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.EnablePassword" />
@@ -1547,23 +1568,30 @@
 			                                      </div>
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.MinimumVolume">
 			                                        MinimumVolume<input type="text" class="form-control" v-model="UEFI.Audio.MinimumVolume">
-			                                      </div>
+												  </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.VolumeAmplifier">
+													VolumeAmplifier<input type="text" class="form-control" v-model="UEFI.Audio.VolumeAmplifier">
+												  </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.PlayChime">
+													PlayChime
+													<select class="form-control" v-model="UEFI.Audio.PlayChime">
+														<option value=""></option>
+														<option value="Auto">Auto</option>
+														<option value="Enabled">Enabled</option>
+														<option value="Disabled">Disabled</option>															
+														</select>
+
+													</div>
+												
 			                                    </div>
-			                                    <div class="row" style="margin-top: 10px">
-			                                        <div class="col-xs-3 mintip" :title="title.UEFI.Audio.VolumeAmplifier">
-			                                            VolumeAmplifier<input type="text" class="form-control" v-model="UEFI.Audio.VolumeAmplifier">
-			                                        </div>
-			                                    </div>
+			                                    
 
 			                                    <div class="checkbox" style="margin-top: 20px">
 			                                        <label class="mintip" :title="title.UEFI.Audio.AudioSupport">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.AudioSupport" />
 			                                            <span class="lbl"> AudioSupport</span>
 			                                        </label>
-			                                        <label class="mintip" :title="title.UEFI.Audio.PlayChime">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.PlayChime" />
-			                                            <span class="lbl"> PlayChime</span>
-			                                        </label>
+			                                        
 
 			                                    </div>
 
@@ -1853,7 +1881,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Only support OpenCore-0.6.3-RELEASE Updated 2020/11/03</span>
+							<span class="blue bolder">Only support OpenCore-0.6.4-RELEASE Updated 2020/12/08</span>
 
 						</span>
 
