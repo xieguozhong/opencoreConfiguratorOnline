@@ -519,7 +519,8 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width , heigh
 		altRows: true,
         scroll: false,
         multiselect : true,
-        multiboxonly : true,
+		multiboxonly : true,
+		rowNum: 9000,
 		ondblClickRow : function (rowid) {
             objGridTable.jqGrid('editRow', rowid, {
                 url : 'clientArray',
