@@ -116,7 +116,8 @@ const SYSTEM_TIPS = {
         Boot : {
             HibernateMode: 'None 最好避免与黑苹果一同休眠',
             PickerMode : '选择用于引导管理的引导选择器 <br>1 Builtin -- 引导管理由OpenCore处理，使用了纯文本用户界面<br>2 External -- 如果可用，则使用外部引导管理协议。否则使用内置模式<br>3 Apple -- 如果可用，则使用Apple引导管理。否则使用内置模式',
-			HideAuxiliary : 'NO 默认情况下从选择器菜单隐藏辅助条目',
+			PickerVariant:'选择用于启动管理的特定图标集 <br>• Auto — 根据DefaultBackground颜色自动选择一组图标<br>• Default — 普通图标集（不带前缀）<br>• Old — 复古图标集（旧文件名前缀）<br>• Modern — Nouveau图标集（现代文件名前缀）<br>• 其他值 — 如果资源支持，则设置自定义图标',
+            HideAuxiliary : 'NO 默认情况下从选择器菜单隐藏辅助条目',
             
             PollAppleHotKeys: 'YES 允许在引导过程中使用苹果原生快捷键, 需要与 AppleGenericInput.efi 或 UsbKbDxe.efi 结合使用, 具体体验取决于固件',
             Timeout: '5 设置引导项等待时间',
@@ -213,6 +214,7 @@ const SYSTEM_TIPS = {
 		Audio : {
 			AudioSupport : 'NO 通过连接到后端驱动程序来激活音频支持',
 			PlayChime : '空 在启动时播放提示音 <br>•Auto —当StartupMute NVRAM变量不存在或设置为00时启用提示音<br>•Enabled-无条件启用提示音<br>•Disabled-无条件禁用提示音',
+            SetupDelay:'音频编解码器重新配置延迟（以微秒为单位）',
             AudioDevice : '用于音频支持的指定音频控制器的设备路径',
             AudioCodec : '指定音频控制器上的编解码器地址以支持音频',
             AudioOut : '指定编解码器输出端口的索引从0开始',
@@ -269,11 +271,77 @@ const SYSTEM_TIPS = {
             ReleaseUsbOwnership : 'NO 从固件驱动程序中释放 USB 控制器所属权, 除非您不知道自己在做什么, 否则避免使用。Clover 的等效设置是 FixOwnership',       
             RequestBootVarRouting : 'YES 从 EFI_GLOBAL_VARIABLE_GUID 中为 OC_VENDOR_VARIABLE_GUID 请求 redirectBoot 前缀变量 <br>启用此项以便能够在与 macOS 引导项设计上不兼容的固件中可靠地使用 启动磁盘 设置',
             UnblockFsConnect : 'NO 惠普笔记本在 OpenCore 引导界面没有引导项时设置为 YES',
-			DeduplicateBootOrder : 'NO 在EFI_GLOBAL_VARIABLE_GUID中的BootOrder变量中删除重复的条目',
+			
 			TscSyncTimeout : '尝试以指定的超时执行TSC同步',
+
             ExitBootServicesDelay : '在EXIT_BOOT_SERVICES事件后增加延迟（以微秒为单位）'
         }
-    }
+    },
+
+    Assist : {            
+
+            ScanPolicy_List : [
+                {val : '0x00000001', des : '限定为⽂件系统（OC_SCAN_FILE_SYSTEM_LOCK）'},
+                {val : '0x00000002', des : '限定为设备类型（OC_SCAN_DEVICE_LOCK）'},
+                {val : '0x00000100', des : '允许扫描 APFS ⽂件系统（OC_SCAN_ALLOW_FS_APFS）'},
+                {val : '0x00000200', des : '允许扫描 HFS ⽂件系统（OC_SCAN_ALLOW_FS_HFS）'},
+                {val : '0x00000400', des : '允许扫描 EFI System Partition/ESP ⽂件系统（OC_SCAN_ALLOW_FS_ESP）'},
+                {val : '0x00000800', des : '允许扫描 NTFS（Windows）⽂件系统（OC_SCAN_ALLOW_FS_NTFS）'},
+                {val : '0x00001000', des : '允许扫描 EXT（Linux）⽂件系统（OC_SCAN_ALLOW_FS_EXT）'},
+                {val : '0x00010000', des : '允许扫描 SATA 设备（OC_SCAN_ALLOW_DEVICE_SATA）'},
+                {val : '0x00020000', des : '允许扫描 SAS 和 Mac NVMe 设备（OC_SCAN_ALLOW_DEVICE_SASEX）'},
+                {val : '0x00040000', des : '允许扫描 SCSI 设备（OC_SCAN_ALLOW_DEVICE_SCSI）'},
+                {val : '0x00080000', des : '允许扫描 NVMe 设备（OC_SCAN_ALLOW_DEVICE_NVME）'},
+                {val : '0x00100000', des : '允许扫描 CD/DVD 旧SATA 设备（OC_SCAN_ALLOW_DEVICE_ATAPI）'},
+                {val : '0x00200000', des : '允许扫描 USB 设备（OC_SCAN_ALLOW_DEVICE_USB）'},
+                {val : '0x00400000', des : '允许扫描 FireWire 设备（OC_SCAN_ALLOW_DEVICE_FIREWIRE）'},
+                {val : '0x00800000', des : '允许扫描读卡器设备（OC_SCAN_ALLOW_DEVICE_SDCARD）'},
+                {val : '0x01000000', des : '允许扫描PCI设备（OC_SCAN_ALLOW_DEVICE_PCI）'}
+            ],
+            
+
+            ExposeSensitiveData_List : [
+                {val : '0x01', des : '将可打印的引导程序路径公开为UEFI变量'},
+                {val : '0x02', des : '将OpenCore版本公开为UEFI变量'},
+                {val : '0x04', des : '在引导选择器菜单标题中公开OpenCore版本'},
+                {val : '0x08', des : '将OEM信息公开为一组UEFI变量'}
+            ]
+
+            ,DisplayLevel_List : [
+                {val : '0x00000002', des : 'DEBUG_WARN in DEBUG, NOOPT, RELEASE'},
+                {val : '0x00000040', des : 'DEBUG_INFO in DEBUG, NOOPT'},
+                {val : '0x00400000', des : 'DEBUG_VERBOSE in custom builds'},
+                {val : '0x80000000', des : 'DEBUG_ERROR in DEBUG, NOOPT, RELEASE'}
+            ]
+
+            ,Target_List : [
+
+                {val : '0x01', des : '启用日志记录，否则所有日志将被丢弃'},
+                {val : '0x02', des : '启用基本控制台（屏幕上）日志记录'},
+                {val : '0x04', des : '启用日志记录到数据中心'},
+                {val : '0x08', des : '启用串行端口日志记录'},
+                {val : '0x10', des : '启用UEFI变量记录'},
+                {val : '0x20', des : '启用非易失性UEFI变量日志记录'},
+                {val : '0x40', des : '启用记录到文件'}
+            ]
+
+            ,PickerAttributes_List : [
+                {val : '0x0001', des : 'OC_ATTR_USE_VOLUME_ICON，为启动项提供自定义图标'},
+                {val : '0x0002', des : 'OC_ATTR_USE_DISK_LABEL_FILE，为启动项提供定制的呈现标题'},
+                {val : '0x0004', des : 'OC_ATTR_USE_GENERIC_LABEL_IMAGE，为没有自定义条目的引导条目提供了预定义的标签图像'},
+                {val : '0x0008', des : 'OC_ATTR_USE_ALTERNATE_ICONS，将已使用图标集更改为备用图标（如果支持）'}
+            ]
+
+            ,TypeDetail_List : [
+                {val : '0x0002', des : '其它'},
+                {val : '0x0004', des : '未知'},
+                {val : '0x0080', des : '同步'},
+                {val : '0x2000', des : '已注册（已缓存）'},
+                {val : '0x4000', des : '未缓存（未注册）'}
+            ]
+            
+            
+        }
 
 
 };
