@@ -834,7 +834,8 @@
 			                                        </div>
 
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerVariant">
-			                                            PickerVariant<input type="text" class="form-control" v-model="Misc.Boot.PickerVariant"/>                               
+			                                            PickerVariant<a id="btnradiobox_Misc_Boot_PickerVariant" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerVariant"/>                               
 
 			                                        </div>
 
@@ -1935,11 +1936,22 @@
                             <form>
                                 <div class="form-group">
 									<label for="message-text" class="control-label"><b>{{lang.pleasecheckmessage}}</b></label><br><br>
-									<div v-for="it in Assist.pagePublic_List">
-										<label>&nbsp;&nbsp;<input type="checkbox" class="ace" v-model="Assist.pagePublic_Selected" :value="it.val" /><span class="lbl"> {{it.des}}</span></label><br>									
-									</div>                
+
+									<div v-if="Assist.RADIO_CHECK_BOX === 'C'">
+										<div v-for="it in Assist.pagePublic_List">
+											<label>&nbsp;&nbsp;<input type="checkbox" class="ace" v-model="Assist.pagePublic_Selected" :value="it.val" /><span class="lbl"> {{it.des}}</span></label><br>									
+										</div>
+									</div>
+
+									<div v-else-if="Assist.RADIO_CHECK_BOX === 'R'">
+										<div v-for="it in Assist.pageRadio_List">
+											<label>&nbsp;&nbsp;<input type="radio" class="ace" v-model="Assist.pageRadio_CurrentValue" :value="it.val" /><span class="lbl"> {{it.des}}</span></label><br>									
+										</div>
+									</div>           
 			                          
                                 </div>
+
+
                             </form>
                         </div>
 
