@@ -501,12 +501,18 @@ let VUEAPP = new Vue({
         },
 
         Assist : {
-            last_checkbox_ids : [],     //记录最后显示的是那个数据
 
-            pagePublic_List : [],      //前台页面循环用
-            pagePublic_Selected : [],  //控制哪些被勾选
+            RADIO_CHECK_BOX : 'C',          //用于标记显示多选列表还是单选列表, C表示多选,R表示单选
+            last_checkbox_ids : [],          //记录最后显示的是哪个多选数据
+            last_radiobox_ids : [],          //记录最后显示的是哪个多选数据
 
-            ScanPolicy_List : SYSTEM_TIPS.Assist.ScanPolicy_List      
+            pagePublic_List : [],           //前台页面多选值循环用
+            pagePublic_Selected : [],       //控制哪些多选项被勾选
+
+            pageRadio_List : [],            //前台页面单选值循环用
+            pageRadio_CurrentValue : ''     //记录当前选中的单选的值
+
+            ,ScanPolicy_List : SYSTEM_TIPS.Assist.ScanPolicy_List      
 
             ,ExposeSensitiveData_List : SYSTEM_TIPS.Assist.ExposeSensitiveData_List
 
@@ -517,6 +523,8 @@ let VUEAPP = new Vue({
             ,PickerAttributes_List : SYSTEM_TIPS.Assist.PickerAttributes_List
 
             ,TypeDetail_List : SYSTEM_TIPS.Assist.TypeDetail_List
+
+            ,PickerVariant_List : SYSTEM_TIPS.Assist.PickerVariant_List
             
             
         }
@@ -874,16 +882,40 @@ let VUEAPP = new Vue({
             getJqgridObjectbyKey(gridkey).trigger("reloadGrid");
         }
 
+        //
+        , btnradioboxclick : function(event) {
+            this.Assist.RADIO_CHECK_BOX = 'R';
+            let buttonids = event.currentTarget.id.split('_');
+            if(this.Assist.last_radiobox_ids.join('_') === event.currentTarget.id) {
+                consolelog('上次页面和将要显示的页面相同，不做单选数据填充');
+            
+            } else {
+                consolelog('上次页面和将要显示的页面不相同，做单选数据填充处理');
+                this.Assist.pageRadio_List = this.Assist[buttonids[3] + '_List'];
+                this.Assist.last_radiobox_ids = buttonids;
+                
+            }
+
+            //根据输入框中的值决定要不要勾选单选框
+            let iv = this[buttonids[1]][buttonids[2]][buttonids[3]];
+            if(this.Assist.pageRadio_CurrentValue !== iv) {
+                this.Assist.pageRadio_CurrentValue = iv;
+            }
+
+            $('#divMuCheckboxPageModal').modal('show');
+        }
+
         // 弹出多选窗口按钮点击事件
         , btncheckboxclick :function (event, vlen) {
-            
+            this.Assist.RADIO_CHECK_BOX = 'C';
             let buttonids = event.currentTarget.id.split('_');
             
             // 1 为要显示的页面添加可选框数据列表 current_checkbox_id
-            if(this.Assist.last_checkbox_ids[2] === buttonids[2] && this.Assist.last_checkbox_ids[3] === buttonids[3]) {
-                consolelog('上次页面和将要显示的页面相同，不做数据填充');
+            if(this.Assist.last_checkbox_ids.join('_') === event.currentTarget.id) {
+                consolelog('上次页面和将要显示的页面相同，不做多选数据填充');
+            
             } else {
-                consolelog('上次页面和将要显示的页面不相同，做数据填充处理');
+                consolelog('上次页面和将要显示的页面不相同，做多选数据填充处理');
                 this.Assist.pagePublic_List = this.Assist[buttonids[3] + '_List'];
                 this.Assist.last_checkbox_ids = buttonids;
                 this.Assist.pagePublic_Selected = [];
@@ -947,8 +979,15 @@ let VUEAPP = new Vue({
         }
 
         //勾选页面点击确定按钮事件
-        , checkboxPageBtnOKclick : function () {              
-            this[this.Assist.last_checkbox_ids[1]][this.Assist.last_checkbox_ids[2]][this.Assist.last_checkbox_ids[3]] = this.getCheckedTotal();
+        , checkboxPageBtnOKclick : function () {
+            if(this.Assist.RADIO_CHECK_BOX === 'C') {
+                this[this.Assist.last_checkbox_ids[1]][this.Assist.last_checkbox_ids[2]][this.Assist.last_checkbox_ids[3]] = this.getCheckedTotal();
+            } 
+
+            else if(this.Assist.RADIO_CHECK_BOX === 'R') {
+                this[this.Assist.last_radiobox_ids[1]][this.Assist.last_radiobox_ids[2]][this.Assist.last_radiobox_ids[3]] = this.Assist.pageRadio_CurrentValue;
+            }
+            
             $('#divMuCheckboxPageModal').modal('hide');
         }
 

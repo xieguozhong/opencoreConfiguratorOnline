@@ -339,6 +339,13 @@ const SYSTEM_TIPS = {
                 {val : '0x2000', des : '已注册（已缓存）'},
                 {val : '0x4000', des : '未缓存（未注册）'}
             ]
+
+            ,PickerVariant_List:[
+                {val : 'Auto',      des : 'Auto - 根据DefaultBackground颜色自动选择一组图标'},
+                {val : 'Default',   des : 'Default - 普通图标集（不带前缀）'},
+                {val : 'Old',       des : 'Old - 复古图标集（旧文件名前缀）'},
+                {val : 'Modern',    des : 'Modern - Nouveau图标集（现代文件名前缀）'}
+            ]
             
             
         }
