@@ -366,7 +366,7 @@ function addkexts(kext) {
 }
 
 
-var VUEAPP = new Vue({
+let VUEAPP = new Vue({
     el: '#main-container',
     data: {
         root : 'ACPI',                  //决定当前显示哪个节点
@@ -416,7 +416,7 @@ var VUEAPP = new Vue({
         Misc : {
             BlessOverride:[],
             Boot:{
-                HibernateMode:'None', PickerMode:'Builtin', TakeoffDelay:'0',
+                HibernateMode:'None', PickerMode:'Builtin', PickerVariant:'Auto', TakeoffDelay:'0',
                 Timeout:'0', HideAuxiliary:false,  ConsoleAttributes:'0', PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
             },
             Debug: {
@@ -450,7 +450,7 @@ var VUEAPP = new Vue({
             },
             Generic : {
                 AdviseWindows : false,SystemMemoryStatus:'Auto',
-                MLB:'', ProcessorType:'',ROM:'', SpoofVendor:false, //SupportsCsm:false,
+                MLB:'', ProcessorType:'',ROM:'', SpoofVendor:false, 
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             PlatformNVRAM : {
@@ -477,7 +477,7 @@ var VUEAPP = new Vue({
 			},
 
 			Audio : {
-				AudioCodec:0, AudioDevice : '', AudioOut:0,AudioSupport : false,MinimumVolume:20,PlayChime : '', VolumeAmplifier:0
+				AudioCodec:0, AudioDevice : '', AudioOut:0,AudioSupport : false,MinimumVolume:20,PlayChime : '', SetupDelay:0,VolumeAmplifier:0
 			},
             Input : {
                 KeyFiltering:false,KeyForgetThreshold:'', KeyMergeThreshold:'', KeySupport:false, KeySupportMode:'', KeySwap:false,  PointerSupport:false, PointerSupportMode:'', TimerResolution:''
@@ -494,7 +494,7 @@ var VUEAPP = new Vue({
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks : {
-                DeduplicateBootOrder:false,ExitBootServicesDelay:0, IgnoreInvalidFlexRatio:false,
+                ExitBootServicesDelay:0, IgnoreInvalidFlexRatio:false,
                 ReleaseUsbOwnership:false,  RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
             },
             ReservedMemory : []
@@ -506,65 +506,17 @@ var VUEAPP = new Vue({
             pagePublic_List : [],      //前台页面循环用
             pagePublic_Selected : [],  //控制哪些被勾选
 
-            ScanPolicy_List : [
-                {val : '0x00000001', des : '限定为⽂件系统（OC_SCAN_FILE_SYSTEM_LOCK）'},
-                {val : '0x00000002', des : '限定为设备类型（OC_SCAN_DEVICE_LOCK）'},
-                {val : '0x00000100', des : '允许扫描 APFS ⽂件系统（OC_SCAN_ALLOW_FS_APFS）'},
-                {val : '0x00000200', des : '允许扫描 HFS ⽂件系统（OC_SCAN_ALLOW_FS_HFS）'},
-                {val : '0x00000400', des : '允许扫描 EFI System Partition/ESP ⽂件系统（OC_SCAN_ALLOW_FS_ESP）'},
-                {val : '0x00000800', des : '允许扫描 NTFS（Windows）⽂件系统（OC_SCAN_ALLOW_FS_NTFS）'},
-                {val : '0x00001000', des : '允许扫描 EXT（Linux）⽂件系统（OC_SCAN_ALLOW_FS_EXT）'},
-                {val : '0x00010000', des : '允许扫描 SATA 设备（OC_SCAN_ALLOW_DEVICE_SATA）'},
-                {val : '0x00020000', des : '允许扫描 SAS 和 Mac NVMe 设备（OC_SCAN_ALLOW_DEVICE_SASEX）'},
-                {val : '0x00040000', des : '允许扫描 SCSI 设备（OC_SCAN_ALLOW_DEVICE_SCSI）'},
-                {val : '0x00080000', des : '允许扫描 NVMe 设备（OC_SCAN_ALLOW_DEVICE_NVME）'},
-                {val : '0x00100000', des : '允许扫描 CD/DVD 旧SATA 设备（OC_SCAN_ALLOW_DEVICE_ATAPI）'},
-                {val : '0x00200000', des : '允许扫描 USB 设备（OC_SCAN_ALLOW_DEVICE_USB）'},
-                {val : '0x00400000', des : '允许扫描 FireWire 设备（OC_SCAN_ALLOW_DEVICE_FIREWIRE）'},
-                {val : '0x00800000', des : '允许扫描读卡器设备（OC_SCAN_ALLOW_DEVICE_SDCARD）'},
-                {val : '0x01000000', des : '允许扫描PCI设备（OC_SCAN_ALLOW_DEVICE_PCI）'}
-            ],
-            
+            ScanPolicy_List : SYSTEM_TIPS.Assist.ScanPolicy_List      
 
-            ExposeSensitiveData_List : [
-                {val : '0x01', des : '将可打印的引导程序路径公开为UEFI变量'},
-                {val : '0x02', des : '将OpenCore版本公开为UEFI变量'},
-                {val : '0x04', des : '在引导选择器菜单标题中公开OpenCore版本'},
-                {val : '0x08', des : '将OEM信息公开为一组UEFI变量'}
-            ]
+            ,ExposeSensitiveData_List : SYSTEM_TIPS.Assist.ExposeSensitiveData_List
 
-            ,DisplayLevel_List : [
-                {val : '0x00000002', des : 'DEBUG_WARN in DEBUG, NOOPT, RELEASE'},
-                {val : '0x00000040', des : 'DEBUG_INFO in DEBUG, NOOPT'},
-                {val : '0x00400000', des : 'DEBUG_VERBOSE in custom builds'},
-                {val : '0x80000000', des : 'DEBUG_ERROR in DEBUG, NOOPT, RELEASE'}
-            ]
+            ,DisplayLevel_List : SYSTEM_TIPS.Assist.DisplayLevel_List
 
-            ,Target_List : [
+            ,Target_List : SYSTEM_TIPS.Assist.Target_List
 
-                {val : '0x01', des : '启用日志记录，否则所有日志将被丢弃'},
-                {val : '0x02', des : '启用基本控制台（屏幕上）日志记录'},
-                {val : '0x04', des : '启用日志记录到数据中心'},
-                {val : '0x08', des : '启用串行端口日志记录'},
-                {val : '0x10', des : '启用UEFI变量记录'},
-                {val : '0x20', des : '启用非易失性UEFI变量日志记录'},
-                {val : '0x40', des : '启用记录到文件'}
-            ]
+            ,PickerAttributes_List : SYSTEM_TIPS.Assist.PickerAttributes_List
 
-            ,PickerAttributes_List : [
-                {val : '0x0001', des : 'OC_ATTR_USE_VOLUME_ICON，为启动项提供自定义图标'},
-                {val : '0x0002', des : 'OC_ATTR_USE_DISK_LABEL_FILE，为启动项提供定制的呈现标题'},
-                {val : '0x0004', des : 'OC_ATTR_USE_GENERIC_LABEL_IMAGE，为没有自定义条目的引导条目提供了预定义的标签图像'},
-                {val : '0x0008', des : 'OC_ATTR_USE_ALTERNATE_ICONS，将已使用图标集更改为备用图标（如果支持）'}
-            ]
-
-            ,TypeDetail_List : [
-                {val : '0x0002', des : '其它'},
-                {val : '0x0004', des : '未知'},
-                {val : '0x0080', des : '同步'},
-                {val : '0x2000', des : '已注册（已缓存）'},
-                {val : '0x4000', des : '未缓存（未注册）'}
-            ]
+            ,TypeDetail_List : SYSTEM_TIPS.Assist.TypeDetail_List
             
             
         }

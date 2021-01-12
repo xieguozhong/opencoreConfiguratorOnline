@@ -833,6 +833,11 @@
 
 			                                        </div>
 
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerVariant">
+			                                            PickerVariant<input type="text" class="form-control" v-model="Misc.Boot.PickerVariant"/>                               
+
+			                                        </div>
+
 			                                    </div>
 
 			                                    <div class="row" style="margin-top: 10px ">
@@ -1582,6 +1587,10 @@
 														</select>
 
 													</div>
+
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.SetupDelay">
+													SetupDelay<input type="text" class="form-control" v-model="UEFI.Audio.SetupDelay">
+												  </div>
 												
 			                                    </div>
 			                                    
@@ -1809,6 +1818,9 @@
                                         <div id="tabbable_UEFI_Quirks" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="well">
 			                                    <div class="row">
+
+			                                      
+
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Quirks.ExitBootServicesDelay">
 			                                        ExitBootServicesDelay<input type="text" class="form-control" v-model="UEFI.Quirks.ExitBootServicesDelay">
 			                                      </div>
@@ -1820,10 +1832,7 @@
 
 			                                    <div class="checkbox" style="margin-top: 20px">
 													
-													<label class="mintip" :title="title.UEFI.Quirks.DeduplicateBootOrder">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.DeduplicateBootOrder" />
-			                                            <span class="lbl"> DeduplicateBootOrder</span>
-			                                        </label>
+													
 
 			                                        <label class="mintip" :title="title.UEFI.Quirks.IgnoreInvalidFlexRatio">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreInvalidFlexRatio" />
@@ -1881,7 +1890,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Only support OpenCore-0.6.4-RELEASE Updated 2020/12/08</span>
+							<span class="blue bolder">Maximum support: OpenCore-0.6.5-RELEASE Updated 20210112</span>
 
 						</span>
 

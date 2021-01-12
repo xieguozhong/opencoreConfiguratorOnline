@@ -61,13 +61,13 @@ function genACPI() {
 function getBooter() {
 	let BooterContext = '<key>Booter</key><dict>';
 
-	//Patch
-	BooterContext += '<key>Patch</key>';
-	BooterContext += genArrayDict('Booter_Patch', VUEAPP.Booter.Patch,['Find','Mask','Replace','ReplaceMask'],['Count','Limit','Skip']);
-
 	//MmioWhitelist
 	BooterContext += '<key>MmioWhitelist</key>';
 	BooterContext += genArrayDict('Booter_MmioWhitelist', VUEAPP.Booter.MmioWhitelist,[],['Address']);
+
+	//Patch
+	BooterContext += '<key>Patch</key>';
+	BooterContext += genArrayDict('Booter_Patch', VUEAPP.Booter.Patch,['Find','Mask','Replace','ReplaceMask'],['Count','Limit','Skip']);
 
 
 	//Quirks
@@ -104,12 +104,13 @@ function getKernel() {
 
 	//Emulate
 	keContext += '<key>Emulate</key><dict>';
-	keContext += '<key>DummyPowerManagement</key>';
-	keContext += toBoolStringStrict(VUEAPP.Kernel.Emulate['DummyPowerManagement']);
+	
 	keContext += '<key>Cpuid1Data</key>';
 	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Data']) + '</data>';
 	keContext += '<key>Cpuid1Mask</key>';
 	keContext += '<data>' + hextoBase64(VUEAPP.Kernel.Emulate['Cpuid1Mask']) + '</data>';
+	keContext += '<key>DummyPowerManagement</key>';
+	keContext += toBoolStringStrict(VUEAPP.Kernel.Emulate['DummyPowerManagement']);
 	keContext += '<key>MaxKernel</key>' + addCharstring(VUEAPP.Kernel.Emulate['MaxKernel']);
 	keContext += '<key>MinKernel</key>' + addCharstring(VUEAPP.Kernel.Emulate['MinKernel']);
 	keContext += '</dict>';
@@ -164,6 +165,7 @@ function getMisc() {
 	miscContext += '<key>PickerAttributes</key><integer>' + toNumber(VUEAPP.Misc.Boot['PickerAttributes']) + '</integer>';
 	miscContext += '<key>PickerAudioAssist</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['PickerAudioAssist']);
 	miscContext += '<key>PickerMode</key>' + addCharstring(VUEAPP.Misc.Boot['PickerMode']);
+	miscContext += '<key>PickerVariant</key>' + addCharstring(VUEAPP.Misc.Boot['PickerVariant']);
 	miscContext += '<key>PollAppleHotKeys</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['PollAppleHotKeys']);
 
 	miscContext += '<key>ShowPicker</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['ShowPicker']);
@@ -313,7 +315,7 @@ function getUEFI() {
 
 	// Audio
 	uefiContext += '<key>Audio</key><dict>';
-	let AudioDataType = {AudioCodec:'integer',AudioOut:'integer',MinimumVolume:'integer',VolumeAmplifier:'integer'};
+	let AudioDataType = {AudioCodec:'integer',AudioOut:'integer',MinimumVolume:'integer',VolumeAmplifier:'integer',SetupDelay:'integer'};
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Audio, AudioDataType);
 	uefiContext += '</dict>';
 
