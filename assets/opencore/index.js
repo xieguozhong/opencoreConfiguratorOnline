@@ -525,6 +525,8 @@ let VUEAPP = new Vue({
             ,TypeDetail_List : SYSTEM_TIPS.Assist.TypeDetail_List
 
             ,PickerVariant_List : SYSTEM_TIPS.Assist.PickerVariant_List
+
+            ,KernelArch_List : SYSTEM_TIPS.Assist.KernelArch_List
             
             
         }

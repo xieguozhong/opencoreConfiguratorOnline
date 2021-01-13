@@ -346,6 +346,20 @@ const SYSTEM_TIPS = {
                 {val : 'Old',       des : 'Old - 复古图标集（旧文件名前缀）'},
                 {val : 'Modern',    des : 'Modern - Nouveau图标集（现代文件名前缀）'}
             ]
+
+            ,KernelArch_List : [
+                {val : 'Auto',      des : 'Auto - 自动选择首选架构'},
+                {val : 'i386',   des : 'i386 - 可用时使用i386（32位）内核'},
+                {val : 'i386-user32',       des : 'i386-user32 - 在可用时使用i386（32位）内核，并在64位上强制使用32位（如果操作系统支持）'},
+                {val : 'x86_64',       des : 'x86_64 - 可用时使用x86_64（64位）内核'},
+            ]
+
+            ,KernelCache_List : [
+                {val : 'Auto',      des : 'Auto - 自动'},
+                {val : 'Cacheless',   des : 'Cacheless - 无缓存'},
+                {val : 'Mkext',       des : 'Mkext - 巴拉巴拉'},
+                {val : 'Prelinked',       des : 'Prelinked - 巴拉巴拉'},
+            ]
             
             
         }
