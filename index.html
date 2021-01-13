@@ -620,22 +620,14 @@
 			                                <div class="well">
 			                                    <div class="row">
 			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Scheme.KernelArch">
-			                                            KernelArch
-			                                            <select class="form-control" v-model="Kernel.Scheme.KernelArch">
-														<option value="Auto">Auto</option>
-														<option value="i386">i386</option>
-														<option value="i386-user32">i386-user32</option>
-														<option value="x86_64">x86_64</option>
-														</select>
+			                                            KernelArch<a id="btnradiobox_Kernel_Scheme_KernelArch" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Kernel.Scheme.KernelArch"/>
+			                                            
 			                                        </div>
 			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Scheme.KernelCache">
-			                                            KernelCache
-			                                            <select class="form-control" v-model="Kernel.Scheme.KernelCache">
-														<option value="Auto">Auto</option>
-														<option value="Cacheless">Cacheless</option>
-														<option value="Mkext">Mkext</option>
-														<option value="Prelinked">Prelinked</option>
-														</select>
+			                                            KernelCache<a id="btnradiobox_Kernel_Scheme_KernelCache" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Kernel.Scheme.KernelCache"/>
+			                                            
 			                                        </div>
 
 			                                       
@@ -1681,11 +1673,14 @@
 			                                        </div>
 
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.ConsoleMode">
-			                                        ConsoleMode<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
+			                                        ConsoleMode<a id="btnradiobox_UEFI_Output_ConsoleMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
 			                                      </div>
 												  
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.Resolution">
-			                                        Resolution<input type="text" class="form-control" id="INPUT_UEFI_Output_Resolution" v-model="UEFI.Output.Resolution">
+			                                        Resolution<a id="btnradiobox_UEFI_Output_Resolution" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+															<input type="text" class="form-control" v-model="UEFI.Output.Resolution">
 												</div>
 
 			                                    </div>

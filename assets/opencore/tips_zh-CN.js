@@ -346,7 +346,45 @@ const SYSTEM_TIPS = {
                 {val : 'Old',       des : 'Old - 复古图标集（旧文件名前缀）'},
                 {val : 'Modern',    des : 'Modern - Nouveau图标集（现代文件名前缀）'}
             ]
-            
+
+            ,KernelArch_List : [
+                {val : 'Auto',      des : 'Auto - 自动选择首选架构'},
+                {val : 'i386',   des : 'i386 - 可用时使用i386（32位）内核'},
+                {val : 'i386-user32',       des : 'i386-user32 - 在可用时使用i386（32位）内核，并在64位上强制使用32位（如果操作系统支持）'},
+                {val : 'x86_64',       des : 'x86_64 - 可用时使用x86_64（64位）内核'},
+            ]
+
+            ,KernelCache_List : [
+                {val : 'Auto',      des : 'Auto - 自动'},
+                {val : 'Cacheless',   des : 'Cacheless - 无缓存'},
+                {val : 'Mkext',       des : 'Mkext - 巴拉巴拉'},
+                {val : 'Prelinked',       des : 'Prelinked - 巴拉巴拉'},
+            ]
+
+           ,Resolution_List : [
+                {val : 'Max',           des : 'Max - 使用最大的可用屏幕分辨率'},
+               
+                {val : '1152x864',      des : '1152x864'},
+                {val : '1280x720',      des : '1280x720'},
+                {val : '1280x800',      des : '1280x800'},
+                {val : '1280x1024',      des : '1280x1024'},
+                {val : '1360x768',      des : '1360x768'},
+                {val : '1366x768',      des : '1366x768'},
+                {val : '1400x1050',      des : '1400x1050'},
+                {val : '1440x900',      des : '1440x900'},
+                {val : '1600x900',      des : '1600x900'},
+                {val : '1600x1200',      des : '1600x1200'},
+                {val : '1680x1050',      des : '1680x1050'},
+                {val : '1920x1080',      des : '1920x1080'},
+                {val : '2048x1252',      des : '2048x1252'},
+                {val : '2048x1536',      des : '2048x1536'},
+                {val : '2560x1600',      des : '2560x1600'},
+                {val : '2560x2048',      des : '2560x2048'},
+                {val : '3840x2160',      des : '3840x2160'},
+                {val : '4096x2160',      des : '4096x2160'},
+                {val : '5120x2880',      des : '5120x2880'}
+                
+            ]            
             
         }
 
