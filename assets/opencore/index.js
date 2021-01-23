@@ -48,22 +48,9 @@ $(document).ready(function() {
     //显示适用于版本信息
     showTipModal(VUEAPP.lang.supportversion, 'warning');
     
+    //页面加载完成后解除文件选择框的禁用属性
     $("#id-input-file-2").removeAttr("disabled");
-
-    // //可输可选项填充
-    // let ResolutionData = ['Max','640x480','800x480','960x540','1280x1024','800x600','1024x600',
-    // '1280x720','1024x768','1280x800','1366x768','1400x1050','1440x900','1920x1080',
-    // '1600x1200','1680x1050','2560x1440','2048x1536','1920x1200','2560x1600',
-    // '3840×2160','4096×2160','5120×2880'];
-    
-    // $( "#INPUT_UEFI_Output_Resolution" ).autocomplete({
-    //     minLength: 0,
-    //     max:5,
-    //     mustMatch : true,
-    //     source: ResolutionData
-    // });
-
-    
+   
     
 });
 
@@ -500,37 +487,20 @@ let VUEAPP = new Vue({
             ReservedMemory : []
         },
 
+        //弹出窗口辅助
         Assist : {
 
-            RADIO_CHECK_BOX : 'C',          //用于标记显示多选列表还是单选列表, C表示多选,R表示单选
+            RADIO_CHECK_BOX : 'C',           //用于标记显示多选列表还是单选列表, C表示多选,R表示单选
             last_checkbox_ids : [],          //记录最后显示的是哪个多选数据
             last_radiobox_ids : [],          //记录最后显示的是哪个多选数据
 
-            pagePublic_List : [],           //前台页面多选值循环用
-            pagePublic_Selected : [],       //控制哪些多选项被勾选
+            pagePublic_List : [],            //前台页面多选值循环用
+            pagePublic_Selected : [],        //控制哪些多选项被勾选
 
-            pageRadio_List : [],            //前台页面单选值循环用
-            pageRadio_CurrentValue : ''     //记录当前选中的单选的值
+            pageRadio_List : [],             //前台页面单选值循环用
+            pageRadio_CurrentValue : ''      //记录当前选中的单选的值
 
-            ,ScanPolicy_List : SYSTEM_TIPS.Assist.ScanPolicy_List      
-
-            ,ExposeSensitiveData_List : SYSTEM_TIPS.Assist.ExposeSensitiveData_List
-
-            ,DisplayLevel_List : SYSTEM_TIPS.Assist.DisplayLevel_List
-
-            ,Target_List : SYSTEM_TIPS.Assist.Target_List
-
-            ,PickerAttributes_List : SYSTEM_TIPS.Assist.PickerAttributes_List
-
-            ,TypeDetail_List : SYSTEM_TIPS.Assist.TypeDetail_List
-
-            ,PickerVariant_List : SYSTEM_TIPS.Assist.PickerVariant_List
-
-            ,KernelArch_List : SYSTEM_TIPS.Assist.KernelArch_List
-
-            ,KernelCache_List : SYSTEM_TIPS.Assist.KernelCache_List
-
-            ,Resolution_List: SYSTEM_TIPS.Assist.Resolution_List
+            //特殊,,ConsoleMode_List 的数据和 Resolution_List一样
             ,ConsoleMode_List: SYSTEM_TIPS.Assist.Resolution_List
             
             
@@ -540,11 +510,16 @@ let VUEAPP = new Vue({
 
     created : function () {
         let syslang = navigator.language;
-        //consolelog(GLOBAL_LANG[syslang]);
+        
         if(syslang === undefined || GLOBAL_LANG[syslang] === undefined) {
             this.lang = GLOBAL_LANG['en-US'];
         } else {
             this.lang = GLOBAL_LANG[syslang];
+        }
+        
+        //用SYSTEM_TIPS.Assist填充Assist
+        for(let assetit in SYSTEM_TIPS.Assist) {
+            this.Assist[assetit] = SYSTEM_TIPS.Assist[assetit];
         }
     },
 
@@ -889,7 +864,7 @@ let VUEAPP = new Vue({
             getJqgridObjectbyKey(gridkey).trigger("reloadGrid");
         }
 
-        //
+        // 单选按钮点击事件
         , btnradioboxclick : function(event) {
             this.Assist.RADIO_CHECK_BOX = 'R';
             let buttonids = event.currentTarget.id.split('_');

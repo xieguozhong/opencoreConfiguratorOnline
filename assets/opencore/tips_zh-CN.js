@@ -362,8 +362,7 @@ const SYSTEM_TIPS = {
             ]
 
            ,Resolution_List : [
-                {val : 'Max',           des : 'Max - 使用最大的可用屏幕分辨率'},
-               
+                {val : 'Max',           des : 'Max - 使用最大的可用屏幕分辨率'},               
                 {val : '1152x864',      des : '1152x864'},
                 {val : '1280x720',      des : '1280x720'},
                 {val : '1280x800',      des : '1280x800'},
