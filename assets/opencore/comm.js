@@ -269,15 +269,6 @@ function pdictToJSobjectKV(context, pid, rarray) {
 
 }
 
-// //获取 'ACPI:App的格式取值'
-// function getValuesByKeynames(context, keynames) {
-//     keynames = keynames.split(":");
-//     for(let i=0;i<keynames.length;i++) {
-
-//         context = getValuesByKeyname(context, keynames[i]);
-//     }
-//     return context;
-// }
 
 function getValuesByKeyname(context, keyname, istop) {
     if(context === '') {
@@ -548,10 +539,7 @@ function copyDatatoClipboard(rowdata) {
 
 
 function showTipModal(content, msgtype) {
-	//alert(content);
 
-    //Command: toastr["success"]("Inconceivable!")
-    //msgtype = msgtype === 0 ? 0 : 1;
     toastr.clear();
 
     if(msgtype === undefined || msgtype === '') {
@@ -592,7 +580,7 @@ function stringToJSON(str) {
 	return objreturn;
 }
 
-//根据表哥关键字去全局变量 GLOBAL_ARRAY_TABLE 中取表格对象
+//根据表格关键字去全局变量 GLOBAL_ARRAY_TABLE 中取表格对象
 function getJqgridObjectbyKey(tbkey) {
     let obj = GLOBAL_ARRAY_TABLE[0][tbkey];
     return obj === undefined ? GLOBAL_ARRAY_TABLE[1][tbkey] : obj;
