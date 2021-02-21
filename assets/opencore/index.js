@@ -393,25 +393,27 @@ let VUEAPP = new Vue({
             Scheme:{KernelArch : '',KernelCache :'',FuzzyMatch:false},
             Force:[],
             Quirks:{
+                
                 AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, AppleXcpmForceBoost:false,CustomSMBIOSGuid:false,
                 DisableIoMapper:false, DisableLinkeditJettison:false,DisableRtcChecksum:false, ExtendBTFeatureFlags:false, ExternalDiskIcons:false, 
                 ForceSecureBootScheme:false,IncreasePciBarSize:false,
                 LapicKernelPanic:false, LegacyCommpage:false, PanicNoKextDump:false,
-                PowerTimeoutKernelPanic:false, ThirdPartyDrives:false, XhciPortLimit:false
+                PowerTimeoutKernelPanic:false,SetApfsTrimTimeout:-1, ThirdPartyDrives:false, XhciPortLimit:false
             }
         },
         Misc : {
             BlessOverride:[],
             Boot:{
                 HibernateMode:'None', PickerMode:'Builtin', PickerVariant:'Auto', TakeoffDelay:'0',
-                Timeout:'0', HideAuxiliary:false,  ConsoleAttributes:'0', PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
+                Timeout:'0', HideAuxiliary:false, LauncherOption:'Disabled',LauncherPath:'Default', ConsoleAttributes:'0', 
+                PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
             },
             Debug: {
                 AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', SerialInit:false, SysReport:false, Target:'0'
             },
             Security : {
                 ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,
-                BlacklistAppleUpdate:false,BootProtect:'None',
+                BlacklistAppleUpdate:false,
                 ApECID : '',DmgLoading:'Signed',EnablePassword:false,PasswordHash:'',PasswordSalt:'',SecureBootModel:'Default'
             },
             Entries:[],
@@ -428,7 +430,8 @@ let VUEAPP = new Vue({
         },
         PlatformInfo : {
             root : {
-                Automatic:false, CustomMemory:false,UpdateDataHub:false, UpdateNVRAM:false, UpdateSMBIOS:false, UpdateSMBIOSMode : 'Create'
+                Automatic:false, CustomMemory:false,UpdateDataHub:false, UpdateNVRAM:false, UpdateSMBIOS:false, UpdateSMBIOSMode : 'Create',
+                UseRawUuidEncoding:false
             },
             DataHub : {
                 ARTFrequency:'', BoardProduct:'', BoardRevision:'', DevicePathsSupported:'', FSBFrequency:'',
@@ -436,8 +439,8 @@ let VUEAPP = new Vue({
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             Generic : {
-                AdviseWindows : false,SystemMemoryStatus:'Auto',
-                MLB:'', ProcessorType:'',ROM:'', SpoofVendor:false, 
+                AdviseWindows : false,MaxBIOSVersion:false,
+                MLB:'', ProcessorType:'',ROM:'', SpoofVendor:false, SystemMemoryStatus:'Auto',
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             PlatformNVRAM : {
@@ -481,7 +484,7 @@ let VUEAPP = new Vue({
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks : {
-                ExitBootServicesDelay:0, IgnoreInvalidFlexRatio:false,
+                DisableSecurityPolicy:false,ExitBootServicesDelay:0, IgnoreInvalidFlexRatio:false,
                 ReleaseUsbOwnership:false,  RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
             },
             ReservedMemory : []
