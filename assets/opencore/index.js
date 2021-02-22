@@ -48,9 +48,22 @@ $(document).ready(function() {
     //显示适用于版本信息
     showTipModal(VUEAPP.lang.supportversion, 'warning');
     
-    //页面加载完成后解除文件选择框的禁用属性
     $("#id-input-file-2").removeAttr("disabled");
-   
+
+    // //可输可选项填充
+    // let ResolutionData = ['Max','640x480','800x480','960x540','1280x1024','800x600','1024x600',
+    // '1280x720','1024x768','1280x800','1366x768','1400x1050','1440x900','1920x1080',
+    // '1600x1200','1680x1050','2560x1440','2048x1536','1920x1200','2560x1600',
+    // '3840×2160','4096×2160','5120×2880'];
+    
+    // $( "#INPUT_UEFI_Output_Resolution" ).autocomplete({
+    //     minLength: 0,
+    //     max:5,
+    //     mustMatch : true,
+    //     source: ResolutionData
+    // });
+
+    
     
 });
 
@@ -393,27 +406,25 @@ let VUEAPP = new Vue({
             Scheme:{KernelArch : '',KernelCache :'',FuzzyMatch:false},
             Force:[],
             Quirks:{
-                
                 AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, AppleXcpmForceBoost:false,CustomSMBIOSGuid:false,
                 DisableIoMapper:false, DisableLinkeditJettison:false,DisableRtcChecksum:false, ExtendBTFeatureFlags:false, ExternalDiskIcons:false, 
                 ForceSecureBootScheme:false,IncreasePciBarSize:false,
                 LapicKernelPanic:false, LegacyCommpage:false, PanicNoKextDump:false,
-                PowerTimeoutKernelPanic:false,SetApfsTrimTimeout:-1, ThirdPartyDrives:false, XhciPortLimit:false
+                PowerTimeoutKernelPanic:false, ThirdPartyDrives:false, XhciPortLimit:false
             }
         },
         Misc : {
             BlessOverride:[],
             Boot:{
                 HibernateMode:'None', PickerMode:'Builtin', PickerVariant:'Auto', TakeoffDelay:'0',
-                Timeout:'0', HideAuxiliary:false, LauncherOption:'Disabled',LauncherPath:'Default', ConsoleAttributes:'0', 
-                PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
+                Timeout:'0', HideAuxiliary:false,  ConsoleAttributes:'0', PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
             },
             Debug: {
                 AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', SerialInit:false, SysReport:false, Target:'0'
             },
             Security : {
                 ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,
-                BlacklistAppleUpdate:false,
+                BlacklistAppleUpdate:false,BootProtect:'None',
                 ApECID : '',DmgLoading:'Signed',EnablePassword:false,PasswordHash:'',PasswordSalt:'',SecureBootModel:'Default'
             },
             Entries:[],
@@ -430,8 +441,7 @@ let VUEAPP = new Vue({
         },
         PlatformInfo : {
             root : {
-                Automatic:false, CustomMemory:false,UpdateDataHub:false, UpdateNVRAM:false, UpdateSMBIOS:false, UpdateSMBIOSMode : 'Create',
-                UseRawUuidEncoding:false
+                Automatic:false, CustomMemory:false,UpdateDataHub:false, UpdateNVRAM:false, UpdateSMBIOS:false, UpdateSMBIOSMode : 'Create'
             },
             DataHub : {
                 ARTFrequency:'', BoardProduct:'', BoardRevision:'', DevicePathsSupported:'', FSBFrequency:'',
@@ -439,8 +449,8 @@ let VUEAPP = new Vue({
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             Generic : {
-                AdviseWindows : false,MaxBIOSVersion:false,
-                MLB:'', ProcessorType:'',ROM:'', SpoofVendor:false, SystemMemoryStatus:'Auto',
+                AdviseWindows : false,SystemMemoryStatus:'Auto',
+                MLB:'', ProcessorType:'',ROM:'', SpoofVendor:false, 
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             PlatformNVRAM : {
@@ -484,26 +494,43 @@ let VUEAPP = new Vue({
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks : {
-                DisableSecurityPolicy:false,ExitBootServicesDelay:0, IgnoreInvalidFlexRatio:false,
+                ExitBootServicesDelay:0, IgnoreInvalidFlexRatio:false,
                 ReleaseUsbOwnership:false,  RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
             },
             ReservedMemory : []
         },
 
-        //弹出窗口辅助
         Assist : {
 
-            RADIO_CHECK_BOX : 'C',           //用于标记显示多选列表还是单选列表, C表示多选,R表示单选
+            RADIO_CHECK_BOX : 'C',          //用于标记显示多选列表还是单选列表, C表示多选,R表示单选
             last_checkbox_ids : [],          //记录最后显示的是哪个多选数据
             last_radiobox_ids : [],          //记录最后显示的是哪个多选数据
 
-            pagePublic_List : [],            //前台页面多选值循环用
-            pagePublic_Selected : [],        //控制哪些多选项被勾选
+            pagePublic_List : [],           //前台页面多选值循环用
+            pagePublic_Selected : [],       //控制哪些多选项被勾选
 
-            pageRadio_List : [],             //前台页面单选值循环用
-            pageRadio_CurrentValue : ''      //记录当前选中的单选的值
+            pageRadio_List : [],            //前台页面单选值循环用
+            pageRadio_CurrentValue : ''     //记录当前选中的单选的值
 
-            //特殊,,ConsoleMode_List 的数据和 Resolution_List一样
+            ,ScanPolicy_List : SYSTEM_TIPS.Assist.ScanPolicy_List      
+
+            ,ExposeSensitiveData_List : SYSTEM_TIPS.Assist.ExposeSensitiveData_List
+
+            ,DisplayLevel_List : SYSTEM_TIPS.Assist.DisplayLevel_List
+
+            ,Target_List : SYSTEM_TIPS.Assist.Target_List
+
+            ,PickerAttributes_List : SYSTEM_TIPS.Assist.PickerAttributes_List
+
+            ,TypeDetail_List : SYSTEM_TIPS.Assist.TypeDetail_List
+
+            ,PickerVariant_List : SYSTEM_TIPS.Assist.PickerVariant_List
+
+            ,KernelArch_List : SYSTEM_TIPS.Assist.KernelArch_List
+
+            ,KernelCache_List : SYSTEM_TIPS.Assist.KernelCache_List
+
+            ,Resolution_List: SYSTEM_TIPS.Assist.Resolution_List
             ,ConsoleMode_List: SYSTEM_TIPS.Assist.Resolution_List
             
             
@@ -513,16 +540,11 @@ let VUEAPP = new Vue({
 
     created : function () {
         let syslang = navigator.language;
-        
+        //consolelog(GLOBAL_LANG[syslang]);
         if(syslang === undefined || GLOBAL_LANG[syslang] === undefined) {
             this.lang = GLOBAL_LANG['en-US'];
         } else {
             this.lang = GLOBAL_LANG[syslang];
-        }
-        
-        //用SYSTEM_TIPS.Assist填充Assist
-        for(let assetit in SYSTEM_TIPS.Assist) {
-            this.Assist[assetit] = SYSTEM_TIPS.Assist[assetit];
         }
     },
 
@@ -867,7 +889,7 @@ let VUEAPP = new Vue({
             getJqgridObjectbyKey(gridkey).trigger("reloadGrid");
         }
 
-        // 单选按钮点击事件
+        //
         , btnradioboxclick : function(event) {
             this.Assist.RADIO_CHECK_BOX = 'R';
             let buttonids = event.currentTarget.id.split('_');

@@ -666,13 +666,6 @@
 
                                 <h3 class="header smaller lighter blue"> Quirks</h3>
                                 <div class="well">
-									<div class="row">
-                                        <div class="col-xs-3 mintip" :title="title.Kernel.Quirks.SetApfsTrimTimeout">
-                                            SetApfsTrimTimeout<input type="text" class="form-control" v-model="Kernel.Quirks.SetApfsTrimTimeout"/>
-                                        </div>
-                                       
-                                    </div>
-
                                     <div class="checkbox">
 
                                         <label class="mintip" :title="title.Kernel.Quirks.AppleCpuPmCfgLock">
@@ -838,6 +831,10 @@
 
 			                                        </div>
 
+			                                    </div>
+
+			                                    <div class="row" style="margin-top: 10px ">
+
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.TakeoffDelay">
 			                                            TakeoffDelay<input type="text" class="form-control" v-model="Misc.Boot.TakeoffDelay"/>
 			                                        </div>
@@ -850,15 +847,7 @@
 													<div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerAttributes">
 			                                            PickerAttributes<a id="btncheckbox_Misc_Boot_PickerAttributes" style="text-decoration:none" v-on:click="btncheckboxclick($event,4)">&nbsp;
 															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerAttributes"/>
-													</div>
-													<div class="col-xs-3 mintip" :title="title.Misc.Boot.LauncherOption">
-			                                            LauncherOption<a id="btnradiobox_Misc_Boot_LauncherOption" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.LauncherOption"/>
-													</div>
-													<div class="col-xs-3 mintip" :title="title.Misc.Boot.LauncherPath">
-			                                            LauncherPath<input type="text" class="form-control" v-model="Misc.Boot.LauncherPath"/>
 			                                        </div>
-													
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px ">
@@ -959,7 +948,13 @@
 															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
 															<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
 			                                        </div>
-													
+													<div class="col-xs-3 mintip" :title="title.Misc.Security.BootProtect">
+			                                            BootProtect
+			                                            <select class="form-control" v-model="Misc.Security.BootProtect">
+														<option value="None">None</option>
+														<option value="Bootstrap">Bootstrap</option>
+														</select>
+			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.DmgLoading">
 			                                            DmgLoading
 			                                            <select class="form-control" v-model="Misc.Security.DmgLoading">
@@ -1195,10 +1190,6 @@
 				                                	<label class="mintip" :title="title.PlatformInfo.Generic.AdviseWindows">
 				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.AdviseWindows" />
 				                                        <span class="lbl"> AdviseWindows</span>
-													</label>
-													<label class="mintip" :title="title.PlatformInfo.Generic.MaxBIOSVersion">
-				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.MaxBIOSVersion" />
-				                                        <span class="lbl"> MaxBIOSVersion</span>
 				                                    </label>
 				                                    <label class="mintip" :title="title.PlatformInfo.Generic.SpoofVendor">
 				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.SpoofVendor" />
@@ -1461,10 +1452,6 @@
 	                                    <label class="mintip" :title="title.PlatformInfo.root.UpdateSMBIOS">
 	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.UpdateSMBIOS" />
 	                                        <span class="lbl"> UpdateSMBIOS</span>
-										</label>
-										<label class="mintip" :title="title.PlatformInfo.root.UseRawUuidEncoding">
-	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.UseRawUuidEncoding" />
-	                                        <span class="lbl"> UseRawUuidEncoding</span>
 	                                    </label>
 
 	                                </div>
@@ -1828,6 +1815,8 @@
                                             <div class="well">
 			                                    <div class="row">
 
+			                                      
+
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Quirks.ExitBootServicesDelay">
 			                                        ExitBootServicesDelay<input type="text" class="form-control" v-model="UEFI.Quirks.ExitBootServicesDelay">
 			                                      </div>
@@ -1839,10 +1828,7 @@
 
 			                                    <div class="checkbox" style="margin-top: 20px">
 													
-													<label class="mintip" :title="title.UEFI.Quirks.DisableSecurityPolicy">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.DisableSecurityPolicy" />
-			                                            <span class="lbl"> DisableSecurityPolicy</span>
-			                                        </label>
+													
 
 			                                        <label class="mintip" :title="title.UEFI.Quirks.IgnoreInvalidFlexRatio">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreInvalidFlexRatio" />
@@ -1900,7 +1886,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">{{lang.footermessage}}</span>
+							<span class="blue bolder">Maximum support: OpenCore-0.6.5-RELEASE Updated 20210112</span>
 						</span>
 
 					</div>
@@ -2001,6 +1987,7 @@
         <script src="assets/js/clipboard.min.js"></script>
         <script src="assets/js/jquery.minimalTips.min.js"></script>
 		<script src="assets/js/toastr.min.js"></script>
+		<!-- <script src="assets/js/jquery.autocomplete.min.js"></script> -->
 		<script src="assets/opencore/comm.js"></script>
 		<script src="assets/opencore/initGirdtable.js"></script>
 		<script src="assets/opencore/index.js"></script>

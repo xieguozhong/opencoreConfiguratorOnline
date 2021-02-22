@@ -125,7 +125,7 @@ function getKernel() {
 
 	//Quirks
 	keContext += '<key>Quirks</key>';
-	keContext += getBoolens(VUEAPP.Kernel.Quirks, ['SetApfsTrimTimeout']);
+	keContext += getBoolens(VUEAPP.Kernel.Quirks);
 
 	//Scheme
 	keContext += '<key>Scheme</key><dict>';
@@ -160,8 +160,7 @@ function getMisc() {
 	miscContext += '<key>HibernateMode</key>' + addCharstring(VUEAPP.Misc.Boot['HibernateMode']);
 
 	miscContext += '<key>HideAuxiliary</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['HideAuxiliary']);
-	miscContext += '<key>LauncherOption</key>' + addCharstring(VUEAPP.Misc.Boot['LauncherOption']);
-	miscContext += '<key>LauncherPath</key>' + addCharstring(VUEAPP.Misc.Boot['LauncherPath']);
+	
 
 	miscContext += '<key>PickerAttributes</key><integer>' + toNumber(VUEAPP.Misc.Boot['PickerAttributes']) + '</integer>';
 	miscContext += '<key>PickerAudioAssist</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['PickerAudioAssist']);
@@ -197,7 +196,7 @@ function getMisc() {
 	miscContext += '<key>AuthRestart</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AuthRestart']);
 	miscContext += '<key>BlacklistAppleUpdate</key>' + toBoolStringStrict(VUEAPP.Misc.Security['BlacklistAppleUpdate']);
 	
-
+	miscContext += '<key>BootProtect</key>' + addCharstring(VUEAPP.Misc.Security['BootProtect']);
 	miscContext += '<key>DmgLoading</key>' + addCharstring(VUEAPP.Misc.Security['DmgLoading']); 
 	miscContext += '<key>EnablePassword</key>' + toBoolStringStrict(VUEAPP.Misc.Security['EnablePassword']);
 	miscContext += '<key>ExposeSensitiveData</key><integer>' + toNumber(VUEAPP.Misc.Security['ExposeSensitiveData']) + '</integer>';
@@ -300,7 +299,7 @@ function getPlatformInfo() {
 	pfiContext += '<key>UpdateNVRAM</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['UpdateNVRAM']);
 	pfiContext += '<key>UpdateSMBIOS</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['UpdateSMBIOS']);
 	pfiContext += '<key>UpdateSMBIOSMode</key>' + addCharstring(VUEAPP.PlatformInfo.root['UpdateSMBIOSMode']);
-	pfiContext += '<key>UseRawUuidEncoding</key>' + toBoolStringStrict(VUEAPP.PlatformInfo.root['UseRawUuidEncoding']);
+
 	return pfiContext + '</dict>';
 }
 
@@ -529,19 +528,11 @@ function getSubDeviceData(pid, rightData) {
 }
 
 
-function getBoolens(boolData,intData) {
-	if(intData === undefined) {
-		intData = [];
-	} 
+function getBoolens(boolData) {
 	let strreturn = '<dict>';
 	for(let it in boolData) {
 		strreturn += addKey(it);
-		if(intData.indexOf(it) >= 0) {
-			strreturn += '<integer>' + toNumber(boolData[it]) + '</integer>';
-		} else {
-			strreturn += toBoolStringStrict(boolData[it]);
-		}
-		
+		strreturn += toBoolStringStrict(boolData[it]);
 	}
 
 	if(strreturn === '<dict>') {
