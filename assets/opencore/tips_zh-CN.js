@@ -89,6 +89,7 @@ const SYSTEM_TIPS = {
             PanicNoKextDump: 'YES 在发生内核崩溃时阻止输出 Kext 列表, 提供可供排错参考的日志',
             ThirdPartyDrives: 'NO 将供应商修补程序应用于IOAHCIBlockStorage.kext，以启用第三方驱动器的本机功能，例如SSD上的TRIM或10.15及更高版本上的休眠支持',
             PowerTimeoutKernelPanic : 'YES 修复 macOS Catalina 中由于设备电源状态变化超时而导致的内核崩溃',
+            SetApfsTrimTimeout:'-1 为SSD上的APFS文件系统设置微调超时（以微秒为单位）',
             XhciPortLimit: 'YES 这实际上是 15 端口限制补丁, 不建议依赖, 因为这不是 USB 的最佳解决方案。有能力的情况下请选择定制 USB, 这个选项用于没有定制 USB 的设备'
         },
         Scheme : {
@@ -118,7 +119,8 @@ const SYSTEM_TIPS = {
             PickerMode : '选择用于引导管理的引导选择器 <br>1 Builtin -- 引导管理由OpenCore处理，使用了纯文本用户界面<br>2 External -- 如果可用，则使用外部引导管理协议。否则使用内置模式<br>3 Apple -- 如果可用，则使用Apple引导管理。否则使用内置模式',
 			PickerVariant:'选择用于启动管理的特定图标集 <br>• Auto — 根据DefaultBackground颜色自动选择一组图标<br>• Default — 普通图标集（不带前缀）<br>• Old — 复古图标集（旧文件名前缀）<br>• Modern — Nouveau图标集（现代文件名前缀）<br>• 其他值 — 如果资源支持，则设置自定义图标',
             HideAuxiliary : 'NO 默认情况下从选择器菜单隐藏辅助条目',
-            
+            LauncherOption:'在固件首选项中注册启动器选项以实现持久性<br>•Disabled — 啥也不干<br> •Full — 在启动引导程序时在UEFI变量存储中创建或更新最优先启动选项<br>•Short — 创建短启动选项，而不是完整的启动选项',
+            LauncherPath:'Default LauncherOption的启动路径',
             PollAppleHotKeys: 'YES 允许在引导过程中使用苹果原生快捷键, 需要与 AppleGenericInput.efi 或 UsbKbDxe.efi 结合使用, 具体体验取决于固件',
             Timeout: '5 设置引导项等待时间',
 			ConsoleAttributes : '0 设置控制台的特定属性',
@@ -143,7 +145,6 @@ const SYSTEM_TIPS = {
             AuthRestart : 'NO 启用与VirtualSMC兼容的身份验证重新启动',
             BlacklistAppleUpdate:'NO 忽略尝试更新Apple外围设备固件的引导选项（例如 MultiUpdater.efi）',
 			ApECID : '苹果飞地标识符',
-            BootProtect :'None 尝试提供Bootloader持久性<br>1 None — 什么都不做<br>2 Bootstrap —创建或更新最高优先级\EFI\OC\Bootstrap\Bootstrap.efi引导选项（Boot9696）在引导加载程序启动时在UEFI变量存储中。 为了使此选项起作用，需要RequestBootVarRouting被启用',
             Signed : 'Signed 定义用于macOS恢复的磁盘映像（DMG）加载策略',
             EnablePassword:'NO 启用密码保护以允许敏感操作',
             PasswordHash:'设置EnabledPassword时使用的密码哈希',
@@ -169,6 +170,7 @@ const SYSTEM_TIPS = {
         configisfull : '如果你打算使用的 SMBIOS 苹果已经停止支持(2011年或更早)或者你是用的是戴尔 OEM 笔记本, 那么请先勾选这里并「认真」补全所有 SMBIOS 信息, 然后再点击 下载 或者 复制 按钮',
         root : {
             UpdateSMBIOSMode : '更新SMBIOS字段方法',
+            UseRawUuidEncoding:'NO 对SMBIOS UUID使用原始编码',
             Create : '将表替换为在AllocateMaxAddress处新分配的EfiReservedMemoryType，而没有任何后备',
             TryOverwrite : '如果新大小小于对齐页面的原始大小，则覆盖，并且旧版区域解锁没有问题。否则创建。某些固件有问题',
             Overwrite : '如果适合新大小，则覆盖现有的gEfiSmbiosTableGuid和gEfiSmbiosTable3Guid数据。否则以未指定状态中止',
@@ -181,7 +183,8 @@ const SYSTEM_TIPS = {
         },
 
         Generic : {
-			AdviseWindows : 'NO 在固件功能中强制Windows支持',
+            AdviseWindows : 'NO 在固件功能中强制Windows支持',
+            MaxBIOSVersion:'NO 将BIOSVersion设置为9999.999.999.999.999，建议在使用“自动”功能的旧Mac上使用PlatformInfo避免在非官方支持的macOS版本中更新BIOS',
             SystemMemoryStatus:'指示系统内存是否可以在PlatformFeature中升级。 这控制可见度“关于此Mac”中的“内存”选项卡',
             SpoofVendor : 'YES 仿冒制造商为 Acidanthera 来避免出现冲突',
             SystemProductName : '',
@@ -273,7 +276,7 @@ const SYSTEM_TIPS = {
             UnblockFsConnect : 'NO 惠普笔记本在 OpenCore 引导界面没有引导项时设置为 YES',
 			
 			TscSyncTimeout : '尝试以指定的超时执行TSC同步',
-
+            DisableSecurityPolicy:'NO 禁用平台安全策略',
             ExitBootServicesDelay : '在EXIT_BOOT_SERVICES事件后增加延迟（以微秒为单位）'
         }
     },
@@ -362,8 +365,7 @@ const SYSTEM_TIPS = {
             ]
 
            ,Resolution_List : [
-                {val : 'Max',           des : 'Max - 使用最大的可用屏幕分辨率'},
-               
+                {val : 'Max',           des : 'Max - 使用最大的可用屏幕分辨率'},               
                 {val : '1152x864',      des : '1152x864'},
                 {val : '1280x720',      des : '1280x720'},
                 {val : '1280x800',      des : '1280x800'},
@@ -384,8 +386,14 @@ const SYSTEM_TIPS = {
                 {val : '4096x2160',      des : '4096x2160'},
                 {val : '5120x2880',      des : '5120x2880'}
                 
-            ]            
+            ]       
             
+            ,LauncherOption_List:[
+                {val : 'Disabled',           des : 'Disabled — 啥也不干'},
+                {val : 'Full',           des : 'Full — 在启动引导程序时在UEFI变量存储中创建或更新最优先启动选项'},
+                {val : 'Short',           des : 'Short — 创建短启动选项，而不是完整的启动选项'}
+            
+            ]
         }
 
 
