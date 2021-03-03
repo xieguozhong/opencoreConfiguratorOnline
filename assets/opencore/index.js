@@ -1,13 +1,13 @@
 
 $(document).ready(function() {
     $('#id-input-file-2').ace_file_input({
-        no_file : VUEAPP.lang.no_file,
-        btn_choose : VUEAPP.lang.choose,
-        btn_change : VUEAPP.lang.change,
-        droppable : false,
-        onchange : null,
-        allowExt : ['plist'],
-        thumbnail : false,
+        no_file:VUEAPP.lang.no_file,
+        btn_choose:VUEAPP.lang.choose,
+        btn_change:VUEAPP.lang.change,
+        droppable:false,
+        onchange:null,
+        allowExt:['plist'],
+        thumbnail:false,
         before_change: function(files, dropped){
             let reader = new FileReader();
             reader.readAsText(files[0]);
@@ -70,9 +70,9 @@ function addFile(fileid) {
 		files = file.files[i];
         let newData;
         if(thetablename === "ACPI_Add") {
-            newData = { Comment : files.name, Path : files.name, Enabled : "YES"};
+            newData = { Comment:files.name, Path:files.name, Enabled:"YES"};
         } else if(thetablename === "UEFI_Drivers") {
-            newData = { FileName : files.name };
+            newData = { FileName:files.name };
         }
         
         thetable.jqGrid('addRowData', MAXROWID++, newData, 'last');
@@ -238,7 +238,7 @@ function bindAllButton() {
 
             if(selectedIds.length > 0) {
                 let theEnabled = currentGridTable.jqGrid('getCell', selectedIds[0], "Enabled");
-                theEnabled = theEnabled === 'YES' ? 'NO' : 'YES';
+                theEnabled = theEnabled === 'YES' ? 'NO':'YES';
 
                 for(let i=0,len=selectedIds.length;i<len;i++) {
                     currentGridTable.jqGrid('setCell',selectedIds[i],"Enabled",theEnabled);
@@ -336,13 +336,13 @@ function addkexts(kext) {
         if(allKext[i][0] === kext.value) {
 
             thetable.jqGrid('addRowData', MAXROWID++, {
-                Arch : 'x86_64',
-                BundlePath : allKext[i][1],
-                Comment : '',
-                Enabled : "YES",
-                ExecutablePath : allKext[i][2],
-                MaxKernel : '', MinKernel : '',
-                PlistPath : allKext[i][3]
+                Arch:'x86_64',
+                BundlePath:allKext[i][1],
+                Comment:'',
+                Enabled:"YES",
+                ExecutablePath:allKext[i][2],
+                MaxKernel:'', MinKernel:'',
+                PlistPath:allKext[i][3]
             }, 'last');
 
         }
@@ -356,41 +356,42 @@ function addkexts(kext) {
 let VUEAPP = new Vue({
     el: '#main-container',
     data: {
-        root : 'ACPI',                  //决定当前显示哪个节点
-        plistcontext : '',              //保存从config.plist中读取的内容
-        title : SYSTEM_TIPS,             //下面都是提示变量
-        textarea_content : '',          //保存粘贴页面时候textarea中的内容
-        current_paste_tableid : '',     //保存点击当前粘贴按钮的table id
-        lang : {},                      //语言数据, 和浏览器的语言设置挂钩
-        configisfull : false,           //是否full模式
-        ACPI : {
-            Add : [],
-            Delete : [],
-            Patch : [] ,
-            Quirks : {
+        root:'ACPI',                  //决定当前显示哪个节点
+        plistcontext:'',              //保存从config.plist中读取的内容
+        title:SYSTEM_TIPS,             //下面都是提示变量
+        textarea_content:'',          //保存粘贴页面时候textarea中的内容
+        current_paste_tableid:'',     //保存点击当前粘贴按钮的table id
+        lang:{},                      //语言数据, 和浏览器的语言设置挂钩
+        configisfull:false,           //是否full模式
+        ACPI:{
+            Add:[],
+            Delete:[],
+            Patch:[] ,
+            Quirks:{
                 FadtEnableReset:false, NormalizeHeaders:false, RebaseRegions:false, ResetHwSig:false, ResetLogoStatus:false}
             },
-        Booter : {
-            MmioWhitelist : [],
-            Patch : [],
-            Quirks : {
+        Booter:{
+            MmioWhitelist:[],
+            Patch:[],
+            Quirks:{
                 AllowRelocationBlock:false,AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
                 DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectMemoryRegions:false,
-                ProtectSecureBoot:false,ProtectUefiServices:false,ProvideCustomSlide:false, ProvideMaxSlide:0, RebuildAppleMemoryMap:false,SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false
+                ProtectSecureBoot:false,ProtectUefiServices:false,ProvideCustomSlide:false, ProvideMaxSlide:0, RebuildAppleMemoryMap:false,
+                SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false
             }
         },
-        DeviceProperties : {
+        DeviceProperties:{
             AddLeft:[],
             AddRight:[],
-            DeleteLeft : [],
-            DeleteRight : []
+            DeleteLeft:[],
+            DeleteRight:[]
         },
-        Kernel : {
+        Kernel:{
             Add:[],
             Block:[],
             Patch:[],
-            Emulate:{Cpuid1Data : '',Cpuid1Mask :'', MaxKernel:'', MinKernel:'',DummyPowerManagement:false},
-            Scheme:{KernelArch : '',KernelCache :'',FuzzyMatch:false},
+            Emulate:{Cpuid1Data:'',Cpuid1Mask:'', MaxKernel:'', MinKernel:'',DummyPowerManagement:false},
+            Scheme:{KernelArch:'',KernelCache:'',FuzzyMatch:false},
             Force:[],
             Quirks:{
                 
@@ -401,7 +402,7 @@ let VUEAPP = new Vue({
                 PowerTimeoutKernelPanic:false,SetApfsTrimTimeout:-1, ThirdPartyDrives:false, XhciPortLimit:false
             }
         },
-        Misc : {
+        Misc:{
             BlessOverride:[],
             Boot:{
                 HibernateMode:'None', PickerMode:'Builtin', PickerVariant:'Auto', TakeoffDelay:'0',
@@ -409,49 +410,50 @@ let VUEAPP = new Vue({
                 PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
             },
             Debug: {
-                AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', SerialInit:false, SysReport:false, Target:'0'
+                AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', SerialInit:false, SysReport:false,
+                Target:'0'
             },
-            Security : {
+            Security:{
                 ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,
                 BlacklistAppleUpdate:false,
-                ApECID : '',DmgLoading:'Signed',EnablePassword:false,PasswordHash:'',PasswordSalt:'',SecureBootModel:'Default'
+                ApECID:'',DmgLoading:'Signed',EnablePassword:false,PasswordHash:'',PasswordSalt:'',SecureBootModel:'Default'
             },
             Entries:[],
-            Tools : []
+            Tools:[]
         },
-        NVRAM : {
-            root : { LegacyEnable : false, LegacyOverwrite:false, WriteFlash:false},
+        NVRAM:{
+            root:{ LegacyEnable:false, LegacyOverwrite:false, WriteFlash:false},
             AddLeft:[],
             AddRight:[],
-            DeleteLeft : [],
-            DeleteRight : [],
-            LegacySchemaLeft : [],
-            LegacySchemaRight : []
+            DeleteLeft:[],
+            DeleteRight:[],
+            LegacySchemaLeft:[],
+            LegacySchemaRight:[]
         },
-        PlatformInfo : {
-            root : {
-                Automatic:false, CustomMemory:false,UpdateDataHub:false, UpdateNVRAM:false, UpdateSMBIOS:false, UpdateSMBIOSMode : 'Create',
+        PlatformInfo:{
+            root:{
+                Automatic:false, CustomMemory:false,UpdateDataHub:false, UpdateNVRAM:false, UpdateSMBIOS:false, UpdateSMBIOSMode:'Create',
                 UseRawUuidEncoding:false
             },
-            DataHub : {
+            DataHub:{
                 ARTFrequency:'', BoardProduct:'', BoardRevision:'', DevicePathsSupported:'', FSBFrequency:'',
                 InitialTSC:'', PlatformName:'', SmcBranch:'', SmcPlatform:'', SmcRevision:'', StartupPowerEvents:'',
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
-            Generic : {
-                AdviseWindows : false,MaxBIOSVersion:false,
+            Generic:{
+                AdviseWindows:false,MaxBIOSVersion:false,
                 MLB:'', ProcessorType:'',ROM:'', SpoofVendor:false, SystemMemoryStatus:'Auto',
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
-            PlatformNVRAM : {
-                BID:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', MLB:'', ROM:'',SystemUUID:''
+            PlatformNVRAM:{
+                BID:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', MLB:'', ROM:'',SystemSerialNumber:'',SystemUUID:''
             },
-            Memory : {
+            Memory:{
                 DataWidth:'',ErrorCorrection:'',FormFactor:'',MaxCapacity:'',TotalWidth:'',Type:'',TypeDetail:'',
-                Devices : []
+                Devices:[]
             },
 
-            SMBIOS : {
+            SMBIOS:{
                 BIOSReleaseDate:'', BIOSVendor:'', BIOSVersion:'', BoardAssetTag:'', BoardLocationInChassis:'', BoardManufacturer:'',
                 BoardProduct:'', BoardSerialNumber:'', BoardType:'', BoardVersion:'', ChassisAssetTag:'', ChassisManufacturer:'',
                 ChassisSerialNumber:'', ChassisType:'', ChassisVersion:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', 
@@ -459,49 +461,51 @@ let VUEAPP = new Vue({
                 SystemProductName:'', SystemSKUNumber:'', SystemSerialNumber:'', SystemUUID:'', SystemVersion:''
             }
         },
-        UEFI : {
-            root : { ConnectDrivers : false},
-            Drivers : [],
-			APFS : {
-				EnableJumpstart : false, GlobalConnect:false, HideVerbose :false, JumpstartHotPlug : false, MinDate : 0, MinVersion : 0
+        UEFI:{
+            root:{ ConnectDrivers:false},
+            Drivers:[],
+			APFS:{
+				EnableJumpstart:false, GlobalConnect:false, HideVerbose:false, JumpstartHotPlug:false, MinDate:0, MinVersion:0
 			},
 
-			Audio : {
-				AudioCodec:0, AudioDevice : '', AudioOut:0,AudioSupport : false,MinimumVolume:20,PlayChime : '', SetupDelay:0,VolumeAmplifier:0
+			Audio:{
+				AudioCodec:0, AudioDevice:'', AudioOut:0,AudioSupport:false,MinimumVolume:20,PlayChime:'',ResetTrafficClass:false,
+                SetupDelay:0,VolumeAmplifier:0
 			},
-            Input : {
-                KeyFiltering:false,KeyForgetThreshold:'', KeyMergeThreshold:'', KeySupport:false, KeySupportMode:'', KeySwap:false,  PointerSupport:false, PointerSupportMode:'', TimerResolution:''
+            Input:{
+                KeyFiltering:false,KeyForgetThreshold:'', KeySupport:false, KeySupportMode:'', KeySwap:false,  
+                PointerSupport:false, PointerSupportMode:'', TimerResolution:''
 
             },
-            Output : {
-                ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,IgnoreTextInGraphics:false,
-                ProvideConsoleGop:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
+            Output:{
+                ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,GopPassThrough:false,
+                IgnoreTextInGraphics:false,ProvideConsoleGop:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
                 Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UgaPassThrough:false
             },
-            ProtocolOverrides : {
+            ProtocolOverrides:{
                 AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEvent:false, AppleFramebufferInfo:false,AppleImageConversion:false,
                 AppleImg4Verification:false, AppleKeyMap:false, AppleRtcRam:false,AppleSecureBoot:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
-            Quirks : {
-                DisableSecurityPolicy:false,ExitBootServicesDelay:0, IgnoreInvalidFlexRatio:false,
+            Quirks:{
+                ActivateHpetSupport:false,DisableSecurityPolicy:false,ExitBootServicesDelay:0, IgnoreInvalidFlexRatio:false,
                 ReleaseUsbOwnership:false,  RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
             },
-            ReservedMemory : []
+            ReservedMemory:[]
         },
 
         //弹出窗口辅助
-        Assist : {
+        Assist:{
 
-            RADIO_CHECK_BOX : 'C',           //用于标记显示多选列表还是单选列表, C表示多选,R表示单选
-            last_checkbox_ids : [],          //记录最后显示的是哪个多选数据
-            last_radiobox_ids : [],          //记录最后显示的是哪个多选数据
+            RADIO_CHECK_BOX:'C',           //用于标记显示多选列表还是单选列表, C表示多选,R表示单选
+            last_checkbox_ids:[],          //记录最后显示的是哪个多选数据
+            last_radiobox_ids:[],          //记录最后显示的是哪个多选数据
 
-            pagePublic_List : [],            //前台页面多选值循环用
-            pagePublic_Selected : [],        //控制哪些多选项被勾选
+            pagePublic_List:[],            //前台页面多选值循环用
+            pagePublic_Selected:[],        //控制哪些多选项被勾选
 
-            pageRadio_List : [],             //前台页面单选值循环用
-            pageRadio_CurrentValue : ''      //记录当前选中的单选的值
+            pageRadio_List:[],             //前台页面单选值循环用
+            pageRadio_CurrentValue:''      //记录当前选中的单选的值
 
             //特殊,,ConsoleMode_List 的数据和 Resolution_List一样
             ,ConsoleMode_List: SYSTEM_TIPS.Assist.Resolution_List
@@ -511,7 +515,7 @@ let VUEAPP = new Vue({
 
     },
 
-    created : function () {
+    created:function () {
         let syslang = navigator.language;
         
         if(syslang === undefined || GLOBAL_LANG[syslang] === undefined) {
@@ -539,12 +543,12 @@ let VUEAPP = new Vue({
 
     methods: {
 
-        setRoot : function (rootname) {
+        setRoot:function (rootname) {
             this.root = rootname;
         }
 
         // 初始化所有表格
-        , initAllData : function () {
+        , initAllData:function () {
             GLOBAL_ARRAY_TABLE[2] = {};
             this.initACPI();
             this.setRoot('ACPI');
@@ -578,7 +582,7 @@ let VUEAPP = new Vue({
 
         }
 
-        , initNVRAM : function () {
+        , initNVRAM:function () {
 
             this.NVRAM.AddLeft.length = 0;
             this.NVRAM.AddRight.length = 0;
@@ -651,7 +655,7 @@ let VUEAPP = new Vue({
 
         }
 
-        , initUEFI : function () {
+        , initUEFI:function () {
             let UEFIText = getValuesByKeyname(VUEAPP.plistcontext, 'UEFI', true);
 
             //root
@@ -662,7 +666,7 @@ let VUEAPP = new Vue({
             this.UEFI.Drivers.length = 0;
             let arrayDrivers = parsePlistArray2stringArray(DriversText);
             for(let i=0,len=arrayDrivers.length;i<len;i++) {
-                this.UEFI.Drivers.push({ FileName : arrayDrivers[i]['Volume']}) ;
+                this.UEFI.Drivers.push({ FileName:arrayDrivers[i]['Volume']}) ;
             }
             
             getJqgridObjectbyKey('UEFI_Drivers').trigger("reloadGrid");
@@ -696,7 +700,7 @@ let VUEAPP = new Vue({
 
         }
 
-        , initPlatformInfo : function () {
+        , initPlatformInfo:function () {
             let ipiText = getValuesByKeyname(VUEAPP.plistcontext, 'PlatformInfo', true);
 
             //root
@@ -706,7 +710,7 @@ let VUEAPP = new Vue({
             let DataHubText = getValuesByKeyname(ipiText, 'DataHub');
 
             //如果DataHub为空, 就不显示datahub , PlatformNVRAM SMBIOS 三项目
-            this.configisfull = DataHubText === '' ? false : true;
+            this.configisfull = DataHubText === '' ? false:true;
 
             //consolelog('DataHubText=' + DataHubText);
             this.getAndSetDictItem(DataHubText, this.PlatformInfo.DataHub);
@@ -730,7 +734,7 @@ let VUEAPP = new Vue({
 
         }
 
-        , initMisc : function() {
+        , initMisc:function() {
             let MiscText = getValuesByKeyname(VUEAPP.plistcontext, 'Misc', true);
 
             //BlessOverride
@@ -738,7 +742,7 @@ let VUEAPP = new Vue({
             this.Misc.BlessOverride.length = 0;
             let arrayBlessOverride = parsePlistArray2stringArray(BlessOverrideText);
             for(let i=0,len=arrayBlessOverride.length;i<len;i++) {
-                this.Misc.BlessOverride.push({ ScanningPaths : arrayBlessOverride[i]['Volume']}) ;
+                this.Misc.BlessOverride.push({ ScanningPaths:arrayBlessOverride[i]['Volume']}) ;
             }
             getJqgridObjectbyKey("Misc_BlessOverride").trigger("reloadGrid");
 
@@ -762,7 +766,7 @@ let VUEAPP = new Vue({
 
 
 
-        , initKernel : function () {
+        , initKernel:function () {
             let text = getValuesByKeyname(VUEAPP.plistcontext, 'Kernel', true);
             this.getPlistAndResetTableData(text, 'Add', 'Kernel_Add', this.Kernel.Add);
             this.getPlistAndResetTableData(text, 'Block', 'Kernel_Block', this.Kernel.Block);
@@ -780,7 +784,7 @@ let VUEAPP = new Vue({
 
         }
 
-        , initDeviceProperties : function () {
+        , initDeviceProperties:function () {
             this.DeviceProperties.AddLeft.length = 0;
             this.DeviceProperties.AddRight.length = 0;
             this.DeviceProperties.DeleteLeft.length = 0;
@@ -828,7 +832,7 @@ let VUEAPP = new Vue({
         }
 
 
-        , initBooter : function () {
+        , initBooter:function () {
 
             let text = getValuesByKeyname(VUEAPP.plistcontext, 'Booter', true);
             
@@ -842,7 +846,7 @@ let VUEAPP = new Vue({
 
         }
 
-        , initACPI : function () {
+        , initACPI:function () {
             let acpiText = getValuesByKeyname(VUEAPP.plistcontext, 'ACPI', true);
             this.getPlistAndResetTableData(acpiText, 'Add', 'ACPI_Add', this.ACPI.Add);
             this.getPlistAndResetTableData(acpiText, 'Delete', 'ACPI_Delete', this.ACPI.Delete);
@@ -857,7 +861,7 @@ let VUEAPP = new Vue({
         }
 
         // 获取plist中array的值并更新到table表格中
-        , getPlistAndResetTableData : function (context, keyname, gridkey, gridData) {
+        , getPlistAndResetTableData:function (context, keyname, gridkey, gridData) {
 
             let arrayAdd = parrayToJSarray(getValuesByKeyname(context, keyname));
             gridData.length = 0;
@@ -868,7 +872,7 @@ let VUEAPP = new Vue({
         }
 
         // 单选按钮点击事件
-        , btnradioboxclick : function(event) {
+        , btnradioboxclick:function(event) {
             this.Assist.RADIO_CHECK_BOX = 'R';
             let buttonids = event.currentTarget.id.split('_');
             if(this.Assist.last_radiobox_ids.join('_') === event.currentTarget.id) {
@@ -891,7 +895,7 @@ let VUEAPP = new Vue({
         }
 
         // 弹出多选窗口按钮点击事件
-        , btncheckboxclick :function (event, vlen) {
+        , btncheckboxclick:function (event, vlen) {
             this.Assist.RADIO_CHECK_BOX = 'C';
             let buttonids = event.currentTarget.id.split('_');
             
@@ -964,7 +968,7 @@ let VUEAPP = new Vue({
         }
 
         //勾选页面点击确定按钮事件
-        , checkboxPageBtnOKclick : function () {
+        , checkboxPageBtnOKclick:function () {
             if(this.Assist.RADIO_CHECK_BOX === 'C') {
                 this[this.Assist.last_checkbox_ids[1]][this.Assist.last_checkbox_ids[2]][this.Assist.last_checkbox_ids[3]] = this.getCheckedTotal();
             } 
@@ -977,7 +981,7 @@ let VUEAPP = new Vue({
         }
 
         //获取勾选项的合计值，以10进制返回
-        , getCheckedTotal : function () {
+        , getCheckedTotal:function () {
             let pagetotal = 0;
             for(let i=0,len=this.Assist.pagePublic_Selected.length;i<len;i++) {
                 //consolelog(checklist[i]);

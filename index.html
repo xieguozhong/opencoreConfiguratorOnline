@@ -1323,6 +1323,7 @@
 														ROM<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ROM">
 													</div>
 													<div class="col-xs-3">
+														SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.SystemSerialNumber">
 														SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.SystemUUID">
 													</div>
 				                                </div>
@@ -1606,7 +1607,10 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.AudioSupport" />
 			                                            <span class="lbl"> AudioSupport</span>
 			                                        </label>
-			                                        
+			                                        <label class="mintip" :title="title.UEFI.Audio.ResetTrafficClass">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.ResetTrafficClass" />
+			                                            <span class="lbl"> ResetTrafficClass</span>
+			                                        </label>
 
 			                                    </div>
 
@@ -1620,9 +1624,7 @@
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeyForgetThreshold">
 			                                        KeyForgetThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyForgetThreshold">
 			                                      </div>
-			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeyMergeThreshold">
-			                                        KeyMergeThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyMergeThreshold">
-			                                      </div>
+			                                      
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeySupportMode">
 													KeySupportMode
 													<select class="form-control" v-model="UEFI.Input.KeySupportMode">
@@ -1719,6 +1721,10 @@
 													<label class="mintip" :title="title.UEFI.Output.ForceResolution">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ForceResolution" />
 			                                            <span class="lbl"> ForceResolution</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.Output.GopPassThrough">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.GopPassThrough" />
+			                                            <span class="lbl"> GopPassThrough</span>
 			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.Output.ReconnectOnResChange">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReconnectOnResChange" />
@@ -1838,6 +1844,11 @@
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px">
+
+													<label class="mintip" :title="title.UEFI.Quirks.ActivateHpetSupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ActivateHpetSupport" />
+			                                            <span class="lbl"> ActivateHpetSupport</span>
+			                                        </label>
 													
 													<label class="mintip" :title="title.UEFI.Quirks.DisableSecurityPolicy">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.DisableSecurityPolicy" />

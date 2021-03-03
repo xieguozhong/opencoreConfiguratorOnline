@@ -338,7 +338,7 @@ function getUEFI() {
 
 	// Input
 	uefiContext += '<key>Input</key><dict>';
-	let inputDataType = {KeyForgetThreshold:'integer',KeyMergeThreshold:'integer',TimerResolution:'integer'};
+	let inputDataType = {KeyForgetThreshold:'integer',TimerResolution:'integer'};
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Input, inputDataType);
 	uefiContext += '</dict>';
 
