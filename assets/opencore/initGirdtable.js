@@ -42,8 +42,10 @@ function initGridTableACPI() {
 	initGridTable(objGT_ACPI_Delete, VUEAPP.ACPI.Delete, colNames, colModel);
 
 	//gridtable-ACPI-Patch
-	colNames = ['Comment','Count','Find','Limit','Mask','OemTableId','Replace','ReplaceMask','Skip','TableLength','TableSignature','Enabled'];
+	colNames = ['Base','BaseSkip','Comment','Count','Find','Limit','Mask','OemTableId','Replace','ReplaceMask','Skip','TableLength','TableSignature','Enabled'];
 	colModel = [
+			{name:'Base',index:'Base',width:90, editable:true, sortable:false, formatter:plistEncode},
+			{name:'BaseSkip',index:'BaseSkip',width:90, editable:true, sortable:false,align:'center', formatter:formatInteger},
 			{name:'Comment',index:'Comment',width:90, editable:true, sortable:false, formatter:plistEncode},
 			{name:'Count',index:'Count',width:60, editable:true, sortable:false, fixed:true, align:'center', formatter:formatInteger},
 			{name:'Find',index:'Find',width:90, editable:true, sortable:false, formatter:plistEncode},

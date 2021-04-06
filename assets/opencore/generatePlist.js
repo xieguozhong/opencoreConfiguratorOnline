@@ -49,7 +49,7 @@ function genACPI() {
 
 	//Patch
 	acpiContext += '<key>Patch</key>';
-	acpiContext += genArrayDict('ACPI_Patch', VUEAPP.ACPI.Patch, ['Find','Mask','OemTableId','Replace','ReplaceMask','TableSignature'],['Count','Limit','Skip','TableLength']);
+	acpiContext += genArrayDict('ACPI_Patch', VUEAPP.ACPI.Patch, ['Find','Mask','OemTableId','Replace','ReplaceMask','TableSignature'],['BaseSkip','Count','Limit','Skip','TableLength']);
 
 	//Quirks
 	acpiContext += '<key>Quirks</key>' + getBoolens(VUEAPP.ACPI.Quirks);
@@ -313,6 +313,11 @@ function getUEFI() {
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.APFS, ApfsDataType);
 	uefiContext += '</dict>';
 
+	//AppleInput
+	uefiContext += '<key>AppleInput</key><dict>';
+	let AppleInputDataType = {KeyInitialDelay:'integer',KeySubsequentDelay:'integer',PointerSpeedDiv:'integer',PointerSpeedMul:'integer'};
+	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.AppleInput, AppleInputDataType);
+	uefiContext += '</dict>';
 
 	// Audio
 	uefiContext += '<key>Audio</key><dict>';

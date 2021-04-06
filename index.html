@@ -360,6 +360,11 @@
                                             <input type="checkbox" class="ace" v-model="Booter.Quirks.EnableWriteUnprotector" />
                                             <span class="lbl"> EnableWriteUnprotector</span>
                                         </label>
+										<label class="mintip" :title="title.Booter.Quirks.ForceBooterSignature">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ForceBooterSignature" />
+                                            <span class="lbl"> ForceBooterSignature</span>
+                                        </label>
+
                                         <label class="mintip" :title="title.Booter.Quirks.ForceExitBootServices">
                                             <input type="checkbox" class="ace" v-model="Booter.Quirks.ForceExitBootServices" />
                                             <span class="lbl"> ForceExitBootServices</span>
@@ -1486,6 +1491,7 @@
                                         <li class="active" :title="title.UEFI.Drivers"><a data-toggle="tab" href="#tabbable_UEFI_Drivers" class="tablelia">Drivers</a></li>
 										<li><a data-toggle="tab" href="#tabbable_UEFI_ReservedMemory" class="tablelia">ReservedMemory</a></li>
 										<li><a data-toggle="tab" href="#tabbable_UEFI_APFS" class="tablelia">APFS</a></li>
+										<li><a data-toggle="tab" href="#tabbable_UEFI_AppleInput" class="tablelia">AppleInput</a></li>
 										<li><a data-toggle="tab" href="#tabbable_UEFI_Audio" class="tablelia">Audio</a></li>
                                         <li><a data-toggle="tab" href="#tabbable_UEFI_Input" class="tablelia">Input</a></li>
                                         <li><a data-toggle="tab" href="#tabbable_UEFI_Output" class="tablelia">Output</a></li>
@@ -1560,6 +1566,36 @@
 
 			                                    </div>
 
+
+			                                </div>
+                                        </div>
+
+										<div id="tabbable_UEFI_AppleInput" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+												<div class="row">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.AppleEvent">
+			                                        AppleEvent<a id="btnradiobox_UEFI_AppleInput_AppleEvent" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+														<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.AppleInput.AppleEvent">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.CustomDelays">
+			                                        CustomDelays<a id="btnradiobox_UEFI_AppleInput_CustomDelays" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+														<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.AppleInput.CustomDelays">
+			                                      </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.KeyInitialDelay">
+			                                        KeyInitialDelay<input type="text" class="form-control" v-model="UEFI.AppleInput.KeyInitialDelay">
+			                                      </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.KeySubsequentDelay">
+			                                        KeySubsequentDelay<input type="text" class="form-control" v-model="UEFI.AppleInput.KeySubsequentDelay">
+			                                      </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerSpeedDiv">
+			                                        PointerSpeedDiv<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerSpeedDiv">
+			                                      </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerSpeedMul">
+			                                        PointerSpeedMul<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerSpeedMul">
+			                                      </div>
+
+			                                    </div>
 
 			                                </div>
                                         </div>
@@ -1765,10 +1801,10 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleDebugLog" />
 			                                            <span class="lbl"> AppleDebugLog</span>
 			                                        </label>
-			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleEvent">
+			                                        <!-- <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleEvent">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleEvent" />
 			                                            <span class="lbl"> AppleEvent</span>
-			                                        </label>
+			                                        </label> -->
 													<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleFramebufferInfo">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleFramebufferInfo" />
 			                                            <span class="lbl"> AppleFramebufferInfo</span>
