@@ -375,7 +375,7 @@ let VUEAPP = new Vue({
             Patch:[],
             Quirks:{
                 AllowRelocationBlock:false,AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
-                DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false, ForceExitBootServices:false, ProtectMemoryRegions:false,
+                DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false,ForceBooterSignature:false, ForceExitBootServices:false, ProtectMemoryRegions:false,
                 ProtectSecureBoot:false,ProtectUefiServices:false,ProvideCustomSlide:false, ProvideMaxSlide:0, RebuildAppleMemoryMap:false,
                 SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false
             }
@@ -467,7 +467,9 @@ let VUEAPP = new Vue({
 			APFS:{
 				EnableJumpstart:false, GlobalConnect:false, HideVerbose:false, JumpstartHotPlug:false, MinDate:0, MinVersion:0
 			},
-
+            AppleInput:{
+                AppleEvent:'',CustomDelays:'',KeyInitialDelay:0,KeySubsequentDelay:1,PointerSpeedDiv:1,PointerSpeedMul:0
+            },
 			Audio:{
 				AudioCodec:0, AudioDevice:'', AudioOut:0,AudioSupport:false,MinimumVolume:20,PlayChime:'',ResetTrafficClass:false,
                 SetupDelay:0,VolumeAmplifier:0
@@ -483,7 +485,7 @@ let VUEAPP = new Vue({
                 Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UgaPassThrough:false
             },
             ProtocolOverrides:{
-                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEvent:false, AppleFramebufferInfo:false,AppleImageConversion:false,
+                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false, AppleFramebufferInfo:false,AppleImageConversion:false,
                 AppleImg4Verification:false, AppleKeyMap:false, AppleRtcRam:false,AppleSecureBoot:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
@@ -674,6 +676,10 @@ let VUEAPP = new Vue({
 			//APFS
             let APFSText = getValuesByKeyname(UEFIText, 'APFS');
             this.getAndSetDictItem(APFSText, this.UEFI.APFS);
+
+            //AppleInput
+            let AppleInputText = getValuesByKeyname(UEFIText, 'AppleInput');
+            this.getAndSetDictItem(AppleInputText, this.UEFI.AppleInput);
 
             //Audio
             let AudioText = getValuesByKeyname(UEFIText, 'Audio');

@@ -38,6 +38,7 @@ const SYSTEM_TIPS = {
             DiscardHibernateMap:'NO 重用原始休眠内存映射，仅某些旧硬件需要',
             EnableSafeModeSlide:'YES 允许在安全模式下使用 Slide 值',
             EnableWriteUnprotector:'YES 在执行期间删除 CR0 寄存器中的写入保护',
+            ForceBooterSignature:'NO 将macOS引导签名设置为OpenCore启动器',
             ForceExitBootServices:'NO 确保 ExitBootServices 即使在 MemoryMap 发生更改时也能调用成功, 除非有必要, 否则请勿使用',
             ProtectMemoryRegions:'NO 保护内存区域免受错误访问',
 			ProtectSecureBoot:'NO 保护UEFI安全启动变量不被写入',
@@ -233,7 +234,14 @@ const SYSTEM_TIPS = {
 			MinDate:'0 允许的最小APFS驱动程序日期',
 			MinVersion:'0 允许的最低APFS驱动程序版本'
 		},
-
+        AppleInput:{
+            AppleEvent:'Auto 确定是否使用OC内置或OEM Apple Event协议',
+            CustomDelays:'Auto 启用自定义按键重复延迟',
+            KeyInitialDelay:'在Apple Event协议的OpenCore实施中配置初始键盘重复延迟，以10ms为单位',
+            KeySubsequentDelay:'在Apple Event协议的OpenCore实施中配置后续的键盘重复延迟，以10ms为单位',
+            PointerSpeedDiv:'在Apple Event协议的OpenCore实施中配置指针速度除数',
+            PointerSpeedMul:'在Apple Event协议的OpenCore实现中配置指针速度倍增器'
+        },
         Output:{ 
             TextRenderer:'为通过标准控制台输出的文本选择渲染器<br>1 BuiltinGraphics -- 切换到“图形”模式并将内置渲染器与自定义ConsoleControl一起使用<br>2 SystemGraphics -- 切换到“图形”模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>3 SystemText -- 切换到文本模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>4 SystemGeneric -- 将系统渲染器与系统ConsoleControl一起使用，并假设其行为正确', 
             ConsoleMode:'按照WxH（例如80x24）格式的字符串指定的设置控制台输出模式', 			
@@ -254,7 +262,7 @@ const SYSTEM_TIPS = {
             AppleAudio:'NO 安装具有内置版本的Apple音频协议',
             AppleBootPolicy:'NO 用于确保虚拟机或旧白苹果上兼容 APFS',
 			AppleDebugLog:'NO 重新安装具有内置版本的Apple Debug Log协议',
-            AppleEvent:'NO 重新安装具有内置版本的Apple Event协议。这可用于确保VM或旧版Mac上的File Vault 2兼容性。',
+            //AppleEvent:'NO 重新安装具有内置版本的Apple Event协议。这可用于确保VM或旧版Mac上的File Vault 2兼容性。',
 			AppleFramebufferInfo:'NO 重新安装具有内置版本的Apple Framebuffer Info协议。 这可以用来覆盖VM或旧版Mac上的帧缓冲信息，以提高与旧版EfiBoot的兼容性，例如macOS 10.4',
             AppleImageConversion:'NO 重新安装具有内置版本的Apple Image Conversion协议',
             AppleImg4Verification:'NO 重新安装具有内置版本的Apple IMG4 Verification协议。 该协议用于验证Apple安全启动使用的im4m清单文件',
@@ -395,6 +403,16 @@ const SYSTEM_TIPS = {
                 {val:'Full',           des:'Full — 在启动引导程序时在UEFI变量存储中创建或更新最优先启动选项'},
                 {val:'Short',           des:'Short — 创建短启动选项，而不是完整的启动选项'}
             
+            ],
+            AppleEvent_List:[
+                {val:'Auto',          des:'Auto — 自动选择实现'},
+                {val:'Builtin',       des:'Builtin — 使用OpenCore更新的Apple Event协议重新实现'},
+                {val:'OEM',           des:'OEM — 假设在驱动程序连接时可以使用Apple的协议'}
+            ],
+            CustomDelays_List:[
+                {val:'Auto',          des:'Auto — 当KeySupport为true时视为已启用，否则为Disabled'},
+                {val:'Enabled',       des:'Enabled — 使用值KeyInitialDelay和KeySubsequentDelay'},
+                {val:'Disabled',      des:'Disabled — 苹果的默认值使用500ms（50）和50ms（5）'},
             ]
         }
 
