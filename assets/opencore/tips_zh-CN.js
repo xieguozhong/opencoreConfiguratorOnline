@@ -280,13 +280,16 @@ const SYSTEM_TIPS = {
         },
         Quirks:{
             IgnoreInvalidFlexRatio:'NO BIOS 中无法禁用 MSR_FLEX_RATIO(0x194) 时开启',            
-            ReleaseUsbOwnership:'NO 从固件驱动程序中释放 USB 控制器所属权, 除非您不知道自己在做什么, 否则避免使用。Clover 的等效设置是 FixOwnership',       
+            ReleaseUsbOwnership:'NO 从固件驱动程序中释放 USB 控制器所属权, 除非您不知道自己在做什么, 否则避免使用。Clover 的等效设置是 FixOwnership',   
+            ReloadOptionRoms:'NO 查询PCI设备并重新加载其选件ROM（如果有）',    
             RequestBootVarRouting:'YES 从 EFI_GLOBAL_VARIABLE_GUID 中为 OC_VENDOR_VARIABLE_GUID 请求 redirectBoot 前缀变量 <br>启用此项以便能够在与 macOS 引导项设计上不兼容的固件中可靠地使用 启动磁盘 设置',
             UnblockFsConnect:'NO 惠普笔记本在 OpenCore 引导界面没有引导项时设置为 YES',
 			
 			TscSyncTimeout:'尝试以指定的超时执行TSC同步',
             ActivateHpetSupport:'NO 激活HPET支持',
             DisableSecurityPolicy:'NO 禁用平台安全策略',
+            EnableVectorAcceleration:'NO 启用SHA-512和SHA-384哈希算法的AVX矢量加速',
+            ForgeUefiSupport:'NO 在EFI 1.x固件上实现部分UEFI 2.x支持',
             ExitBootServicesDelay:'在EXIT_BOOT_SERVICES事件后增加延迟（以微秒为单位）'
         }
     },

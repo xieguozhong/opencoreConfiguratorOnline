@@ -30,8 +30,8 @@ const GLOBAL_LANG = {
         enabled : '启用/禁用',
         hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数',
         pleasecheckmessage : '请勾选需要的选项，然后点击 确定 按钮, 放弃请点击 关闭 按钮',
-        supportversion : '注意: 当前版本保存后的plist文件最高支持官方发布的OpenCore-0.6.8-RELEASE',
-        footermessage:'最高支持: OpenCore-0.6.8-RELEASE 修改于20210406 email:295799583@qq.com'
+        supportversion : '注意: 当前版本保存后的plist文件最高支持官方发布的OpenCore-0.6.9-RELEASE',
+        footermessage:'最高支持: OpenCore-0.6.9-RELEASE 修改于20210504 email:295799583@qq.com'
     },
 
     'en-US' : {
@@ -64,7 +64,7 @@ const GLOBAL_LANG = {
         enabled : 'enabled/disabled',
         hexstringlengthisodd : '<{@1}> is not a valid hexadecimal string, because the length of a hexadecimal string cannot be odd',
         pleasecheckmessage : 'Please check the required options, and then click the OK button, to give up, please click the Close button',
-        supportversion : 'Note: The plist file saved in the current version supports up to the officially released OpenCore-0.6.8-RELEASE',
-        footermessage:'Maximum support: OpenCore-0.6.8-RELEASE Updated 20210406 email:295799583@qq.com'
+        supportversion : 'Note: The plist file saved in the current version supports up to the officially released OpenCore-0.6.9-RELEASE',
+        footermessage:'Maximum support: OpenCore-0.6.9-RELEASE Updated 20210504 email:295799583@qq.com'
     }
 };

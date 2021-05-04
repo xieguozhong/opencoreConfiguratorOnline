@@ -490,8 +490,8 @@ let VUEAPP = new Vue({
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks:{
-                ActivateHpetSupport:false,DisableSecurityPolicy:false,ExitBootServicesDelay:0, IgnoreInvalidFlexRatio:false,
-                ReleaseUsbOwnership:false,  RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
+                ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,ExitBootServicesDelay:0,ForgeUefiSupport:false,IgnoreInvalidFlexRatio:false,
+                ReleaseUsbOwnership:false, ReloadOptionRoms:false, RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
             },
             ReservedMemory:[]
         },
