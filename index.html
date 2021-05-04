@@ -1891,6 +1891,16 @@
 			                                            <span class="lbl"> DisableSecurityPolicy</span>
 			                                        </label>
 
+			                                        <label class="mintip" :title="title.UEFI.Quirks.EnableVectorAcceleration">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.EnableVectorAcceleration" />
+			                                            <span class="lbl"> EnableVectorAcceleration</span>
+			                                        </label>
+
+			                                        <label class="mintip" :title="title.UEFI.Quirks.ForgeUefiSupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ForgeUefiSupport" />
+			                                            <span class="lbl"> ForgeUefiSupport</span>
+			                                        </label>
+
 			                                        <label class="mintip" :title="title.UEFI.Quirks.IgnoreInvalidFlexRatio">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreInvalidFlexRatio" />
 			                                            <span class="lbl"> IgnoreInvalidFlexRatio</span>
@@ -1901,6 +1911,11 @@
 			                                        <label class="mintip" :title="title.UEFI.Quirks.ReleaseUsbOwnership">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReleaseUsbOwnership" />
 			                                            <span class="lbl"> ReleaseUsbOwnership</span>
+			                                        </label>
+
+			                                        <label class="mintip" :title="title.UEFI.Quirks.ReloadOptionRoms">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReloadOptionRoms" />
+			                                            <span class="lbl"> ReloadOptionRoms</span>
 			                                        </label>
 		                                        
 
