@@ -399,7 +399,7 @@ let VUEAPP = new Vue({
                 DisableIoMapper:false, DisableLinkeditJettison:false,DisableRtcChecksum:false, ExtendBTFeatureFlags:false, ExternalDiskIcons:false, 
                 ForceSecureBootScheme:false,IncreasePciBarSize:false,
                 LapicKernelPanic:false, LegacyCommpage:false, PanicNoKextDump:false,
-                PowerTimeoutKernelPanic:false,SetApfsTrimTimeout:-1, ThirdPartyDrives:false, XhciPortLimit:false
+                PowerTimeoutKernelPanic:false,ProvideCurrentCpuInfo:false,SetApfsTrimTimeout:-1, ThirdPartyDrives:false, XhciPortLimit:false
             }
         },
         Misc:{
@@ -414,7 +414,7 @@ let VUEAPP = new Vue({
                 Target:'0'
             },
             Security:{
-                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AuthRestart:false,
+                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AllowToggleSip:false,AuthRestart:false,
                 BlacklistAppleUpdate:false,
                 ApECID:'',DmgLoading:'Signed',EnablePassword:false,PasswordHash:'',PasswordSalt:'',SecureBootModel:'Default'
             },
@@ -441,7 +441,7 @@ let VUEAPP = new Vue({
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             Generic:{
-                AdviseWindows:false,MaxBIOSVersion:false,
+                AdviseFeatures:false,MaxBIOSVersion:false,
                 MLB:'', ProcessorType:'',ROM:'', SpoofVendor:false, SystemMemoryStatus:'Auto',
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
@@ -480,12 +480,12 @@ let VUEAPP = new Vue({
 
             },
             Output:{
-                ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,GopPassThrough:false,
+                ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,GopPassThrough:'Disabled',
                 IgnoreTextInGraphics:false,ProvideConsoleGop:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
                 Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UgaPassThrough:false
             },
             ProtocolOverrides:{
-                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false, AppleFramebufferInfo:false,AppleImageConversion:false,
+                AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEg2Info:false, AppleFramebufferInfo:false,AppleImageConversion:false,
                 AppleImg4Verification:false, AppleKeyMap:false, AppleRtcRam:false,AppleSecureBoot:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
