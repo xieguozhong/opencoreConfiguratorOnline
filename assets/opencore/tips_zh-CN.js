@@ -90,6 +90,7 @@ const SYSTEM_TIPS = {
             PanicNoKextDump:'YES 在发生内核崩溃时阻止输出 Kext 列表, 提供可供排错参考的日志',
             ThirdPartyDrives:'NO 将供应商修补程序应用于IOAHCIBlockStorage.kext，以启用第三方驱动器的本机功能，例如SSD上的TRIM或10.15及更高版本上的休眠支持',
             PowerTimeoutKernelPanic:'YES 修复 macOS Catalina 中由于设备电源状态变化超时而导致的内核崩溃',
+            ProvideCurrentCpuInfo:'NO 向内核提供当前的 CPU 信息',
             SetApfsTrimTimeout:'-1 为SSD上的APFS文件系统设置微调超时（以微秒为单位）',
             XhciPortLimit:'YES 这实际上是 15 端口限制补丁, 不建议依赖, 因为这不是 USB 的最佳解决方案。有能力的情况下请选择定制 USB, 这个选项用于没有定制 USB 的设备'
         },
@@ -143,6 +144,7 @@ const SYSTEM_TIPS = {
         Security:{
             AllowNvramReset:'NO 允许CMD + OPT + P + R处理并在引导选择器中启用显示NVRAM重置条目',
             AllowSetDefault:'NO 允许CTRL + Enter和CTRL + Index处理来设置启动选择器中的默认启动选项',
+            AllowToggleSip:'NO 在 OpenCore 选择器中启用用于禁用和启用系统完整性保护的条目',
             AuthRestart:'NO 启用与VirtualSMC兼容的身份验证重新启动',
             BlacklistAppleUpdate:'NO 忽略尝试更新Apple外围设备固件的引导选项（例如 MultiUpdater.efi）',
 			ApECID:'苹果飞地标识符',
@@ -184,7 +186,7 @@ const SYSTEM_TIPS = {
         },
 
         Generic:{
-            AdviseWindows:'NO 在固件功能中强制Windows支持',
+            AdviseFeatures:'NO 使用支持的位更新固件功能',
             MaxBIOSVersion:'NO 将BIOSVersion设置为9999.999.999.999.999，建议在使用“自动”功能的旧Mac上使用PlatformInfo避免在非官方支持的macOS版本中更新BIOS',
             SystemMemoryStatus:'指示系统内存是否可以在PlatformFeature中升级。 这控制可见度“关于此Mac”中的“内存”选项卡',
             SpoofVendor:'YES 仿冒制造商为 Acidanthera 来避免出现冲突',
@@ -262,7 +264,7 @@ const SYSTEM_TIPS = {
             AppleAudio:'NO 安装具有内置版本的Apple音频协议',
             AppleBootPolicy:'NO 用于确保虚拟机或旧白苹果上兼容 APFS',
 			AppleDebugLog:'NO 重新安装具有内置版本的Apple Debug Log协议',
-            //AppleEvent:'NO 重新安装具有内置版本的Apple Event协议。这可用于确保VM或旧版Mac上的File Vault 2兼容性。',
+            AppleEg2Info:'NO 用内置版本替换 Apple EFI Graphics 2 协议',
 			AppleFramebufferInfo:'NO 重新安装具有内置版本的Apple Framebuffer Info协议。 这可以用来覆盖VM或旧版Mac上的帧缓冲信息，以提高与旧版EfiBoot的兼容性，例如macOS 10.4',
             AppleImageConversion:'NO 重新安装具有内置版本的Apple Image Conversion协议',
             AppleImg4Verification:'NO 重新安装具有内置版本的Apple IMG4 Verification协议。 该协议用于验证Apple安全启动使用的im4m清单文件',
@@ -367,14 +369,14 @@ const SYSTEM_TIPS = {
                 {val:'Auto',      des:'Auto - 自动选择首选架构'},
                 {val:'i386',   des:'i386 - 可用时使用i386（32位）内核'},
                 {val:'i386-user32',       des:'i386-user32 - 在可用时使用i386（32位）内核，并在64位上强制使用32位（如果操作系统支持）'},
-                {val:'x86_64',       des:'x86_64 - 可用时使用x86_64（64位）内核'},
+                {val:'x86_64',       des:'x86_64 - 可用时使用x86_64（64位）内核'}
             ]
 
             ,KernelCache_List:[
                 {val:'Auto',      des:'Auto - 自动'},
                 {val:'Cacheless',   des:'Cacheless - 无缓存'},
                 {val:'Mkext',       des:'Mkext - 巴拉巴拉'},
-                {val:'Prelinked',       des:'Prelinked - 巴拉巴拉'},
+                {val:'Prelinked',       des:'Prelinked - 巴拉巴拉'}
             ]
 
            ,Resolution_List:[
@@ -415,7 +417,19 @@ const SYSTEM_TIPS = {
             CustomDelays_List:[
                 {val:'Auto',          des:'Auto — 当KeySupport为true时视为已启用，否则为Disabled'},
                 {val:'Enabled',       des:'Enabled — 使用值KeyInitialDelay和KeySubsequentDelay'},
-                {val:'Disabled',      des:'Disabled — 苹果的默认值使用500ms（50）和50ms（5）'},
+                {val:'Disabled',      des:'Disabled — 苹果的默认值使用500ms（50）和50ms（5）'}
+            ],            
+            GopPassThrough_List:[
+                {val:'Enabled',          des:'Enabled — 为所有 UGA 协议提供 GOP'},
+                {val:'Apple',       des:'Apple — 为支持 AppleFramebufferInfo 的协议提供 GOP'},
+                {val:'Disabled',      des:'Disabled — 不提供 GOP'}
+            ],
+            TextRenderer_List:[
+                {val:'BuiltinGraphics',          des:'BuiltinGraphics — 切换到图形模式并使用带有自定义 ConsoleControl 的内置渲染器'},
+                {val:'BuiltinText',       des:'BuiltinText — 切换到文本模式并使用带有自定义 ConsoleControl 的内置渲染器'},
+                {val:'SystemGraphics',      des:'SystemGraphics — 切换到图形模式并使用带有自定义 ConsoleControl 的系统渲染器'},
+                {val:'SystemText',      des:'SystemText — 切换到文本模式并使用带有自定义 ConsoleControl 的系统渲染器'},
+                {val:'SystemGeneric',      des:'SystemGeneric — 将系统渲染器与系统 ConsoleControl 一起使用，假设它行为正确'}
             ]
         }
 

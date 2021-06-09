@@ -747,6 +747,10 @@
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.PowerTimeoutKernelPanic" />
                                             <span class="lbl"> PowerTimeoutKernelPanic</span>
                                         </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.ProvideCurrentCpuInfo">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ProvideCurrentCpuInfo" />
+                                            <span class="lbl"> ProvideCurrentCpuInfo</span>
+                                        </label>
                                         <label class="mintip" :title="title.Kernel.Quirks.ThirdPartyDrives">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.ThirdPartyDrives" />
                                             <span class="lbl"> ThirdPartyDrives</span>
@@ -1015,6 +1019,10 @@
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AllowSetDefault" />
 			                                            <span class="lbl"> AllowSetDefault</span>
 			                                        </label>
+			                                        <label class="mintip" :title="title.Misc.Security.AllowToggleSip">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AllowToggleSip" />
+			                                            <span class="lbl"> AllowToggleSip</span>
+			                                        </label>
 			                                        <label class="mintip" :title="title.Misc.Security.AuthRestart">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AuthRestart" />
 			                                            <span class="lbl"> AuthRestart</span>
@@ -1197,9 +1205,9 @@
 				                                </div>
 
 				                                <div class="checkbox" style="margin-top: 20px">
-				                                	<label class="mintip" :title="title.PlatformInfo.Generic.AdviseWindows">
-				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.AdviseWindows" />
-				                                        <span class="lbl"> AdviseWindows</span>
+				                                	<label class="mintip" :title="title.PlatformInfo.Generic.AdviseFeatures">
+				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.AdviseFeatures" />
+				                                        <span class="lbl"> AdviseFeatures</span>
 													</label>
 													<label class="mintip" :title="title.PlatformInfo.Generic.MaxBIOSVersion">
 				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.MaxBIOSVersion" />
@@ -1711,28 +1719,26 @@
 
 												<div class="row">
 
-			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.TextRenderer">
-			                                            TextRenderer
-			                                            <select class="form-control" v-model="UEFI.Output.TextRenderer">
-														<option value="BuiltinGraphics">BuiltinGraphics</option>
-														<option value="BuiltinText">BuiltinText</option>
-														<option value="SystemGraphics">SystemGraphics</option>
-														<option value="SystemText">SystemText</option>
-														<option value="SystemGeneric">SystemGeneric</option>
-														</select>
+			                                     
 
-			                                        </div>
+			                                       <div class="col-xs-3 mintip" :title="title.UEFI.Output.TextRenderer">
+			                                        	TextRenderer<a id="btnradiobox_UEFI_Output_TextRenderer" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Output.TextRenderer">
+													</div>
 
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.ConsoleMode">
-			                                        ConsoleMode<a id="btnradiobox_UEFI_Output_ConsoleMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
+			                                        ConsoleMode<a id="btnradiobox_UEFI_Output_ConsoleMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
 			                                      </div>
 												  
-			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.Resolution">
-			                                        Resolution<a id="btnradiobox_UEFI_Output_Resolution" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
-															<input type="text" class="form-control" v-model="UEFI.Output.Resolution">
-												</div>
+			                                      	<div class="col-xs-3 mintip" :title="title.UEFI.Output.Resolution">
+			                                        	Resolution<a id="btnradiobox_UEFI_Output_Resolution" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Output.Resolution">
+													</div>
+
+													<div class="col-xs-3 mintip" :title="title.UEFI.Output.GopPassThrough">
+			                                        	GopPassThrough<a id="btnradiobox_UEFI_Output_GopPassThrough" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Output.GopPassThrough">
+													</div>
 
 			                                    </div>
 
@@ -1758,10 +1764,7 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ForceResolution" />
 			                                            <span class="lbl"> ForceResolution</span>
 			                                        </label>
-													<label class="mintip" :title="title.UEFI.Output.GopPassThrough">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.GopPassThrough" />
-			                                            <span class="lbl"> GopPassThrough</span>
-			                                        </label>
+													
 			                                        <label class="mintip" :title="title.UEFI.Output.ReconnectOnResChange">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReconnectOnResChange" />
 			                                            <span class="lbl"> ReconnectOnResChange</span>
@@ -1801,10 +1804,10 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleDebugLog" />
 			                                            <span class="lbl"> AppleDebugLog</span>
 			                                        </label>
-			                                        <!-- <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleEvent">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleEvent" />
-			                                            <span class="lbl"> AppleEvent</span>
-			                                        </label> -->
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleEg2Info">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleEg2Info" />
+			                                            <span class="lbl"> AppleEg2Info</span>
+			                                        </label>
 													<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleFramebufferInfo">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleFramebufferInfo" />
 			                                            <span class="lbl"> AppleFramebufferInfo</span>
