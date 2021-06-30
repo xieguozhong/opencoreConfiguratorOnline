@@ -117,12 +117,12 @@ const SYSTEM_TIPS = {
         Entires_title:'用于指定 OpenCore 无法自动找到的无规律引导路径',
 
         Boot:{
-            HibernateMode:'None 最好避免与黑苹果一同休眠',
+            HibernateMode:'None 休眠检测模式（最好避免与黑苹果一同休眠）,支持以下模式:',
             PickerMode:'选择用于引导管理的引导选择器 <br>1 Builtin -- 引导管理由OpenCore处理，使用了纯文本用户界面<br>2 External -- 如果可用，则使用外部引导管理协议。否则使用内置模式<br>3 Apple -- 如果可用，则使用Apple引导管理。否则使用内置模式',
-			PickerVariant:'选择用于启动管理的特定图标集 <br>• Auto — 根据DefaultBackground颜色自动选择一组图标<br>• Default — 普通图标集（不带前缀）<br>• Old — 复古图标集（旧文件名前缀）<br>• Modern — Nouveau图标集（现代文件名前缀）<br>• 其他值 — 如果资源支持，则设置自定义图标',
+			PickerVariant:'选择用于启动管理的特定图标集 <br>• Auto — 根据DefaultBackground颜色自动选择一组图标<br>• Default — 普通图标集（不带前缀）<br>• 其他值 — 如果资源支持，则设置自定义图标：例：Acidanthera\\GoldenGate',
             HideAuxiliary:'NO 默认情况下从选择器菜单隐藏辅助条目',
             LauncherOption:'在固件首选项中注册启动器选项以实现持久性<br>•Disabled — 啥也不干<br> •Full — 在启动引导程序时在UEFI变量存储中创建或更新最优先启动选项<br>•Short — 创建短启动选项，而不是完整的启动选项',
-            LauncherPath:'Default LauncherOption的启动路径',
+            LauncherPath:'Default LauncherOption的启动路径，自定义格式如：\\EFI\\SomeLauncher.efi',
             PollAppleHotKeys:'YES 允许在引导过程中使用苹果原生快捷键, 需要与 AppleGenericInput.efi 或 UsbKbDxe.efi 结合使用, 具体体验取决于固件',
             Timeout:'5 设置引导项等待时间',
 			ConsoleAttributes:'0 设置控制台的特定属性',
@@ -156,6 +156,7 @@ const SYSTEM_TIPS = {
             ExposeSensitiveData:'操作系统的敏感数据公开位掩码（总和）',
             HaltLevel:'EDK II调试级别位掩码（总和）在获取HaltLevel消息后导致CPU停止（停止执行）。可能的值与DisplayLevel值匹配',
 			Vault:'在OpenCore中启用存储机制 <br>1 Optional -- 不需要任何东西，不执行任何保管库，不安全<br>2 Basic -- 要求OC目录中存在vault.plist文件。这提供了基本的文件系统完整性验证并可以防止意外的文件系统损坏<br>3 Secure -- 在OC目录中需要vault.sig签名文件作为vault.plist的文件。这包括基本完整性检查，但也尝试建立可信任的启动链',
+            DmgLoading:'Signed 定义用于 macOS 恢复的磁盘映像 (DMG) 加载策略',
             ScanPolicy:'定义操作系统检测策略'
         }
 
@@ -360,9 +361,8 @@ const SYSTEM_TIPS = {
 
             ,PickerVariant_List:[
                 {val:'Auto',      des:'Auto - 根据DefaultBackground颜色自动选择一组图标'},
-                {val:'Default',   des:'Default - 普通图标集（不带前缀）'},
-                {val:'Old',       des:'Old - 复古图标集（旧文件名前缀）'},
-                {val:'Modern',    des:'Modern - Nouveau图标集（现代文件名前缀）'}
+                {val:'Default',   des:'Default - 普通图标集（不带前缀） Acidanthera\\GoldenGate'}
+               
             ]
 
             ,KernelArch_List:[
@@ -430,7 +430,72 @@ const SYSTEM_TIPS = {
                 {val:'SystemGraphics',      des:'SystemGraphics — 切换到图形模式并使用带有自定义 ConsoleControl 的系统渲染器'},
                 {val:'SystemText',      des:'SystemText — 切换到文本模式并使用带有自定义 ConsoleControl 的系统渲染器'},
                 {val:'SystemGeneric',      des:'SystemGeneric — 将系统渲染器与系统 ConsoleControl 一起使用，假设它行为正确'}
+            ],
+            HibernateMode_List:[
+                {val:'None',          des:'None — 忽略休眠状态'},
+                {val:'Auto',       des:'Auto — 使用 RTC 和 NVRAM 检测'},
+                {val:'RTC',      des:'RTC — 使用 RTC 检测'},
+                {val:'NVRAM',      des:'NVRAM — 使用 NVRAM 检测'}
+            ],
+            PickerMode_List:[
+                {val:'Builtin',          des:'Builtin — 引导管理由OpenCore处理，使用了纯文本用户界面'},
+                {val:'External',       des:'External — 如果可用，则使用外部引导管理协议。否则使用内置模式'},
+                {val:'Apple',      des:'Apple — 如果可用，则使用Apple引导管理。否则使用内置模式'}
+            ],
+            Vault_List:[
+                {val:'Optional',          des:'Optional — 什么都不需要，没有强制执行保险库，不安全'},
+                {val:'Basic',       des:'Basic — 要求 OC 目录中存在 Vault.plist 文件'},
+                {val:'Secure',      des:'Secure — 要求 OC 目录中的 vault.plist 需要 vault.sig 签名文件'}
+            ],
+            DmgLoading_List:[
+                {val:'Disabled',          des:'Disabled — 加载 DMG 图像将失败'},
+                {val:'Signed',       des:'Signed — 只会加载 Apple 签名的 DMG 图像'},
+                {val:'Any',      des:'Any — 任何 DMG 映像都将作为普通文件系统挂载'}
+            ],
+            SecureBootModel_List:[
+                {val:'Default',          des:'Default'},
+                {val:'Disabled',          des:'Disabled'},
+                {val:'j137',          des:'j137 — iMacPro1,1 (December 2017)'},
+                {val:'j680',          des:'j680 — MacBookPro15,1 (July 2018)'},
+                {val:'j132',          des:'j132 — MacBookPro15,2 (July 2018)'},
+                {val:'j174',          des:'j174 — Macmini8,1 (October 2018)'},
+                {val:'j140k',          des:'j140k — MacBookAir8,1 (October 2018)'},
+                {val:'j780',          des:'j780 — MacBookPro15,3 (May 2019)'},
+                {val:'j213',          des:'j213 — MacBookPro15,4 (July 2019)'},
+                {val:'j140a',          des:'j140a — MacBookAir8,2 (July 2019)'},
+                {val:'j152f',          des:'j152f — MacBookPro16,1 (November 2019)'},
+                {val:'j160',          des:'j160 — MacPro7,1 (December 2019)'},
+                {val:'j230k',          des:'j230k — MacBookAir9,1 (March 2020)'},
+                {val:'j214k',          des:'j214k — MacBookPro16,2 (May 2020)'},
+                {val:'j223',          des:'j223 — MacBookPro16,3 (May 2020)'},
+                {val:'j215',          des:'j215 — MacBookPro16,4 (June 2020)'},
+                {val:'j185',          des:'j185 — iMac20,1 (August 2020)'},
+                {val:'j185f',          des:'j185f — iMac20,2 (August 2020)'},
+                {val:'x86legacy',          des:'x86legacy — Macs and VMs without T2 chip minimum macOS 11.0'}
+            ],
+            SystemMemoryStatus_List:[
+                {val:'Auto',          des:'Auto — 系统内存状态'},
+                {val:'Upgradable',       des:'Upgradable — 在 PlatformFeature 中明确取消设置 PT_FEATURE_HAS_SOLDERED_SYSTEM_MEMORY (0x2)'},
+                {val:'Soldered',      des:'Soldered — 在 PlatformFeature 中显式设置 PT_FEATURE_HAS_SOLDERED_SYSTEM_MEMORY (0x2)'}
+            ],
+            UpdateSMBIOSMode_List:[
+                {val:'Create',          des:'Create — 用新分配的 EfiReservedMemoryType 在 AllocateMaxAddress 替换表而不任何后备'},
+                {val:'TryOverwrite',       des:'TryOverwrite — 如果新尺寸 <= 比页面对齐的原始尺寸，并且没有问题，则覆盖遗留区域解锁'},
+                {val:'Overwrite',      des:'Overwrite — 如果适合新大小，则覆盖现有的 gEfiSmbiosTableGuid 和 gEfiSmbiosTable3Guid 数据'},
+                {val:'Custom',      des:'Custom — 将 SMBIOS 表 ( gEfiSmbios(3)TableGuid ) 写入 gOcCustomSmbios(3)TableGuid 以解决问题固件在 ExitBootServices 覆盖 SMBIOS 内容'}
+            ],
+            PlayChime_List:[
+                {val:'Auto',          des:'Auto — 当 StartupMute NVRAM 变量不存在或设置为 00 时启用提示音'},
+                {val:'Enabled',       des:'Enabled — 无条件启用铃声'},
+                {val:'Disabled',      des:'Disabled — 无条件禁用铃声'}
+            ],
+            KeySupportMode_List:[
+                {val:'Auto',          des:'Auto — 使用以下首选项执行自动选择：AMI、V2、V1'},
+                {val:'V1',       des:'V1 — 使用 UEFI 标准传统输入协议 EFI_SIMPLE_TEXT_INPUT_PROTOCOL'},
+                {val:'V2',      des:'V2 — 使用 UEFI 标准现代输入协议 EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL'},
+                {val:'AMI',      des:'AMI — 使用 APTIO 输入协议 AMI_EFIKEYCODE_PROTOCOL'}
             ]
+            
         }
 
 
