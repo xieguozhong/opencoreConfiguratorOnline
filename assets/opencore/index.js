@@ -471,11 +471,11 @@ let VUEAPP = new Vue({
                 AppleEvent:'',CustomDelays:'',KeyInitialDelay:0,KeySubsequentDelay:1,PointerSpeedDiv:1,PointerSpeedMul:0
             },
 			Audio:{
-				AudioCodec:0, AudioDevice:'', AudioOut:0,AudioSupport:false,MinimumVolume:20,PlayChime:'',ResetTrafficClass:false,
+				AudioCodec:0, AudioDevice:'', AudioOut:0,AudioSupport:false,MinimumVolume:20,PlayChime:'Auto',ResetTrafficClass:false,
                 SetupDelay:0,VolumeAmplifier:0
 			},
             Input:{
-                KeyFiltering:false,KeyForgetThreshold:'', KeySupport:false, KeySupportMode:'', KeySwap:false,  
+                KeyFiltering:false,KeyForgetThreshold:'', KeySupport:false, KeySupportMode:'Auto', KeySwap:false,  
                 PointerSupport:false, PointerSupportMode:'', TimerResolution:''
 
             },
