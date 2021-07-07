@@ -22,7 +22,8 @@ const SYSTEM_TIPS = {
             NormalizeHeaders:'NO 清除 ACPI 头字段, 只有 macOS 10.13 需要',
             RebaseRegions:'NO 尝试试探性地重新定位 ACPI 内存区域, 除非使用了自定义 DSDT, 否则不需要',
             ResetHwSig:'NO 存在重新启动后因无法维持硬件签名而导致从休眠中唤醒的问题的硬件需要开启',
-            ResetLogoStatus:'NO 无法在有 BGRT 表的系统上显示 OEM Windows 标志的硬件需要开启'
+            ResetLogoStatus:'NO 无法在有 BGRT 表的系统上显示 OEM Windows 标志的硬件需要开启',
+            SyncTableIds:'NO 将表标识符与 SLIC 表同步'
         }
 
     },
@@ -97,6 +98,7 @@ const SYSTEM_TIPS = {
         Scheme:{
             KernelArch:'Auto 如果可用，首选指定的内核体系结构（Auto，i386，i386-user32，x86_64）',
             KernelCache:'Auto 如果可用，首选指定的内核缓存类型（自动，无缓存，Mkext，预链接）',
+            CustomKernel:'NO 使用位于 ESP 分区根目录的 Kernels 目录中的自定义内核缓存',
             FuzzyMatch:'NO 在可用时将内核缓存与不同的校验和一起使用'
         },
         Emulate:{

@@ -129,6 +129,8 @@ function getKernel() {
 
 	//Scheme
 	keContext += '<key>Scheme</key><dict>';
+	keContext += '<key>CustomKernel</key>';
+	keContext += toBoolStringStrict(VUEAPP.Kernel.Scheme['CustomKernel']);
 	keContext += '<key>FuzzyMatch</key>';
 	keContext += toBoolStringStrict(VUEAPP.Kernel.Scheme['FuzzyMatch']);
 	keContext += '<key>KernelArch</key>' + addCharstring(VUEAPP.Kernel.Scheme['KernelArch']);
