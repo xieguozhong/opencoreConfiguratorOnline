@@ -368,7 +368,7 @@ let VUEAPP = new Vue({
             Delete:[],
             Patch:[] ,
             Quirks:{
-                FadtEnableReset:false, NormalizeHeaders:false, RebaseRegions:false, ResetHwSig:false, ResetLogoStatus:false}
+                FadtEnableReset:false, NormalizeHeaders:false, RebaseRegions:false, ResetHwSig:false, ResetLogoStatus:false,SyncTableIds:false}
             },
         Booter:{
             MmioWhitelist:[],
@@ -391,7 +391,7 @@ let VUEAPP = new Vue({
             Block:[],
             Patch:[],
             Emulate:{Cpuid1Data:'',Cpuid1Mask:'', MaxKernel:'', MinKernel:'',DummyPowerManagement:false},
-            Scheme:{KernelArch:'',KernelCache:'',FuzzyMatch:false},
+            Scheme:{KernelArch:'',KernelCache:'',CustomKernel:false,FuzzyMatch:false},
             Force:[],
             Quirks:{
                 

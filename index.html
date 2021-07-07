@@ -269,6 +269,10 @@
                                         <input type="checkbox" class="ace" v-model="ACPI.Quirks.ResetLogoStatus" />
                                         <span class="lbl"> ResetLogoStatus</span>
                                     </label>
+                                    <label class="mintip" :title="title.ACPI.Quirks.SyncTableIds">
+                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.SyncTableIds" />
+                                        <span class="lbl"> SyncTableIds</span>
+                                    </label>
                                 </div>
 
                             </div>
@@ -639,6 +643,11 @@
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px">
+			                                    	<label class="mintip" :title="title.Kernel.Scheme.CustomKernel">
+			                                            <input type="checkbox" class="ace" v-model="Kernel.Scheme.CustomKernel" />
+			                                            <span class="lbl"> CustomKernel</span>
+			                                        </label>
+			                                        
 			                                        <label class="mintip" :title="title.Kernel.Scheme.FuzzyMatch">
 			                                            <input type="checkbox" class="ace" v-model="Kernel.Scheme.FuzzyMatch" />
 			                                            <span class="lbl"> FuzzyMatch</span>
