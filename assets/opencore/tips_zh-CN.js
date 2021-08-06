@@ -244,6 +244,7 @@ const SYSTEM_TIPS = {
             CustomDelays:'Auto 启用自定义按键重复延迟',
             KeyInitialDelay:'在Apple Event协议的OpenCore实施中配置初始键盘重复延迟，以10ms为单位',
             KeySubsequentDelay:'在Apple Event协议的OpenCore实施中配置后续的键盘重复延迟，以10ms为单位',
+            GraphicsInputMirroring:'NO Apple 自己的 AppleEvent 实现阻止了图形应用程序期间的键盘输入从出现在基本控制台输入流中',
             PointerSpeedDiv:'在Apple Event协议的OpenCore实施中配置指针速度除数',
             PointerSpeedMul:'在Apple Event协议的OpenCore实现中配置指针速度倍增器'
         },
