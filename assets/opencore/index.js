@@ -468,7 +468,7 @@ let VUEAPP = new Vue({
 				EnableJumpstart:false, GlobalConnect:false, HideVerbose:false, JumpstartHotPlug:false, MinDate:0, MinVersion:0
 			},
             AppleInput:{
-                AppleEvent:'',CustomDelays:'',KeyInitialDelay:0,KeySubsequentDelay:1,PointerSpeedDiv:1,PointerSpeedMul:0
+                AppleEvent:'',CustomDelays:'',KeyInitialDelay:0,KeySubsequentDelay:1,GraphicsInputMirroring:false,PointerSpeedDiv:1,PointerSpeedMul:0
             },
 			Audio:{
 				AudioCodec:0, AudioDevice:'', AudioOut:0,AudioSupport:false,MinimumVolume:20,PlayChime:'Auto',ResetTrafficClass:false,
