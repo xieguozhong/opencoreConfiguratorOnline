@@ -418,9 +418,8 @@ const SYSTEM_TIPS = {
                 {val:'OEM',           des:'OEM — 假设在驱动程序连接时可以使用Apple的协议'}
             ],
             CustomDelays_List:[
-                {val:'Auto',          des:'Auto — 当KeySupport为true时视为已启用，否则为Disabled'},
-                {val:'Enabled',       des:'Enabled — 使用值KeyInitialDelay和KeySubsequentDelay'},
-                {val:'Disabled',      des:'Disabled — 苹果的默认值使用500ms（50）和50ms（5）'}
+                {val:'true',          des:'true — 使用 KeyInitialDelay 和 KeySubsequentDelay 的值'},
+                {val:'false',       des:'false — 使用 Apple 默认值 500ms (50) 和 50ms (5)'}
             ],            
             GopPassThrough_List:[
                 {val:'Enabled',          des:'Enabled — 为所有 UGA 协议提供 GOP'},
