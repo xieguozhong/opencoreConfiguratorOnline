@@ -667,6 +667,27 @@ let VUEAPP = new Vue({
             //Drivers
             this.getPlistAndResetTableData(UEFIText, 'Drivers', 'UEFI_Drivers', this.UEFI.Drivers);
 
+            //####Drivers特殊处理开始，从0.7.2升级到0.7.3用
+            let DriversText = getValuesByKeyname(UEFIText, 'Drivers');
+            let arrayDrivers = parsePlistArray2stringArray(DriversText);
+            let shenji72to73 = true;
+            for(let i=0,len=arrayDrivers.length;i<len;i++) {
+                                
+                if(arrayDrivers[i]['Volume'].indexOf("<key>") === 0) {
+                    shenji72to73 = false;
+                    break;
+                }
+                this.UEFI.Drivers.push({ Path:arrayDrivers[i]['Volume'],Arguments:'',Enabled:true}) ;
+                console.log(arrayDrivers[i]['Volume']);
+            }
+            if(shenji72to73 === true) {
+                getJqgridObjectbyKey("UEFI_Drivers").trigger("reloadGrid");
+            }
+            
+            //####Drivers特殊处理结束，从0.7.2升级到0.7.3用
+            
+            
+
 			//APFS
             let APFSText = getValuesByKeyname(UEFIText, 'APFS');
             this.getAndSetDictItem(APFSText, this.UEFI.APFS);
