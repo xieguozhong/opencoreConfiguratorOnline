@@ -316,9 +316,11 @@ function initGridTablePlatformInfo() {
 }
 
 function initGridTableUEFI() {
-	let colNames = ['FileName'];
+	let colNames = ['Path','Arguments','Enabled'];
 	let colModel = [
-		{name:'FileName',index:'FileName', width:150,editable: true,  sortable:false, formatter:plistEncode}
+		{name:'Path',index:'Path', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_UEFI_Drivers = jQuery('#gridtable_UEFI_Drivers');
 

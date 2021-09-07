@@ -490,7 +490,8 @@ let VUEAPP = new Vue({
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks:{
-                ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,ExitBootServicesDelay:0,ForgeUefiSupport:false,IgnoreInvalidFlexRatio:false,
+                ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,ExitBootServicesDelay:0,ForgeUefiSupport:false,
+                ForceOcWriteFlash:false,IgnoreInvalidFlexRatio:false,
                 ReleaseUsbOwnership:false, ReloadOptionRoms:false, RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
             },
             ReservedMemory:[]
@@ -664,14 +665,7 @@ let VUEAPP = new Vue({
             this.getAndSetDictItem(UEFIText, this.UEFI.root);
 
             //Drivers
-            let DriversText = getValuesByKeyname(UEFIText, 'Drivers');
-            this.UEFI.Drivers.length = 0;
-            let arrayDrivers = parsePlistArray2stringArray(DriversText);
-            for(let i=0,len=arrayDrivers.length;i<len;i++) {
-                this.UEFI.Drivers.push({ FileName:arrayDrivers[i]['Volume']}) ;
-            }
-            
-            getJqgridObjectbyKey('UEFI_Drivers').trigger("reloadGrid");
+            this.getPlistAndResetTableData(UEFIText, 'Drivers', 'UEFI_Drivers', this.UEFI.Drivers);
 
 			//APFS
             let APFSText = getValuesByKeyname(UEFIText, 'APFS');
