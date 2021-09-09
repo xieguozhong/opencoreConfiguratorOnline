@@ -2,12 +2,6 @@
 
 
 
-因为无法提交代码（搞不懂怎么提交）， 这里不更新了， 有需求的看
-https://gitee.com/galada/OpenCoreConfiguratorOnline
-
-
-
-
 web版的OpenCore引导工具config.plist的在线编辑器
 使用方法:
 
