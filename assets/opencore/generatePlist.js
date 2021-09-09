@@ -334,12 +334,14 @@ function getUEFI() {
 
 	// Drivers
 	uefiContext += '<key>Drivers</key>';
-	let dridata = VUEAPP.UEFI.Drivers, dristring = '';
+	//let dridata = VUEAPP.UEFI.Drivers, dristring = '';
 	//consolelog(dridata);
-	for(let i=0,len=dridata.length;i<len;i++) {
-		dristring += addCharstring(dridata[i]['FileName']);
-	}
-	uefiContext += bothsidesAddarray(dristring);
+	//for(let i=0,len=dridata.length;i<len;i++) {
+	//	dristring += addCharstring(dridata[i]['FileName']);
+	//}
+	//uefiContext += bothsidesAddarray(dristring);
+
+	uefiContext += genArrayDict('UEFI_Drivers', VUEAPP.UEFI.Drivers,[],[]);
 
 
 

@@ -296,6 +296,7 @@ const SYSTEM_TIPS = {
             DisableSecurityPolicy:'NO 禁用平台安全策略',
             EnableVectorAcceleration:'NO 启用SHA-512和SHA-384哈希算法的AVX矢量加速',
             ForgeUefiSupport:'NO 在EFI 1.x固件上实现部分UEFI 2.x支持',
+            ForceOcWriteFlash:'NO 允许为所有 OpenCore 系统变量写入闪存',
             ExitBootServicesDelay:'在EXIT_BOOT_SERVICES事件后增加延迟（以微秒为单位）'
         }
     },

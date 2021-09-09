@@ -490,7 +490,8 @@ let VUEAPP = new Vue({
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks:{
-                ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,ExitBootServicesDelay:0,ForgeUefiSupport:false,IgnoreInvalidFlexRatio:false,
+                ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,ExitBootServicesDelay:0,ForgeUefiSupport:false,
+                ForceOcWriteFlash:false,IgnoreInvalidFlexRatio:false,
                 ReleaseUsbOwnership:false, ReloadOptionRoms:false, RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
             },
             ReservedMemory:[]
@@ -664,14 +665,28 @@ let VUEAPP = new Vue({
             this.getAndSetDictItem(UEFIText, this.UEFI.root);
 
             //Drivers
+            this.getPlistAndResetTableData(UEFIText, 'Drivers', 'UEFI_Drivers', this.UEFI.Drivers);
+
+            //####Drivers特殊处理开始，从0.7.2升级到0.7.3用
             let DriversText = getValuesByKeyname(UEFIText, 'Drivers');
-            this.UEFI.Drivers.length = 0;
             let arrayDrivers = parsePlistArray2stringArray(DriversText);
+            let shenji72to73 = true;
             for(let i=0,len=arrayDrivers.length;i<len;i++) {
-                this.UEFI.Drivers.push({ FileName:arrayDrivers[i]['Volume']}) ;
+                                
+                if(arrayDrivers[i]['Volume'].indexOf("<key>") === 0) {
+                    shenji72to73 = false;
+                    break;
+                }
+                this.UEFI.Drivers.push({ Path:arrayDrivers[i]['Volume'],Arguments:'',Enabled:true}) ;
+                console.log(arrayDrivers[i]['Volume']);
+            }
+            if(shenji72to73 === true) {
+                getJqgridObjectbyKey("UEFI_Drivers").trigger("reloadGrid");
             }
             
-            getJqgridObjectbyKey('UEFI_Drivers').trigger("reloadGrid");
+            //####Drivers特殊处理结束，从0.7.2升级到0.7.3用
+            
+            
 
 			//APFS
             let APFSText = getValuesByKeyname(UEFIText, 'APFS');
