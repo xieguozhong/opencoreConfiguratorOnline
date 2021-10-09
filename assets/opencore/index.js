@@ -46,7 +46,7 @@ $(document).ready(function() {
     };
 
     //显示适用于版本信息
-    showTipModal(VUEAPP.lang.supportversion, 'warning');
+    //showTipModal(VUEAPP.lang.supportversion, 'warning');
     
     //页面加载完成后解除文件选择框的禁用属性
     $("#id-input-file-2").removeAttr("disabled");
