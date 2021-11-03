@@ -364,7 +364,7 @@ function getUEFI() {
 
 	// Quirks
 	uefiContext += '<key>Quirks</key><dict>';
-	let quirksDataType = {ExitBootServicesDelay:'integer',TscSyncTimeout:'integer'}
+	let quirksDataType = {ExitBootServicesDelay:'integer',ResizeGpuBars:'integer',TscSyncTimeout:'integer'}
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Quirks, quirksDataType);
 	uefiContext += '</dict>';
 
