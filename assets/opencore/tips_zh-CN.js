@@ -290,7 +290,7 @@ const SYSTEM_TIPS = {
             ReloadOptionRoms:'NO 查询PCI设备并重新加载其选件ROM（如果有）',    
             RequestBootVarRouting:'YES 从 EFI_GLOBAL_VARIABLE_GUID 中为 OC_VENDOR_VARIABLE_GUID 请求 redirectBoot 前缀变量 <br>启用此项以便能够在与 macOS 引导项设计上不兼容的固件中可靠地使用 启动磁盘 设置',
             UnblockFsConnect:'NO 惠普笔记本在 OpenCore 引导界面没有引导项时设置为 YES',
-			
+			ResizeGpuBars:'-1 配置GPU PCI BAR大小',
 			TscSyncTimeout:'尝试以指定的超时执行TSC同步',
             ActivateHpetSupport:'NO 激活HPET支持',
             DisableSecurityPolicy:'NO 禁用平台安全策略',

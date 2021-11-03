@@ -492,7 +492,7 @@ let VUEAPP = new Vue({
             Quirks:{
                 ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,ExitBootServicesDelay:0,ForgeUefiSupport:false,
                 ForceOcWriteFlash:false,IgnoreInvalidFlexRatio:false,
-                ReleaseUsbOwnership:false, ReloadOptionRoms:false, RequestBootVarRouting:false, TscSyncTimeout:0, UnblockFsConnect:false
+                ReleaseUsbOwnership:false, ReloadOptionRoms:false, RequestBootVarRouting:false, ResizeGpuBars:-1,TscSyncTimeout:0, UnblockFsConnect:false
             },
             ReservedMemory:[]
         },
