@@ -47,6 +47,7 @@ const SYSTEM_TIPS = {
             ProvideCustomSlide:'YES 如果 Slide 值存在冲突, 此选项将强制 macOS 执行以下操作:使用一个伪随机值。 只有在遇到 Only N/256 slide values are usable! 时需要',
 			ProvideMaxSlide:'0 在内存不足时提供自定义的KASLR Slide',
 			RebuildAppleMemoryMap:'NO 生成与macOS兼容的内存映射',
+            ResizeAppleGpuBars:'-1 调整GPU PCI BAR的大小，以兼容macOS',
             SetupVirtualMap:'YES 将 SetVirtualAddresses 调用修复为虚拟地址',
             SignalAppleOS:'NO 报告通过OS Info加载的任何OS的macOS',
             SyncRuntimePermissions:'NO 更新运行时环境的内存权限'
@@ -255,13 +256,15 @@ const SYSTEM_TIPS = {
             ClearScreenOnModeSwitch:'NO 从图形模式切换到文本模式时，某些固件仅清除部分屏幕，先前绘制的图像片段可见。此选项会先用黑色填充整个图形屏幕切换至文字模式', 
             IgnoreTextInGraphics:'NO 选择固件可在图形和文本模式下在屏幕上输出文本。这通常是意外的，因为随机文本可能会出现在图形图像上并导致UI损坏。将此选项设置为true将当控制台控件处于不同于“文本”的模式时，丢弃所有文本输出', 
             ProvideConsoleGop:'NO 确保控制台句柄上的GOP（图形输出协议）', 
+            ReconnectGraphicsOnConnect:'NO 在驱动程序连接期间重新连接所有图形驱动程序',
             DirectGopRendering:'NO 使用内置的图形输出协议渲染器进行控制台',
             ForceResolution:'NO 在默认情况下（例如在旧版Intel GMA和第一代Intel HD Graphics（Ironlake / Arrandale）上）无法使用所需分辨率的情况下，强制设置分辨率。将“分辨率”设置为“最大”将尝试从连接的显示器的EDID中获取最大的可用分辨率',
             GopPassThrough:'NO 在UGA协议实例之上提供GOP协议实例',
             ReconnectOnResChange:'NO 更改屏幕分辨率后重新连接控制台控制器', 
             ReplaceTabWithSpace:'NO 某些固件无法打印制表符甚至其后的所有内容，从而造成困难或无法使用UEFI Shell内置文本编辑器来编辑属性列表和其他文档。这个选项使控制台输出空间而不是选项卡', 
             SanitiseClearScreen:'NO 某些固件在尝试清除时将屏幕分辨率重置为故障保护值（例如1024x768）使用大显示（例如2K或4K）时的屏幕内容。此选项尝试应用解决方法。',
-			UgaPassThrough:'NO 在GOP协议之上提供UGA协议实例'
+			UIScale:'-1 用户界面缩放因子<br>对应于 4D1EDE05-38C7-4A6A-9CC6-4BCCA8B38C14:UIScale 变量。<br>• 1 — 1x 缩放，对应于正常显示。<br>• 2 — 2x 缩放，对应于 HiDPI 显示。<br>• -1 — 保持当前变量不变。<br>• 0 — 根据当前分辨率自动选择缩放比例。',
+            UgaPassThrough:'NO 在GOP协议之上提供UGA协议实例'
         },
 
         ProtocolOverrides:{
@@ -295,6 +298,7 @@ const SYSTEM_TIPS = {
             ActivateHpetSupport:'NO 激活HPET支持',
             DisableSecurityPolicy:'NO 禁用平台安全策略',
             EnableVectorAcceleration:'NO 启用SHA-512和SHA-384哈希算法的AVX矢量加速',
+            EnableVmx:'NO 文档中没找到',
             ForgeUefiSupport:'NO 在EFI 1.x固件上实现部分UEFI 2.x支持',
             ForceOcWriteFlash:'NO 允许为所有 OpenCore 系统变量写入闪存',
             ExitBootServicesDelay:'在EXIT_BOOT_SERVICES事件后增加延迟（以微秒为单位）'
@@ -426,6 +430,12 @@ const SYSTEM_TIPS = {
                 {val:'Enabled',          des:'Enabled — 为所有 UGA 协议提供 GOP'},
                 {val:'Apple',       des:'Apple — 为支持 AppleFramebufferInfo 的协议提供 GOP'},
                 {val:'Disabled',      des:'Disabled — 不提供 GOP'}
+            ],
+            UIScale_List:[
+                {val:-1,          des:'-1 — 保持当前变量不变'},
+                {val:0,             des:'0 — 根据当前分辨率自动选择缩放比例'},
+                {val:1,         des:'1 — 1x 缩放，对应于正常显示'},
+                {val:2,         des:'2 — 不2x 缩放，对应于 HiDPI 显示'}
             ],
             TextRenderer_List:[
                 {val:'BuiltinGraphics',          des:'BuiltinGraphics — 切换到图形模式并使用带有自定义 ConsoleControl 的内置渲染器'},
