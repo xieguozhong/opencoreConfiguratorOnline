@@ -323,6 +323,9 @@
                                         <div class="col-xs-3 mintip" :title="title.Booter.Quirks.ProvideMaxSlide">
                                             ProvideMaxSlide<input type="text" class="form-control" v-model="Booter.Quirks.ProvideMaxSlide"/>
                                         </div>
+                                        <div class="col-xs-3 mintip" :title="title.Booter.Quirks.ResizeAppleGpuBars">
+                                            ResizeAppleGpuBars<input type="text" class="form-control" v-model="Booter.Quirks.ResizeAppleGpuBars"/>
+                                        </div>
                                        
                                     </div>
 
@@ -1706,6 +1709,11 @@
 														<input type="text" class="form-control" v-model="UEFI.Output.GopPassThrough">
 													</div>
 
+													<div class="col-xs-3 mintip" :title="title.UEFI.Output.UIScale">
+			                                        	UIScale<a id="btnradiobox_UEFI_Output_UIScale" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Output.UIScale">
+													</div>
+
 			                                    </div>
 
 
@@ -1721,6 +1729,10 @@
 			                                        <label class="mintip" :title="title.UEFI.Output.ProvideConsoleGop">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ProvideConsoleGop" />
 			                                            <span class="lbl"> ProvideConsoleGop</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.ReconnectGraphicsOnConnect">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReconnectGraphicsOnConnect" />
+			                                            <span class="lbl"> ReconnectGraphicsOnConnect</span>
 			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.Output.DirectGopRendering">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.DirectGopRendering" />
@@ -1867,6 +1879,10 @@
 			                                        <label class="mintip" :title="title.UEFI.Quirks.EnableVectorAcceleration">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.EnableVectorAcceleration" />
 			                                            <span class="lbl"> EnableVectorAcceleration</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Quirks.EnableVmx">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.EnableVmx" />
+			                                            <span class="lbl"> EnableVmx</span>
 			                                        </label>
 
 			                                        <label class="mintip" :title="title.UEFI.Quirks.ForgeUefiSupport">

@@ -363,6 +363,7 @@ let VUEAPP = new Vue({
         current_paste_tableid:'',     //保存点击当前粘贴按钮的table id
         lang:{},                      //语言数据, 和浏览器的语言设置挂钩
         configisfull:false,           //是否full模式
+
         ACPI:{
             Add:[],
             Delete:[],
@@ -377,7 +378,7 @@ let VUEAPP = new Vue({
                 AllowRelocationBlock:false,AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
                 DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false,ForceBooterSignature:false, ForceExitBootServices:false, ProtectMemoryRegions:false,
                 ProtectSecureBoot:false,ProtectUefiServices:false,ProvideCustomSlide:false, ProvideMaxSlide:0, RebuildAppleMemoryMap:false,
-                SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false
+                ResizeAppleGpuBars:-1,SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false
             }
         },
         DeviceProperties:{
@@ -441,8 +442,8 @@ let VUEAPP = new Vue({
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             Generic:{
-                AdviseFeatures:false,MaxBIOSVersion:false,
-                MLB:'', ProcessorType:'',ROM:'', SpoofVendor:false, SystemMemoryStatus:'Auto',
+                AdviseFeatures:false,
+                MLB:'', MaxBIOSVersion:false,ProcessorType:'',ROM:'', SpoofVendor:false, SystemMemoryStatus:'Auto',
                 SystemProductName:'', SystemSerialNumber:'', SystemUUID:''
             },
             PlatformNVRAM:{
@@ -468,7 +469,7 @@ let VUEAPP = new Vue({
 				EnableJumpstart:false, GlobalConnect:false, HideVerbose:false, JumpstartHotPlug:false, MinDate:0, MinVersion:0
 			},
             AppleInput:{
-                AppleEvent:'',CustomDelays:'',KeyInitialDelay:0,KeySubsequentDelay:1,GraphicsInputMirroring:false,PointerSpeedDiv:1,PointerSpeedMul:0
+                AppleEvent:'',CustomDelays:'',GraphicsInputMirroring:false,KeyInitialDelay:0,KeySubsequentDelay:1,PointerSpeedDiv:1,PointerSpeedMul:0
             },
 			Audio:{
 				AudioCodec:0, AudioDevice:'', AudioOut:0,AudioSupport:false,MinimumVolume:20,PlayChime:'Auto',ResetTrafficClass:false,
@@ -481,8 +482,8 @@ let VUEAPP = new Vue({
             },
             Output:{
                 ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,GopPassThrough:'Disabled',
-                IgnoreTextInGraphics:false,ProvideConsoleGop:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
-                Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UgaPassThrough:false
+                IgnoreTextInGraphics:false,ProvideConsoleGop:false,ReconnectGraphicsOnConnect:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
+                Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UIScale:-1,UgaPassThrough:false
             },
             ProtocolOverrides:{
                 AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEg2Info:false, AppleFramebufferInfo:false,AppleImageConversion:false,
@@ -490,8 +491,8 @@ let VUEAPP = new Vue({
                 DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
             },
             Quirks:{
-                ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,ExitBootServicesDelay:0,ForgeUefiSupport:false,
-                ForceOcWriteFlash:false,IgnoreInvalidFlexRatio:false,
+                ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,EnableVmx:false,ExitBootServicesDelay:0,
+                ForceOcWriteFlash:false,ForgeUefiSupport:false,IgnoreInvalidFlexRatio:false,
                 ReleaseUsbOwnership:false, ReloadOptionRoms:false, RequestBootVarRouting:false, ResizeGpuBars:-1,TscSyncTimeout:0, UnblockFsConnect:false
             },
             ReservedMemory:[]
@@ -569,7 +570,10 @@ let VUEAPP = new Vue({
 
         // 获取并设置dict的值和bool值
         , getAndSetDictItem(context, vueData) {
-            let dataType = '';
+            if(context === undefined || context === "") {
+                return;
+            }
+            let dataType = '', gbvabknvalue;
             for(let it in vueData) {
                 dataType = typeof(vueData[it]);
                 
@@ -578,7 +582,12 @@ let VUEAPP = new Vue({
                 } else if(dataType === "object"){
                     //如果是数组，什么都不干，任其继续进入下一轮循环
                 } else {
-                    Vue.set(vueData, it, getValuesByKeyname(context, it));
+                    gbvabknvalue = getValuesByKeyname(context, it);
+                    
+                    if(gbvabknvalue !== undefined) {
+                        Vue.set(vueData, it, gbvabknvalue);
+                    }
+                    
                 }
 
             }
@@ -731,7 +740,7 @@ let VUEAPP = new Vue({
             let DataHubText = getValuesByKeyname(ipiText, 'DataHub');
 
             //如果DataHub为空, 就不显示datahub , PlatformNVRAM SMBIOS 三项目
-            this.configisfull = DataHubText === '' ? false:true;
+            this.configisfull = DataHubText === undefined ? false:true;
 
             //consolelog('DataHubText=' + DataHubText);
             this.getAndSetDictItem(DataHubText, this.PlatformInfo.DataHub);

@@ -271,7 +271,8 @@ function pdictToJSobjectKV(context, pid, rarray) {
 
 
 function getValuesByKeyname(context, keyname, istop) {
-    if(context === '') {
+    
+    if(context === undefined || context === '') {
         return '';
     }
     keyname = '<key>' + keyname + '</key>';
@@ -285,7 +286,8 @@ function getValuesByKeyname(context, keyname, istop) {
     let ix1=0;ix2=0,ix3=0;
     ix1 = context.indexOf(keyname + istop);
     if(ix1 === -1) {
-        return '';
+        //如果在当前config中没有这个关键词，返回undefined
+        return undefined;
     }
 
     ix2 = context.indexOf('<', ix1 + keyname.length);

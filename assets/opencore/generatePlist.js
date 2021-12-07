@@ -71,7 +71,7 @@ function getBooter() {
 
 
 	//Quirks
-	let thedt = {ProvideMaxSlide:'integer'};
+	let thedt = {ProvideMaxSlide:'integer',ResizeAppleGpuBars:'integer'};
 	BooterContext += '<key>Quirks</key><dict>' + getStringorboolorinterger(VUEAPP.Booter.Quirks, thedt) + '</dict>';
 
 	return BooterContext + '</dict>';
@@ -354,7 +354,8 @@ function getUEFI() {
 
 	// Output
 	uefiContext += '<key>Output</key><dict>';
-	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Output);
+	let thedt = {UIScale:'integer'};
+	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Output, thedt);
 	uefiContext += '</dict>';
 
 	// ProtocolOverrides
