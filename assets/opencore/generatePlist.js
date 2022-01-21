@@ -34,7 +34,12 @@ function getAllPlist() {
 	plistContext +=  '</dict>';
 	plistContext +=  '</plist>';
 
-	return $.format(plistContext, {method: 'xml'});
+	plistContext = $.format(plistContext, {method: 'xml'});
+
+	//格式特殊处理，只是为了美观
+	plistContext = plistContext.replace("<dict/></dict>","<dict/>\n        </dict>");
+
+	return plistContext;
 
 }
 
@@ -318,13 +323,13 @@ function getUEFI() {
 
 	//AppleInput
 	uefiContext += '<key>AppleInput</key><dict>';
-	let AppleInputDataType = {KeyInitialDelay:'integer',KeySubsequentDelay:'integer',PointerSpeedDiv:'integer',PointerSpeedMul:'integer'};
+	let AppleInputDataType = {KeyInitialDelay:'integer',KeySubsequentDelay:'integer',PointerPollMask:'integer', PointerPollMax:'integer', PointerPollMin:'integer', PointerSpeedDiv:'integer',PointerSpeedMul:'integer'};
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.AppleInput, AppleInputDataType);
 	uefiContext += '</dict>';
 
 	// Audio
 	uefiContext += '<key>Audio</key><dict>';
-	let AudioDataType = {AudioCodec:'integer',AudioOut:'integer',MinimumVolume:'integer',VolumeAmplifier:'integer',SetupDelay:'integer'};
+	let AudioDataType = {AudioCodec:'integer',AudioOutMask:'integer',MaximumGain:'integer',MinimumAssistGain:'integer',MinimumAudibleGain:'integer',SetupDelay:'integer'};
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Audio, AudioDataType);
 	uefiContext += '</dict>';
 
