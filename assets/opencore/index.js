@@ -469,11 +469,12 @@ let VUEAPP = new Vue({
 				EnableJumpstart:false, GlobalConnect:false, HideVerbose:false, JumpstartHotPlug:false, MinDate:0, MinVersion:0
 			},
             AppleInput:{
-                AppleEvent:'',CustomDelays:'',GraphicsInputMirroring:false,KeyInitialDelay:0,KeySubsequentDelay:1,PointerSpeedDiv:1,PointerSpeedMul:0
+                AppleEvent:'',CustomDelays:'',GraphicsInputMirroring:false,KeyInitialDelay:0,KeySubsequentDelay:5,PointerPollMask:-1,
+                PointerPollMax:0,PointerPollMin:0,PointerSpeedDiv:1,PointerSpeedMul:0
             },
 			Audio:{
-				AudioCodec:0, AudioDevice:'', AudioOut:0,AudioSupport:false,MinimumVolume:20,PlayChime:'Auto',ResetTrafficClass:false,
-                SetupDelay:0,VolumeAmplifier:0
+				AudioCodec:0, AudioDevice:'', AudioOutMask:-1,AudioSupport:false,DisconnectHda:false,MaximumGain:-15,MinimumAssistGain:-30,MinimumAudibleGain:-128,
+                PlayChime:'Auto',ResetTrafficClass:false,SetupDelay:0
 			},
             Input:{
                 KeyFiltering:false,KeyForgetThreshold:'', KeySupport:false, KeySupportMode:'Auto', KeySwap:false,  

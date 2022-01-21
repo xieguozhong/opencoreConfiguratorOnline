@@ -1565,6 +1565,15 @@
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.KeySubsequentDelay">
 			                                        KeySubsequentDelay<input type="text" class="form-control" v-model="UEFI.AppleInput.KeySubsequentDelay">
 			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerPollMask">
+			                                        PointerPollMask<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerPollMask">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerPollMax">
+			                                        PointerPollMax<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerPollMax">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerPollMin">
+			                                        PointerPollMin<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerPollMin">
+			                                      </div>
 												  <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerSpeedDiv">
 			                                        PointerSpeedDiv<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerSpeedDiv">
 			                                      </div>
@@ -1597,15 +1606,11 @@
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioCodec">
 			                                        AudioCodec<input type="text" class="form-control" v-model="UEFI.Audio.AudioCodec">
 			                                      </div>
-			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioOut">
-			                                        AudioOut<input type="text" class="form-control" v-model="UEFI.Audio.AudioOut">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioOutMask">
+			                                        AudioOutMask<input type="text" class="form-control" v-model="UEFI.Audio.AudioOutMask">
 			                                      </div>
-			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.MinimumVolume">
-			                                        MinimumVolume<input type="text" class="form-control" v-model="UEFI.Audio.MinimumVolume">
-												  </div>
-												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.VolumeAmplifier">
-													VolumeAmplifier<input type="text" class="form-control" v-model="UEFI.Audio.VolumeAmplifier">
-												  </div>
+			                                      
+												  
 												  
 													<div class="col-xs-3 mintip" :title="title.UEFI.Audio.PlayChime">
 			                                        	PlayChime<a id="btnradiobox_UEFI_Audio_PlayChime" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
@@ -1615,11 +1620,25 @@
 												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.SetupDelay">
 													SetupDelay<input type="text" class="form-control" v-model="UEFI.Audio.SetupDelay">
 												  </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.MaximumGain">
+													MaximumGain<input type="text" class="form-control" v-model="UEFI.Audio.MaximumGain">
+												  </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.MinimumAssistGain">
+													MinimumAssistGain<input type="text" class="form-control" v-model="UEFI.Audio.MinimumAssistGain">
+												  </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.MinimumAudibleGain">
+													MinimumAudibleGain<input type="text" class="form-control" v-model="UEFI.Audio.MinimumAudibleGain">
+												  </div>
 												
 			                                    </div>
 			                                    
 
 			                                    <div class="checkbox" style="margin-top: 20px">
+			                                    	<label class="mintip" :title="title.UEFI.Audio.DisconnectHda">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.DisconnectHda" />
+			                                            <span class="lbl"> DisconnectHda</span>
+			                                        </label>
+
 			                                        <label class="mintip" :title="title.UEFI.Audio.AudioSupport">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.AudioSupport" />
 			                                            <span class="lbl"> AudioSupport</span>

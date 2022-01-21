@@ -227,9 +227,11 @@ const SYSTEM_TIPS = {
             SetupDelay:'音频编解码器重新配置延迟（以微秒为单位）',
             AudioDevice:'用于音频支持的指定音频控制器的设备路径',
             AudioCodec:'指定音频控制器上的编解码器地址以支持音频',
-            AudioOut:'指定编解码器输出端口的索引从0开始',
-            MinimumVolume:'最小音量从0到100',
-            VolumeAmplifier:'系统体积到原始体积线性转换的乘法系数从0到1000'
+            AudioOutMask:'-1 指示 UEFI 声音使用哪些输出通道的位字段',
+            MaximumGain:'-15 用于 UEFI 音频的最大增益，以相对于放大器参考的分贝 (dB) 为单位指定 0 dB 的电平。',
+            MinimumAssistGain:'-30 用于拾音器音频辅助的最小增益（以分贝 (dB) 为单位）',
+            MinimumAudibleGain:'-128 尝试播放任何声音的最小增益（以分贝 (dB) 为单位）',
+            DisconnectHda:'NO 在加载驱动程序之前断开 HDA 控制器'
 		},
 
 		APFS:{
@@ -245,6 +247,9 @@ const SYSTEM_TIPS = {
             CustomDelays:'Auto 启用自定义按键重复延迟',
             KeyInitialDelay:'在Apple Event协议的OpenCore实施中配置初始键盘重复延迟，以10ms为单位',
             KeySubsequentDelay:'在Apple Event协议的OpenCore实施中配置后续的键盘重复延迟，以10ms为单位',
+            PointerPollMask:'-1 配置轮询指针的索引',
+            PointerPollMax:'0 以毫秒为单位配置最大指针轮询周期',
+            PointerPollMin:'0 以毫秒为单位配置最小指针轮询周期',
             GraphicsInputMirroring:'NO Apple 自己的 AppleEvent 实现阻止了图形应用程序期间的键盘输入从出现在基本控制台输入流中',
             PointerSpeedDiv:'在Apple Event协议的OpenCore实施中配置指针速度除数',
             PointerSpeedMul:'在Apple Event协议的OpenCore实现中配置指针速度倍增器'
