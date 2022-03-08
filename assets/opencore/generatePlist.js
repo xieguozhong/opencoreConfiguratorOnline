@@ -188,6 +188,7 @@ function getMisc() {
 	miscContext += '<key>DisableWatchDog</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['DisableWatchDog']);
 	miscContext += '<key>DisplayDelay</key><integer>' + toNumber(VUEAPP.Misc.Debug['DisplayDelay']) + '</integer>';
 	miscContext += '<key>DisplayLevel</key><integer>' + toNumber(VUEAPP.Misc.Debug['DisplayLevel']) + '</integer>';
+	miscContext += '<key>LogModules</key>' + addCharstring(VUEAPP.Misc.Debug['LogModules']);
 	miscContext += '<key>SerialInit</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['SerialInit']);
 	miscContext += '<key>SysReport</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['SysReport']);
 	miscContext += '<key>Target</key><integer>' + toNumber(VUEAPP.Misc.Debug['Target']) + '</integer>';

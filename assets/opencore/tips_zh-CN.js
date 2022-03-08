@@ -139,6 +139,7 @@ const SYSTEM_TIPS = {
 			ApplePanic:'NO 将macOS内核紧急情况保存到OpenCore根分区',
             DisableWatchDog:'NO 某些固件可能无法成功快速启动操作系统，尤其是在调试模式下，这会导致看门狗定时器中止该过程。此选项关闭看门狗计时器',
             DisplayDelay:'0 屏幕上显示每条打印线后执行的微秒延迟',
+            LogModules:'* 按模块过滤日志项',
             DisplayLevel:'0 屏幕上显示了EDK II调试级别位掩码（总和）。除非Target启用控制台（屏幕上）打印，否则屏幕上的调试输出将不可见',
 			SerialInit:'NO 执行串口初始化',
 			SysReport:'NO 在ESP文件夹上生成系统报告',
