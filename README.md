@@ -1,7 +1,16 @@
 # OpenCoreConfiguratorOnline
 
 #### 介绍
-html版的OpenCore引导工具config.plist的在线编辑器, 
+html版的OpenCore引导工具config.plist的在线编辑器, 目前支持opencore0.7.3版本
+
+优点: 
+1 跨平台, 和操作系统无关,支持windows, macos, linux, 一句话只要有浏览器就行
+2 无需下载安装更新, 打开浏览器就是最新版
+
+缺点:
+1 无法直接保存覆盖原文件, 必须手动复制粘贴到EFI中
+2 无法直接拖拉文件进去
+3 无法挂载EFI盘
 
 #### 软件架构
 html+javascript
