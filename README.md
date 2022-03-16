@@ -1,7 +1,7 @@
 # OpenCoreConfiguratorOnline
 
 #### 介绍
-html版的OpenCore引导工具config.plist的在线编辑器, 目前支持opencore0.7.3版本
+html版的OpenCore引导工具config.plist的在线编辑器, 目前支持opencore0.7.9版本
 
 优点: 
 1 跨平台, 和操作系统无关,支持windows, macos, linux, 一句话只要有浏览器就行
