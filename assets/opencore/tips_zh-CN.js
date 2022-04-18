@@ -79,12 +79,14 @@ const SYSTEM_TIPS = {
             AppleXcpmCfgLock:'NO 仅在 BIOS 中无法禁用 CFG-Lock 时才需要',
             AppleXcpmExtraMsrs:'NO 禁用奔腾和某些至强等不支持 CPU 所需的多个 MSR 访问',
             AppleXcpmForceBoost:'NO 在XCPM模式下强制发挥最佳性能',
+            CustomPciSerialDevice:'NO 在定制的 PCI 串行设备上执行 PMIO 寄存器基地址的更改',
             CustomSMBIOSGuid:'NO 对 UpdateSMBIOSMode 自定义模式执行 GUID 修补, 用于戴尔笔记本电脑 (等同于 Clover 的 DellSMBIOSPatch)',
             DisableIoMapper:'NO 需要绕过 VT-d 且 BIOS 中禁用时使用',
             DisableLinkeditJettison:'禁用__LINKEDIT抛售代码。此选项使Lilu.kext以及可能的其他功能在macOS Big Sur中以最佳性能运行而无需keepsyms = 1引导参数',
 			DisableRtcChecksum:'禁用 AppleRTC 中写入的主校验和 （0x58-0x59）',
             ExtendBTFeatureFlags:'NO 将FeatureFlags设置为0x0F，以获得Bluetooth的全部功能，包括Continuity。注意：此选项替代了BT4LEContinuityFixup.kext，由于更新太晚而无法正常运行修补进度。',
             ExternalDiskIcons:'YES 硬盘图标补丁, macOS 将内部硬盘视为外接硬盘 (黄色) 时使用',
+            ForceAquantiaEthernet:'NO 启用基于 Aquantia AQtion 的 10GbE 网卡支持',
             ForceSecureBootScheme:'NO 强制使用x86方案进行IMG4验证。<br>注意：当使用与x86legacy不同的SecureBootModel时，在虚拟机上需要此选项',
             IncreasePciBarSize:'NO 将IOPCIFamily中的32位PCI条尺寸从1 GB增加到4 GB',
             LapicKernelPanic:'NO 禁用由 AP 核心 lapic 中断造成的内核崩溃, 通常用于惠普电脑 (等同于 Clover 的 Kernel LAPIC)',
@@ -141,7 +143,6 @@ const SYSTEM_TIPS = {
             DisplayDelay:'0 屏幕上显示每条打印线后执行的微秒延迟',
             LogModules:'* 按模块过滤日志项',
             DisplayLevel:'0 屏幕上显示了EDK II调试级别位掩码（总和）。除非Target启用控制台（屏幕上）打印，否则屏幕上的调试输出将不可见',
-			SerialInit:'NO 执行串口初始化',
 			SysReport:'NO 在ESP文件夹上生成系统报告',
             Target:'0 启用的日志记录目标的位掩码（总和）。默认情况下，所有日志记录输出都是隐藏的，因此在需要调试时需要设置此选项'
         },
@@ -162,6 +163,10 @@ const SYSTEM_TIPS = {
 			Vault:'在OpenCore中启用存储机制 <br>1 Optional -- 不需要任何东西，不执行任何保管库，不安全<br>2 Basic -- 要求OC目录中存在vault.plist文件。这提供了基本的文件系统完整性验证并可以防止意外的文件系统损坏<br>3 Secure -- 在OC目录中需要vault.sig签名文件作为vault.plist的文件。这包括基本完整性检查，但也尝试建立可信任的启动链',
             DmgLoading:'Signed 定义用于 macOS 恢复的磁盘映像 (DMG) 加载策略',
             ScanPolicy:'定义操作系统检测策略'
+        },
+        Serial:{
+            Init:'NO 执行串口初始化',
+            Override:'NO 覆盖串行端口属性。 当此选项设置为 NO 时，自定义的键将不会被覆盖'
         }
 
     },

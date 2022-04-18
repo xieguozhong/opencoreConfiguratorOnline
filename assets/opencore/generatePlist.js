@@ -189,7 +189,6 @@ function getMisc() {
 	miscContext += '<key>DisplayDelay</key><integer>' + toNumber(VUEAPP.Misc.Debug['DisplayDelay']) + '</integer>';
 	miscContext += '<key>DisplayLevel</key><integer>' + toNumber(VUEAPP.Misc.Debug['DisplayLevel']) + '</integer>';
 	miscContext += '<key>LogModules</key>' + addCharstring(VUEAPP.Misc.Debug['LogModules']);
-	miscContext += '<key>SerialInit</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['SerialInit']);
 	miscContext += '<key>SysReport</key>' + toBoolStringStrict(VUEAPP.Misc.Debug['SysReport']);
 	miscContext += '<key>Target</key><integer>' + toNumber(VUEAPP.Misc.Debug['Target']) + '</integer>';
 
@@ -205,8 +204,6 @@ function getMisc() {
 	miscContext += '<key>ApECID</key><integer>' + toNumber(VUEAPP.Misc.Security['ApECID']) + '</integer>';
 	miscContext += '<key>AuthRestart</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AuthRestart']);
 	miscContext += '<key>BlacklistAppleUpdate</key>' + toBoolStringStrict(VUEAPP.Misc.Security['BlacklistAppleUpdate']);
-	
-
 	miscContext += '<key>DmgLoading</key>' + addCharstring(VUEAPP.Misc.Security['DmgLoading']); 
 	miscContext += '<key>EnablePassword</key>' + toBoolStringStrict(VUEAPP.Misc.Security['EnablePassword']);
 	miscContext += '<key>ExposeSensitiveData</key><integer>' + toNumber(VUEAPP.Misc.Security['ExposeSensitiveData']) + '</integer>';
@@ -218,6 +215,11 @@ function getMisc() {
 	miscContext += '<key>ScanPolicy</key><integer>' + toNumber(VUEAPP.Misc.Security['ScanPolicy']) + '</integer>';
 	miscContext += '<key>SecureBootModel</key>' + addCharstring(VUEAPP.Misc.Security['SecureBootModel']);
 	miscContext += '<key>Vault</key>' + addCharstring(VUEAPP.Misc.Security['Vault']);
+
+	//Serial
+	miscContext += '</dict><key>Serial</key><dict>';
+	miscContext += '<key>Init</key>' + toBoolStringStrict(VUEAPP.Misc.Serial['Init']);
+	miscContext += '<key>Override</key>' + toBoolStringStrict(VUEAPP.Misc.Serial['Override']);
 
 	//6 Tools
 	miscContext += '</dict><key>Tools</key>';

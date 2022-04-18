@@ -722,6 +722,10 @@
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleXcpmForceBoost" />
                                             <span class="lbl"> AppleXcpmForceBoost</span>
                                         </label>
+                                        <label class="mintip" :title="title.Kernel.Quirks.CustomPciSerialDevice">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.CustomPciSerialDevice" />
+                                            <span class="lbl"> CustomPciSerialDevice</span>
+                                        </label>
                                         <label class="mintip" :title="title.Kernel.Quirks.CustomSMBIOSGuid">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.CustomSMBIOSGuid" />
                                             <span class="lbl"> CustomSMBIOSGuid</span>
@@ -746,6 +750,10 @@
                                     	<label class="mintip" :title="title.Kernel.Quirks.ExternalDiskIcons">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.ExternalDiskIcons" />
                                             <span class="lbl"> ExternalDiskIcons</span>
+										</label>
+										<label class="mintip" :title="title.Kernel.Quirks.ForceAquantiaEthernet">
+                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ForceAquantiaEthernet" />
+                                            <span class="lbl"> ForceAquantiaEthernet</span>
 										</label>
 										<label class="mintip" :title="title.Kernel.Quirks.ForceSecureBootScheme">
                                             <input type="checkbox" class="ace" v-model="Kernel.Quirks.ForceSecureBootScheme" />
@@ -804,7 +812,7 @@
                                         <li><a data-toggle="tab" href="#tabbable_Misc_Boot" class="tablelia">Boot</a></li>
                                         <li><a data-toggle="tab" href="#tabbable_Misc_Debug" class="tablelia">Debug</a></li>
                                         <li><a data-toggle="tab" href="#tabbable_Misc_Security" class="tablelia">Security</a></li>
-
+										<li><a data-toggle="tab" href="#tabbable_Misc_Serial" class="tablelia">Serial</a></li>
                                     </ul>
 
                                     <div class="tab-content" style="padding-right:18px;padding-left:2px;">
@@ -943,10 +951,7 @@
 			                                            <span class="lbl"> DisableWatchDog</span>
 			                                        </label>
 
-													<label class="mintip" :title="title.Misc.Debug.SerialInit">
-			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.SerialInit" />
-			                                            <span class="lbl"> SerialInit</span>
-			                                        </label>
+													
 
 													<label class="mintip" :title="title.Misc.Debug.SysReport">
 			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.SysReport" />
@@ -1033,6 +1038,24 @@
 			                                    </div>
 			                                </div>
                                         </div>
+
+                                        <div id="tabbable_Misc_Serial" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+			                                   <div class="checkbox" style="margin-top: 20px ">
+													<label class="mintip" :title="title.Misc.Serial.Init">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Serial.Init" />
+			                                            <span class="lbl"> Init</span>
+			                                        </label>
+
+													<label class="mintip" :title="title.Misc.Serial.Override">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Serial.Override" />
+			                                            <span class="lbl"> Override</span>
+			                                        </label>
+			                                    </div>
+			                                </div>
+                                        </div>
+                                        
 
                                     </div>
                                 </div>
