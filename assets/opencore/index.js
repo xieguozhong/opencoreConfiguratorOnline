@@ -396,8 +396,8 @@ let VUEAPP = new Vue({
             Force:[],
             Quirks:{
                 
-                AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, AppleXcpmForceBoost:false,CustomSMBIOSGuid:false,
-                DisableIoMapper:false, DisableLinkeditJettison:false,DisableRtcChecksum:false, ExtendBTFeatureFlags:false, ExternalDiskIcons:false, 
+                AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, AppleXcpmForceBoost:false,CustomPciSerialDevice:false,CustomSMBIOSGuid:false,
+                DisableIoMapper:false, DisableLinkeditJettison:false,DisableRtcChecksum:false, ExtendBTFeatureFlags:false, ExternalDiskIcons:false,ForceAquantiaEthernet:false,
                 ForceSecureBootScheme:false,IncreasePciBarSize:false,
                 LapicKernelPanic:false, LegacyCommpage:false, PanicNoKextDump:false,
                 PowerTimeoutKernelPanic:false,ProvideCurrentCpuInfo:false,SetApfsTrimTimeout:-1, ThirdPartyDrives:false, XhciPortLimit:false
@@ -411,7 +411,7 @@ let VUEAPP = new Vue({
                 PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
             },
             Debug: {
-                AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0', SerialInit:false, SysReport:false,
+                AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0',LogModules:'*', SysReport:false,
                 Target:'0'
             },
             Security:{
@@ -420,7 +420,10 @@ let VUEAPP = new Vue({
                 ApECID:'',DmgLoading:'Signed',EnablePassword:false,PasswordHash:'',PasswordSalt:'',SecureBootModel:'Default'
             },
             Entries:[],
-            Tools:[]
+            Tools:[],
+            Serial:{
+                Init:false,Override:false
+            }
         },
         NVRAM:{
             root:{ LegacyEnable:false, LegacyOverwrite:false, WriteFlash:false},
@@ -793,6 +796,9 @@ let VUEAPP = new Vue({
             let SecurityText = getValuesByKeyname(MiscText, 'Security');
             this.getAndSetDictItem(SecurityText, this.Misc.Security);
 
+            //Serial
+            let SerialText = getValuesByKeyname(MiscText, 'Serial');
+            this.getAndSetDictItem(SerialText, this.Misc.Serial);
         }
 
 
