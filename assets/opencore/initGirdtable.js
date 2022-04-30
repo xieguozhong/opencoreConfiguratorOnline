@@ -1,7 +1,7 @@
 let GLOBAL_TABLE_WIDTH = 0,  			//表格的宽度
 	GLOBAL_TABLE_HEIGHT = 0, 			//表格的高度
 	GLOBAL_TABLE_HALF_WIDTH = 0, 		//半表格的宽度
-	GLOBAL_ARRAY_TABLE=[{},{},{}],      //用于存储所有初始化好的表格，0是全宽表格，1是半宽表格，2是被拖动过的表格记录
+	GLOBAL_ARRAY_TABLE=[{},{}],      	//用于存储所有初始化好的表格，0是全宽表格，1是半宽表格
 	MAXROWID = 500;						//表格点新增时的jqgrid的id起始值，如果谁的配置有500行，那么会产生bug
 
 
@@ -68,12 +68,14 @@ function initGridTableACPI() {
 }
 
 function initGridTableMisc() {
-	let colNames = ['Arguments','Comment','Name','Path','Auxiliary','Enabled'];
+	let colNames = ['Arguments','Comment','Name','Flavour','Path','TextMode','Auxiliary','Enabled'];
 	let colModel = [
 		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Name',index:'Name', width:100,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Flavour',index:'Flavour', width:100,editable: true,  sortable:false, formatter:getPlistEncodeFunction('Auto')},
 		{name:'Path',index:'Path', width:400,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'TextMode',index:'TextMode', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'Auxiliary',index:'Auxiliary', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
@@ -94,13 +96,16 @@ function initGridTableMisc() {
 
 
 	//Tools
-	colNames = ['Arguments','Comment','Name','Path','Auxiliary','Enabled'];
+	colNames = ['Arguments','Comment','Name','Flavour','Path','Auxiliary','RealPath','TextMode','Enabled'];
 	colModel = [
 		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Name',index:'Name', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Flavour',index:'Flavour', width:150,editable: true,  sortable:false, formatter:getPlistEncodeFunction('Auto')},
 		{name:'Path',index:'Path', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Auxiliary',index:'Auxiliary', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
+		{name:'RealPath',index:'RealPath', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
+		{name:'TextMode',index:'TextMode', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Misc_Tools = jQuery('#gridtable_Misc_Tools');
@@ -222,7 +227,7 @@ function initGridTableKernel() {
 	//Add
 	let colNames = ['Arch','BundlePath', 'Comment','ExecutablePath','PlistPath','MaxKernel','MinKernel','Enabled'];
 	let colModel = [
-		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
 		{name:'BundlePath',index:'BundlePath', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'ExecutablePath',index:'ExecutablePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
@@ -238,13 +243,14 @@ function initGridTableKernel() {
 
 
 	//Block
-	colNames = ['Arch','Comment','Identifier', 'MaxKernel','MinKernel','Enabled'];
+	colNames = ['Arch','Comment','Identifier', 'MaxKernel','MinKernel','Strategy','Enabled'];
 	colModel = [
-		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'MaxKernel',index:'MaxKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'MinKernel',index:'MinKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Strategy',index:'Strategy', width:150,editable: true,  sortable:false, edittype:'select', editoptions:{value:{Disable:'Disable',Exclude:'Exclude'}},formatter:getPlistEncodeFunction('Disable')},
 		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Kernel_Block = jQuery('#gridtable_Kernel_Block');
@@ -255,7 +261,7 @@ function initGridTableKernel() {
 	//Patch
 	colNames = ['Arch','Base','Comment', 'Count','Find','Identifier','Limit','Mask','MaxKernel', 'MinKernel','Replace','ReplaceMask','Skip','Enabled'];
 	colModel = [
-		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
 		{name:'Base',index:'Base', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Count',index:'Count', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:formatInteger},
@@ -278,7 +284,7 @@ function initGridTableKernel() {
 	//Force
 	colNames = ['Arch','BundlePath', 'Comment','Identifier','ExecutablePath','MaxKernel','MinKernel','PlistPath','Enabled'];
 	colModel = [
-		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
 		{name:'BundlePath',index:'BundlePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:100,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
 		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false, formatter:plistEncode},
@@ -316,10 +322,11 @@ function initGridTablePlatformInfo() {
 }
 
 function initGridTableUEFI() {
-	let colNames = ['Path','Arguments','Enabled'];
+	let colNames = ['Path','Arguments','Comment','Enabled'];
 	let colModel = [
 		{name:'Path',index:'Path', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Comment',index:'Comment', width:250,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_UEFI_Drivers = jQuery('#gridtable_UEFI_Drivers');
@@ -350,7 +357,7 @@ function initGridTableUEFI() {
 		{name:'Address',index:'Address', width:150,editable: true,  sortable:false, formatter:formatInteger},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Size',index:'Size', width:100,editable: true,  sortable:false, formatter:formatInteger},
-		{name:'Type',index:'Type', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:typeValues}},
+		{name:'Type',index:'Type', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:typeValues},formatter:getPlistEncodeFunction('Reserved')},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_UEFI_ReservedMemory = jQuery('#gridtable_UEFI_ReservedMemory');
@@ -515,12 +522,12 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width , heigh
 	objGridTable.jqGrid('setGridWidth', width );
 	//行拖动功能
 	objGridTable.jqGrid('sortableRows', {
-		items : '.jqgrow:not(.unsortable)',
-		update : function() {
+		items : '.jqgrow:not(.unsortable)'
+		//update : function() {
 			//记录哪些表格被拖动过
-			GLOBAL_ARRAY_TABLE[2][objGridTable.attr('id').slice(10)] = true;
+			//GLOBAL_ARRAY_TABLE[2][objGridTable.attr('id').slice(10)] = true;
 			
-		}
+		//}
 	});
 
 	//窗口拉动

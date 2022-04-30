@@ -166,7 +166,20 @@ const SYSTEM_TIPS = {
         },
         Serial:{
             Init:'NO 执行串口初始化',
-            Override:'NO 覆盖串行端口属性。 当此选项设置为 NO 时，自定义的键将不会被覆盖'
+            Override:'NO 覆盖串行端口属性。 当此选项设置为 NO 时，自定义的键将不会被覆盖',
+            Custom:{
+                BaudRate:'设置串行端口的波特率',
+                ClockRate:'设置串行端口的时钟频率',
+                ExtendedTxFifoSize:'设置串行端口的扩展传输FIFO大小',
+                FifoControl:'配置串行端口FIFO控制设置',
+                LineControl:'配置串行端口线路控制设置',
+                PciDeviceInfo:'设置PCI串行设备信息',
+                RegisterAccessWidth:'设置串行端口寄存器访问宽度',
+                RegisterBase:'设置串行端口寄存器的基址',
+                RegisterStride:'以字节为单位设置串行端口寄存器跨距',
+                UseHardwareFlowControl:'NO 启用串行端口硬件流控制',
+                UseMmio:'NO 指示串行端口寄存器是否在MMIO空间中'
+            }
         }
 
     },

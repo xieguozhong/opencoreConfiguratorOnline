@@ -160,9 +160,6 @@ function getMisc() {
 
 	//2 Boot
 	miscContext += '<key>Boot</key><dict>';
-
-
-
 	miscContext += '<key>ConsoleAttributes</key><integer>' + toNumber(VUEAPP.Misc.Boot['ConsoleAttributes']) + '</integer>';
 	miscContext += '<key>HibernateMode</key>' + addCharstring(VUEAPP.Misc.Boot['HibernateMode']);
 
@@ -221,8 +218,22 @@ function getMisc() {
 	miscContext += '<key>Init</key>' + toBoolStringStrict(VUEAPP.Misc.Serial['Init']);
 	miscContext += '<key>Override</key>' + toBoolStringStrict(VUEAPP.Misc.Serial['Override']);
 
+	//Serial.Custom
+	miscContext += '<key>Custom</key><dict>';
+	miscContext += '<key>BaudRate</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['BaudRate']) + '</integer>';
+	miscContext += '<key>ClockRate</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['ClockRate']) + '</integer>';
+	miscContext += '<key>ExtendedTxFifoSize</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['ExtendedTxFifoSize']) + '</integer>';
+	miscContext += '<key>FifoControl</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['FifoControl']) + '</integer>';
+	miscContext += '<key>LineControl</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['LineControl']) + '</integer>';
+	miscContext += '<key>PciDeviceInfo</key><data>' + hextoBase64(VUEAPP.Misc.Serial.Custom['PciDeviceInfo']) + '</data>';
+	miscContext += '<key>RegisterAccessWidth</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['RegisterAccessWidth']) + '</integer>';
+	miscContext += '<key>RegisterBase</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['RegisterBase']) + '</integer>';
+	miscContext += '<key>RegisterStride</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['RegisterStride']) + '</integer>';
+	miscContext += '<key>UseHardwareFlowControl</key>' + toBoolStringStrict(VUEAPP.Misc.Serial.Custom['UseHardwareFlowControl']);
+	miscContext += '<key>UseMmio</key>' + toBoolStringStrict(VUEAPP.Misc.Serial.Custom['UseMmio']);
+
 	//6 Tools
-	miscContext += '</dict><key>Tools</key>';
+	miscContext += '</dict></dict><key>Tools</key>';
 	miscContext += genArrayDict('Misc_Tools', VUEAPP.Misc.Tools);
 
 
@@ -333,6 +344,7 @@ function getUEFI() {
 	// Audio
 	uefiContext += '<key>Audio</key><dict>';
 	let AudioDataType = {AudioCodec:'integer',AudioOutMask:'integer',MaximumGain:'integer',MinimumAssistGain:'integer',MinimumAudibleGain:'integer',SetupDelay:'integer'};
+	//consolelog(VUEAPP.UEFI.Audio);
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.Audio, AudioDataType);
 	uefiContext += '</dict>';
 
@@ -605,12 +617,15 @@ function genArrayDict(tablekey, arrayDictData, dataFileds, intFileds) {
 	if(intFileds === undefined) intFileds =[];
 
 
-	if(GLOBAL_ARRAY_TABLE[2][tablekey] === true) {
-		//consolelog(tablekey + '要替换');
-		//为了实现拖动行功能，这里把VUE里面的数据覆盖一遍前台的数据，按前台的顺序来
-		let currentTableData = GLOBAL_ARRAY_TABLE[0][tablekey].jqGrid('getRowData');
-		arrayDictData = rewriteData(currentTableData, arrayDictData);
-	}
+	// if(GLOBAL_ARRAY_TABLE[2][tablekey] === true) {
+	// 	//consolelog(tablekey + '要替换');
+	// 	//为了实现拖动行功能，这里把VUE里面的数据覆盖一遍前台的数据，按前台的顺序来
+	// 	let currentTableData = GLOBAL_ARRAY_TABLE[0][tablekey].jqGrid('getRowData');
+	// 	arrayDictData = rewriteData(currentTableData, arrayDictData);
+	// }
+
+	let currentTableData = GLOBAL_ARRAY_TABLE[0][tablekey].jqGrid('getRowData');
+	arrayDictData = rewriteData(currentTableData, arrayDictData);
 
 	
 
@@ -701,12 +716,15 @@ function rewriteData(leftdata, rightdata) {
 //用在左右两边表格的地方
 function getRewriteLRData(tablekey, rightdata) {
 	//替换数据前先看看表格有没有被拖动，没有拖动就不替换
-	if(GLOBAL_ARRAY_TABLE[2][tablekey] === true) {
+	// if(GLOBAL_ARRAY_TABLE[2][tablekey] === true) {
 		
-		let currentTableData = GLOBAL_ARRAY_TABLE[1][tablekey].jqGrid('getRowData');
-		return rewriteData(currentTableData, rightdata)
-	} else {
-		return rightdata;
-	}
+	// 	let currentTableData = GLOBAL_ARRAY_TABLE[1][tablekey].jqGrid('getRowData');
+	// 	return rewriteData(currentTableData, rightdata);
+	// } else {
+	// 	return rightdata;
+	// }
+
+	let currentTableData = GLOBAL_ARRAY_TABLE[1][tablekey].jqGrid('getRowData');
+	return rewriteData(currentTableData, rightdata);
 	
 }
