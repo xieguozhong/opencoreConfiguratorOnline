@@ -24,7 +24,7 @@ function formatInteger(cellvalue) {
 //['HfsPlus.efi','ApfsDriverLoader.efi','FwRuntimeServices.efi']
 // 返回一个基本值数组
 function parsePlistArray2stringArray(context) {
-    if(context === '') return [];
+    if(undefined === context || context === '') return [];
     let idx1=0, idx2=0, idx3=0, key='', rarray=[];
     while(true) {
 
@@ -66,7 +66,7 @@ function partrue(boolvalue) {
 返回数组 ['PciRoot(0x0)/Pci(0x1b,0x0)', 'PciRoot(0x0)/Pci(0x1b,0x2)']
 **/
 function getKeyarrayZIkey(context) {
-    if(context === '') return [];
+    if(undefined === context || context === '') return [];
 
     let idx0=0,idx1=0,rarray=[];
 
@@ -96,7 +96,7 @@ function getKeyarrayZIkey(context) {
 返回对象数组 [{pid:0,Volume:'MaximumBootBeepVolume'}, {pid:1,Volume:'MinimumBootBeepVolume'}, {pid:1, Volume:'MaximumBootBeepVolume'}]
 **/
 function getKeyarrayZIarray(context) {
-    if(context === '') return [];
+    if(undefined === context || context === '') return [];
 
     let idx0=0,idx1=0,rarray=[],pid=0;
 
@@ -137,7 +137,7 @@ function getKeyarrayZIarray(context) {
 返回 ['PciRoot(0x0)/Pci(0x1b,0x0)', 'PciRoot(0x0)/Pci(0x2,0x0)']
 **/
 function getParentKeys(context) {
-    if(context === '') return [];
+    if(undefined === context || context === '') return [];
 
     let idx1 = 0, idx2 = 0, idx3 = 0, key = '', rarray = [];
     while(true) {
@@ -170,7 +170,7 @@ function getParentKeys(context) {
 返回 [{layout-id:'AQAAAA==', name:'guozzzz'}, {AAPL,ig-platform-id:'aaaa=='}]
 **/
 function getSubKeys(context) {
-    if(context === '') return [];
+    if(undefined === context || context === '') return [];
 
     let idx1 = 0, idx2 = 0, rarray = [],pid = 0;
 
@@ -190,8 +190,8 @@ function getSubKeys(context) {
 //把一个plist的array变成js中的array
 //只适用于array下是一个dcit
 function parrayToJSarray(context) {
-    if(context === '') return [];
-
+    if(undefined === context || context === '') return [];
+    
     let rarray = [], idx1 = 0, idx2 = 0, dicttext = '';
     while(true) {
         idx1 = context.indexOf('<dict>', idx2);
@@ -213,7 +213,7 @@ function parrayToJSarray(context) {
 // 转成 {name:'xieguozhong', sex:'F'}
 // 只返回一个对象
 function pdictToJSobject(context) {
-    if(context === '') return {};
+    if(undefined === context || context === '') return {};
     let robj = {};
     let idx1 = 0, idx2 = 0, key='', value = '';
     while(true) {
@@ -232,7 +232,7 @@ function pdictToJSobject(context) {
 //转成 {key:'name', value:'xieguozhong'}
 //
 function pdictToJSobjectKV(context, pid, rarray) {
-    if(context === '') return [];
+    if(undefined === context || context === '') return [];
     let idx1 = 0, idx2 = 0, idx3 = 0, idx4 = 0, key='', value = '', vtype = '';
     while(true) {
     	let item = {};
@@ -493,10 +493,26 @@ function toBoolStringStrict(strbool) {
     }
 }
 
+function getPlistEncodeFunction(defaultvalue) {
+    return function(context) {
+
+        if(context === undefined || context === '') {
+            return defaultvalue;
+        } else {
+            if(typeof(context) === 'string') {
+                return context.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            } else {
+                return context;
+            }
+
+        }
+    }
+}
+
 //编码特殊字符<和>
 function plistEncode(context) {
 
-    if(context === '' || context === undefined) {
+    if(context === undefined || context === '') {
         return '';
     } else {
         if(typeof(context) === 'string') {
@@ -589,5 +605,5 @@ function getJqgridObjectbyKey(tbkey) {
 }
 
 function consolelog(msg) {
-    //console.log(msg);
+    console.log(msg);
 }

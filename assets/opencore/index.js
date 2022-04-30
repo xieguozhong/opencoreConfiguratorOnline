@@ -55,7 +55,7 @@ $(document).ready(function() {
 });
 
 function addFile(fileid) {
-    //console.log(fileid)
+    
     let file = document.getElementById(fileid), files;
     let thetablename,thetable;
     if(fileid === "File_ACPI_Add") {
@@ -392,7 +392,7 @@ let VUEAPP = new Vue({
             Block:[],
             Patch:[],
             Emulate:{Cpuid1Data:'',Cpuid1Mask:'', MaxKernel:'', MinKernel:'',DummyPowerManagement:false},
-            Scheme:{KernelArch:'',KernelCache:'',CustomKernel:false,FuzzyMatch:false},
+            Scheme:{KernelArch:'Auto',KernelCache:'Auto',CustomKernel:false,FuzzyMatch:false},
             Force:[],
             Quirks:{
                 
@@ -422,7 +422,10 @@ let VUEAPP = new Vue({
             Entries:[],
             Tools:[],
             Serial:{
-                Init:false,Override:false
+                Init:false,Override:false,
+                Custom:{BaudRate:115200,ClockRate:1843200,ExtendedTxFifoSize:64,FifoControl:7,LineControl:7,PciDeviceInfo:'',RegisterAccessWidth:8,RegisterBase:1016,
+                RegisterStride:1,UseHardwareFlowControl:false,UseMmio:false
+                }
             }
         },
         NVRAM:{
@@ -472,8 +475,8 @@ let VUEAPP = new Vue({
 				EnableJumpstart:false, GlobalConnect:false, HideVerbose:false, JumpstartHotPlug:false, MinDate:0, MinVersion:0
 			},
             AppleInput:{
-                AppleEvent:'',CustomDelays:'',GraphicsInputMirroring:false,KeyInitialDelay:0,KeySubsequentDelay:5,PointerPollMask:-1,
-                PointerPollMax:0,PointerPollMin:0,PointerSpeedDiv:1,PointerSpeedMul:0
+                AppleEvent:'Auto',CustomDelays:false,GraphicsInputMirroring:false,KeyInitialDelay:50,KeySubsequentDelay:5,PointerPollMask:-1,
+                PointerPollMax:0,PointerPollMin:0,PointerSpeedDiv:1,PointerSpeedMul:1
             },
 			Audio:{
 				AudioCodec:0, AudioDevice:'', AudioOutMask:-1,AudioSupport:false,DisconnectHda:false,MaximumGain:-15,MinimumAssistGain:-30,MinimumAudibleGain:-128,
@@ -558,15 +561,22 @@ let VUEAPP = new Vue({
         // 初始化所有表格
         , initAllData:function () {
             GLOBAL_ARRAY_TABLE[2] = {};
+            consolelog("initACPI");
             this.initACPI();
             this.setRoot('ACPI');
-
+            consolelog("initBooter");
             this.initBooter();
+            consolelog("initDeviceProperties");
             this.initDeviceProperties();
+            consolelog("initKernel");
             this.initKernel();
+            consolelog("initMisc");
             this.initMisc();
+            consolelog("initNVRAM");
             this.initNVRAM();
+            consolelog("initPlatformInfo");
             this.initPlatformInfo();
+            consolelog("initUEFI");
             this.initUEFI();
 
             this.plistcontext = '';
@@ -579,8 +589,7 @@ let VUEAPP = new Vue({
             }
             let dataType = '', gbvabknvalue;
             for(let it in vueData) {
-                dataType = typeof(vueData[it]);
-                
+                dataType = typeof(vueData[it]);        
                 if(dataType === "boolean") {
                     Vue.set(vueData, it, partrue(getValuesByKeyname(context, it)));
                 } else if(dataType === "object"){
@@ -589,7 +598,7 @@ let VUEAPP = new Vue({
                     gbvabknvalue = getValuesByKeyname(context, it);
                     
                     if(gbvabknvalue !== undefined) {
-                        Vue.set(vueData, it, gbvabknvalue);
+                        Vue.set(vueData, it, String(gbvabknvalue));
                     }
                     
                 }
@@ -691,7 +700,7 @@ let VUEAPP = new Vue({
                     break;
                 }
                 this.UEFI.Drivers.push({ Path:arrayDrivers[i]['Volume'],Arguments:'',Enabled:true}) ;
-                console.log(arrayDrivers[i]['Volume']);
+                
             }
             if(shenji72to73 === true) {
                 getJqgridObjectbyKey("UEFI_Drivers").trigger("reloadGrid");
@@ -710,8 +719,23 @@ let VUEAPP = new Vue({
             this.getAndSetDictItem(AppleInputText, this.UEFI.AppleInput);
 
             //Audio
-            let AudioText = getValuesByKeyname(UEFIText, 'Audio');
+            let AudioText = getValuesByKeyname(UEFIText, 'Audio');            
             this.getAndSetDictItem(AudioText, this.UEFI.Audio);
+            //处理一下PlayChime
+            switch(this.UEFI.Audio['PlayChime']) {
+            case 'true':
+                this.UEFI.Audio['PlayChime'] = 'Enabled';
+                break;
+            case 'false':
+                this.UEFI.Audio['PlayChime'] = 'Disabled';
+                break;
+            case '':
+                this.UEFI.Audio['PlayChime'] = 'Auto';
+                break;
+            }
+
+
+            
 
             //Input
             let InputText = getValuesByKeyname(UEFIText, 'Input');
@@ -799,12 +823,18 @@ let VUEAPP = new Vue({
             //Serial
             let SerialText = getValuesByKeyname(MiscText, 'Serial');
             this.getAndSetDictItem(SerialText, this.Misc.Serial);
+
+            //Serial.Custom
+            let CustomText = getValuesByKeyname(SerialText, 'Custom');
+            this.getAndSetDictItem(CustomText, this.Misc.Serial.Custom);
+            //consolelog(CustomText);
         }
 
 
 
         , initKernel:function () {
             let text = getValuesByKeyname(VUEAPP.plistcontext, 'Kernel', true);
+            //consolelog(this.Kernel.Add);
             this.getPlistAndResetTableData(text, 'Add', 'Kernel_Add', this.Kernel.Add);
             this.getPlistAndResetTableData(text, 'Block', 'Kernel_Block', this.Kernel.Block);
             this.getPlistAndResetTableData(text, 'Patch', 'Kernel_Patch', this.Kernel.Patch);
@@ -902,9 +932,12 @@ let VUEAPP = new Vue({
 
             let arrayAdd = parrayToJSarray(getValuesByKeyname(context, keyname));
             gridData.length = 0;
+
             for(let it in arrayAdd) {
                 gridData.push(arrayAdd[it]);
             }
+            
+            
             getJqgridObjectbyKey(gridkey).trigger("reloadGrid");
         }
 
