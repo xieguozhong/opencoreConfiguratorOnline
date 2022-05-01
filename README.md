@@ -1,6 +1,9 @@
 # opencoreConfiguratorOnline
 
 
+适配版本: OpenCore-0.8.0-RELEASE
+
+
 gitee版更新： https://gitee.com/galada/OpenCoreConfiguratorOnline
 
 
