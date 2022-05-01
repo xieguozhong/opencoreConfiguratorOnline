@@ -70,11 +70,11 @@ function initGridTableACPI() {
 function initGridTableMisc() {
 	let colNames = ['Arguments','Comment','Name','Flavour','Path','TextMode','Auxiliary','Enabled'];
 	let colModel = [
-		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Arguments',index:'Arguments', width:100,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Comment',index:'Comment', width:130,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Name',index:'Name', width:100,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'Flavour',index:'Flavour', width:100,editable: true,  sortable:false, formatter:getPlistEncodeFunction('Auto')},
-		{name:'Path',index:'Path', width:400,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Flavour',index:'Flavour', width:80,editable: true,  sortable:false, formatter:getPlistEncodeFunction('Auto')},
+		{name:'Path',index:'Path', width:410,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'TextMode',index:'TextMode', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'Auxiliary',index:'Auxiliary', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
@@ -189,8 +189,8 @@ function initGridTableBooter() {
 	//MmioWhitelist
 	let colNames = ['Address', 'Comment','Enabled'];
 	let colModel = [
-		{name:'Address',index:'Address', width:150,editable: true, sortable:false, formatter:formatInteger},
-		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Address',index:'Address', width:100,editable: true, sortable:false, formatter:formatInteger},
+		{name:'Comment',index:'Comment', width:200,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 
@@ -228,13 +228,12 @@ function initGridTableKernel() {
 	let colNames = ['Arch','BundlePath', 'Comment','ExecutablePath','PlistPath','MaxKernel','MinKernel','Enabled'];
 	let colModel = [
 		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
-		{name:'BundlePath',index:'BundlePath', width:150,editable: true, sortable:false, formatter:plistEncode},
-		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'ExecutablePath',index:'ExecutablePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		
-		{name:'PlistPath',index:'PlistPath', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'MaxKernel',index:'MaxKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'MinKernel',index:'MinKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'BundlePath',index:'BundlePath', width:170,editable: true, sortable:false, formatter:plistEncode},
+		{name:'Comment',index:'Comment', width:160,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'ExecutablePath',index:'ExecutablePath', width:180,editable: true,  sortable:false, formatter:plistEncode},		
+		{name:'PlistPath',index:'PlistPath', width:130,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MaxKernel',index:'MaxKernel', width:80,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MinKernel',index:'MinKernel', width:80,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Kernel_Add = jQuery('#gridtable_Kernel_Add');
@@ -245,12 +244,12 @@ function initGridTableKernel() {
 	//Block
 	colNames = ['Arch','Comment','Identifier', 'MaxKernel','MinKernel','Strategy','Enabled'];
 	colModel = [
-		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
-		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'MaxKernel',index:'MaxKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'MinKernel',index:'MinKernel', width:150,editable: true,  sortable:false, formatter:plistEncode},
-		{name:'Strategy',index:'Strategy', width:150,editable: true,  sortable:false, edittype:'select', editoptions:{value:{Disable:'Disable',Exclude:'Exclude'}},formatter:getPlistEncodeFunction('Disable')},
+		{name:'Arch',index:'Arch', width:70,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
+		{name:'Comment',index:'Comment', width:170,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Identifier',index:'Identifier', width:180,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MaxKernel',index:'MaxKernel', width:80,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'MinKernel',index:'MinKernel', width:80,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'Strategy',index:'Strategy', width:100,editable: true,  sortable:false, edittype:'select', align:'center',editoptions:{value:{Disable:'Disable',Exclude:'Exclude'}},formatter:getPlistEncodeFunction('Disable')},
 		{name:'Enabled',index:'Enabled', width:70, editable: true, edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_Kernel_Block = jQuery('#gridtable_Kernel_Block');

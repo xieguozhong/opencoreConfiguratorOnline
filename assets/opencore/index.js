@@ -247,11 +247,7 @@ function bindAllButton() {
 
         });
 
-        
-
     }
-
-
 
 
 }
@@ -336,7 +332,7 @@ function addkexts(kext) {
         if(allKext[i][0] === kext.value) {
 
             thetable.jqGrid('addRowData', MAXROWID++, {
-                Arch:'x86_64',
+                Arch:'Any',
                 BundlePath:allKext[i][1],
                 Comment:'',
                 Enabled:"YES",
@@ -904,7 +900,6 @@ let VUEAPP = new Vue({
             let text = getValuesByKeyname(VUEAPP.plistcontext, 'Booter', true);
             
             this.getPlistAndResetTableData(text, 'Patch', 'Booter_Patch', this.Booter.Patch);
-
             
             this.getPlistAndResetTableData(text, 'MmioWhitelist', 'Booter_MmioWhitelist', this.Booter.MmioWhitelist);
 
