@@ -607,3 +607,19 @@ function getJqgridObjectbyKey(tbkey) {
 function consolelog(msg) {
     console.log(msg);
 }
+
+//生产UUID
+function uuid() {
+  let temp_url = URL.createObjectURL(new Blob());
+  let uuid = temp_url.toString();
+  URL.revokeObjectURL(temp_url);
+  return uuid.substr(uuid.lastIndexOf("/") + 1).toUpperCase();
+}
+
+function btnSystemUUIDclick() {
+    VUEAPP.PlatformInfo.Generic.SystemUUID = uuid();
+}
+
+function btnromclick() {
+    VUEAPP.PlatformInfo.Generic.ROM = uuid().split('-')[4];
+}

@@ -1233,24 +1233,26 @@
                                     	<div id="tabbable_PlatformInfo_Generic" class="tab-pane fade in active" style="padding-bottom: 5px;">
                                             <div class="well">
 				                                <div class="row">
+				                                	<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemProductName">
+			                                        	SystemProductName<a id="btnradiobox_PlatformInfo_Generic_SystemProductName" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
+													</div>
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.MLB">
-													MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
-													</div>
-													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ROM">
-													ROM<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
-													</div>
-													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemProductName">
-													SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
-													</div>
+														MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
+													</div>	
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemSerialNumber">
-													SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
+														SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
 													</div>
 				                                
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemUUID">
-														SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
+														SystemUUID<a style="text-decoration:none" v-on:click="btnSystemUUIDclick()">&nbsp;<img src="assets/opencore/png/generate.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
+													</div>
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ROM">
+														ROM<a style="text-decoration:none" v-on:click="btnromclick()">&nbsp;<img src="assets/opencore/png/generate.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
 													</div>
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ProcessorType">
-													ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.Generic.ProcessorType">
+														ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.Generic.ProcessorType">
 													</div>
 													
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemMemoryStatus">
