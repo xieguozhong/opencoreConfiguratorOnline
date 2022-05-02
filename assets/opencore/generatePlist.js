@@ -219,21 +219,25 @@ function getMisc() {
 	miscContext += '<key>Override</key>' + toBoolStringStrict(VUEAPP.Misc.Serial['Override']);
 
 	//Serial.Custom
-	miscContext += '<key>Custom</key><dict>';
-	miscContext += '<key>BaudRate</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['BaudRate']) + '</integer>';
-	miscContext += '<key>ClockRate</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['ClockRate']) + '</integer>';
-	miscContext += '<key>ExtendedTxFifoSize</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['ExtendedTxFifoSize']) + '</integer>';
-	miscContext += '<key>FifoControl</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['FifoControl']) + '</integer>';
-	miscContext += '<key>LineControl</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['LineControl']) + '</integer>';
-	miscContext += '<key>PciDeviceInfo</key><data>' + hextoBase64(VUEAPP.Misc.Serial.Custom['PciDeviceInfo']) + '</data>';
-	miscContext += '<key>RegisterAccessWidth</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['RegisterAccessWidth']) + '</integer>';
-	miscContext += '<key>RegisterBase</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['RegisterBase']) + '</integer>';
-	miscContext += '<key>RegisterStride</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['RegisterStride']) + '</integer>';
-	miscContext += '<key>UseHardwareFlowControl</key>' + toBoolStringStrict(VUEAPP.Misc.Serial.Custom['UseHardwareFlowControl']);
-	miscContext += '<key>UseMmio</key>' + toBoolStringStrict(VUEAPP.Misc.Serial.Custom['UseMmio']);
+	if(VUEAPP.Misc.Serial['Override'] === true) {
+		miscContext += '<key>Custom</key><dict>';
+		miscContext += '<key>BaudRate</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['BaudRate']) + '</integer>';
+		miscContext += '<key>ClockRate</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['ClockRate']) + '</integer>';
+		miscContext += '<key>ExtendedTxFifoSize</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['ExtendedTxFifoSize']) + '</integer>';
+		miscContext += '<key>FifoControl</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['FifoControl']) + '</integer>';
+		miscContext += '<key>LineControl</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['LineControl']) + '</integer>';
+		miscContext += '<key>PciDeviceInfo</key><data>' + hextoBase64(VUEAPP.Misc.Serial.Custom['PciDeviceInfo']) + '</data>';
+		miscContext += '<key>RegisterAccessWidth</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['RegisterAccessWidth']) + '</integer>';
+		miscContext += '<key>RegisterBase</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['RegisterBase']) + '</integer>';
+		miscContext += '<key>RegisterStride</key><integer>' + toNumber(VUEAPP.Misc.Serial.Custom['RegisterStride']) + '</integer>';
+		miscContext += '<key>UseHardwareFlowControl</key>' + toBoolStringStrict(VUEAPP.Misc.Serial.Custom['UseHardwareFlowControl']);
+		miscContext += '<key>UseMmio</key>' + toBoolStringStrict(VUEAPP.Misc.Serial.Custom['UseMmio']);
+		miscContext += '</dict>';
+	}
+	
 
 	//6 Tools
-	miscContext += '</dict></dict><key>Tools</key>';
+	miscContext += '</dict><key>Tools</key>';
 	miscContext += genArrayDict('Misc_Tools', VUEAPP.Misc.Tools);
 
 
@@ -425,29 +429,31 @@ function getDeviceVolumeData(leftData, rightData) {
 }
 
 function getSubDeviceVolumeData(pid, rightData) {
-	let strreturn = '';
-	//consolelog(rightData);
+	let strreturn = '',rightDataType = '';
+	
 	for(let it in rightData) {
 		if(rightData[it]['pid'] == pid) {  //<string>MaximumBootBeepVolume</string>
 
 			if(rightData[it].Volume === undefined) {
 				showTipModal(VUEAPP.lang.DeviceError, 'warning');
 			}
-
-			if(rightData[it].Type === 'data') {
-				strreturn += '<data>' + hextoBase64(rightData[it].Volume) + '</data>';
-			}
-			//如果是BOOL, 转成<true/>或者 <false/>
-			else if(rightData[it].Type === 'bool') {
-				strreturn += toBoolString(rightData[it].Volume);
-			} else if(rightData[it].Type === 'integer' ) {
-				strreturn += '<integer>' + toNumber(rightData[it].Value) + '</integer>';
-			} else if(rightData[it].Type === 'real') {
-				strreturn += '<real>' + toNumber(rightData[it].Value) + '</real>';
-			}
-			//如果是其他就直接用数据类型包裹值
-			else {
-				strreturn += '<' + rightData[it].Type + '>' + plistEncode(rightData[it].Volume) + '</' + rightData[it].Type + '>';
+			
+			rightDataType = rightData[it].Type;
+			switch(rightDataType) {
+				case 'data':
+					strreturn += '<data>' + hextoBase64(rightData[it].Volume) + '</data>';
+					break;
+				case 'bool':  //如果是bool, 转成<true/>或者 <false/>
+					strreturn += toBoolString(rightData[it].Volume);
+					break;
+				case 'integer':
+					strreturn += '<integer>' + toNumber(rightData[it].Value) + '</integer>';
+					break;
+				case 'real':
+					strreturn += '<real>' + toNumber(rightData[it].Value) + '</real>';
+					break;
+				default: //如果是其他就直接用数据类型包裹值
+					strreturn += '<' + rightDataType + '>' + plistEncode(rightData[it].Volume) + '</' + rightDataType + '>';
 			}
 
 		}
@@ -464,7 +470,7 @@ function getSubDeviceVolumeData(pid, rightData) {
 function getStringorboolorinterger(theData, dataType) {
 	if(dataType === undefined) dataType = {};
 
-	let strreturn = "", vueitDatatype;
+	let strreturn = "", vueitDatatype = '', itDataType = '';
 
 	for(let it in theData) {
 
@@ -479,7 +485,7 @@ function getStringorboolorinterger(theData, dataType) {
 		if(vueitDatatype === 'boolean') {
 			strreturn += (theData[it] === true ? '<true/>' : '<false/>');
 		} else {
-			let itDataType = dataType[it];
+			itDataType = dataType[it];
 			switch(itDataType) {
 				case 'data':
 					strreturn += '<data>' + hextoBase64(theData[it]) + '</data>';
@@ -536,23 +542,25 @@ function getSubDeviceData(pid, rightData) {
 
 			subcontext += addKey(rightData[i].Key);
 
-			//如果数据类型是DATA, 转成BASE64
 			rightDataType = rightData[i].Type;
-			if(rightDataType === 'data') {
-				subcontext += '<data>' + hextoBase64(rightData[i].Value) + '</data>';
+
+			switch(rightDataType) {
+				case 'data':
+					subcontext += '<data>' + hextoBase64(rightData[i].Value) + '</data>';
+					break;
+				case 'bool':
+					subcontext += toBoolString(rightData[i].Value);
+					break;
+				case 'integer':
+					subcontext += '<integer>' + toNumber(rightData[i].Value) + '</integer>';
+					break;
+				case 'real':
+					subcontext += '<real>' + toNumber(rightData[i].Value) + '</real>';
+					break;
+				default:
+					subcontext += '<' + rightDataType + '>' + plistEncode(rightData[i].Value) + '</' + rightDataType + '>';
 			}
-			//如果是BOOL, 转成<true/>或者 <false/>
-			else if(rightDataType === 'bool') {
-				subcontext += toBoolString(rightData[i].Value);
-			} else if(rightDataType === 'integer' ) {
-				subcontext += '<integer>' + toNumber(rightData[i].Value) + '</integer>';
-			} else if(rightDataType === 'real') {
-				subcontext += '<real>' + toNumber(rightData[i].Value) + '</real>';
-			}
-			//如果是其他就直接用数据类型包裹值
-			else {
-				subcontext += '<' + rightDataType + '>' + plistEncode(rightData[i].Value) + '</' + rightDataType + '>';
-			}
+
 		}
 	}
 

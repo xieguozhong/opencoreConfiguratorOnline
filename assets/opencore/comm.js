@@ -1,5 +1,6 @@
 function enabledFormat(cellvalue) {
     if(cellvalue === true || cellvalue === 'true' || cellvalue === 'YES') {
+
         return 'YES';
     } else {
         return 'NO';
@@ -24,7 +25,9 @@ function formatInteger(cellvalue) {
 //['HfsPlus.efi','ApfsDriverLoader.efi','FwRuntimeServices.efi']
 // 返回一个基本值数组
 function parsePlistArray2stringArray(context) {
-    if(undefined === context || context === '') return [];
+    if(undefined === context || context === '') {
+        return [];
+    }
     let idx1=0, idx2=0, idx3=0, key='', rarray=[];
     while(true) {
 
@@ -190,8 +193,9 @@ function getSubKeys(context) {
 //把一个plist的array变成js中的array
 //只适用于array下是一个dcit
 function parrayToJSarray(context) {
-    if(undefined === context || context === '') return [];
-    
+    if(undefined === context || context === '') {
+        return [];
+    }
     let rarray = [], idx1 = 0, idx2 = 0, dicttext = '';
     while(true) {
         idx1 = context.indexOf('<dict>', idx2);
@@ -273,6 +277,7 @@ function pdictToJSobjectKV(context, pid, rarray) {
 function getValuesByKeyname(context, keyname, istop) {
     
     if(context === undefined || context === '') {
+        //consolelog(typeof(context));
         return '';
     }
     keyname = '<key>' + keyname + '</key>';
@@ -496,7 +501,7 @@ function toBoolStringStrict(strbool) {
 function getPlistEncodeFunction(defaultvalue) {
     return function(context) {
 
-        if(context === undefined || context === '') {
+        if(context === '' || context === undefined) {
             return defaultvalue;
         } else {
             if(typeof(context) === 'string') {
@@ -512,7 +517,8 @@ function getPlistEncodeFunction(defaultvalue) {
 //编码特殊字符<和>
 function plistEncode(context) {
 
-    if(context === undefined || context === '') {
+    if(context === '' || context === undefined) {
+
         return '';
     } else {
         if(typeof(context) === 'string') {

@@ -322,6 +322,7 @@ function addkexts(kext) {
         ['AHCI_Intel_Generic_SATA.kext','AHCI_Intel_Generic_SATA.kext','','Contents/Info.plist'],
         ['XHCI-unsupported.kext','XHCI-unsupported.kext','','Contents/Info.plist'],
         ['CodecCommander.kext','CodecCommander.kext','Contents/MacOS/CodecCommander','Contents/Info.plist'],
+        ['NVMeFix.kext','NVMeFix.kext','Contents/MacOS/NVMeFix','Contents/Info.plist'],
         ['SystemProfilerMemoryFixup.kext','SystemProfilerMemoryFixup.kext','Contents/MacOS/SystemProfilerMemoryFixup','Contents/Info.plist']
         ];
 
@@ -419,7 +420,7 @@ let VUEAPP = new Vue({
             Tools:[],
             Serial:{
                 Init:false,Override:false,
-                Custom:{BaudRate:115200,ClockRate:1843200,ExtendedTxFifoSize:64,FifoControl:7,LineControl:7,PciDeviceInfo:'',RegisterAccessWidth:8,RegisterBase:1016,
+                Custom:{BaudRate:115200,ClockRate:1843200,ExtendedTxFifoSize:64,FifoControl:7,LineControl:7,PciDeviceInfo:'FF',RegisterAccessWidth:8,RegisterBase:1016,
                 RegisterStride:1,UseHardwareFlowControl:false,UseMmio:false
                 }
             }
@@ -581,6 +582,7 @@ let VUEAPP = new Vue({
         // 获取并设置dict的值和bool值
         , getAndSetDictItem(context, vueData) {
             if(context === undefined || context === "") {
+                
                 return;
             }
             let dataType = '', gbvabknvalue;
