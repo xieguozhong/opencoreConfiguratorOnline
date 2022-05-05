@@ -2,6 +2,7 @@ let GLOBAL_TABLE_WIDTH = 0,  			//表格的宽度
 	GLOBAL_TABLE_HEIGHT = 0, 			//表格的高度
 	GLOBAL_TABLE_HALF_WIDTH = 0, 		//半表格的宽度
 	GLOBAL_ARRAY_TABLE=[{},{}],      	//用于存储所有初始化好的表格，0是全宽表格，1是半宽表格
+	GLOBAL_ONEDIT_TABLE=[],				//用于存储编辑中的表格名称，回车保存后会从数组中删除
 	MAXROWID = 500;						//表格点新增时的jqgrid的id起始值，如果谁的配置有500行，那么会产生bug
 
 
@@ -512,7 +513,19 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width , heigh
 		ondblClickRow : function (rowid) {
             objGridTable.jqGrid('editRow', rowid, {
                 url : 'clientArray',
-                keys : true
+                keys : true,
+                oneditfunc: function() {  //进入编辑状态
+        			GLOBAL_ONEDIT_TABLE.push(objGridTable.selector);
+    			},    			
+    			aftersavefunc:function() {  //按回车保存
+    				//consolelog("aftersavefunc--" + objGridTable.selector);
+    				removeEditTable(objGridTable.selector);
+    			},
+    			afterrestorefunc:function() {	//按Esc还原
+    				//consolelog("afterrestorefunc--" + objGridTable.selector);
+    				removeEditTable(objGridTable.selector);
+    			}
+
             });
         }
 
@@ -522,11 +535,6 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width , heigh
 	//行拖动功能
 	objGridTable.jqGrid('sortableRows', {
 		items : '.jqgrow:not(.unsortable)'
-		//update : function() {
-			//记录哪些表格被拖动过
-			//GLOBAL_ARRAY_TABLE[2][objGridTable.attr('id').slice(10)] = true;
-			
-		//}
 	});
 
 	//窗口拉动

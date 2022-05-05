@@ -557,7 +557,8 @@ let VUEAPP = new Vue({
 
         // 初始化所有表格
         , initAllData:function () {
-            GLOBAL_ARRAY_TABLE[2] = {};
+            GLOBAL_ONEDIT_TABLE = [];
+
             consolelog("initACPI");
             this.initACPI();
             this.setRoot('ACPI');
@@ -1062,8 +1063,29 @@ let VUEAPP = new Vue({
     }
 })
 
+//查看有没有表格在被编辑中
+function checkOneditTable() {
+    
+    if(GLOBAL_ONEDIT_TABLE.length > 0) {
+        
+        let tblist = "", arrittb = "";
+        for(let i=0;i<GLOBAL_ONEDIT_TABLE.length;i++) {
+            arrittb = GLOBAL_ONEDIT_TABLE[i].split('_');
+            tblist += String(i+1) + "&emsp;" + arrittb[1] + ' - ' + arrittb[2] + '<br>';
+        }
+        return fillLangString(VUEAPP.lang.editingtablemessage, tblist);
+    }
+    return "";
+}
+
+
 //保存按钮
 function savePlist() {
+    let cotstring = checkOneditTable();
+    if(cotstring !== "") {
+        toastr.error(cotstring);
+        return;
+    }
     let xmlcontext = getAllPlist();
     let blob = new Blob([xmlcontext], {type: "text/plain;charset=utf-8"});
     saveAs(blob, "config.plist");
@@ -1072,6 +1094,11 @@ function savePlist() {
 
 //复制按钮
 function copyPlist() {
+    let cotstring = checkOneditTable();
+    if(cotstring !== "") {
+        toastr.error(cotstring);
+        return;
+    }
 	let xmlcontext = getAllPlist();
 	copyDatatoClipboard(xmlcontext);
 	showTipModal(VUEAPP.lang.copyplistSuccess, 'success');

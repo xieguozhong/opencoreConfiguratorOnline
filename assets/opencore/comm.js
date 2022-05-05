@@ -629,3 +629,11 @@ function btnSystemUUIDclick() {
 function btnromclick() {
     VUEAPP.PlatformInfo.Generic.ROM = uuid().split('-')[4];
 }
+
+//从GLOBAL_ONEDIT_TABLE数组中移除指定的表格名称
+function removeEditTable(tbname) {
+    var index = GLOBAL_ONEDIT_TABLE.indexOf(tbname); 
+    if (index > -1) { 
+        GLOBAL_ONEDIT_TABLE.splice(index, 1); 
+    } 
+}
