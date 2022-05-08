@@ -57,7 +57,12 @@ function genACPI() {
 	acpiContext += genArrayDict('ACPI_Patch', VUEAPP.ACPI.Patch, ['Find','Mask','OemTableId','Replace','ReplaceMask','TableSignature'],['BaseSkip','Count','Limit','Skip','TableLength']);
 
 	//Quirks
-	acpiContext += '<key>Quirks</key>' + getBoolens(VUEAPP.ACPI.Quirks);
+	if(VUEAPP.configisMOD === false) {
+		acpiContext += '<key>Quirks</key>' + getBoolens(clone(VUEAPP.ACPI.Quirks,['EnableForAll']));
+	} else {
+		acpiContext += '<key>Quirks</key>' + getBoolens(VUEAPP.ACPI.Quirks);
+	}
+	
 
 
 	return acpiContext + '</dict>';
@@ -77,7 +82,12 @@ function getBooter() {
 
 	//Quirks
 	let thedt = {ProvideMaxSlide:'integer',ResizeAppleGpuBars:'integer'};
-	BooterContext += '<key>Quirks</key><dict>' + getStringorboolorinterger(VUEAPP.Booter.Quirks, thedt) + '</dict>';
+	if(VUEAPP.configisMOD === false) {
+		BooterContext += '<key>Quirks</key><dict>' + getStringorboolorinterger(clone(VUEAPP.Booter.Quirks,['EnableForAll']), thedt) + '</dict>';
+	} else {
+		BooterContext += '<key>Quirks</key><dict>' + getStringorboolorinterger(VUEAPP.Booter.Quirks, thedt) + '</dict>';
+	}
+	
 
 	return BooterContext + '</dict>';
 }
@@ -174,6 +184,9 @@ function getMisc() {
 	miscContext += '<key>PollAppleHotKeys</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['PollAppleHotKeys']);
 
 	miscContext += '<key>ShowPicker</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['ShowPicker']);
+	if(VUEAPP.configisMOD === true) {
+		miscContext += '<key>SkipCustomEntryCheck</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['SkipCustomEntryCheck']);
+	}
 	miscContext += '<key>TakeoffDelay</key><integer>' + toNumber(VUEAPP.Misc.Boot['TakeoffDelay']) + '</integer>';
 	miscContext += '<key>Timeout</key><integer>' + toNumber(VUEAPP.Misc.Boot['Timeout']) + '</integer>';
 

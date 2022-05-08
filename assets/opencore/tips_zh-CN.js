@@ -23,7 +23,8 @@ const SYSTEM_TIPS = {
             RebaseRegions:'NO 尝试试探性地重新定位 ACPI 内存区域, 除非使用了自定义 DSDT, 否则不需要',
             ResetHwSig:'NO 存在重新启动后因无法维持硬件签名而导致从休眠中唤醒的问题的硬件需要开启',
             ResetLogoStatus:'NO 无法在有 BGRT 表的系统上显示 OEM Windows 标志的硬件需要开启',
-            SyncTableIds:'NO 将表标识符与 SLIC 表同步'
+            SyncTableIds:'NO 将表标识符与 SLIC 表同步',
+            EnableForAll:'NO 是否针对全部系统(OpenCore Mod专用)'
         }
 
     },
@@ -50,7 +51,8 @@ const SYSTEM_TIPS = {
             ResizeAppleGpuBars:'-1 调整GPU PCI BAR的大小，以兼容macOS',
             SetupVirtualMap:'YES 将 SetVirtualAddresses 调用修复为虚拟地址',
             SignalAppleOS:'NO 报告通过OS Info加载的任何OS的macOS',
-            SyncRuntimePermissions:'NO 更新运行时环境的内存权限'
+            SyncRuntimePermissions:'NO 更新运行时环境的内存权限',
+            EnableForAll:'NO 是否针对全部系统(OpenCore Mod专用)'
         },
         MmioWhitelist:{
             title:''
@@ -134,7 +136,8 @@ const SYSTEM_TIPS = {
 			PickerAttributes:'0 设置选择器的特定属性',
 			PickerAudioAssist:'NO 默认情况下在启动选择器中启用屏幕阅读器',
             TakeoffDelay:'0 处理选择器启动和操作热键之前执行的延迟（以微秒为单位）',
-            ShowPicker:'YES 显示 OpenCore 的 UI, 用于查看可用引导项, 设置为 NO 可以和 PollAppleHotKeys 配合提升体验'
+            ShowPicker:'YES 显示 OpenCore 的 UI, 用于查看可用引导项, 设置为 NO 可以和 PollAppleHotKeys 配合提升体验',
+            SkipCustomEntryCheck:'NO SkipCustomEntryCheck(OpenCore Mod专用)'
         },
         Debug:{
 			AppleDebug:'NO 启用boot.efi调试日志保存到OpenCore日志',
@@ -194,6 +197,7 @@ const SYSTEM_TIPS = {
     PlatformInfo:{
         title:'用于设置 SMBIOS 机型信息',
         configisfull:'如果你打算使用的 SMBIOS 苹果已经停止支持(2011年或更早)或者你是用的是戴尔 OEM 笔记本, 那么请先勾选这里并「认真」补全所有 SMBIOS 信息, 然后再点击 下载 或者 复制 按钮',
+        configisMOD:'OpenCore MOD 修改版本',
         root:{
             UpdateSMBIOSMode:'更新SMBIOS字段方法',
             UseRawUuidEncoding:'NO 对SMBIOS UUID使用原始编码',

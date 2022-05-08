@@ -360,13 +360,15 @@ let VUEAPP = new Vue({
         current_paste_tableid:'',     //保存点击当前粘贴按钮的table id
         lang:{},                      //语言数据, 和浏览器的语言设置挂钩
         configisfull:false,           //是否full模式
-
+        configisMOD:false,             //是否OpenCore MOD版本
         ACPI:{
             Add:[],
             Delete:[],
             Patch:[] ,
             Quirks:{
-                FadtEnableReset:false, NormalizeHeaders:false, RebaseRegions:false, ResetHwSig:false, ResetLogoStatus:false,SyncTableIds:false}
+                FadtEnableReset:false, NormalizeHeaders:false, RebaseRegions:false, ResetHwSig:false, ResetLogoStatus:false,SyncTableIds:false
+                ,EnableForAll:false
+                }
             },
         Booter:{
             MmioWhitelist:[],
@@ -375,7 +377,7 @@ let VUEAPP = new Vue({
                 AllowRelocationBlock:false,AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
                 DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false,ForceBooterSignature:false, ForceExitBootServices:false, ProtectMemoryRegions:false,
                 ProtectSecureBoot:false,ProtectUefiServices:false,ProvideCustomSlide:false, ProvideMaxSlide:0, RebuildAppleMemoryMap:false,
-                ResizeAppleGpuBars:-1,SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false
+                ResizeAppleGpuBars:-1,SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false,EnableForAll:false
             }
         },
         DeviceProperties:{
@@ -405,7 +407,7 @@ let VUEAPP = new Vue({
             Boot:{
                 HibernateMode:'None', PickerMode:'Builtin', PickerVariant:'Auto', TakeoffDelay:'0',
                 Timeout:'0', HideAuxiliary:false, LauncherOption:'Disabled',LauncherPath:'Default', ConsoleAttributes:'0', 
-                PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false
+                PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false,SkipCustomEntryCheck:false
             },
             Debug: {
                 AppleDebug:false, ApplePanic:false, DisableWatchDog:false, DisplayDelay:'0', DisplayLevel:'0',LogModules:'*', SysReport:false,
@@ -918,6 +920,8 @@ let VUEAPP = new Vue({
             this.getPlistAndResetTableData(acpiText, 'Patch', 'ACPI_Patch', this.ACPI.Patch);
 
             let QuirksText = getValuesByKeyname(acpiText, 'Quirks');
+            
+            this.configisMOD = QuirksText.indexOf("<key>EnableForAll</key>") >= 0 ? true : false;
             this.getAndSetDictItem(QuirksText, this.ACPI.Quirks);
 
 

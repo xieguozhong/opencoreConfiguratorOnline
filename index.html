@@ -189,16 +189,20 @@
 							<li class="active">{{root}}</li>
 						</ul><!-- /.breadcrumb -->
 
-						<div class="nav-search" style="width:270px;margin-right: 160px" >
+						<div class="nav-search" style="width:270px;margin-right: 215px" >
 							<input type="file" disabled id="id-input-file-2" />
 						</div><!-- /.nav-search -->
                         <div class="pull-right">
 
-                            <button class="btn btn-minier btn-success" onclick="savePlist();">{{lang.down}}</button>&nbsp; &nbsp;
-                            <button class="btn btn-minier btn-success" onclick="copyPlist();">{{lang.copy}}</button>&nbsp;
-							<label class="mintip" :title="title.PlatformInfo.configisfull">
+                            <button class="btn btn-minier btn-success" onclick="savePlist();">{{lang.down}}</button>
+                            <button class="btn btn-minier btn-success" onclick="copyPlist();">{{lang.copy}}</button>
+							<label class="mintip" :title="title.PlatformInfo.configisfull" style="margin-left: 10px">
 								<input v-model="configisfull" type="checkbox" class="ace" />
 								<span class="lbl"> Custom</span>
+							</label>
+							<label class="mintip" :title="title.PlatformInfo.configisMOD" style="margin-left: 10px">
+								<input v-model="configisMOD" type="checkbox" class="ace" />
+								<span class="lbl"> MOD</span>
 							</label>
                         </div>
 					</div>
@@ -287,6 +291,10 @@
                                         <input type="checkbox" class="ace" v-model="ACPI.Quirks.SyncTableIds" />
                                         <span class="lbl"> SyncTableIds</span>
                                     </label>
+									<label v-show="configisMOD === true" class="mintip" :title="title.ACPI.Quirks.EnableForAll">
+										<input type="checkbox" class="ace" v-model="ACPI.Quirks.EnableForAll" />
+										<span class="lbl"> EnableForAll</span>
+									</label>
                                 </div>
 
                             </div>
@@ -422,6 +430,10 @@
 										<label class="mintip" :title="title.Booter.Quirks.SyncRuntimePermissions">
                                             <input type="checkbox" class="ace" v-model="Booter.Quirks.SyncRuntimePermissions" />
                                             <span class="lbl"> SyncRuntimePermissions</span>
+                                        </label>
+										<label v-show="configisMOD === true" class="mintip" :title="title.Booter.Quirks.EnableForAll">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.EnableForAll" />
+                                            <span class="lbl"> EnableForAll</span>
                                         </label>
                                     </div>
                                 </div>
@@ -910,7 +922,10 @@
 			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.ShowPicker" />
 			                                            <span class="lbl"> ShowPicker</span>
 			                                        </label>
-
+													<label v-show="configisMOD === true" class="mintip" :title="title.Misc.Boot.SkipCustomEntryCheck">
+														<input type="checkbox" class="ace" v-model="Misc.Boot.SkipCustomEntryCheck" />
+														<span class="lbl"> SkipCustomEntryCheck</span>
+													</label>
 			                                    </div>
 			                                </div>
                                         </div>

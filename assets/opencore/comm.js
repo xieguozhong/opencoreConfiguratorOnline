@@ -637,3 +637,28 @@ function removeEditTable(tbname) {
         GLOBAL_ONEDIT_TABLE.splice(index, 1); 
     } 
 }
+
+//浅拷贝一个对象,delList中是不要的属性
+function clone(target, delList) {
+    if(delList === undefined) {
+        delList = [];
+    }
+    const type = Object.prototype.toString.call(target);
+    if (type === "[object Object]") {
+        // 代表这是一个对象
+        const tempObj = {};
+        for (const key in target) {
+            if(delList.indexOf(key) >= 0) {
+                continue;
+            }
+            if (Object.hasOwnProperty.call(target, key)) {
+                // 拷贝
+                tempObj[key] = target[key];                
+            }
+        }
+        return tempObj;
+    } else if (type === "[object Array]") {
+        // 代表这是一个数组
+        return Array.prototype.slice.call(target);
+    }
+}
