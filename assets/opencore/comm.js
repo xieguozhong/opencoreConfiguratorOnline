@@ -1,6 +1,5 @@
 function enabledFormat(cellvalue) {
     if(cellvalue === true || cellvalue === 'true' || cellvalue === 'YES') {
-
         return 'YES';
     } else {
         return 'NO';
@@ -24,8 +23,8 @@ function formatInteger(cellvalue) {
 //转为
 //['HfsPlus.efi','ApfsDriverLoader.efi','FwRuntimeServices.efi']
 // 返回一个基本值数组
-function parsePlistArray2stringArray(context) {
-    if(undefined === context || context === '') {
+function parsePlistArray2stringArray(context='') {
+    if(context === '') {
         return [];
     }
     let idx1=0, idx2=0, idx3=0, key='', rarray=[];
@@ -68,8 +67,10 @@ function partrue(boolvalue) {
 </array>
 返回数组 ['PciRoot(0x0)/Pci(0x1b,0x0)', 'PciRoot(0x0)/Pci(0x1b,0x2)']
 **/
-function getKeyarrayZIkey(context) {
-    if(undefined === context || context === '') return [];
+function getKeyarrayZIkey(context='') {
+    if(context === '') {
+        return [];
+    }
 
     let idx0=0,idx1=0,rarray=[];
 
@@ -98,8 +99,10 @@ function getKeyarrayZIkey(context) {
 </array>
 返回对象数组 [{pid:0,Volume:'MaximumBootBeepVolume'}, {pid:1,Volume:'MinimumBootBeepVolume'}, {pid:1, Volume:'MaximumBootBeepVolume'}]
 **/
-function getKeyarrayZIarray(context) {
-    if(undefined === context || context === '') return [];
+function getKeyarrayZIarray(context='') {
+    if(context === '') {
+        return [];
+    }
 
     let idx0=0,idx1=0,rarray=[],pid=0;
 
@@ -139,8 +142,10 @@ function getKeyarrayZIarray(context) {
 
 返回 ['PciRoot(0x0)/Pci(0x1b,0x0)', 'PciRoot(0x0)/Pci(0x2,0x0)']
 **/
-function getParentKeys(context) {
-    if(undefined === context || context === '') return [];
+function getParentKeys(context='') {
+    if(context === '') {
+        return [];
+    }
 
     let idx1 = 0, idx2 = 0, idx3 = 0, key = '', rarray = [];
     while(true) {
@@ -172,11 +177,12 @@ function getParentKeys(context) {
 </dict>
 返回 [{layout-id:'AQAAAA==', name:'guozzzz'}, {AAPL,ig-platform-id:'aaaa=='}]
 **/
-function getSubKeys(context) {
-    if(undefined === context || context === '') return [];
+function getSubKeys(context='') {
+    if(context === '') {
+        return [];
+    }
 
     let idx1 = 0, idx2 = 0, rarray = [],pid = 0;
-
 
     while(true) {
     	idx1 = context.indexOf('</dict>', idx1);
@@ -192,10 +198,11 @@ function getSubKeys(context) {
 
 //把一个plist的array变成js中的array
 //只适用于array下是一个dcit
-function parrayToJSarray(context) {
-    if(undefined === context || context === '') {
+function parrayToJSarray(context='') {
+    if(context === '') {
         return [];
     }
+
     let rarray = [], idx1 = 0, idx2 = 0, dicttext = '';
     while(true) {
         idx1 = context.indexOf('<dict>', idx2);
@@ -216,8 +223,11 @@ function parrayToJSarray(context) {
 //     <key>sex</key><string>F</string>
 // 转成 {name:'xieguozhong', sex:'F'}
 // 只返回一个对象
-function pdictToJSobject(context) {
-    if(undefined === context || context === '') return {};
+function pdictToJSobject(context='') {
+    if(context === '') {
+        return {};
+    }
+
     let robj = {};
     let idx1 = 0, idx2 = 0, key='', value = '';
     while(true) {
@@ -235,8 +245,11 @@ function pdictToJSobject(context) {
 //把 <key>name</key><string>xieguozhong</string>
 //转成 {key:'name', value:'xieguozhong'}
 //
-function pdictToJSobjectKV(context, pid, rarray) {
-    if(undefined === context || context === '') return [];
+function pdictToJSobjectKV(context='', pid, rarray) {
+    if(context === '') {
+        return [];
+    }
+
     let idx1 = 0, idx2 = 0, idx3 = 0, idx4 = 0, key='', value = '', vtype = '';
     while(true) {
     	let item = {};
@@ -274,12 +287,12 @@ function pdictToJSobjectKV(context, pid, rarray) {
 }
 
 
-function getValuesByKeyname(context, keyname, istop) {
+function getValuesByKeyname(context='', keyname, istop) {
     
-    if(context === undefined || context === '') {
-        //consolelog(typeof(context));
+    if(context === '') {
         return '';
     }
+
     keyname = '<key>' + keyname + '</key>';
 
     if(istop === true) {
@@ -347,14 +360,15 @@ function getValuesByKeyname(context, keyname, istop) {
 }
 
 //去除 换行 tab 回车 两边空格
-function formatContext(context) {
+function formatContext(context='') {
 	context = context.replace(/[\t\r]/g,'');
-	let arrayContext = context.split('\n'), newContext = '';
+	const arrayContext = context.split('\n');
+    let len = arrayContext.length, newContext = '';
 
-	for(let i=0,len=arrayContext.length;i<len;i++) {
+	for(let i=0;i<len;i++) {
 		newContext += arrayContext[i].trim();
 	}
-
+    delete arrayContext,context;
     return newContext;
 }
 
@@ -382,8 +396,10 @@ function base64toHex(strbase64) {
 
         let orig_input = input;
         input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-        if (orig_input != input)
+        if (orig_input != input){
             showTipModal (VUEAPP.lang.CharactersOutsideWarning, 'warning');
+        }
+            
         if (input.length % 4) {
             showTipModal (VUEAPP.lang.InputlengthError, 'error');
             return "";
@@ -499,35 +515,34 @@ function toBoolStringStrict(strbool) {
 }
 
 function getPlistEncodeFunction(defaultvalue) {
-    return function(context) {
+    return function(context='') {
 
-        if(context === '' || context === undefined) {
+        if(context === '') {
             return defaultvalue;
-        } else {
-            if(typeof(context) === 'string') {
-                return context.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-            } else {
-                return context;
-            }
+        } 
 
-        }
+        if(typeof(context) === 'string') {
+            return context.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        } 
+            
+        return context;
+            
     }
 }
 
 //编码特殊字符<和>
-function plistEncode(context) {
+function plistEncode(context='') {
 
-    if(context === '' || context === undefined) {
-
+    if(context === '') {
         return '';
-    } else {
-        if(typeof(context) === 'string') {
-            return context.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        } else {
-            return context;
-        }
-
     }
+
+    if(typeof(context) === 'string') {
+        return context.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    return context;    
+    
 }
 
 
@@ -540,7 +555,7 @@ function toNumber(num) {
     }
 }
 
-function addCharstring(context) {
+function addCharstring(context='') {
 
     return '<string>' + plistEncode(context) + '</string>';
 }
@@ -562,16 +577,9 @@ function copyDatatoClipboard(rowdata) {
 }
 
 
-function showTipModal(content, msgtype) {
-
+function showTipModal(content, msgtype='success') {
     toastr.clear();
-
-    if(msgtype === undefined || msgtype === '') {
-        toastr["success"](content);
-    } else {
-        toastr[msgtype](content);
-    }
-
+    toastr[msgtype](content);
 }
 
 function showTextareaModal(content) {
@@ -587,11 +595,11 @@ function showTextareaModal(content) {
 
 
 // fillLangString('my {@1} is {@2}', 'name', 'mady')
-function fillLangString(context) {
-	for(let i=1,len=arguments.length;i<len;i++) {
-		context = context.replace('{@' + i + '}', arguments[i]);
-	}
-	return context;
+function fillLangString(...args) {    
+	for(let i=1,len=args.length;i<len;i++) {      
+		args[0] = args[0].replace('{@' + i + '}', args[i]);
+	}  
+	return args[0];
 }
 
 function stringToJSON(str) {
@@ -604,10 +612,9 @@ function stringToJSON(str) {
 	return objreturn;
 }
 
-//根据表格关键字去全局变量 GLOBAL_ARRAY_TABLE 中取表格对象
+//根据表格关键字去全局变量 GLOBAL_MAP_TABLE 中取表格对象
 function getJqgridObjectbyKey(tbkey) {
-    let obj = GLOBAL_ARRAY_TABLE[0][tbkey];
-    return obj === undefined ? GLOBAL_ARRAY_TABLE[1][tbkey] : obj;
+    return GLOBAL_MAP_TABLE.get(tbkey);
 }
 
 function consolelog(msg) {
@@ -630,35 +637,43 @@ function btnromclick() {
     VUEAPP.PlatformInfo.Generic.ROM = uuid().split('-')[4];
 }
 
-//从GLOBAL_ONEDIT_TABLE数组中移除指定的表格名称
-function removeEditTable(tbname) {
-    var index = GLOBAL_ONEDIT_TABLE.indexOf(tbname); 
-    if (index > -1) { 
-        GLOBAL_ONEDIT_TABLE.splice(index, 1); 
-    } 
+
+function getMaxrowid(objGridTable) {
+    const ids = objGridTable.jqGrid('getDataIDs');
+    if(ids.length === 0) {
+        return 0;
+    }
+    return Math.max(...ids);
 }
 
 //浅拷贝一个对象,delList中是不要的属性
-function clone(target, delList) {
-    if(delList === undefined) {
-        delList = [];
-    }
-    const type = Object.prototype.toString.call(target);
-    if (type === "[object Object]") {
-        // 代表这是一个对象
-        const tempObj = {};
-        for (const key in target) {
-            if(delList.indexOf(key) >= 0) {
-                continue;
-            }
-            if (Object.hasOwnProperty.call(target, key)) {
-                // 拷贝
-                tempObj[key] = target[key];                
-            }
+function clone(target, delList=[]) {
+
+    const tempObj = {};
+    for (const key in target) {
+        if(delList.indexOf(key) >= 0) {
+            continue;
         }
-        return tempObj;
-    } else if (type === "[object Array]") {
-        // 代表这是一个数组
-        return Array.prototype.slice.call(target);
+        if (Object.hasOwnProperty.call(target, key)) {
+            // 拷贝
+            tempObj[key] = target[key];                
+        }
     }
+    return tempObj;
+
+}
+
+/**
+ * 查找字符串第几次出现的位置
+ * @param {Object} str 源字符串
+ * @param {Object} cha 要查询的字符或字符串
+ * @param {Object} num 第几次出现，第一次出现用1表示
+ */
+ function findStrAssIndex(str, cha, num=1) {
+    let x = str.indexOf(cha);
+    num -= 1;
+    for (let i = 0; i < num; i++) {
+        x = str.indexOf(cha, x + 1);
+    }
+    return x;
 }

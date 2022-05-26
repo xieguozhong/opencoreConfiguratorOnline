@@ -371,16 +371,7 @@ function getUEFI() {
 
 	// Drivers
 	uefiContext += '<key>Drivers</key>';
-	//let dridata = VUEAPP.UEFI.Drivers, dristring = '';
-	//consolelog(dridata);
-	//for(let i=0,len=dridata.length;i<len;i++) {
-	//	dristring += addCharstring(dridata[i]['FileName']);
-	//}
-	//uefiContext += bothsidesAddarray(dristring);
-
 	uefiContext += genArrayDict('UEFI_Drivers', VUEAPP.UEFI.Drivers,[],[]);
-
-
 
 
 	// Input
@@ -432,18 +423,13 @@ function getDeviceVolumeData(leftData, rightData) {
 		strreturn += getSubDeviceVolumeData(leftData[it]['id'], rightData);
 	}
 
-	
-	if(strreturn === '<dict>') {
-		return '<dict/>';
-	} else {
-		return strreturn + '</dict>';
-	}
+	return strreturn === '<dict>' ? '<dict/>' : strreturn + '</dict>';
 
 }
 
 function getSubDeviceVolumeData(pid, rightData) {
-	let strreturn = '',rightDataType = '';
-	
+	let strreturn = '';
+	//console.time('getSubDeviceVolumeData');
 	for(let it in rightData) {
 		if(rightData[it]['pid'] == pid) {  //<string>MaximumBootBeepVolume</string>
 
@@ -451,7 +437,7 @@ function getSubDeviceVolumeData(pid, rightData) {
 				showTipModal(VUEAPP.lang.DeviceError, 'warning');
 			}
 			
-			rightDataType = rightData[it].Type;
+			const rightDataType = rightData[it].Type;
 			switch(rightDataType) {
 				case 'data':
 					strreturn += '<data>' + hextoBase64(rightData[it].Volume) + '</data>';
@@ -471,11 +457,8 @@ function getSubDeviceVolumeData(pid, rightData) {
 
 		}
 	}
-	if(strreturn === '') {
-		return '<array/>';
-	} else {
-		return '<array>' + strreturn + '</array>';
-	}
+	//console.timeEnd('getSubDeviceVolumeData');
+	return strreturn === '' ? '<array/>' : '<array>' + strreturn + '</array>';
 
 }
 
@@ -524,7 +507,7 @@ function getStringorboolorinterger(theData, dataType) {
 
 function getDeviceData(leftData, rightData) {
 	let strreturn = '<dict>';
-	//consolelog(leftData);
+	
 	for(let it in leftData) {
 		if(leftData[it]['Devices'] === undefined) {
 			showTipModal(VUEAPP.lang.DeviceError, 'warning');
@@ -534,12 +517,7 @@ function getDeviceData(leftData, rightData) {
 		strreturn += getSubDeviceData(leftData[it]['id'], rightData)
 	}
 	
-	if(strreturn === '<dict>') {
-		return '<dict/>';
-	} else {
-		return strreturn + '</dict>';
-	}
-
+	return strreturn === '<dict>' ? '<dict/>' : strreturn + '</dict>';
 	
 }
 
@@ -596,11 +574,7 @@ function getBoolens(boolData,intData) {
 		
 	}
 
-	if(strreturn === '<dict>') {
-		return '<dict/>';
-	} else {
-		return strreturn + '</dict>';
-	}
+	return strreturn === '<dict>' ? '<dict/>' : strreturn + '</dict>';
 }
 
 /**
@@ -622,7 +596,7 @@ function getBoolens(boolData,intData) {
 	<string>SSDT-1.aml</string>
 </dict>
 根据tablekey去表格中读取数据并组装成字符串返回
-genArrayDict(		tablekey，      表格在GLOBAL_ARRAY_TABLE中的key
+genArrayDict(		tablekey，      表格在GLOBAL_MAP_TABLE中的key
 					arrayDictData,  数据
 					dataFileds,     要转换为base64的字段列表
 					intFileds       要转换为整形的字段列表
@@ -637,15 +611,7 @@ function genArrayDict(tablekey, arrayDictData, dataFileds, intFileds) {
 	if(dataFileds === undefined) dataFileds =[];
 	if(intFileds === undefined) intFileds =[];
 
-
-	// if(GLOBAL_ARRAY_TABLE[2][tablekey] === true) {
-	// 	//consolelog(tablekey + '要替换');
-	// 	//为了实现拖动行功能，这里把VUE里面的数据覆盖一遍前台的数据，按前台的顺序来
-	// 	let currentTableData = GLOBAL_ARRAY_TABLE[0][tablekey].jqGrid('getRowData');
-	// 	arrayDictData = rewriteData(currentTableData, arrayDictData);
-	// }
-
-	let currentTableData = GLOBAL_ARRAY_TABLE[0][tablekey].jqGrid('getRowData');
+	let currentTableData = getJqgridObjectbyKey(tablekey).jqGrid('getRowData');
 	arrayDictData = rewriteData(currentTableData, arrayDictData);
 
 	
@@ -697,12 +663,8 @@ function addKey(keyContext) {
 /*
 * 在字符串两边加上<array>
 */
-function bothsidesAddarray(context) {
-	if(context === '' || context === undefined) {
-		return '<array/>';
-	} else {
-		return '<array>' + context + '</array>';
-	}
+function bothsidesAddarray(context='') {
+	return context === '' ? '<array/>' : '<array>' + context + '</array>';
 }
 
 function addvtype(valu) {
@@ -714,7 +676,7 @@ function addvtype(valu) {
 		return '<false/>';
 	}
 
-	let tf = typeof(valu);
+	const tf = typeof(valu);
 
 	if(tf === 'string') {
 		return addCharstring(valu);
@@ -736,16 +698,8 @@ function rewriteData(leftdata, rightdata) {
 
 //用在左右两边表格的地方
 function getRewriteLRData(tablekey, rightdata) {
-	//替换数据前先看看表格有没有被拖动，没有拖动就不替换
-	// if(GLOBAL_ARRAY_TABLE[2][tablekey] === true) {
-		
-	// 	let currentTableData = GLOBAL_ARRAY_TABLE[1][tablekey].jqGrid('getRowData');
-	// 	return rewriteData(currentTableData, rightdata);
-	// } else {
-	// 	return rightdata;
-	// }
 
-	let currentTableData = GLOBAL_ARRAY_TABLE[1][tablekey].jqGrid('getRowData');
+	let currentTableData = getJqgridObjectbyKey(tablekey).jqGrid('getRowData');
 	return rewriteData(currentTableData, rightdata);
 	
 }

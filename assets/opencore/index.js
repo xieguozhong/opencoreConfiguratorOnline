@@ -8,17 +8,16 @@ $(document).ready(function() {
         onchange:null,
         allowExt:['plist'],
         thumbnail:false,
-        before_change: function(files, dropped){
-            let reader = new FileReader();
+        before_change: function(files){
+            const reader = new FileReader();
             reader.readAsText(files[0]);
             reader.onload = function () {
             	VUEAPP['plistcontext'] = formatContext(this.result);
-            	//consolelog(VUEAPP['plistcontext']);
             	VUEAPP.initAllData();
         	}
             return true;
         }
-        }).on('file.error.ace', function(event, info) {
+        }).on('file.error.ace', function() {
             showTipModal(VUEAPP.lang.alertfileerror, 'error');
     });
 
@@ -39,93 +38,126 @@ $(document).ready(function() {
     //初始化提示插件
     $.minimalTips();
 
-    //设置提示插件
+    //设置弹出提示插件
     toastr.options = {
       "closeButton": true,
       "positionClass": "toast-top-center"
     };
 
     //显示适用于版本信息
-    //showTipModal(VUEAPP.lang.supportversion, 'warning');
+    //showTipModal(VUEAPP.lang.supportversion);
     
     //页面加载完成后解除文件选择框的禁用属性
     $("#id-input-file-2").removeAttr("disabled");
-   
-    
+
 });
 
+// ACPI Add 和 UEFI Drivers Kernel_Add处添加文件
 function addFile(fileid) {
     
-    let file = document.getElementById(fileid), files;
-    let thetablename,thetable;
-    if(fileid === "File_ACPI_Add") {
-        thetablename = "ACPI_Add";        
-    } else if(fileid === "File_UEFI_Drivers") {
-        thetablename = "UEFI_Drivers";        
-    }
+    const   file = document.getElementById(fileid), 
+            thetablename = fileid.substr(fileid.indexOf('_')+1);
+    
+    const thetable = getJqgridObjectbyKey(thetablename);
 
-    thetable = getJqgridObjectbyKey(thetablename);
+    let files, maxid = getMaxrowid(thetable);
 
+    //依次循环处理多选的多个文件
 	for(let i=0; i<file.files.length; i++){
 		files = file.files[i];
-        let newData;
-        if(thetablename === "ACPI_Add") {
-            newData = { Comment:files.name, Path:files.name, Enabled:"YES"};
-        } else if(thetablename === "UEFI_Drivers") {
-            newData = { FileName:files.name };
-        }
         
-        thetable.jqGrid('addRowData', MAXROWID++, newData, 'last');
-
+        if(thetablename === "ACPI_Add") {            
+            thetable.jqGrid('addRowData', ++maxid, { Comment:'', Path:files.name, Enabled:"YES"}, 'last');
+        } else if(thetablename === "UEFI_Drivers") {           
+            thetable.jqGrid('addRowData', ++maxid, { Path:files.name,Arguments:'',Comment:'',Enabled:"YES"}, 'last');
+        } else if(thetablename === 'Kernel_Add') {
+            handFile(files, thetable);
+        }
 	}
 }
 
-//获取指定数量的0字符串
-function getZero(total) {
-    let zero = '';
-    for(let i=0;i<total;i++) {
-        zero += '0';
-    }
-    return zero;
+
+//用JSzip处理kext中Plugin中的文件,单独处理Kernel_Add处添加文件
+function handFile(ff, thetable) {
+    const sfl = new Set(), sfonly = new Set();
+    
+    JSZip.loadAsync(ff)
+        .then(function(zip) {
+            zip.forEach( (relativePath) => {  
+                sfl.add(relativePath);
+
+                //这里大部分都是相同的会被过滤掉
+                sfonly.add(relativePath.substring(0,findStrAssIndex(relativePath,'/',1)));
+
+                const pindex = relativePath.indexOf('PlugIns');
+                if(pindex > -1) {
+                    const p2index = findStrAssIndex(relativePath,'/',4);
+                    if(p2index > -1) {
+                        sfonly.add(relativePath.substring(0, p2index));
+                    }
+                    
+                }
+                
+            });
+
+            let maxid = getMaxrowid(thetable), newData = null;
+
+            sfonly.forEach((kname) => {
+                const lastdotindex = kname.lastIndexOf('.');
+                const lastslaindex = kname.lastIndexOf('/') + 1;
+                const knamekey = kname.substring(lastslaindex,lastdotindex);
+                let ExecutablePath = '', PlistPath = '';
+                
+                if(sfl.has(kname + '/Contents/MacOS/' + knamekey)) {
+                    ExecutablePath = 'Contents/MacOS/' + knamekey;
+                }
+                if(sfl.has(kname + '/Contents/Info.plist')) {
+                    PlistPath = 'Contents/Info.plist';
+                }
+
+                newData = { Arch:'',BundlePath:kname,Comment:'',ExecutablePath:ExecutablePath,PlistPath:PlistPath,MaxKernel:'',MinKernel:'',Enabled:"YES"};
+                maxid = maxid + 1;
+                
+                thetable.jqGrid('addRowData', maxid, newData, 'last');
+
+            });
+
+        }, function (e) {
+            console.log(e.message);
+        });
 }
+
 
 //绑定所有的按钮的clicks事件
 function bindAllButton() {
 
-
-    for(let it in GLOBAL_ARRAY_TABLE[0]) {
-        bindClick(GLOBAL_ARRAY_TABLE[0][it]);
+    //为所有表格绑定事件
+    for (let objtb of GLOBAL_MAP_TABLE.values()) {
+        bindClick(objtb);
     }
-
-    for(let it in GLOBAL_ARRAY_TABLE[1]) {
-        bindClick(GLOBAL_ARRAY_TABLE[1][it]);
-    }
-
 
     function bindClick(currentGridTable) {
 
-
-        let gridtableid = currentGridTable.attr('id');
-        let buttonBehind = gridtableid.slice(10);
-        
+        const gridtableid = currentGridTable.selector;
+        const buttonBehind = gridtableid.slice(11);//表格ID都是以 #gridtable_ 开头
 
         // 1 绑定所有的增加按钮
         $("#btnadd_" + buttonBehind).on("click",function(){
 
             //如果是右边表格, 先检查左边有没有选中, 如果没有, 不做任何反应
-            if(buttonBehind.substr(-5) === 'Right') {
+            if(buttonBehind.endsWith('Right')) {                
                 
-                
-                let theGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
+                const theGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
+                const selectedId = theGrid.jqGrid("getGridParam", "selrow");
 
-                let selectedId = theGrid.jqGrid("getGridParam", "selrow");
                 if(selectedId !== null) {
-                    currentGridTable.jqGrid('addRowData', MAXROWID ++ , {pid:selectedId}, 'last');
+                    let maxid = getMaxrowid(currentGridTable);
+                    currentGridTable.jqGrid('addRowData',  ++maxid , {pid:selectedId}, 'last');
                 }
 
             } else {
-
-                currentGridTable.jqGrid('addRowData', MAXROWID ++, {}, 'last');
+                let maxid = getMaxrowid(currentGridTable);
+                currentGridTable.jqGrid('addRowData', ++maxid, {}, 'last');
             }
 
 
@@ -135,14 +167,14 @@ function bindAllButton() {
         // 2 绑定所有的删除按钮
         $("#btndel_" + buttonBehind).on("click",function(){
 
-            let selectedIds = currentGridTable.jqGrid('getGridParam','selarrrow');
+            const selectedIds = currentGridTable.jqGrid('getGridParam','selarrrow');
 
             //如果有选中行, 说明可以进行删除操作
             if(selectedIds.length > 0) {
                 let deleteIds = [], rowData, leftSelectedId;
 
                 //如果是右边表格, 只要删除左边选中行下面的数据即可
-                if(buttonBehind.substr(-5) === 'Right') {
+                if(buttonBehind.endsWith('Right')) {
                     let leftGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
 
                     leftSelectedId = leftGrid.jqGrid("getGridParam", "selrow");
@@ -160,30 +192,30 @@ function bindAllButton() {
                     }
                     
                 }
-                deleteIds.sort(sortNumber);
-                let len = deleteIds.length - 1;     
+                deleteIds.sort((x,y) => y-x);
 
-                for(let i=len;i>=0;i--) {
+                for(let it of deleteIds) {
+                    //在删除行之前,把GLOBAL_SET_ONEDITTABLE中的记录删除(如果有的话)
+                    GLOBAL_SET_ONEDITTABLE.delete('#gridtable_' + buttonBehind + '_' + it);
 
-                    currentGridTable.jqGrid('delRowData', deleteIds[i]);
+                    currentGridTable.jqGrid('delRowData', it);
                 }
 
                 //如果删除左边表格, 要隐藏右边表格
-                if(buttonBehind.substr(-4) === 'Left') {
-                    
-                    let rightGrid = getJqgridObjectbyKey(buttonBehind.replace('Left', 'Right'));
-                    let rowIds = rightGrid.getDataIDs();
-                    for(let i=0,len=rowIds.length;i<len;i++) {
-                        rightGrid.setRowData(rowIds[i],null,{display: 'none'});
+                if(buttonBehind.endsWith('Left')) {
+                    const rightButtonBehind = buttonBehind.replace('Left', 'Right')
+                    const rightGrid = getJqgridObjectbyKey(rightButtonBehind);
+                    const rowIds = rightGrid.getDataIDs();
+                    for(let it of rowIds) {
+                        //在隐藏行之前,把GLOBAL_SET_ONEDITTABLE中的记录删除(如果有的话)
+                        GLOBAL_SET_ONEDITTABLE.delete('#gridtable_' + rightButtonBehind + '_' + it);
+
+                        rightGrid.setRowData(it,null,{display: 'none'});
                     }
                 }
 
                 showTipModal(VUEAPP.lang.deleterowsuccess, 'success');
             }
-
-            function sortNumber(a,b){
-				return a - b;
-			}
 
         });
 
@@ -192,7 +224,7 @@ function bindAllButton() {
         $("#btncopy_" + buttonBehind).on("click",function(){
 
             //先清空剪贴板
-            let selectedId = currentGridTable.jqGrid("getGridParam", "selarrrow");
+            const selectedId = currentGridTable.jqGrid("getGridParam", "selarrrow");
             if(selectedId.length === 0) {
                 copyDatatoClipboard(' ');
                 showTipModal(VUEAPP.lang.checkdatafirst, 'error');
@@ -201,9 +233,9 @@ function bindAllButton() {
             let rowData, arrStrdata = [], leftSelectedId;
 
             //如果是右边表格, 只要复制左边选中行下面的数据即可
-            if(buttonBehind.substr(-5) === 'Right') {               
+            if(buttonBehind.endsWith('Right')) {               
                 
-                let leftGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
+                const leftGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
 
                 leftSelectedId = leftGrid.jqGrid("getGridParam", "selrow");
                 
@@ -233,8 +265,7 @@ function bindAllButton() {
 
         // 5 绑定所有的 启用/禁用 按钮
         $("#btnenabled_" + buttonBehind).on("click",function(){
-            let selectedIds = currentGridTable.jqGrid("getGridParam", "selarrrow");
-
+            const selectedIds = currentGridTable.jqGrid("getGridParam", "selarrrow");
 
             if(selectedIds.length > 0) {
                 let theEnabled = currentGridTable.jqGrid('getCell', selectedIds[0], "Enabled");
@@ -253,104 +284,7 @@ function bindAllButton() {
 }
 
 
-
-function addkexts(kext) {
-
-    let allKext = [
-        ['RealtekRTL8100.kext','RealtekRTL8100.kext','Contents/MacOS/RealtekRTL8100','Contents/Info.plist'],
-        ['ACPIBatteryManager.kext','ACPIBatteryManager.kext','Contents/MacOS/ACPIBatteryManager','Contents/Info.plist'],
-        ['AHCI_3rdParty_SATA.kext','AHCI_3rdParty_SATA.kext','','Contents/Info.plist'],
-        ['Lilu.kext','Lilu.kext','Contents/MacOS/Lilu','Contents/Info.plist'],
-        ['BrcmWLFixup.kext','BrcmWLFixup.kext','Contents/MacOS/BrcmWLFixup','Contents/Info.plist'],
-        ['VoodooI2CAtmelMXT.kext','VoodooI2CAtmelMXT.kext','Contents/MacOS/VoodooI2CAtmelMXT','Contents/Info.plist'],
-        ['BrcmFirmwareData.kext','BrcmFirmwareData.kext','Contents/MacOS/BrcmFirmwareData','Contents/Info.plist'],
-        ['HibernationFixup.kext','HibernationFixup.kext','Contents/MacOS/HibernationFixup','Contents/Info.plist'],
-        ['AnyAppleUSBKeyboard.kext','AnyAppleUSBKeyboard.kext','','Contents/Info.plist'],
-        ['NoTouchID.kext','NoTouchID.kext','Contents/MacOS/NoTouchID','Contents/Info.plist'],
-        ['XHCI-300-series-injector.kext','XHCI-300-series-injector.kext','','Contents/Info.plist'],
-        ['BT4LEContinuityFixup.kext','BT4LEContinuityFixup.kext','Contents/MacOS/BT4LEContinuityFixup','Contents/Info.plist'],
-        ['AirportBrcmFixup.kext','AirportBrcmFixup.kext','Contents/MacOS/AirportBrcmFixup','Contents/Info.plist'],
-        ['AnyAppleUSBMouse.kext','AnyAppleUSBMouse.kext','','Contents/Info.plist'],
-        ['VoodooHDA.kext','VoodooHDA.kext','Contents/MacOS/VoodooHDA','Contents/Info.plist'],
-        ['AppleALC.kext','AppleALC.kext','Contents/MacOS/AppleALC','Contents/Info.plist'],
-        ['AtherosE2200Ethernet.kext','AtherosE2200Ethernet.kext','Contents/MacOS/AtherosE2200Ethernet','Contents/Info.plist'],
-        ['IntelMausi.kext','IntelMausi.kext','Contents/MacOS/IntelMausi','Contents/Info.plist'],
-        ['VoodooI2CUPDDEngine.kext','VoodooI2CUPDDEngine.kext','Contents/MacOS/VoodooI2CUPDDEngine','Contents/Info.plist'],
-        ['SATA-100-series-unsupported.kext','SATA-100-series-unsupported.kext','','Contents/Info.plist'],
-        ['IntelMausiEthernet.kext','IntelMausiEthernet.kext','Contents/MacOS/IntelMausiEthernet','Contents/Info.plist'],
-        ['VoodooI2CSynaptics.kext','VoodooI2CSynaptics.kext','Contents/MacOS/VoodooI2CSynaptics','Contents/Info.plist'],
-        ['SMCSuperIO.kext','SMCSuperIO.kext','Contents/MacOS/SMCSuperIO','Contents/Info.plist'],
-        ['XHCI-200-series-injector.kext','XHCI-200-series-injector.kext','','Contents/Info.plist'],
-        ['WhateverGreen.kext','WhateverGreen.kext','Contents/MacOS/WhateverGreen','Contents/Info.plist'],
-        ['SMCBatteryManager.kext','SMCBatteryManager.kext','Contents/MacOS/SMCBatteryManager','Contents/Info.plist'],
-        ['CPUFriendDataProvider.kext','CPUFriendDataProvider.kext','','Contents/Info.plist'],
-        ['RealtekRTL8111.kext','RealtekRTL8111.kext','Contents/MacOS/RealtekRTL8111','Contents/Info.plist'],
-        ['SATA-RAID-unsupported.kext','SATA-RAID-unsupported.kext','','Contents/Info.plist'],
-        ['NullCPUPowerManagement.kext','NullCPUPowerManagement.kext','Contents/MacOS/NullCPUPowerManagement','Contents/Info.plist'],
-        ['SMCProcessor.kext','SMCProcessor.kext','Contents/MacOS/SMCProcessor','Contents/Info.plist'],
-        ['AppleIntelE1000e.kext','AppleIntelE1000e.kext','Contents/MacOS/AppleIntelE1000e','Contents/Info.plist'],
-        ['USBInjectAll.kext','USBInjectAll.kext','Contents/MacOS/USBInjectAll','Contents/Info.plist'],
-        ['CPUFriend.kext','CPUFriend.kext','Contents/MacOS/CPUFriend','Contents/Info.plist'],
-        ['AsusSMC.kext','AsusSMC.kext','Contents/MacOS/AsusSMC','Contents/Info.plist'],
-        ['VoodooI2CHID.kext','VoodooI2CHID.kext','Contents/MacOS/VoodooI2CHID','Contents/Info.plist'],
-        ['AppleIGB.kext','AppleIGB.kext','Contents/MacOS/AppleIGB','Contents/Info.plist'],
-        ['AppleBacklightFixup.kext','AppleBacklightFixup.kext','Contents/MacOS/AppleBacklightFixup','Contents/Info.plist'],
-        ['CoreDisplayFixup.kext','CoreDisplayFixup.kext','Contents/MacOS/CoreDisplayFixup','Contents/Info.plist'],
-        ['AHCI_3rdParty_eSATA.kext','AHCI_3rdParty_eSATA.kext','','Contents/Info.plist'],
-        ['VoodooI2CFTE.kext','VoodooI2CFTE.kext','Contents/MacOS/VoodooI2CFTE','Contents/Info.plist'],
-        ['VoodooI2CELAN.kext','VoodooI2CELAN.kext','Contents/MacOS/VoodooI2CELAN','Contents/Info.plist'],
-        ['AppleACPIPS2Nub.kext','AppleACPIPS2Nub.kext','Contents/MacOS/AppleACPIPS2Nub','Contents/Info.plist'],
-        ['ApplePS2SmartTouchPad.kext','ApplePS2SmartTouchPad.kext','Contents/MacOS/ApplePS2SmartTouchPad','Contents/Info.plist'],
-        ['ApplePS2SmartTouchPad.kext','ApplePS2SmartTouchPad.kext/Contents/PlugIns/ApplePS2Keyboard.kext','Contents/MacOS/ApplePS2Keyboard','Contents/Info.plist'],
-        ['ApplePS2SmartTouchPad.kext','ApplePS2SmartTouchPad.kext/Contents/PlugIns/ApplePS2Controller.kext','Contents/MacOS/ApplePS2Controller','Contents/Info.plist'],
-        ['VirtualSMC.kext','VirtualSMC.kext','Contents/MacOS/VirtualSMC','Contents/Info.plist'],
-        ['BrcmPatchRAM.kext','BrcmPatchRAM.kext','Contents/MacOS/BrcmPatchRAM','Contents/Info.plist'],
-        ['BrcmFirmwareRepo.kext','BrcmFirmwareRepo.kext','Contents/MacOS/BrcmFirmwareRepo','Contents/Info.plist'],
-        ['VoodooPS2Controller.kext','VoodooPS2Controller.kext','Contents/MacOS/VoodooPS2Controller','Contents/Info.plist'],
-        ['VoodooPS2Controller.kext','VoodooPS2Controller.kext/Contents/PlugIns/VoodooPS2Trackpad.kext','Contents/MacOS/VoodooPS2Trackpad','Contents/Info.plist'],
-        ['VoodooPS2Controller.kext','VoodooPS2Controller.kext/Contents/PlugIns/VoodooPS2Keyboard.kext','Contents/MacOS/VoodooPS2Keyboard','Contents/Info.plist'],
-        ['VoodooPS2Controller.kext','VoodooPS2Controller.kext/Contents/PlugIns/VoodooPS2Mouse.kext','Contents/MacOS/VoodooPS2Mouse','Contents/Info.plist'],
-        ['HoRNDIS.kext','HoRNDIS.kext','Contents/MacOS/HoRNDIS','Contents/Info.plist'],
-        ['SMCLightSensor.kext','SMCLightSensor.kext','Contents/MacOS/SMCLightSensor','Contents/Info.plist'],
-        ['FakeSMC.kext','FakeSMC.kext','Contents/MacOS/FakeSMC','Contents/Info.plist'],
-        ['SATA-200-series-unsupported.kext','SATA-200-series-unsupported.kext','','Contents/Info.plist'],
-        ['USBPorts.kext','USBPorts.kext','','Contents/Info.plist'],
-        ['BrcmPatchRAM2.kext','BrcmPatchRAM2.kext','Contents/MacOS/BrcmPatchRAM2','Contents/Info.plist'],
-        ['VoodooI2C.kext','VoodooI2C.kext','Contents/MacOS/VoodooI2C','Contents/Info.plist'],
-        ['VoodooI2C.kext','VoodooI2C.kext/Contents/PlugIns/VoodooGPIO.kext','Contents/MacOS/VoodooGPIO','Contents/Info.plist'],
-        ['VoodooI2C.kext','VoodooI2C.kext/Contents/PlugIns/VoodooI2CServices.kext','Contents/MacOS/VoodooI2CServices','Contents/Info.plist'],
-        ['AHCI_Intel_Generic_SATA.kext','AHCI_Intel_Generic_SATA.kext','','Contents/Info.plist'],
-        ['XHCI-unsupported.kext','XHCI-unsupported.kext','','Contents/Info.plist'],
-        ['CodecCommander.kext','CodecCommander.kext','Contents/MacOS/CodecCommander','Contents/Info.plist'],
-        ['NVMeFix.kext','NVMeFix.kext','Contents/MacOS/NVMeFix','Contents/Info.plist'],
-        ['SystemProfilerMemoryFixup.kext','SystemProfilerMemoryFixup.kext','Contents/MacOS/SystemProfilerMemoryFixup','Contents/Info.plist']
-        ];
-
-    let thetable = getJqgridObjectbyKey("Kernel_Add");
-
-    for(let i=0,len=allKext.length;i<len;i++) {
-
-        if(allKext[i][0] === kext.value) {
-
-            thetable.jqGrid('addRowData', MAXROWID++, {
-                Arch:'Any',
-                BundlePath:allKext[i][1],
-                Comment:'',
-                Enabled:"YES",
-                ExecutablePath:allKext[i][2],
-                MaxKernel:'', MinKernel:'',
-                PlistPath:allKext[i][3]
-            }, 'last');
-
-        }
-    }
-    kext.value = '';
-    //consolelog(kext.value);
-    delete allKext;
-}
-
-
-let VUEAPP = new Vue({
+const VUEAPP = new Vue({
     el: '#main-container',
     data: {
         root:'ACPI',                  //决定当前显示哪个节点
@@ -559,7 +493,8 @@ let VUEAPP = new Vue({
 
         // 初始化所有表格
         , initAllData:function () {
-            GLOBAL_ONEDIT_TABLE = [];
+            
+            GLOBAL_SET_ONEDITTABLE.clear();
 
             consolelog("initACPI");
             this.initACPI();
@@ -583,11 +518,11 @@ let VUEAPP = new Vue({
         }
 
         // 获取并设置dict的值和bool值
-        , getAndSetDictItem(context, vueData) {
-            if(context === undefined || context === "") {
-                
+        , getAndSetDictItem(context='', vueData) {
+            if(context === "") {                
                 return;
             }
+
             let dataType = '', gbvabknvalue;
             for(let it in vueData) {
                 dataType = typeof(vueData[it]);        
@@ -595,6 +530,7 @@ let VUEAPP = new Vue({
                     Vue.set(vueData, it, partrue(getValuesByKeyname(context, it)));
                 } else if(dataType === "object"){
                     //如果是数组，什么都不干，任其继续进入下一轮循环
+                    continue;
                 } else {
                     gbvabknvalue = getValuesByKeyname(context, it);
                     
@@ -967,7 +903,7 @@ let VUEAPP = new Vue({
         }
 
         // 弹出多选窗口按钮点击事件
-        , btncheckboxclick:function (event, vlen) {
+        , btncheckboxclick:function (event, vlen=8) {
             this.Assist.RADIO_CHECK_BOX = 'C';
             let buttonids = event.currentTarget.id.split('_');
             
@@ -1021,7 +957,7 @@ let VUEAPP = new Vue({
             this.Assist.pagePublic_Selected = [];
 
             
-            if(vlen === undefined || vlen === 0) {
+            if(vlen === 0) {
                 vlen = 8;
             }
 
@@ -1030,7 +966,7 @@ let VUEAPP = new Vue({
         
                 itval = ckdict[piv16[i]];
                 for(let j=0;j<itval.length;j++) {
-                    this.Assist.pagePublic_Selected.push('0x' + getZero(vlen-k) + itval[j] + getZero(k-1));
+                    this.Assist.pagePublic_Selected.push('0x' + '0'.repeat(vlen-k) + itval[j] + '0'.repeat(k-1));
                 }
                 
             }
@@ -1069,17 +1005,20 @@ let VUEAPP = new Vue({
 
 //查看有没有表格在被编辑中
 function checkOneditTable() {
-    
-    if(GLOBAL_ONEDIT_TABLE.length > 0) {
-        
-        let tblist = "", arrittb = "";
-        for(let i=0;i<GLOBAL_ONEDIT_TABLE.length;i++) {
-            arrittb = GLOBAL_ONEDIT_TABLE[i].split('_');
-            tblist += String(i+1) + "&emsp;" + arrittb[1] + ' - ' + arrittb[2] + '<br>';
-        }
-        return fillLangString(VUEAPP.lang.editingtablemessage, tblist);
+
+    if(GLOBAL_SET_ONEDITTABLE.size === 0) {
+        return '';
     }
-    return "";
+
+    const newset = new Set();
+    for(let it of GLOBAL_SET_ONEDITTABLE) {
+        let arrit = it.split('_');
+        newset.add(arrit[1] + " | " + arrit[2]);
+        
+    }
+    
+    let newmsg = '-'.repeat(30) + '<br>' + Array.from(newset).join('<br>') + '<br>' + '-'.repeat(30);
+    return fillLangString(VUEAPP.lang.editingtablemessage, newmsg);
 }
 
 
@@ -1117,9 +1056,8 @@ function startPaste() {
 	}
 
 	let rowData = stringToJSON(VUEAPP.textarea_content);
-	let isArray = rowData instanceof Array;
-
-	if(isArray === false) {
+	
+	if(rowData === false || (rowData instanceof Array) === false) {
 		showTipModal(VUEAPP.lang.dataFormaterror,'error');
 		return;
 	}
@@ -1140,7 +1078,7 @@ function startPaste() {
     }
 
     //如果是右边表格, 要多做几个处理,1 检查左边是否选中, 2 修改pid 3 删除id
-    if(ids[2].substr(-5) === 'Right') {
+    if(ids[2].endsWith('Right')) {
         let leftgrid = getJqgridObjectbyKey(ids[1] + '_' + ids[2].replace('Right','Left'));
         let leftSelectedId = leftgrid.jqGrid("getGridParam", "selrow");
 
@@ -1161,9 +1099,9 @@ function startPaste() {
         }
 
     }
-
+    let maxid = getMaxrowid(objGridTable);
 	for(let it in rowData) {
-		objGridTable.jqGrid('addRowData', MAXROWID++, rowData[it], 'last');
+		objGridTable.jqGrid('addRowData', ++maxid, rowData[it], 'last');
 	}
 	$('#inputModal').modal('hide');
 
