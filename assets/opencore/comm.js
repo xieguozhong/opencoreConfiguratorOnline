@@ -1,15 +1,25 @@
-function enabledFormat(cellvalue) {
-    if(cellvalue === true || cellvalue === 'true' || cellvalue === 'YES') {
+function enabledFormat(cellvalue = false) {
+
+    if(getTypeof(cellvalue) === 'array') {
+        cellvalue = cellvalue[0];
+    }
+    if(cellvalue === true || cellvalue === 'YES' || cellvalue === 'true') {
         return 'YES';
     } else {
         return 'NO';
     }
+
 }
 
-function formatInteger(cellvalue) {
-    if(cellvalue === undefined) {
+function formatInteger(cellvalue = 0) {
+    
+    if(cellvalue === 0) {
         return 0;
     }
+    if(getTypeof(cellvalue) === 'array') {
+        cellvalue = cellvalue[0];
+    }
+
     if(isNaN(cellvalue)) {
         showTipModal(fillLangString(VUEAPP.lang.toNumberError, cellvalue), 'warning');
     }
@@ -17,366 +27,71 @@ function formatInteger(cellvalue) {
 }
 
 
-//<string>HfsPlus.efi</string>
-//<string>ApfsDriverLoader.efi</string>
-//<string>FwRuntimeServices.efi</string>
-//转为
-//['HfsPlus.efi','ApfsDriverLoader.efi','FwRuntimeServices.efi']
-// 返回一个基本值数组
-function parsePlistArray2stringArray(context='') {
-    if(context === '') {
-        return [];
-    }
-    let idx1=0, idx2=0, idx3=0, key='', rarray=[];
-    while(true) {
-
-        idx1 = context.indexOf('<', idx3);
-        if(idx1 === -1) break;
-        idx2 = context.indexOf('>', idx1);
-
-        let item = {};
-        item['Type'] = context.slice(idx1+1, idx2);
-
-        key = '</' + context.slice(idx1+1, idx2+1)
-
-        idx3 = context.indexOf(key, idx2);
-
-        item['Volume'] = context.slice(idx2 + 1, idx3);
-        rarray.push(item);
-        idx3 += key.length;
-    }
-
-    return rarray;
-}
-
-function partrue(boolvalue) {
-    return boolvalue === true ? true : false;
-}
 
 
 /**
-从字符串
-<key>PciRoot(0x0)/Pci(0x1b,0x0)</key>
-<array>
-    <string>MaximumBootBeepVolume</string>
-</array>
-<key>PciRoot(0x0)/Pci(0x1b,0x2)</key>
-<array>
-    <string>MinimumBootBeepVolume</string>
-    <string>MaximumBootBeepVolume</string>
-</array>
-返回数组 ['PciRoot(0x0)/Pci(0x1b,0x0)', 'PciRoot(0x0)/Pci(0x1b,0x2)']
-**/
-function getKeyarrayZIkey(context='') {
-    if(context === '') {
-        return [];
-    }
-
-    let idx0=0,idx1=0,rarray=[];
-
-    while(true) {
-        idx0 = context.indexOf('<key>', idx1);
-        if(idx0 === -1) break;
-        idx1 = context.indexOf('</key>', idx0 + 5);
-        rarray.push(context.slice(idx0+5, idx1));
-        idx1 += 6;
-    }
-
-    return rarray;
-
-}
-
-/**
-从字符串
-<key>PciRoot(0x0)/Pci(0x1b,0x0)</key>
-<array>
-    <string>MaximumBootBeepVolume</string>
-</array>
-<key>PciRoot(0x0)/Pci(0x1b,0x2)</key>
-<array>
-    <string>MinimumBootBeepVolume</string>
-    <string>MaximumBootBeepVolume</string>
-</array>
-返回对象数组 [{pid:0,Volume:'MaximumBootBeepVolume'}, {pid:1,Volume:'MinimumBootBeepVolume'}, {pid:1, Volume:'MaximumBootBeepVolume'}]
-**/
-function getKeyarrayZIarray(context='') {
-    if(context === '') {
-        return [];
-    }
-
-    let idx0=0,idx1=0,rarray=[],pid=0;
-
-    while(true) {
-        idx0 = context.indexOf('<array>', idx1);
-        if(idx0 === -1) break;
-        idx1 = context.indexOf('</array>', idx0 + 7);
-
-        let arrayTemp = parsePlistArray2stringArray(context.slice(idx0+7, idx1));
-
-        for(let it=0,len=arrayTemp.length;it<len;it++) {
-            rarray.push({pid:pid, Volume:arrayTemp[it]['Volume'], Type:arrayTemp[it]['Type']});
-        }
-
-        idx1 += 8;
-        pid ++;
-    }
-
-    return rarray;
-
-}
-
-
-
-/**
-从字符串
-<key>PciRoot(0x0)/Pci(0x1b,0x0)</key>
-<dict>
-    <key>layout-id</key>
-    <data>AQAAAA==</data>
-</dict>
-<key>PciRoot(0x0)/Pci(0x2,0x0)</key>
-<dict>
-    <key>AAPL,ig-platform-id</key>
-    <data></data>
-</dict>
-
-返回 ['PciRoot(0x0)/Pci(0x1b,0x0)', 'PciRoot(0x0)/Pci(0x2,0x0)']
-**/
-function getParentKeys(context='') {
-    if(context === '') {
-        return [];
-    }
-
-    let idx1 = 0, idx2 = 0, idx3 = 0, key = '', rarray = [];
-    while(true) {
-        idx1 = context.indexOf('<dict>', idx1);
-        if(idx1 === -1) break;
-        idx2 = context.lastIndexOf('</key>', idx1);
-        idx3 = context.lastIndexOf('<key>', idx2);
-
-        rarray.push(context.slice(idx3 + 5, idx2));
-        idx1 += 5;
-    }
-
-    return rarray;
-}
-
-/**
-从字符串
-<key>PciRoot(0x0)/Pci(0x1b,0x0)</key>
-<dict>
-    <key>layout-id</key>
-    <data>AQAAAA==</data>
-    <key>name</key>
-    <string>guozzzz</string>
-</dict>
-<key>PciRoot(0x0)/Pci(0x2,0x0)</key>
-<dict>
-    <key>AAPL,ig-platform-id</key>
-    <data>aaaa==</data>
-</dict>
-返回 [{layout-id:'AQAAAA==', name:'guozzzz'}, {AAPL,ig-platform-id:'aaaa=='}]
-**/
-function getSubKeys(context='') {
-    if(context === '') {
-        return [];
-    }
-
-    let idx1 = 0, idx2 = 0, rarray = [],pid = 0;
-
-    while(true) {
-    	idx1 = context.indexOf('</dict>', idx1);
-    	if(idx1 === -1) break;
-    	idx2 = context.lastIndexOf('<dict>', idx1);
-    	pdictToJSobjectKV(context.slice(idx2 + 6, idx1), pid, rarray);
-    	idx1 += 7;
-    	pid ++;
-    }
-
-    return rarray;
-}
-
-//把一个plist的array变成js中的array
-//只适用于array下是一个dcit
-function parrayToJSarray(context='') {
-    if(context === '') {
-        return [];
-    }
-
-    let rarray = [], idx1 = 0, idx2 = 0, dicttext = '';
-    while(true) {
-        idx1 = context.indexOf('<dict>', idx2);
-        if(idx1 === -1) break;
-        idx2 = context.indexOf('</dict>', idx1);
-
-        dicttext = context.slice(idx1 + 6, idx2);
-
-        rarray.push(pdictToJSobject(dicttext));
-
-
-    }
-
-    return rarray;
-}
-
-// 把 <key>name</key><string>xieguozhong</string>
-//     <key>sex</key><string>F</string>
-// 转成 {name:'xieguozhong', sex:'F'}
-// 只返回一个对象
-function pdictToJSobject(context='') {
-    if(context === '') {
-        return {};
-    }
-
-    let robj = {};
-    let idx1 = 0, idx2 = 0, key='', value = '';
-    while(true) {
-        idx1 = context.indexOf('<key>', idx2);
-        if(idx1 === -1) break;
-        idx2 = context.indexOf('</key>', idx1);
-        key = context.slice(idx1 + 5, idx2);
-        value = getValuesByKeyname(context, key);
-        robj[key] = value;
-    }
-    return robj;
-}
-
-
-//把 <key>name</key><string>xieguozhong</string>
-//转成 {key:'name', value:'xieguozhong'}
-//
-function pdictToJSobjectKV(context='', pid, rarray) {
-    if(context === '') {
-        return [];
-    }
-
-    let idx1 = 0, idx2 = 0, idx3 = 0, idx4 = 0, key='', value = '', vtype = '';
-    while(true) {
-    	let item = {};
-
-        //1 找key
-        idx1 = context.indexOf('<key>', idx2);
-        if(idx1 === -1) break;
-        idx2 = context.indexOf('</key>', idx1);
-        key = context.slice(idx1 + 5, idx2);
-
-        //2 接着找数据类型
-        idx3 = context.indexOf('<', idx2 + 6);
-        idx4 = context.indexOf('>', idx3);
-        vtype = context.slice(idx3 + 1, idx4);
-
-        //3 再找值
-        if(vtype === 'true/') {
-            vtype = 'bool';
-            value = true;
-        } else if (vtype === 'false/') {
-            vtype = 'bool';
-            value = false;
-        } else {
-            value = getValuesByKeyname(context, key);
-        }
-
-
-        item['pid'] = pid;
-        item['Key'] = key;
-        item['Type'] = vtype;
-        item['Value'] = value;
-        rarray.push(item);
-    }
-
-}
-
-
-function getValuesByKeyname(context='', keyname, istop) {
+ * 把Plist的文本内容转换成json对象返回
+ * @param {string} context 
+ * @returns JSON Object
+ */
+function formatContext(context='') {
+    let result = PlistParser.parse(context);
+    result = PlistParser.serialize(result);
     
-    if(context === '') {
+    const fillstring = (ke,va) => {
+        if(getTypeof(va) === 'array' && va[1] === 'string') {
+            va[0] = b64Decode(va[0]);
+        }
+        return va;
+    };
+    result = JSON.parse(result,fillstring);
+    bljsonobj(result);
+        
+    return result;
+    
+}
+
+/**
+ * 遍历JSON Object 对象,把编过码的键值全部改回来
+ * @param {Object} obj 
+ */
+function bljsonobj(obj) {
+    Object.entries(obj).forEach(([key, value]) => {
+        
+        const tf = getTypeof(value);
+
+        obj[b64Decode(key)] = value;
+        obj[key] = null;
+        delete obj[key];
+
+        if(tf === 'array') {
+            const lenarr = value.length;
+            for(let it=0;it<lenarr;it++) {
+                
+                if(getTypeof(value[it]) === 'object') {
+                    bljsonobj(value[it]);
+                } 
+                
+            }
+        } else if(tf === 'object') {
+            bljsonobj(value);
+
+        }
+        
+    });
+}
+
+/**
+ * base64转16进制
+ * @param {string} strbase64 
+ * @returns string
+ */
+function base64toHex(strbase64='') {
+    if(strbase64 === '') {
         return '';
     }
-
-    keyname = '<key>' + keyname + '</key>';
-
-    if(istop === true) {
-        istop = '<dict>';
-    } else {
-        istop = '';
-    }
-
-    let ix1=0;ix2=0,ix3=0;
-    ix1 = context.indexOf(keyname + istop);
-    if(ix1 === -1) {
-        //如果在当前config中没有这个关键词，返回undefined
-        return undefined;
-    }
-
-    ix2 = context.indexOf('<', ix1 + keyname.length);
-
-    ix3 = context.indexOf('>', ix2);
-    let theNextKey = context.slice(ix2 , ix3 + 1);
-    let isData = false;
-
-    switch(theNextKey) {
-        case '<array/>':
-            return '';
-            
-        case '<dict/>':
-            return '';
-            
-        case '<true/>':
-            return true;
-            
-        case '<false/>':
-            return false;
-            
-        case '<data>':
-            isData = true;
-            break;
-    }
-
-    //找到最近的匹配的对, 返回其中的值
-
-    let js = 1, charkey = '', nextsetp = ix3;
-    theNextKey = theNextKey.substr(1);
-    let ntl = theNextKey.length;
-    while(js > 0) {
-        ix1 = context.indexOf(theNextKey, nextsetp);
-        nextsetp = ix1 + ntl;
-        charkey = context.substr(ix1 - 1, 1);
-        switch(charkey) {
-            case '/':
-                js --;
-                break;
-            case '<':
-                js ++;
-                break;
-        }
-    }
-    let rstring = context.slice(ix3 + 1, ix1 - 2);
-    if(isData === true && rstring !== '') {
-        rstring = base64toHex(rstring);
-    }
-
-
-    return rstring;
-}
-
-//去除 换行 tab 回车 两边空格
-function formatContext(context='') {
-	context = context.replace(/[\t\r]/g,'');
-	const arrayContext = context.split('\n');
-    let len = arrayContext.length, newContext = '';
-
-	for(let i=0;i<len;i++) {
-		newContext += arrayContext[i].trim();
-	}
-    delete arrayContext,context;
-    return newContext;
-}
-
-//base64转16进制
-function base64toHex(strbase64) {
-
     function dec2hex(d) {
-        let hD='0123456789ABCDEF';
+        const hD='0123456789ABCDEF';
         let h = hD.substr(d&15,1);
         while (d>15) {
             d>>=4;
@@ -388,8 +103,8 @@ function base64toHex(strbase64) {
 
     function base64_decode(input) {
 
-        let keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
-        let output = new Array();
+        const keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
+        const output = new Array();
         let chr1, chr2, chr3;
         let enc1, enc2, enc3, enc4;
         let i = 0;
@@ -437,16 +152,20 @@ function base64toHex(strbase64) {
     return hexText;
 }
 
-//16进制转base64
+/**
+ * 16进制转base64
+ * @param {*} strhex 
+ * @returns 
+ */
 function hextoBase64(strhex) {
-
+    //consolelog(strhex);
     function binary_to_base64(input) {
-        let base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-        let ret = new Array();
+        const base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+        let ret = '';
         let i = 0;
         let j = 0;
-        let char_array_3 = new Array(3);
-        let char_array_4 = new Array(4);
+        const char_array_3 = new Array(3);
+        const char_array_4 = new Array(4);
         let in_len = input.length;
         let pos = 0;
 
@@ -489,7 +208,7 @@ function hextoBase64(strhex) {
         showTipModal (VUEAPP.lang.Error + ', ' + fillLangString(VUEAPP.lang.hexstringlengthisodd, strhex), 'error');
         return '';
     }
-    let binary = new Array();
+    const binary = new Array();
     for (let i=0; i<strhex.length/2; i++) {
         let h = strhex.substr(i*2, 2);
         binary[i] = parseInt(h,16);
@@ -497,7 +216,11 @@ function hextoBase64(strhex) {
     return binary_to_base64(binary);
 }
 
-
+/**
+ * 当输入 ture, 'true', '1' 时转为 '<true/>' ,其他的一律转为 '<false/>'
+ * @param {string} strbool 
+ * @returns string
+ */
 function toBoolString(strbool) {
     if(strbool === true || strbool === 'true' || strbool === '1') {
        return '<true/>';
@@ -506,6 +229,11 @@ function toBoolString(strbool) {
     }
 }
 
+/**
+ * 输入 true 转为 '<true/>' ,其他的一律转为 '<false/>'
+ * @param {string} strbool 
+ * @returns string
+ */
 function toBoolStringStrict(strbool) {
     if(strbool === true) {
         return '<true/>';
@@ -514,53 +242,87 @@ function toBoolStringStrict(strbool) {
     }
 }
 
+/**
+ * jqgrid 中的formatter使用, 返回一个可以带默认值得函数
+ * @param {string} defaultvalue 
+ * @returns function
+ */
 function getPlistEncodeFunction(defaultvalue) {
-    return function(context='') {
-
-        if(context === '') {
+    return (context='') => {
+        
+        if(context === '' || context[0] === '') {
             return defaultvalue;
-        } 
+        }
 
-        if(typeof(context) === 'string') {
-            return context.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+        if(getTypeof(context) === 'array') {
+            return context[1] === 'data' ? base64toHex(context[0]) : context[0]
         } 
-            
-        return context;
+    
+        return context;       
             
     }
 }
 
-//编码特殊字符<和>
+/**
+ * jqgrid 中的formatter使用, 把正确的值解析出来
+ * @param {string} context 
+ * @returns string
+ */
 function plistEncode(context='') {
 
-    if(context === '') {
+    if(context === '' || context[0] === '') {
         return '';
     }
+    
+    if(getTypeof(context) === 'array') {
+        switch(context[1]) {
+            case 'data':
+                return base64toHex(context[0]);
+            case 'string':
+                context = context[0];
+                break;
+            default:
+                return context[0];
+        }
 
-    if(typeof(context) === 'string') {
-        return context.replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
 
-    return context;    
     
+    
+    return context.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        
 }
 
-
-function toNumber(num) {
+/**
+ * 1 检测num变量是否为数值
+ * 2 如果不是弹出提示信息,返回0
+ * 3 如果是根据第二个参数转换后返回, 默认为parseInt函数
+ * @param {String} num 
+ * @param {Function} fnparse 
+ * @returns Number
+ */
+function toNumber(num, fnparse=parseInt) {
     if(isNaN(num)) {
         showTipModal(fillLangString(VUEAPP.lang.toNumberError, num), 'warning');
-        return num;
-    } else {
-        return Number(num);
+        return 0;
     }
+    return fnparse(num);
 }
 
+/**
+ * 在字符串两边加上<string>, 而且字符串中的 < > & 这3个符号会被转义
+ * @param {String} context 
+ * @returns String
+ */
 function addCharstring(context='') {
-
-    return '<string>' + plistEncode(context) + '</string>';
+    return '<string>' + htmlEscape(context) + '</string>';
 }
 
-//复制内容到剪贴板中
+/**
+ * 复制内容到剪贴板中
+ * @param {String} rowdata 
+ */
 function copyDatatoClipboard(rowdata) {
 	$("body").append('<div id="hiddendivforcopy"><button id="hiddenbuttonforcopy">Copy</button></div>');
 	let clipboard  = new ClipboardJS('#hiddenbuttonforcopy', {
@@ -570,19 +332,26 @@ function copyDatatoClipboard(rowdata) {
     });
 	//自动点击copy
 	$("#hiddenbuttonforcopy").trigger("click");
-	//删除
+	//释放clipboard
 	clipboard.destroy();
 
 	$("#hiddendivforcopy").remove();
 }
 
-
+/**
+ * 弹出信息窗口
+ * @param {String} content 信息内容
+ * @param {String} msgtype 信息类型
+ */
 function showTipModal(content, msgtype='success') {
     toastr.clear();
     toastr[msgtype](content);
 }
 
-function showTextareaModal(content) {
+/**
+ * 弹出粘贴窗口
+ */
+function showTextareaModal() {
 
 	VUEAPP.textarea_content = '';
 	$('#inputModal').modal('show');
@@ -594,7 +363,11 @@ function showTextareaModal(content) {
 
 
 
-// fillLangString('my {@1} is {@2}', 'name', 'mady')
+/**
+ * fillLangString('my {@1} is {@2}', 'name', 'mady')
+ * @param  {...String} args 
+ * @returns String
+ */
 function fillLangString(...args) {    
 	for(let i=1,len=args.length;i<len;i++) {      
 		args[0] = args[0].replace('{@' + i + '}', args[i]);
@@ -602,6 +375,12 @@ function fillLangString(...args) {
 	return args[0];
 }
 
+/**
+ * 把一个json字符串转换成json对象,在复制粘贴功能中使用
+ * 如果转换失败返回 false
+ * @param {string} str 
+ * @returns Object
+ */
 function stringToJSON(str) {
 	let objreturn;
 	try {
@@ -612,7 +391,11 @@ function stringToJSON(str) {
 	return objreturn;
 }
 
-//根据表格关键字去全局变量 GLOBAL_MAP_TABLE 中取表格对象
+/**
+ * 根据表格关键字去全局变量 GLOBAL_MAP_TABLE 中取表格对象
+ * @param {string} tbkey 
+ * @returns Object
+ */
 function getJqgridObjectbyKey(tbkey) {
     return GLOBAL_MAP_TABLE.get(tbkey);
 }
@@ -621,7 +404,10 @@ function consolelog(msg) {
     console.log(msg);
 }
 
-//生产UUID
+/**
+ * 生产UUID
+ * @returns 
+ */
 function uuid() {
   let temp_url = URL.createObjectURL(new Blob());
   let uuid = temp_url.toString();
@@ -629,35 +415,31 @@ function uuid() {
   return uuid.substr(uuid.lastIndexOf("/") + 1).toUpperCase();
 }
 
-function btnSystemUUIDclick() {
-    VUEAPP.PlatformInfo.Generic.SystemUUID = uuid();
-}
 
-function btnromclick() {
-    VUEAPP.PlatformInfo.Generic.ROM = uuid().split('-')[4];
-}
-
-
+/**
+ * 获取表格的最大id
+ * @param {Object} jqgrid 表格对象
+ * @returns integer
+ */
 function getMaxrowid(objGridTable) {
     const ids = objGridTable.jqGrid('getDataIDs');
-    if(ids.length === 0) {
-        return 0;
-    }
-    return Math.max(...ids);
+    return ids.length === 0 ? 0 : Math.max(...ids);
 }
 
-//浅拷贝一个对象,delList中是不要的属性
+/**
+ * 浅拷贝一个对象,delList中是不要的属性
+ * @param {Object} target  要拷贝的对象
+ * @param {Array} delList 不需要拷贝的属性列表
+ * @returns 
+ */
 function clone(target, delList=[]) {
 
     const tempObj = {};
     for (const key in target) {
-        if(delList.indexOf(key) >= 0) {
-            continue;
+        if(delList.includes(key) === false && Reflect.has(target, key)) {
+            tempObj[key] = target[key];
         }
-        if (Object.hasOwnProperty.call(target, key)) {
-            // 拷贝
-            tempObj[key] = target[key];                
-        }
+        
     }
     return tempObj;
 
@@ -676,4 +458,54 @@ function clone(target, delList=[]) {
         x = str.indexOf(cha, x + 1);
     }
     return x;
+}
+
+/**
+ * 得到变量的真实类型
+ * @param {object} obj 
+ * @returns string
+ */
+function getTypeof(obj) {
+    return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
+}
+
+/**
+ * 转义字符串中的 & < > 3个符号, 在生产plist文本内容时使用
+ * @param {string} context 
+ * @returns string
+ */
+function htmlEscape(context=''){
+    if(context === '') return '';
+    if(getTypeof(context) === 'array') {
+
+    }
+    return context.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/**
+ * 还原字符串中的 & < > 3个符号, 在读取plist的内容时使用
+ * @param {string} context 
+ * @returns string
+ */
+function htmlReescape(str = '') {
+    if(str === '') return '';
+    return str.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
+}
+
+/**
+ * 由于特殊字符串导致JSON.parse()出错,用这个函数在读取plist文件后把字符串类型数据进行base64编码
+ * @param {string} str 
+ * @returns string
+ */
+function b64Encode(str='') {
+    return str === '' ? '' : btoa(encodeURIComponent(str));
+}
+
+/**
+ * b64Encode反编码, 在plist内容成功被JSON.parse后把字符串转回来
+ * @param {strting} str 
+ * @returns string
+ */
+function b64Decode(str='') {
+    return str === '' ? '' : decodeURIComponent(atob(str));
 }

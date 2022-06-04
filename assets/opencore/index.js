@@ -11,10 +11,13 @@ $(document).ready(function() {
         before_change: function(files){
             const reader = new FileReader();
             reader.readAsText(files[0]);
-            reader.onload = function () {
-            	VUEAPP['plistcontext'] = formatContext(this.result);
+            reader.onload = function () {    
+                
+            	VUEAPP['plistJsonObject'] = formatContext(this.result);
+                
             	VUEAPP.initAllData();
         	}
+            delete reader;
             return true;
         }
         }).on('file.error.ace', function() {
@@ -288,7 +291,7 @@ const VUEAPP = new Vue({
     el: '#main-container',
     data: {
         root:'ACPI',                  //决定当前显示哪个节点
-        plistcontext:'',              //保存从config.plist中读取的内容
+        plistJsonObject:'',              //保存从config.plist中读取的内容
         title:SYSTEM_TIPS,             //下面都是提示变量
         textarea_content:'',          //保存粘贴页面时候textarea中的内容
         current_paste_tableid:'',     //保存点击当前粘贴按钮的table id
@@ -389,10 +392,9 @@ const VUEAPP = new Vue({
                 BID:'', FirmwareFeatures:'', FirmwareFeaturesMask:'', MLB:'', ROM:'',SystemSerialNumber:'',SystemUUID:''
             },
             Memory:{
-                DataWidth:'',ErrorCorrection:'',FormFactor:'',MaxCapacity:'',TotalWidth:'',Type:'',TypeDetail:'',
-                Devices:[]
+                DataWidth:'',ErrorCorrection:'',FormFactor:'',MaxCapacity:'',TotalWidth:'',Type:'',TypeDetail:''                
             },
-
+            Memory_Devices:[],
             SMBIOS:{
                 BIOSReleaseDate:'', BIOSVendor:'', BIOSVersion:'', BoardAssetTag:'', BoardLocationInChassis:'', BoardManufacturer:'',
                 BoardProduct:'', BoardSerialNumber:'', BoardType:'', BoardVersion:'', ChassisAssetTag:'', ChassisManufacturer:'',
@@ -454,13 +456,13 @@ const VUEAPP = new Vue({
             //特殊,,ConsoleMode_List 的数据和 Resolution_List一样
             ,ConsoleMode_List: SYSTEM_TIPS.Assist.Resolution_List
             
-            
+            ,...SYSTEM_TIPS.Assist
         }
 
     },
 
     created:function () {
-        let syslang = navigator.language;
+        let syslang = navigator?.language;
         
         if(syslang === undefined || GLOBAL_LANG[syslang] === undefined) {
             this.lang = GLOBAL_LANG['en-US'];
@@ -468,10 +470,6 @@ const VUEAPP = new Vue({
             this.lang = GLOBAL_LANG[syslang];
         }
         
-        //用SYSTEM_TIPS.Assist填充Assist
-        for(let assetit in SYSTEM_TIPS.Assist) {
-            this.Assist[assetit] = SYSTEM_TIPS.Assist[assetit];
-        }
     },
 
     watch: {
@@ -514,369 +512,312 @@ const VUEAPP = new Vue({
             consolelog("initUEFI");
             this.initUEFI();
 
-            this.plistcontext = '';
+            this.plistJsonObject = null;
         }
 
         // 获取并设置dict的值和bool值
-        , getAndSetDictItem(context='', vueData) {
-            if(context === "") {                
-                return;
-            }
-
-            let dataType = '', gbvabknvalue;
-            for(let it in vueData) {
-                dataType = typeof(vueData[it]);        
-                if(dataType === "boolean") {
-                    Vue.set(vueData, it, partrue(getValuesByKeyname(context, it)));
-                } else if(dataType === "object"){
-                    //如果是数组，什么都不干，任其继续进入下一轮循环
-                    continue;
-                } else {
-                    gbvabknvalue = getValuesByKeyname(context, it);
-                    
-                    if(gbvabknvalue !== undefined) {
-                        Vue.set(vueData, it, String(gbvabknvalue));
-                    }
-                    
-                }
-
-            }
+        , getAndSetDictItem(plistData, vueData) {
+           for(const pd in plistData) {
+               
+               if(Reflect.has(vueData, pd)) {
+                    vueData[pd] = this.getPlistRealData(plistData[pd]);
+               }
+           }
 
         }
 
         , initNVRAM:function () {
 
-            this.NVRAM.AddLeft.length = 0;
-            this.NVRAM.AddRight.length = 0;
-            this.NVRAM.DeleteLeft.length = 0;
-            this.NVRAM.DeleteRight.length = 0;
-            this.NVRAM.LegacySchemaLeft.length = 0;
-            this.NVRAM.LegacySchemaRight.length = 0;
+            const plistData = this.plistJsonObject.NVRAM;
+             //Add
+             this.getPlistAndResetTableDataForValue(plistData, this.NVRAM,'Add','NVRAM_Add')
 
+             //Delete
+             this.getPlistAndResetTableDataForVolume(plistData, this.NVRAM,'Delete','NVRAM_Delete')
+            
+             //LegacySchema
+             this.getPlistAndResetTableDataForVolume(plistData, this.NVRAM,'LegacySchema','NVRAM_LegacySchema')
 
-            let NVRAMText = getValuesByKeyname(VUEAPP.plistcontext, 'NVRAM', true);
-            this.getAndSetDictItem(NVRAMText, this.NVRAM.root);
-
-
-            let AddText = getValuesByKeyname(NVRAMText, 'Add');
-            //AddLeft
-            let arrayParent = getParentKeys(AddText);
-            for(let i=0,len=arrayParent.length;i<len;i++) {
-                this.NVRAM.AddLeft.push({id:i, Devices:arrayParent[i]});
-            }
-            //this.NVRAM.AddSub = getSubKeys(AddText);
-            let subarray = getSubKeys(AddText);
-
-            for(let it in subarray) {
-                subarray[it]['id'] = it;
-                this.NVRAM.AddRight.push(subarray[it]);
-            }
-
-            getJqgridObjectbyKey("NVRAM_AddLeft").trigger("reloadGrid");
-            getJqgridObjectbyKey("NVRAM_AddRight").trigger("reloadGrid");
-            //选中第一条记录
-            getJqgridObjectbyKey("NVRAM_AddLeft").jqGrid('setSelection',0, true);
-
-            //DeleteLeft
-            let DeleteText = getValuesByKeyname(NVRAMText, 'Delete')
-            let arrayParent2 = getKeyarrayZIkey(DeleteText);
-
-            for(let j=0,len=arrayParent2.length;j<len;j++) {
-                this.NVRAM.DeleteLeft.push({id:j, Devices:arrayParent2[j]});
-            }
-
-
-            subarray = getKeyarrayZIarray(DeleteText);
-            for(let it in subarray) {
-                subarray[it]['id'] = it;
-                this.NVRAM.DeleteRight.push(subarray[it]);
-            }
-            getJqgridObjectbyKey("NVRAM_DeleteLeft").trigger("reloadGrid");
-            getJqgridObjectbyKey("NVRAM_DeleteRight").trigger("reloadGrid");
-            getJqgridObjectbyKey("NVRAM_DeleteLeft").jqGrid('setSelection',0, true);
-
-            //LegacySchemaLeft
-            let LegacySchemaText = getValuesByKeyname(NVRAMText, 'LegacySchema')
-            let arrayParent3 = getKeyarrayZIkey(LegacySchemaText);
-
-            for(let k=0,len=arrayParent3.length;k<len;k++) {
-
-                this.NVRAM.LegacySchemaLeft.push({id:k, Devices:arrayParent3[k]});
-            }
-
-
-            subarray = getKeyarrayZIarray(LegacySchemaText);
-            for(let it in subarray) {
-                subarray[it]['id'] = it;
-                this.NVRAM.LegacySchemaRight.push(subarray[it]);
-            }
-            getJqgridObjectbyKey("NVRAM_LegacySchemaLeft").trigger("reloadGrid");
-            getJqgridObjectbyKey("NVRAM_LegacySchemaRight").trigger("reloadGrid");
-            getJqgridObjectbyKey("NVRAM_LegacySchemaLeft").jqGrid('setSelection',0, true);
+            //几个checkbox
+             this.getAndSetDictItem(plistData, this.NVRAM.root);
 
 
         }
 
         , initUEFI:function () {
-            let UEFIText = getValuesByKeyname(VUEAPP.plistcontext, 'UEFI', true);
+            const plistData = this.plistJsonObject.UEFI;
 
             //root
-            this.getAndSetDictItem(UEFIText, this.UEFI.root);
+            this.getAndSetDictItem(plistData, this.UEFI.root);
 
             //Drivers
-            this.getPlistAndResetTableData(UEFIText, 'Drivers', 'UEFI_Drivers', this.UEFI.Drivers);
+            this.UEFI.Drivers.length = 0;
+            if(Reflect.has(plistData, 'Drivers')) {
+                const driversData = plistData.Drivers;
 
-            //####Drivers特殊处理开始，从0.7.2升级到0.7.3用
-            let DriversText = getValuesByKeyname(UEFIText, 'Drivers');
-            let arrayDrivers = parsePlistArray2stringArray(DriversText);
-            let shenji72to73 = true;
-            for(let i=0,len=arrayDrivers.length;i<len;i++) {
-                                
-                if(arrayDrivers[i]['Volume'].indexOf("<key>") === 0) {
-                    shenji72to73 = false;
-                    break;
-                }
-                this.UEFI.Drivers.push({ Path:arrayDrivers[i]['Volume'],Arguments:'',Enabled:true}) ;
-                
+                for(let i=0;i<driversData.length;i++) {
+                    const dataType = getTypeof(driversData[i]);
+                    if(dataType === 'object') {
+                        this.UEFI.Drivers.push(driversData[i]) ;
+                    } else if(dataType === 'array') {
+                        this.UEFI.Drivers.push({ Path:driversData[i],Arguments:'',Comment:'',Enabled:true});
+                    }
+                }                
             }
-            if(shenji72to73 === true) {
-                getJqgridObjectbyKey("UEFI_Drivers").trigger("reloadGrid");
-            }
-            
-            //####Drivers特殊处理结束，从0.7.2升级到0.7.3用
-            
-            
+            getJqgridObjectbyKey("UEFI_Drivers").trigger("reloadGrid");        
 
 			//APFS
-            let APFSText = getValuesByKeyname(UEFIText, 'APFS');
-            this.getAndSetDictItem(APFSText, this.UEFI.APFS);
+            this.getAndSetDictItem(plistData.APFS, this.UEFI.APFS);
 
             //AppleInput
-            let AppleInputText = getValuesByKeyname(UEFIText, 'AppleInput');
-            this.getAndSetDictItem(AppleInputText, this.UEFI.AppleInput);
+            this.getAndSetDictItem(plistData.AppleInput, this.UEFI.AppleInput);
 
             //Audio
-            let AudioText = getValuesByKeyname(UEFIText, 'Audio');            
-            this.getAndSetDictItem(AudioText, this.UEFI.Audio);
+            this.getAndSetDictItem(plistData.Audio, this.UEFI.Audio);
             //处理一下PlayChime
-            switch(this.UEFI.Audio['PlayChime']) {
-            case 'true':
-                this.UEFI.Audio['PlayChime'] = 'Enabled';
-                break;
-            case 'false':
-                this.UEFI.Audio['PlayChime'] = 'Disabled';
-                break;
-            case '':
-                this.UEFI.Audio['PlayChime'] = 'Auto';
-                break;
+            switch(String(this.UEFI.Audio['PlayChime'])) {
+                case 'true':
+                    this.UEFI.Audio['PlayChime'] = 'Enabled';
+                    break;
+                case 'false':
+                    this.UEFI.Audio['PlayChime'] = 'Disabled';
+                    break;
+                case '':
+                    this.UEFI.Audio['PlayChime'] = 'Auto';
+                    break;
             }
 
 
-            
-
             //Input
-            let InputText = getValuesByKeyname(UEFIText, 'Input');
-            this.getAndSetDictItem(InputText, this.UEFI.Input);
+            this.getAndSetDictItem(plistData.Input, this.UEFI.Input);
 
             //Output
-            let OutputText = getValuesByKeyname(UEFIText, 'Output');
-            this.getAndSetDictItem(OutputText, this.UEFI.Output);
+            this.getAndSetDictItem(plistData.Output, this.UEFI.Output);
 
             //ProtocolOverrides
-            let ProtocolOverridesText = getValuesByKeyname(UEFIText, 'ProtocolOverrides');
-            this.getAndSetDictItem(ProtocolOverridesText, this.UEFI.ProtocolOverrides);
+            this.getAndSetDictItem(plistData.ProtocolOverrides, this.UEFI.ProtocolOverrides);
 
             //Quirks
-            let QuirksText = getValuesByKeyname(UEFIText, 'Quirks');
-            this.getAndSetDictItem(QuirksText, this.UEFI.Quirks);
+            this.getAndSetDictItem(plistData.Quirks, this.UEFI.Quirks);
 
             //ReservedMemory
-            this.getPlistAndResetTableData(UEFIText, 'ReservedMemory', 'UEFI_ReservedMemory', this.UEFI.ReservedMemory);
+            this.getPlistAndResetTableData(plistData, 'ReservedMemory', 'UEFI_ReservedMemory', this.UEFI.ReservedMemory);
 
         }
 
         , initPlatformInfo:function () {
-            let ipiText = getValuesByKeyname(VUEAPP.plistcontext, 'PlatformInfo', true);
+            
+            const plistData = this.plistJsonObject.PlatformInfo;
 
             //root
-            this.getAndSetDictItem(ipiText, this.PlatformInfo.root);
+            this.getAndSetDictItem(plistData, this.PlatformInfo.root);
 
-            //DataHub
-            let DataHubText = getValuesByKeyname(ipiText, 'DataHub');
-
-            //如果DataHub为空, 就不显示datahub , PlatformNVRAM SMBIOS 三项目
-            this.configisfull = DataHubText === undefined ? false:true;
-
-            //consolelog('DataHubText=' + DataHubText);
-            this.getAndSetDictItem(DataHubText, this.PlatformInfo.DataHub);
+            // DataHub 
+            // 如果DataHub为空, 就不显示datahub , PlatformNVRAM SMBIOS 三项目
+            this.configisfull = Reflect.has(plistData, "DataHub") ? true : false;
+            this.getAndSetDictItem(plistData.DataHub, this.PlatformInfo.DataHub);
 
             //Generic
-            let GenericText = getValuesByKeyname(ipiText, 'Generic');
-            this.getAndSetDictItem(GenericText, this.PlatformInfo.Generic);
+            this.getAndSetDictItem(plistData.Generic, this.PlatformInfo.Generic);
 
             //PlatformNVRAM
-            let PlatformNVRAMText = getValuesByKeyname(ipiText, 'PlatformNVRAM');
-            this.getAndSetDictItem(PlatformNVRAMText, this.PlatformInfo.PlatformNVRAM);
+            this.getAndSetDictItem(plistData.PlatformNVRAM, this.PlatformInfo.PlatformNVRAM);
 
             //SMBIOS
-            let SMBIOSText = getValuesByKeyname(ipiText, 'SMBIOS');
-            this.getAndSetDictItem(SMBIOSText, this.PlatformInfo.SMBIOS);
+            this.getAndSetDictItem(plistData.SMBIOS, this.PlatformInfo.SMBIOS);
 
             //Memory
-            let MemoryText = getValuesByKeyname(ipiText, 'Memory');
-            this.getAndSetDictItem(MemoryText, this.PlatformInfo.Memory,true);
-            this.getPlistAndResetTableData(MemoryText, 'Devices', 'PlatformInfo_MemoryDevices', this.PlatformInfo.Memory.Devices);
+            this.getPlistAndResetTableData(plistData.Memory, 'Devices', 'PlatformInfo_MemoryDevices', this.PlatformInfo.Memory_Devices);
+            this.getAndSetDictItem(plistData.Memory, this.PlatformInfo.Memory);
+            
 
         }
 
         , initMisc:function() {
-            let MiscText = getValuesByKeyname(VUEAPP.plistcontext, 'Misc', true);
 
-            //BlessOverride
-            let BlessOverrideText = getValuesByKeyname(MiscText, 'BlessOverride');
+
+            const plistData = this.plistJsonObject.Misc;            
+
+            //BlessOverride            
             this.Misc.BlessOverride.length = 0;
-            let arrayBlessOverride = parsePlistArray2stringArray(BlessOverrideText);
+            const arrayBlessOverride = plistData.BlessOverride;
             for(let i=0,len=arrayBlessOverride.length;i<len;i++) {
-                this.Misc.BlessOverride.push({ ScanningPaths:arrayBlessOverride[i]['Volume']}) ;
+                this.Misc.BlessOverride.push({ ScanningPaths:arrayBlessOverride[i][0]}) ;
             }
             getJqgridObjectbyKey("Misc_BlessOverride").trigger("reloadGrid");
 
             //Entries
-            this.getPlistAndResetTableData(MiscText, 'Entries', 'Misc_Entries', this.Misc.Entries);
+            this.getPlistAndResetTableData(plistData, 'Entries', 'Misc_Entries', this.Misc.Entries);
+
             //Tools
-            this.getPlistAndResetTableData(MiscText, 'Tools', 'Misc_Tools', this.Misc.Tools);
-            //Boot
-            let BootText = getValuesByKeyname(MiscText, 'Boot');
-            this.getAndSetDictItem(BootText, this.Misc.Boot);
+            this.getPlistAndResetTableData(plistData, 'Tools', 'Misc_Tools', this.Misc.Tools);
+
+            //Boot            
+            this.getAndSetDictItem(plistData.Boot, this.Misc.Boot);
 
             //Debug
-            let DebugText = getValuesByKeyname(MiscText, 'Debug');
-            this.getAndSetDictItem(DebugText, this.Misc.Debug);
+            this.getAndSetDictItem(plistData.Debug, this.Misc.Debug);
 
             //Security
-            let SecurityText = getValuesByKeyname(MiscText, 'Security');
-            this.getAndSetDictItem(SecurityText, this.Misc.Security);
+            this.getAndSetDictItem(plistData.Security, this.Misc.Security);
 
             //Serial
-            let SerialText = getValuesByKeyname(MiscText, 'Serial');
-            this.getAndSetDictItem(SerialText, this.Misc.Serial);
+            this.getAndSetDictItem(plistData.Serial, this.Misc.Serial);
 
             //Serial.Custom
-            let CustomText = getValuesByKeyname(SerialText, 'Custom');
-            this.getAndSetDictItem(CustomText, this.Misc.Serial.Custom);
-            //consolelog(CustomText);
+            this.getAndSetDictItem(plistData.Custom, this.Misc.Serial.Custom);
+            
         }
 
 
 
         , initKernel:function () {
-            let text = getValuesByKeyname(VUEAPP.plistcontext, 'Kernel', true);
-            //consolelog(this.Kernel.Add);
-            this.getPlistAndResetTableData(text, 'Add', 'Kernel_Add', this.Kernel.Add);
-            this.getPlistAndResetTableData(text, 'Block', 'Kernel_Block', this.Kernel.Block);
-            this.getPlistAndResetTableData(text, 'Patch', 'Kernel_Patch', this.Kernel.Patch);
-            this.getPlistAndResetTableData(text, 'Force', 'Kernel_Force', this.Kernel.Force);
+            
+            const plistData = this.plistJsonObject.Kernel;
+            this.getPlistAndResetTableData(plistData, 'Add', 'Kernel_Add', this.Kernel.Add);
+            this.getPlistAndResetTableData(plistData, 'Block', 'Kernel_Block', this.Kernel.Block);
+            this.getPlistAndResetTableData(plistData, 'Patch', 'Kernel_Patch', this.Kernel.Patch);
+            this.getPlistAndResetTableData(plistData, 'Force', 'Kernel_Force', this.Kernel.Force);
 
-            let EmulateText = getValuesByKeyname(text, 'Emulate');
-            this.getAndSetDictItem(EmulateText, this.Kernel.Emulate);
+            
+            this.getAndSetDictItem(plistData.Emulate, this.Kernel.Emulate);
 
-            let QuirksText = getValuesByKeyname(text, 'Quirks');
-            this.getAndSetDictItem(QuirksText, this.Kernel.Quirks);
+            
+            this.getAndSetDictItem(plistData.Quirks, this.Kernel.Quirks);
 
-            let SchemeText = getValuesByKeyname(text, 'Scheme');
-            this.getAndSetDictItem(SchemeText, this.Kernel.Scheme);
+            
+            this.getAndSetDictItem(plistData.Scheme, this.Kernel.Scheme);
 
         }
 
         , initDeviceProperties:function () {
-            this.DeviceProperties.AddLeft.length = 0;
-            this.DeviceProperties.AddRight.length = 0;
-            this.DeviceProperties.DeleteLeft.length = 0;
-            this.DeviceProperties.DeleteRight.length = 0;
-
-            let text = getValuesByKeyname(VUEAPP.plistcontext, 'DeviceProperties', true);
-            //consolelog(text);
-            let AddText = getValuesByKeyname(text, 'Add');
+          
             //Add
-            let arrayParent = getParentKeys(AddText);
-            for(let i=0,len=arrayParent.length;i<len;i++) {
-                this.DeviceProperties.AddLeft.push({id:i, Devices:arrayParent[i]});
-            }
-
-            let subArray = getSubKeys(AddText);
-            for(let it in subArray) {
-                subArray[it]['id'] = it;
-                //consolelog(subArray[it]);
-                this.DeviceProperties.AddRight.push(subArray[it]);
-            }
-            getJqgridObjectbyKey("DeviceProperties_AddLeft").trigger("reloadGrid");
-            getJqgridObjectbyKey("DeviceProperties_AddRight").trigger("reloadGrid");
-            //选中第一条记录
-            getJqgridObjectbyKey("DeviceProperties_AddLeft").jqGrid('setSelection',0, true);
+            this.getPlistAndResetTableDataForValue(this.plistJsonObject.DeviceProperties, this.DeviceProperties,'Add','DeviceProperties_Add')
 
             //Delete
-            let DeleteText = getValuesByKeyname(text, 'Delete')
-            let arrayParent2 = getKeyarrayZIkey(DeleteText);
-            //consolelog(arrayParent2);
-            for(let i=0,len=arrayParent2.length;i<len;i++) {
-                this.DeviceProperties.DeleteLeft.push({id:i, Devices:arrayParent2[i]});
-            }
-
-
-            subArray = getKeyarrayZIarray(DeleteText);
-            for(let it in subArray) {
-                subArray[it]['id']=it;
-                this.DeviceProperties.DeleteRight.push(subArray[it]);
-            }
-
-            getJqgridObjectbyKey("DeviceProperties_DeleteLeft").trigger("reloadGrid");
-            getJqgridObjectbyKey("DeviceProperties_DeleteRight").trigger("reloadGrid");
-            getJqgridObjectbyKey("DeviceProperties_DeleteLeft").jqGrid('setSelection',0, true);
+            this.getPlistAndResetTableDataForVolume(this.plistJsonObject.DeviceProperties, this.DeviceProperties,'Delete','DeviceProperties_Delete')
 
         }
 
 
         , initBooter:function () {
 
-            let text = getValuesByKeyname(VUEAPP.plistcontext, 'Booter', true);
+            const plistData = this.plistJsonObject.Booter;
             
-            this.getPlistAndResetTableData(text, 'Patch', 'Booter_Patch', this.Booter.Patch);
+            this.getPlistAndResetTableData(plistData, 'Patch', 'Booter_Patch', this.Booter.Patch);
             
-            this.getPlistAndResetTableData(text, 'MmioWhitelist', 'Booter_MmioWhitelist', this.Booter.MmioWhitelist);
+            this.getPlistAndResetTableData(plistData, 'MmioWhitelist', 'Booter_MmioWhitelist', this.Booter.MmioWhitelist);
 
-            let QuirksText = getValuesByKeyname(text, 'Quirks');
-            this.getAndSetDictItem(QuirksText, this.Booter.Quirks);
+            this.getAndSetDictItem(plistData.Quirks, this.Booter.Quirks);
 
         }
 
         , initACPI:function () {
-            let acpiText = getValuesByKeyname(VUEAPP.plistcontext, 'ACPI', true);
-            this.getPlistAndResetTableData(acpiText, 'Add', 'ACPI_Add', this.ACPI.Add);
-            this.getPlistAndResetTableData(acpiText, 'Delete', 'ACPI_Delete', this.ACPI.Delete);
-            this.getPlistAndResetTableData(acpiText, 'Patch', 'ACPI_Patch', this.ACPI.Patch);
-
-            let QuirksText = getValuesByKeyname(acpiText, 'Quirks');
             
-            this.configisMOD = QuirksText.indexOf("<key>EnableForAll</key>") >= 0 ? true : false;
-            this.getAndSetDictItem(QuirksText, this.ACPI.Quirks);
+            const plistData = this.plistJsonObject.ACPI;
+            
+            this.getPlistAndResetTableData(plistData,'Add','ACPI_Add', this.ACPI.Add);
+            this.getPlistAndResetTableData(plistData,'Delete','ACPI_Delete', this.ACPI.Delete);
+            this.getPlistAndResetTableData(plistData,'Patch','ACPI_Patch', this.ACPI.Patch);
 
+            this.getAndSetDictItem(plistData.Quirks, this.ACPI.Quirks);
+            this.configisMOD = plistData.Quirks?.EnableForAll === undefined ? false : true;
 
             //强制刷新一下, 否则 checkbox 不更新
             this.$forceUpdate();
         }
 
-        // 获取plist中array的值并更新到table表格中
-        , getPlistAndResetTableData:function (context, keyname, gridkey, gridData) {
+        /**
+         * 获取arrData的实际值
+         */
+        , getPlistRealData(arrData) {
+            
+            if(getTypeof(arrData) === 'array') {
+                if(arrData[1] === 'data') {
+                    return base64toHex(arrData[0]);
+                } else {
+                    return arrData[0];
+                }
+            } 
+            return arrData ?? '';
+            
+        }
 
-            let arrayAdd = parrayToJSarray(getValuesByKeyname(context, keyname));
+        // 获取plist中array的值并更新到table表格中 
+        , getPlistAndResetTableData:function (plistData,lastkey, gridkey, gridData) {
             gridData.length = 0;
-
-            for(let it in arrayAdd) {
-                gridData.push(arrayAdd[it]);
+            
+            if(plistData === undefined || !Reflect.has(plistData, lastkey)) {
+                return;
             }
-            
-            
+
+            plistData = plistData[lastkey];
+
+            for(let it = 0;it<plistData.length;it++) {                
+                gridData.push(plistData[it]);
+            }
             getJqgridObjectbyKey(gridkey).trigger("reloadGrid");
+        }
+        
+        , getPlistAndResetTableDataForValue:function(plistData, vueData, key, tablename) {
+            vueData[key + 'Left'].length = 0;
+            vueData[key + 'Right'].length = 0;
+                       
+            let i = 0,j = 0;
+            for (const [k, v] of Object.entries(plistData[key])) {
+                    //consolelog(k)
+                    vueData[key + 'Left'].push({id:i, Devices:k});
+
+                    for(const [k2,v2] of Object.entries(v)) {
+                        
+                        const item = {};
+                        item['pid'] = i;
+                        item['id'] = j++;
+                        item['Key'] = k2;
+                        item['Type'] = v2[1];
+                        item['Value'] = v2;
+
+                        vueData[key + 'Right'].push(item);
+                    }
+
+                    i++;
+                
+            }
+
+            getJqgridObjectbyKey(tablename + "Left").trigger("reloadGrid");
+            getJqgridObjectbyKey(tablename + "Right").trigger("reloadGrid");
+            //选中第一条记录
+            getJqgridObjectbyKey(tablename + "Left").jqGrid('setSelection',0, true);
+        }
+
+        , getPlistAndResetTableDataForVolume:function(plistData, vueData, key, tablename) {
+            vueData[key + 'Left'].length = 0;
+            vueData[key + 'Right'].length = 0;
+            let i = 0,id=0;
+            for (const [k, v] of Object.entries(plistData[key])) {
+                    
+                vueData[key + 'Left'].push({id:i, Devices:k});
+
+                    for(let j=0;j<v.length;j++) {
+                        
+                        const item = {};
+                        item['pid'] = i;
+                        item['id'] = id++;
+                        item['Type'] = v[j][1];
+                        item['Volume'] = v[j];
+
+                        vueData[key + 'Right'].push(item);
+                    }
+
+                    i++;
+                
+            }
+
+
+            getJqgridObjectbyKey(tablename + "Left").trigger("reloadGrid");
+            getJqgridObjectbyKey(tablename + "Right").trigger("reloadGrid");
+            getJqgridObjectbyKey(tablename + "Left").jqGrid('setSelection',0, true);
         }
 
         // 单选按钮点击事件
@@ -957,9 +898,7 @@ const VUEAPP = new Vue({
             this.Assist.pagePublic_Selected = [];
 
             
-            if(vlen === 0) {
-                vlen = 8;
-            }
+            vlen ||= 8;
 
             for(let i=piv16.length-1,k=1;i>=0;i--,k++) {
                 if(piv16[i] === '0') continue;
@@ -1106,4 +1045,18 @@ function startPaste() {
 	$('#inputModal').modal('hide');
 
 	showTipModal(VUEAPP.lang.pasteDataSuccess, 'success');
+}
+
+/**
+ * SystemUUID 点击事件
+ */
+ function btnSystemUUIDclick() {
+    VUEAPP.PlatformInfo.Generic.SystemUUID = uuid();
+}
+
+/**
+ * rom 点击事件
+ */
+function btnromclick() {
+    VUEAPP.PlatformInfo.Generic.ROM = uuid().split('-')[4];
 }

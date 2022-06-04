@@ -3,7 +3,8 @@ let GLOBAL_TABLE_WIDTH = 0,  			//表格的宽度
 	GLOBAL_TABLE_HALF_WIDTH = 0; 		//半表格的宽度
 
 const 	GLOBAL_MAP_TABLE = new Map(),      //用于存储所有初始化好的表格
-		GLOBAL_SET_ONEDITTABLE = new Set();	//用于存储编辑中的表格名称，回车保存后会从Set中删除
+		GLOBAL_SET_ONEDITTABLE = new Set(),	//用于存储编辑中的表格名称，回车保存后会从Set中删除
+		DATA_TYPE_LIST = {string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'};//Type的类型列表
 
 
 function initGridTableACPI() {
@@ -130,7 +131,7 @@ function initGridTableDeviceProperties() {
 	colModel = [
 		{name:'Key',index:'Key', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'Value',index:'Value', width:150,editable: true, sortable:false, formatter:plistEncode},
-		{name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:{string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'}}},
+		{name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:DATA_TYPE_LIST}},
 		{name:'pid',index:'pid', editable: false, hidden:true},
         {name:'id',index:'id', editable: false, key:true, hidden:true}
 	];
@@ -162,7 +163,7 @@ function initGridTableDeviceProperties() {
     colNames = ['Volume', 'Type', 'pid', 'id'];
 	colModel = [
 		{name:'Volume',index:'Volume', width:150,editable: true, sortable:false, formatter:plistEncode},
-		{name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:{string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'}}},
+		{name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:DATA_TYPE_LIST}},
 		{name:'pid',index:'pid', editable: false, hidden:true},
         {name:'id',index:'id', editable: false,key:true, hidden:true}
 	];
@@ -198,7 +199,7 @@ function initGridTableBooter() {
 
 	colNames = ['Arch','Comment', 'Count','Find','Identifier','Limit','Mask','Replace','ReplaceMask','Skip','Enabled'];
 	colModel = [
-		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', formatter:getPlistEncodeFunction('Any'), editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Count',index:'Count', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:formatInteger},
 		{name:'Find',index:'Find', width:150,editable: true,  sortable:false, formatter:plistEncode},
@@ -314,7 +315,7 @@ function initGridTablePlatformInfo() {
 	];
 	let objGT_PlatformInfo_MemoryDevices = jQuery('#gridtable_PlatformInfo_MemoryDevices');
 	GLOBAL_MAP_TABLE.set('PlatformInfo_MemoryDevices', objGT_PlatformInfo_MemoryDevices);
-	initGridTable(objGT_PlatformInfo_MemoryDevices, VUEAPP.PlatformInfo.Memory.Devices, colNames, colModel, GLOBAL_TABLE_WIDTH - 15);
+	initGridTable(objGT_PlatformInfo_MemoryDevices, VUEAPP.PlatformInfo.Memory_Devices, colNames, colModel, GLOBAL_TABLE_WIDTH - 15);
 }
 
 function initGridTableUEFI() {
@@ -367,10 +368,10 @@ function initGridTableNVRAM() {
 	tableWidth = GLOBAL_TABLE_HALF_WIDTH - 7
 	;
 
-	//consolelog(tableWidth);
+	//AddLeft
     let colModel = [
         {name:'Devices',index:'Devices', width:150,editable: true, sortable:false, formatter:plistEncode},
-        {name:'id',index:'id', editable: false, hidden:true,key:true}
+        {name:'id',index:'id', editable: false,key:true, hidden:true}
     ];
 
     let objGT_NVRAM_AddLeft = jQuery('#gridtable_NVRAM_AddLeft');
@@ -383,7 +384,7 @@ function initGridTableNVRAM() {
     colModel = [
         {name:'Key',index:'Key', width:150,editable: true, sortable:false, formatter:plistEncode},
         {name:'Value',index:'Value', width:150,editable: true, sortable:false, formatter:plistEncode},
-        {name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:{string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'}}},
+        {name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:DATA_TYPE_LIST}},
         {name:'pid',index:'pid', editable: false,hidden:true},
         {name:'id',index:'id', editable: false,key:true,hidden:true}
     ];
@@ -416,7 +417,7 @@ function initGridTableNVRAM() {
     colNames = ['Volume', 'Type', 'pid','id'];
     colModel = [
         {name:'Volume',index:'Volume', width:150,editable: true, sortable:false, formatter:plistEncode},
-        {name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:{string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'}}},
+        {name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:DATA_TYPE_LIST}},
         {name:'pid',index:'pid', hidden:true, editable: false},
         {name:'id',index:'id', hidden:true, editable: false, key:true}
     ];
@@ -446,7 +447,7 @@ function initGridTableNVRAM() {
     colNames = ['Volume', 'Type', 'pid','id'];
     colModel = [
         {name:'Volume',index:'Volume', width:150,editable: true, sortable:false, formatter:plistEncode},
-        {name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:{string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'}}},
+        {name:'Type',index:'Type', width:90, fixed:true, editable: true, sortable:false, align:'center', edittype:'select', editoptions:{value:DATA_TYPE_LIST}},
         {name:'pid',index:'pid', hidden:true, editable: false},
         {name:'id',index:'id', hidden:true, editable: false, key:true}
     ];
@@ -484,14 +485,8 @@ function initSubGridTable(pid, gridkey, theData, keyname) {
 
 function initGridTable(objGridTable, gridData, colNames, colModel, width=0 , height=0, rownumbers=true) {
 
-
-	if(height === 0) {
-		height = parseInt(GLOBAL_TABLE_HEIGHT * 0.45);
-	}
-
-	if(width === 0) {
-		width = GLOBAL_TABLE_WIDTH;
-	}
+	height ||= parseInt(GLOBAL_TABLE_HEIGHT * 0.45);
+	width ||= GLOBAL_TABLE_WIDTH;
 
 	objGridTable.jqGrid({
 		data 	: gridData,
@@ -533,7 +528,6 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width=0 , hei
 		items : '.jqgrow:not(.unsortable)'
 	});
 
-	
 
 	//窗口拉动
 	$(window).on('resize.jqGrid', function () {
@@ -541,8 +535,8 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width=0 , hei
 		if(tab_content_width > 0) {
 			GLOBAL_TABLE_WIDTH = tab_content_width;
 
-			(function resetAllTableWidth(theWidth) {
-				setTimeout(function(){
+			( (theWidth) => {
+				setTimeout(()=>{
 
 					if(theWidth === GLOBAL_TABLE_WIDTH) {
 

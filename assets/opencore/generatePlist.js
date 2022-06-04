@@ -7,27 +7,35 @@ function getAllPlist() {
 	plistContext +=  '<dict>';
 
 	//1 ACPI
-	plistContext += genACPI();
+	consolelog('getACPI');
+	plistContext += getACPI();
 
 	//2 Booter
+	consolelog('getBooter');
 	plistContext += getBooter();
 
 	//3 DeviceProperties
+	consolelog('getDeviceProperties');
 	plistContext += getDeviceProperties();
 
 	//4 Kernel
+	consolelog('getKernel');
 	plistContext += getKernel();
 
 	//5 getMisc
+	consolelog('getMisc');
 	plistContext += getMisc();
 
 	//6 NVRAM
+	consolelog('getNVRAM');
 	plistContext += getNVRAM();
 
 	//7 PlatformInfo
+	consolelog('getPlatformInfo');
 	plistContext += getPlatformInfo();
 
 	//8 UEFI
+	consolelog('getUEFI');
 	plistContext += getUEFI();
 
 
@@ -43,16 +51,19 @@ function getAllPlist() {
 
 }
 
-function genACPI() {
+function getACPI() {
 	let acpiContext = '<key>ACPI</key><dict>';
 	//Add
+	
 	acpiContext += '<key>Add</key>';
 	acpiContext += genArrayDict('ACPI_Add', VUEAPP.ACPI.Add);
 	//Delete
+	
 	acpiContext += '<key>Delete</key>';
 	acpiContext += genArrayDict('ACPI_Delete', VUEAPP.ACPI.Delete, ['OemTableId','TableSignature'],['TableLength']);
 
 	//Patch
+	
 	acpiContext += '<key>Patch</key>';
 	acpiContext += genArrayDict('ACPI_Patch', VUEAPP.ACPI.Patch, ['Find','Mask','OemTableId','Replace','ReplaceMask','TableSignature'],['BaseSkip','Count','Limit','Skip','TableLength']);
 
@@ -162,6 +173,7 @@ function getMisc() {
 	//1 BlessOverride
 	miscContext += '<key>BlessOverride</key>';
 	let bodata = VUEAPP.Misc.BlessOverride, bostring = '';
+	//consolelog('bodata type = ' + getTypeof(bodata))
 	for(let i=0,len=bodata.length;i<len;i++) {
 		bostring += addCharstring(bodata[i]['ScanningPaths']);
 	}
@@ -313,7 +325,7 @@ function getPlatformInfo() {
 		thedt = {DataWidth:'integer',ErrorCorrection:'integer',FormFactor:'integer',MaxCapacity:'integer',TotalWidth:'integer',Type:'integer',TypeDetail:'integer'};
 		pfiContext += getStringorboolorinterger(VUEAPP.PlatformInfo.Memory, thedt);
 		pfiContext += '<key>Devices</key>';
-		pfiContext += genArrayDict('PlatformInfo_MemoryDevices', VUEAPP.PlatformInfo.Memory.Devices,[],['Size','Speed']);
+		pfiContext += genArrayDict('PlatformInfo_MemoryDevices', VUEAPP.PlatformInfo.Memory_Devices,[],['Size','Speed']);
 		pfiContext += '</dict>';
 
 		//PlatformNVRAM
@@ -413,9 +425,9 @@ function getUEFI() {
 
 
 function getDeviceVolumeData(leftData, rightData) {
-	let strreturn = '<dict>';
-
-	for(let it in leftData) {
+	let strreturn = '<dict>',lenleftData = leftData.length;
+	
+	for(let it=0;it<lenleftData;it++) {
 		if(leftData[it]['Devices'] === undefined) {
 			showTipModal(VUEAPP.lang.DeviceError, 'warning');
 		}
@@ -428,10 +440,10 @@ function getDeviceVolumeData(leftData, rightData) {
 }
 
 function getSubDeviceVolumeData(pid, rightData) {
-	let strreturn = '';
-	//console.time('getSubDeviceVolumeData');
-	for(let it in rightData) {
-		if(rightData[it]['pid'] == pid) {  //<string>MaximumBootBeepVolume</string>
+	let strreturn = '',lenrightData=rightData.length;
+	
+	for(let it=0;it<lenrightData;it++) {
+		if(rightData[it]['pid'] == pid) { 
 
 			if(rightData[it].Volume === undefined) {
 				showTipModal(VUEAPP.lang.DeviceError, 'warning');
@@ -449,10 +461,10 @@ function getSubDeviceVolumeData(pid, rightData) {
 					strreturn += '<integer>' + toNumber(rightData[it].Value) + '</integer>';
 					break;
 				case 'real':
-					strreturn += '<real>' + toNumber(rightData[it].Value) + '</real>';
+					strreturn += '<real>' + toNumber(rightData[it].Value, parseFloat) + '</real>';
 					break;
 				default: //如果是其他就直接用数据类型包裹值
-					strreturn += '<' + rightDataType + '>' + plistEncode(rightData[it].Volume) + '</' + rightDataType + '>';
+					strreturn += '<' + rightDataType + '>' + htmlEscape(rightData[it].Volume) + '</' + rightDataType + '>';
 			}
 
 		}
@@ -463,9 +475,9 @@ function getSubDeviceVolumeData(pid, rightData) {
 }
 
 
-function getStringorboolorinterger(theData, dataType) {
-	if(dataType === undefined) dataType = {};
-
+function getStringorboolorinterger(theData, dataType={}) {
+	
+	
 	let strreturn = "", vueitDatatype = '', itDataType = '';
 
 	for(let it in theData) {
@@ -493,10 +505,10 @@ function getStringorboolorinterger(theData, dataType) {
 					strreturn += '<integer>' + toNumber(theData[it]) + '</integer>';
 					break;
 				case 'real':
-					strreturn += '<real>' + toNumber(theData[it]) + '</real>';
+					strreturn += '<real>' + toNumber(theData[it], parseFloat) + '</real>';
 					break;
 				default:
-					strreturn += '<' + itDataType + '>' + plistEncode(theData[it]) + '</' + itDataType + '>';
+					strreturn += '<' + itDataType + '>' + htmlEscape(theData[it]) + '</' + itDataType + '>';
 			}
 		}
 
@@ -505,10 +517,11 @@ function getStringorboolorinterger(theData, dataType) {
 	return strreturn;
 }
 
+
 function getDeviceData(leftData, rightData) {
-	let strreturn = '<dict>';
-	
-	for(let it in leftData) {
+	let strreturn = '<dict>', lenleftData= leftData.length;
+	//consolelog('leftData type = ' + getTypeof(leftData));
+	for(let it=0;it<lenleftData;it++) {
 		if(leftData[it]['Devices'] === undefined) {
 			showTipModal(VUEAPP.lang.DeviceError, 'warning');
 		}
@@ -522,11 +535,12 @@ function getDeviceData(leftData, rightData) {
 }
 
 function getSubDeviceData(pid, rightData) {
-	//consolelog(rightData);
-	let subcontext = "<dict>", rightDataType = '';
-	for(let i=0,len=rightData.length;i<len;i++) {
+	
+	let subcontext = "<dict>", rightDataType = '', lenrightData=rightData.length;
+	//consolelog('Data type = ' + getTypeof(rightData));
+	for(let i=0;i<lenrightData;i++) {
 		if(rightData[i].pid == pid) {
-			//consolelog(rightData[i].Value);
+			
 			if(rightData[i].Value === undefined) {
 				showTipModal(VUEAPP.lang.DeviceError, 'warning');
 			}
@@ -546,10 +560,10 @@ function getSubDeviceData(pid, rightData) {
 					subcontext += '<integer>' + toNumber(rightData[i].Value) + '</integer>';
 					break;
 				case 'real':
-					subcontext += '<real>' + toNumber(rightData[i].Value) + '</real>';
+					subcontext += '<real>' + toNumber(rightData[i].Value, parseFloat) + '</real>';
 					break;
 				default:
-					subcontext += '<' + rightDataType + '>' + plistEncode(rightData[i].Value) + '</' + rightDataType + '>';
+					subcontext += '<' + rightDataType + '>' + htmlEscape(rightData[i].Value) + '</' + rightDataType + '>';
 			}
 
 		}
@@ -559,11 +573,10 @@ function getSubDeviceData(pid, rightData) {
 }
 
 
-function getBoolens(boolData,intData) {
-	if(intData === undefined) {
-		intData = [];
-	} 
+function getBoolens(boolData,intData=[]) {
+	
 	let strreturn = '<dict>';
+	//consolelog('Data type = ' + getTypeof(boolData));
 	for(let it in boolData) {
 		strreturn += addKey(it);
 		if(intData.indexOf(it) >= 0) {
@@ -602,25 +615,21 @@ genArrayDict(		tablekey，      表格在GLOBAL_MAP_TABLE中的key
 					intFileds       要转换为整形的字段列表
 					)
 **/
-function genArrayDict(tablekey, arrayDictData, dataFileds, intFileds) {
+function genArrayDict(tablekey, arrayDictData, dataFileds=[], intFileds=[]) {
 
 	if(arrayDictData.length === 0) {
 		return '<array/>'
 	}
 
-	if(dataFileds === undefined) dataFileds =[];
-	if(intFileds === undefined) intFileds =[];
 
 	let currentTableData = getJqgridObjectbyKey(tablekey).jqGrid('getRowData');
 	arrayDictData = rewriteData(currentTableData, arrayDictData);
 
-	
-
-
-	let tmpreturn = '';
-	for(let i=0,len=arrayDictData.length;i<len;i++) {
+	let tmpreturn = '', lenarrayDictData = arrayDictData.length;
+	//consolelog('Data type = ' + getTypeof(arrayDictData));
+	for(let i=0;i<lenarrayDictData;i++) {
 		tmpreturn += '<dict>';
-		
+		//consolelog('Data type = ' + getTypeof(arrayDictData[0]));
 		for(let it in arrayDictData[0]) {   //字段顺序跟着第一行数据的字段顺序走，防止后增加的行的字段顺序和前面的不同
 			if(it === 'id' || it === 'pid') {
 				continue;
@@ -634,6 +643,7 @@ function genArrayDict(tablekey, arrayDictData, dataFileds, intFileds) {
                 if(itemData === '') {
                     tmpreturn += '<data></data>';
                 } else {
+					//consolelog(itemData);
                     tmpreturn += '<data>' + hextoBase64(itemData) + '</data>';
                 }
             }
@@ -657,7 +667,7 @@ function genArrayDict(tablekey, arrayDictData, dataFileds, intFileds) {
 * 在key两边加上<key>字符串
 */
 function addKey(keyContext) {
-    return '<key>' + plistEncode(keyContext) + '</key>';
+    return '<key>' + htmlEscape(keyContext) + '</key>';
 }
 
 /*
@@ -688,7 +698,10 @@ function addvtype(valu) {
 
 //用左边的数据重写右边的数据并返回右边的数据
 function rewriteData(leftdata, rightdata) {
-	for(let i=0,len=leftdata.length;i<len;i++) {
+	//consolelog('leftdata type = ' + getTypeof(leftdata) + "  " + 'rightdata type = ' + getTypeof(rightdata));
+	const len=leftdata.length;
+	for(let i=0;i<len;i++) {
+		//consolelog('leftdata[i] type = ' + getTypeof(leftdata[i]))
 		for(let it in leftdata[i]) {
 			rightdata[i][it] = leftdata[i][it];
 		}
