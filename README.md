@@ -4,7 +4,6 @@
 适配版本: OpenCore-0.8.0-RELEASE
 
 
-gitee版更新： https://gitee.com/galada/OpenCoreConfiguratorOnline
 
 
 web版的OpenCore引导工具config.plist的在线编辑器
