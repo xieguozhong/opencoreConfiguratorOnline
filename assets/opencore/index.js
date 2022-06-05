@@ -734,17 +734,15 @@ const VUEAPP = new Vue({
         , getPlistRealData(arrData) {
             
             if(getTypeof(arrData) === 'array') {
-                if(arrData[1] === 'data') {
-                    return base64toHex(arrData[0]);
-                } else {
-                    return arrData[0];
-                }
+                return arrData[1] === 'data' ? base64toHex(arrData[0]) : arrData[0]
             } 
             return arrData ?? '';
             
         }
 
-        // 获取plist中array的值并更新到table表格中 
+        /**
+         * 获取plist中array的值并更新到table表格中
+         */
         , getPlistAndResetTableData:function (plistData,lastkey, gridkey, gridData) {
             gridData.length = 0;
             
@@ -766,7 +764,7 @@ const VUEAPP = new Vue({
                        
             let i = 0,j = 0;
             for (const [k, v] of Object.entries(plistData[key])) {
-                    //consolelog(k)
+                    
                     vueData[key + 'Left'].push({id:i, Devices:k});
 
                     for(const [k2,v2] of Object.entries(v)) {
@@ -794,7 +792,7 @@ const VUEAPP = new Vue({
         , getPlistAndResetTableDataForVolume:function(plistData, vueData, key, tablename) {
             vueData[key + 'Left'].length = 0;
             vueData[key + 'Right'].length = 0;
-            let i = 0,id=0;
+            let i = 0,id = 0;
             for (const [k, v] of Object.entries(plistData[key])) {
                     
                 vueData[key + 'Left'].push({id:i, Devices:k});

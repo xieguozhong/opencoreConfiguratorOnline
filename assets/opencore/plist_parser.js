@@ -33,36 +33,36 @@ const PlistParser = {};
 
 
 
-PlistParser.parse = function(plist_xml){
-
-  plist_xml = new DOMParser().parseFromString(plist_xml, 'text/xml');
-  return this._xml_to_json(plist_xml.getElementsByTagName('plist').item(0));  
+PlistParser.parse = function (plist_xml) {
   
+  plist_xml = new DOMParser().parseFromString(plist_xml, 'text/xml');
+  return this._xml_to_json(plist_xml.getElementsByTagName('plist').item(0));
+
 };
 
-PlistParser._xml_to_json = function(xml_node) {
-  
+PlistParser._xml_to_json = function (xml_node) {
+
   const parser = this;
   const parent_node = xml_node;
   const parent_node_name = parent_node.nodeName;
 
 
-  const child_nodes = [];
-  for(let i = 0; i < parent_node.childNodes.length; ++i){
+  const child_nodes = [], pclen = parent_node.childNodes.length;
+  for (let i = 0; i < pclen; ++i) {
     let child = parent_node.childNodes.item(i);
-    if (child.nodeName != '#text'){
+    if (child.nodeName != '#text') {
       child_nodes.push(child);
     };
   };
-  
-  switch(parent_node_name){
-
+  const len_child_nodes = child_nodes.length;
+  switch (parent_node_name) {
+    
     case 'plist':
-      if (child_nodes.length > 1){
+      if (len_child_nodes > 1) {
 
         const plist_array = [];
-        for(let i = 0; i < child_nodes.length; ++i){
-           plist_array.push(parser._xml_to_json(child_nodes[i]));
+        for (let i = 0; i < len_child_nodes; ++i) {
+          plist_array.push(parser._xml_to_json(child_nodes[i]));
         };
 
         return plist_array;
@@ -76,20 +76,20 @@ PlistParser._xml_to_json = function(xml_node) {
     case 'dict':
 
       const dictionary = {};
-      let key_name,key_value;
+      let key_name, key_value;
 
-      for(let i = 0; i < child_nodes.length; ++i){
+      for (let i = 0; i < len_child_nodes; ++i) {
         const child = child_nodes[i];
-        if (child.nodeName == '#text'){
+        if (child.nodeName == '#text') {
           // ignore empty text children
-        } else if (child.nodeName == 'key'){
+        } else if (child.nodeName == 'key') {
           //因为JSON.parse有特殊字符就失败的问题这里把key值都进行编码
           key_name = b64Encode(PlistParser._textValue(child.firstChild));
-          
+
         } else {
           key_value = parser._xml_to_json(child);
           dictionary[key_name] = key_value;
-          
+
         }
       }
 
@@ -98,41 +98,41 @@ PlistParser._xml_to_json = function(xml_node) {
     case 'array':
 
       const standard_array = [];
-      for(let i = 0; i < child_nodes.length; ++i){
+      for (let i = 0; i < len_child_nodes; ++i) {
         standard_array.push(parser._xml_to_json(child_nodes[i]));
       }
       return standard_array;
 
     case 'string':
-     
-      return [b64Encode(PlistParser._textValue(parent_node)),'string'];
+
+      return [b64Encode(PlistParser._textValue(parent_node)), 'string'];
 
     case 'date':
 
       const date = PlistParser._parseDate(PlistParser._textValue(parent_node));
-      return [date.toString(),'date'];
+      return [date.toString(), 'date'];
 
     case 'integer':
-    
-      return [parseInt(PlistParser._textValue(parent_node), 10),'integer'];
+
+      return [parseInt(PlistParser._textValue(parent_node), 10), 'integer'];
 
     case 'real':
-    
-      return [parseFloat(PlistParser._textValue(parent_node)),'real'];
+
+      return [parseFloat(PlistParser._textValue(parent_node)), 'real'];
 
     case 'data':
-      
-      return [PlistParser._textValue(parent_node),'data'];
+
+      return [PlistParser._textValue(parent_node), 'data'];
 
     case 'true':
 
-      return [true,'bool'];
+      return [true, 'bool'];
 
     case 'false':
-    
-      return [false,'bool'];
-      
-    
+
+      return [false, 'bool'];
+
+
     case '#text':
 
       break;
@@ -140,8 +140,8 @@ PlistParser._xml_to_json = function(xml_node) {
 };
 
 
-PlistParser._textValue = function(node) {
-  if (node.text){
+PlistParser._textValue = function (node) {
+  if (node.text) {
     return node.text;
   } else {
     return node.textContent;
@@ -150,10 +150,10 @@ PlistParser._textValue = function(node) {
 
 // Handle date parsing in non-FF browsers
 // Thanks to http://www.west-wind.com/weblog/posts/729630.aspx
-PlistParser._parseDate = function(date_string){
+PlistParser._parseDate = function (date_string) {
   const reISO = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
   const matched_date = reISO.exec(date_string);
-  if (matched_date){ 
+  if (matched_date) {
     return new Date(Date.UTC(+matched_date[1], +matched_date[2] - 1, +matched_date[3], +matched_date[4], +matched_date[5], +matched_date[6]));
   };
 };
@@ -161,11 +161,10 @@ PlistParser._parseDate = function(date_string){
 
 // Lifted (then modified) from: 
 // http://blog.stchur.com/2007/04/06/serializing-objects-in-javascript/
-PlistParser.serialize = function(_obj) {
-  
+PlistParser.serialize = function (_obj) {
+
   // Other browsers must do it the hard way
-  switch (typeof _obj)
-  {
+  switch (typeof _obj) {
     // numbers, booleans, and functions are trivial:
     // just return the object itself since its default .toString()
     // gives us exactly what we want
@@ -180,21 +179,20 @@ PlistParser.serialize = function(_obj) {
 
     case 'object':
       let str;
-      if (_obj.constructor === Array || typeof _obj.callee !== 'undefined')
-      {
+      if (_obj.constructor === Array || typeof _obj.callee !== 'undefined') {
         str = '[';
-        let i, len = _obj.length;
-        for (i = 0; i < len-1; i++) { str += PlistParser.serialize(_obj[i]) + ','; }
+        let i;
+        const len = _obj.length;
+        for (i = 0; i < len - 1; i++) { str += PlistParser.serialize(_obj[i]) + ','; }
         str += PlistParser.serialize(_obj[i]) + ']';
       }
-      else
-      {
+      else {
         str = '{';
-        
-        for (const key in _obj) { 
+
+        for (const key in _obj) {
           // "The body of a for in should be wrapped in an if statement to filter unwanted properties from the prototype."
           if (_obj.hasOwnProperty(key)) {
-            str += '"' + key + '":' + PlistParser.serialize(_obj[key]) + ','; 
+            str += '"' + key + '":' + PlistParser.serialize(_obj[key]) + ',';
           };
         };
         str = str.replace(/\,$/, '') + '}';

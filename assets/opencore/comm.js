@@ -22,8 +22,9 @@ function formatInteger(cellvalue = 0) {
 
     if(isNaN(cellvalue)) {
         showTipModal(fillLangString(VUEAPP.lang.toNumberError, cellvalue), 'warning');
+        return 0;
     }
-    return  cellvalue;
+    return  parseInt(cellvalue);
 }
 
 
@@ -83,6 +84,7 @@ function bljsonobj(obj) {
 
 /**
  * base64转16进制
+ * Thanks to http://www.tomeko.net/online_tools/base64.php?lang=en
  * @param {string} strbase64 
  * @returns string
  */
@@ -154,6 +156,7 @@ function base64toHex(strbase64='') {
 
 /**
  * 16进制转base64
+ * Thanks to http://www.tomeko.net/online_tools/hex_to_base64.php?lang=en
  * @param {*} strhex 
  * @returns 
  */
@@ -288,9 +291,7 @@ function plistEncode(context='') {
 
     }
 
-    
-    
-    return context.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return htmlEscape(context);
         
 }
 
@@ -460,6 +461,7 @@ function clone(target, delList=[]) {
     return x;
 }
 
+
 /**
  * 得到变量的真实类型
  * @param {object} obj 
@@ -475,11 +477,7 @@ function getTypeof(obj) {
  * @returns string
  */
 function htmlEscape(context=''){
-    if(context === '') return '';
-    if(getTypeof(context) === 'array') {
-
-    }
-    return context.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return context === '' ? '' : context.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 /**
@@ -488,8 +486,7 @@ function htmlEscape(context=''){
  * @returns string
  */
 function htmlReescape(str = '') {
-    if(str === '') return '';
-    return str.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
+    return str === '' ? '' : str.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
 }
 
 /**
