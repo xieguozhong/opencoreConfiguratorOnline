@@ -53,6 +53,14 @@ $(document).ready(function() {
     //页面加载完成后解除文件选择框的禁用属性
     $("#id-input-file-2").removeAttr("disabled");
 
+    //自动加载最后保存的Plist文件内容
+    const lastOpenCorePlistConfig = localStorage?.lastOpenCorePlistConfig;
+    if(lastOpenCorePlistConfig) {
+        consolelog("加载最后一次保存的Plist内容")
+        VUEAPP['plistJsonObject'] = formatContext(lastOpenCorePlistConfig);
+        VUEAPP.initAllData();
+    }
+
 });
 
 // ACPI Add 和 UEFI Drivers Kernel_Add处添加文件
@@ -291,7 +299,7 @@ const VUEAPP = new Vue({
     el: '#main-container',
     data: {
         root:'ACPI',                  //决定当前显示哪个节点
-        plistJsonObject:'',              //保存从config.plist中读取的内容
+        plistJsonObject:null,              //保存从config.plist中读取的转换后的Json对象
         title:SYSTEM_TIPS,             //下面都是提示变量
         textarea_content:'',          //保存粘贴页面时候textarea中的内容
         current_paste_tableid:'',     //保存点击当前粘贴按钮的table id

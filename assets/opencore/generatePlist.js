@@ -47,6 +47,8 @@ function getAllPlist() {
 	//格式特殊处理，只是为了美观
 	plistContext = plistContext.replace("<dict/></dict>","<dict/>\n        </dict>");
 
+	localStorage.setItem("lastOpenCorePlistConfig",plistContext);
+
 	return plistContext;
 
 }
