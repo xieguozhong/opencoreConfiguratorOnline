@@ -222,9 +222,7 @@ function getMisc() {
 
 	//5 Security
 	miscContext += '<key>Security</key><dict>';
-	miscContext += '<key>AllowNvramReset</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowNvramReset']);
 	miscContext += '<key>AllowSetDefault</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowSetDefault']);
-	miscContext += '<key>AllowToggleSip</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AllowToggleSip']);
 	miscContext += '<key>ApECID</key><integer>' + toNumber(VUEAPP.Misc.Security['ApECID']) + '</integer>';
 	miscContext += '<key>AuthRestart</key>' + toBoolStringStrict(VUEAPP.Misc.Security['AuthRestart']);
 	miscContext += '<key>BlacklistAppleUpdate</key>' + toBoolStringStrict(VUEAPP.Misc.Security['BlacklistAppleUpdate']);

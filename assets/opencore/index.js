@@ -359,7 +359,7 @@ const VUEAPP = new Vue({
                 Target:'0'
             },
             Security:{
-                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowNvramReset:false, AllowSetDefault:false,AllowToggleSip:false,AuthRestart:false,
+                ExposeSensitiveData:'', HaltLevel:'', ScanPolicy:'', Vault:'Secure', AllowSetDefault:false, AuthRestart:false,
                 BlacklistAppleUpdate:false,
                 ApECID:'',DmgLoading:'Signed',EnablePassword:false,PasswordHash:'',PasswordSalt:'',SecureBootModel:'Default'
             },
