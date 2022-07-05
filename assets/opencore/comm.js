@@ -63,7 +63,8 @@ function bljsonobj(obj) {
 
         obj[b64Decode(key)] = value;
         obj[key] = null;
-        delete obj[key];
+        Reflect.deleteProperty(obj, key)
+        //delete obj[key];
 
         if(tf === 'array') {
             const lenarr = value.length;

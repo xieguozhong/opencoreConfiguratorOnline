@@ -530,7 +530,7 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width=0 , hei
 
 
 	//窗口拉动
-	$(window).on('resize.jqGrid', function () {
+	$(window).on('resize.jqGrid', () => {
 		const tab_content_width = objGridTable.closest('.tab-content').width();
 		if(tab_content_width > 0) {
 			GLOBAL_TABLE_WIDTH = tab_content_width;

@@ -567,7 +567,7 @@ const VUEAPP = new Vue({
                     const dataType = getTypeof(driversData[i]);
                     if(dataType === 'object') {
                         this.UEFI.Drivers.push(driversData[i]) ;
-                    } else if(dataType === 'array') {
+                    } else if(dataType === 'array') {//兼容0.7.3以前的版本
                         this.UEFI.Drivers.push({ Path:driversData[i],Arguments:'',Comment:'',Enabled:true});
                     }
                 }                

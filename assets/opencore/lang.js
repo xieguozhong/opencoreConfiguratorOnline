@@ -32,8 +32,8 @@ const GLOBAL_LANG = {
         hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数',
         pleasecheckmessage : '请勾选需要的选项，然后点击 确定 按钮, 放弃请点击 关闭 按钮',
         editingtablemessage : '下列表格<br>{@1}<br>正在编辑中,请在被编辑的文本框中按回车键保存更改或者按Esc键取消更改',
-        supportversion : '注意: 适配官方发布的OpenCore-0.8.1-RELEASE',
-        footermessage:'适配版本: OpenCore-0.8.1-RELEASE'
+        supportversion : '注意: 适配官方发布的OpenCore-0.8.2-RELEASE',
+        footermessage:'适配版本: OpenCore-0.8.2-RELEASE'
     },
 
     'en-US' : {
@@ -68,6 +68,6 @@ const GLOBAL_LANG = {
         pleasecheckmessage : 'Please check the required options, and then click the OK button, to give up, please click the Close button',
         editingtablemessage : 'The following table<br><br>{@1}<br>is being edited. Please press enter in the edited text box to save the changes or press ESC to cancel the changes',
         supportversion : 'Note: The plist file saved in the current version supports up to the officially released OpenCore-0.7.6-RELEASE',
-        footermessage:'Maximum support: OpenCore-0.8.1-RELEASE'
+        footermessage:'Maximum support: OpenCore-0.8.2-RELEASE'
     }
 };
