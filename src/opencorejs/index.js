@@ -56,7 +56,7 @@ $(document).ready(function() {
     //自动加载最后保存的Plist文件内容
     const lastOpenCorePlistConfig = localStorage?.lastOpenCorePlistConfig;
     if(lastOpenCorePlistConfig) {
-        consolelog("加载最后一次保存的Plist内容")
+        showTipModal(VUEAPP.lang.loadlastplist);
         VUEAPP['plistJsonObject'] = formatContext(lastOpenCorePlistConfig);
         VUEAPP.initAllData();
     }
@@ -306,6 +306,7 @@ const VUEAPP = new Vue({
         lang:{},                      //语言数据, 和浏览器的语言设置挂钩
         configisfull:false,           //是否full模式
         configisMOD:false,             //是否OpenCore MOD版本
+
         ACPI:{
             Add:[],
             Delete:[],
@@ -465,7 +466,9 @@ const VUEAPP = new Vue({
             ,ConsoleMode_List: SYSTEM_TIPS.Assist.Resolution_List
             
             ,...SYSTEM_TIPS.Assist
-        }
+        },
+
+        OCbuttons : {buttons5:['enabled','copy','paste','add','del'], buttons4:['copy','paste','add','del']}
 
     },
 
@@ -943,6 +946,8 @@ const VUEAPP = new Vue({
             //consolelog('勾选值=' + pagetotal);
             return pagetotal;
         }
+
+
 
 
     }

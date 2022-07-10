@@ -6,10 +6,6 @@
 		<title>OpenCore Configurator Online</title>
 		<meta name="description" content="OpenCore Configurator Online https://github.com/xieguozhong/opencoreConfiguratorOnline" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
-		<meta http-equiv="Expires" content="0">
-		<meta http-equiv="Pragma" content="no-cache">
-		<meta http-equiv="Cache-control" content="no-cache">
-		<meta http-equiv="Cache" content="no-cache">
 		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css" />
 		<link rel="stylesheet" href="assets/css/jquery-ui.min.css" />
@@ -224,38 +220,35 @@
 										<div id="tabbable_ACPI_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
 											<table id="gridtable_ACPI_Add"></table>
 											<span class="grey pull-left" >
-												<label for="File_ACPI_Add"><img src="assets/opencore/png/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
+												<label for="File_ACPI_Add"><img src="assets/img/png/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
 													<input type="file" id="File_ACPI_Add" style="position:absolute;clip:rect(0 0 0 0);" accept=".aml" onchange="addFile(this.id);" multiple>
 												</label>
 											</span>
-			                                <span class="grey pull-right" >
-			                                	<a id="btnenabled_ACPI_Add"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_ACPI_Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_ACPI_Add"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_ACPI_Add"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_ACPI_Add"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
-			                                </span>
+											<span class="grey pull-right">
+												<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_ACPI_Add'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+											</span>
+			                                
 										</div>
 
 										<div id="tabbable_ACPI_Delete" class="tab-pane fade" style="padding-bottom: 5px;">
 											<table id="gridtable_ACPI_Delete"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_ACPI_Delete"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_ACPI_Delete"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_ACPI_Delete"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_ACPI_Delete"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_ACPI_Delete"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_ACPI_Delete'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                	
 			                                </span>
 										</div>
 
 										<div id="tabbable_ACPI_Patch" class="tab-pane fade" style="padding-bottom: 5px;">
 											<table id="gridtable_ACPI_Patch"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_ACPI_Patch"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_ACPI_Patch"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_ACPI_Patch"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_ACPI_Patch"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_ACPI_Patch"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_ACPI_Patch'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                	
 			                                </span>
 										</div>
 
@@ -267,30 +260,14 @@
                                 <h3 class="header smaller lighter blue"> Quirks</h3>
 
                                 <div class="checkbox well">
-                                    <label class="mintip" :title="title.ACPI.Quirks.FadtEnableReset">
-                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.FadtEnableReset" />
-                                        <span class="lbl" > FadtEnableReset</span>
-                                    </label>
-                                    <label class="mintip" :title="title.ACPI.Quirks.NormalizeHeaders">
-                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.NormalizeHeaders" />
-                                        <span class="lbl"> NormalizeHeaders</span>
-                                    </label>
-                                    <label class="mintip" :title="title.ACPI.Quirks.RebaseRegions">
-                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.RebaseRegions" />
-                                        <span class="lbl"> RebaseRegions</span>
-                                    </label>
-                                    <label class="mintip" :title="title.ACPI.Quirks.ResetHwSig">
-                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.ResetHwSig" />
-                                        <span class="lbl"> ResetHwSig</span>
-                                    </label>
-                                    <label class="mintip" :title="title.ACPI.Quirks.ResetLogoStatus">
-                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.ResetLogoStatus" />
-                                        <span class="lbl"> ResetLogoStatus</span>
-                                    </label>
-                                    <label class="mintip" :title="title.ACPI.Quirks.SyncTableIds">
-                                        <input type="checkbox" class="ace" v-model="ACPI.Quirks.SyncTableIds" />
-                                        <span class="lbl"> SyncTableIds</span>
-                                    </label>
+
+                                	<template v-for="item,index in ACPI.Quirks">
+						            	<label v-if="typeof(item) === 'boolean' && index !=='EnableForAll'" class="mintip" :title="title.ACPI.Quirks[index]">
+                                        	<input type="checkbox" class="ace" v-model="item" />
+                                        	<span class="lbl"> {{index}}</span>
+                                    	</label>
+						        	</template>
+
 									<label v-show="configisMOD === true" class="mintip" :title="title.ACPI.Quirks.EnableForAll">
 										<input type="checkbox" class="ace" v-model="ACPI.Quirks.EnableForAll" />
 										<span class="lbl"> EnableForAll</span>
@@ -316,22 +293,18 @@
 										<div id="tabbable_Booter_Patch" class="tab-pane fade in active" style="padding-bottom: 5px;">
                                             <table id="gridtable_Booter_Patch"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_Booter_Patch"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_Booter_Patch"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_Booter_Patch"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_Booter_Patch"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-												<a id="btndel_Booter_Patch"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_Booter_Patch'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
                                         </div>
 
                                         <div id="tabbable_Booter_MmioWhitelist" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <table id="gridtable_Booter_MmioWhitelist"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_Booter_MmioWhitelist"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_Booter_MmioWhitelist"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_Booter_MmioWhitelist"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_Booter_MmioWhitelist"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-												<a id="btndel_Booter_MmioWhitelist"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_Booter_MmioWhitelist'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
                                         </div>
 
@@ -342,95 +315,21 @@
                                 <div class="well">
 
                                 	<div class="row">
-                                        <div class="col-xs-3 mintip" :title="title.Booter.Quirks.ProvideMaxSlide">
-                                            ProvideMaxSlide<input type="text" class="form-control" v-model="Booter.Quirks.ProvideMaxSlide"/>
-                                        </div>
-                                        <div class="col-xs-3 mintip" :title="title.Booter.Quirks.ResizeAppleGpuBars">
-                                            ResizeAppleGpuBars<input type="text" class="form-control" v-model="Booter.Quirks.ResizeAppleGpuBars"/>
-                                        </div>
-                                       
+                                		<template v-for="item,index in Booter.Quirks">
+											<div v-if="typeof(item) === 'number'" class="col-xs-3 mintip" :title="title.Booter.Quirks[index]">
+												{{index}}<input type="text" class="form-control" v-model="item">
+											</div>
+										</template>
                                     </div>
 
                                 	
                                     <div class="checkbox">
-
-										<label class="mintip" :title="title.Booter.Quirks.AllowRelocationBlock">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.AllowRelocationBlock" />
-                                            <span class="lbl"> AllowRelocationBlock</span>
-                                        </label>
-
-                                        <label class="mintip" :title="title.Booter.Quirks.AvoidRuntimeDefrag">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.AvoidRuntimeDefrag" />
-                                            <span class="lbl"> AvoidRuntimeDefrag</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Booter.Quirks.DevirtualiseMmio">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.DevirtualiseMmio" />
-                                            <span class="lbl"> DevirtualiseMmio</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Booter.Quirks.DisableSingleUser">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.DisableSingleUser" />
-                                            <span class="lbl"> DisableSingleUser</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Booter.Quirks.DiscardHibernateMap">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.DiscardHibernateMap" />
-                                            <span class="lbl"> DiscardHibernateMap</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Booter.Quirks.DisableVariableWrite">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.DisableVariableWrite" />
-                                            <span class="lbl"> DisableVariableWrite</span>
-                                        </label>
-
-                                        <label class="mintip" :title="title.Booter.Quirks.EnableSafeModeSlide">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.EnableSafeModeSlide" />
-                                            <span class="lbl"> EnableSafeModeSlide</span>
-                                        </label>
-                                    
-                                        <label class="mintip" :title="title.Booter.Quirks.EnableWriteUnprotector">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.EnableWriteUnprotector" />
-                                            <span class="lbl"> EnableWriteUnprotector</span>
-                                        </label>
-										<label class="mintip" :title="title.Booter.Quirks.ForceBooterSignature">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ForceBooterSignature" />
-                                            <span class="lbl"> ForceBooterSignature</span>
-                                        </label>
-
-                                        <label class="mintip" :title="title.Booter.Quirks.ForceExitBootServices">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ForceExitBootServices" />
-                                            <span class="lbl"> ForceExitBootServices</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Booter.Quirks.ProtectMemoryRegions">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ProtectMemoryRegions" />
-                                            <span class="lbl"> ProtectMemoryRegions</span>
-                                        </label>
-										<label class="mintip" :title="title.Booter.Quirks.ProtectSecureBoot">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ProtectSecureBoot" />
-                                            <span class="lbl"> ProtectSecureBoot</span>
-                                        </label>
-										<label class="mintip" :title="title.Booter.Quirks.ProtectUefiServices">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ProtectUefiServices" />
-                                            <span class="lbl"> ProtectUefiServices</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Booter.Quirks.ProvideCustomSlide">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.ProvideCustomSlide" />
-                                            <span class="lbl"> ProvideCustomSlide</span>
-                                        </label>
-										<label class="mintip" :title="title.Booter.Quirks.RebuildAppleMemoryMap">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.RebuildAppleMemoryMap" />
-                                            <span class="lbl"> RebuildAppleMemoryMap</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Booter.Quirks.SetupVirtualMap">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.SetupVirtualMap" />
-                                            <span class="lbl"> SetupVirtualMap</span>
-                                        </label>
-
-                                        <label class="mintip" :title="title.Booter.Quirks.SignalAppleOS">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.SignalAppleOS" />
-                                            <span class="lbl"> SignalAppleOS</span>
-                                        </label>
-										<label class="mintip" :title="title.Booter.Quirks.SyncRuntimePermissions">
-                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.SyncRuntimePermissions" />
-                                            <span class="lbl"> SyncRuntimePermissions</span>
-                                        </label>
+                                    	<template v-for="item,index in Booter.Quirks">
+							            	<label v-if="typeof(item) === 'boolean' && index !== 'EnableForAll'" class="mintip" :title="title.Booter.Quirks[index]">
+                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<span class="lbl"> {{index}}</span>
+                                        	</label>
+							        	</template>										
 										<label v-show="configisMOD === true" class="mintip" :title="title.Booter.Quirks.EnableForAll">
                                             <input type="checkbox" class="ace" v-model="Booter.Quirks.EnableForAll" />
                                             <span class="lbl"> EnableForAll</span>
@@ -458,19 +357,17 @@
 			                                    <div class="col-xs-6">
 			                                        <table id="gridtable_DeviceProperties_AddLeft"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy_DeviceProperties_AddLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste_DeviceProperties_AddLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd_DeviceProperties_AddLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel_DeviceProperties_AddLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+															<a :id="'btn' + item + '_DeviceProperties_AddLeft'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
 			                                        </span>
 			                                    </div>
 			                                    <div class="col-xs-6">
 			                                        <table id="gridtable_DeviceProperties_AddRight"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy_DeviceProperties_AddRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste_DeviceProperties_AddRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd_DeviceProperties_AddRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel_DeviceProperties_AddRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+															<a :id="'btn' + item + '_DeviceProperties_AddRight'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
 			                                        </span>
 			                                    </div>
 			                                </div>
@@ -481,19 +378,17 @@
 			                                    <div class="col-xs-6">
 			                                        <table id="gridtable_DeviceProperties_DeleteLeft"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy_DeviceProperties_DeleteLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste_DeviceProperties_DeleteLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd_DeviceProperties_DeleteLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel_DeviceProperties_DeleteLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+															<a :id="'btn' + item + '_DeviceProperties_DeleteLeft'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
 			                                        </span>
 			                                    </div>
 			                                    <div class="col-xs-6">
 			                                        <table id="gridtable_DeviceProperties_DeleteRight"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy_DeviceProperties_DeleteRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste_DeviceProperties_DeleteRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd_DeviceProperties_DeleteRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel_DeviceProperties_DeleteRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+															<a :id="'btn' + item + '_DeviceProperties_DeleteRight'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
 			                                        </span>
 			                                    </div>
 			                                </div>
@@ -524,27 +419,23 @@
                                         <div id="tabbable_Kernel_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
                                             <table id="gridtable_Kernel_Add"></table>
                                             <span class="grey pull-left" >
-												<label for="File_Kernel_Add"><img src="assets/opencore/png/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
+												<label for="File_Kernel_Add"><img src="assets/img/png/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
 													<input type="file" id="File_Kernel_Add" style="position:absolute;clip:rect(0 0 0 0);" accept=".kext" onchange="addFile(this.id);" multiple>
 												</label>
 											</span>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_Kernel_Add"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_Kernel_Add"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_Kernel_Add"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_Kernel_Add"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_Kernel_Add"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_Kernel_Add'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
                                         </div>
 
                                         <div id="tabbable_Kernel_Block" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <table id="gridtable_Kernel_Block"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_Kernel_Block"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_Kernel_Block"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_Kernel_Block"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_Kernel_Block"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_Kernel_Block"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_Kernel_Block'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
                                         </div>
 
@@ -552,11 +443,9 @@
 
 			                                <table id="gridtable_Kernel_Patch"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_Kernel_Patch"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_Kernel_Patch"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_Kernel_Patch"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_Kernel_Patch"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_Kernel_Patch"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_Kernel_Patch'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
                                         </div>
 
@@ -600,12 +489,12 @@
 			                                    <div class="row">
 			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Scheme.KernelArch">
 			                                            KernelArch<a id="btnradiobox_Kernel_Scheme_KernelArch" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Kernel.Scheme.KernelArch"/>
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Kernel.Scheme.KernelArch"/>
 			                                            
 			                                        </div>
 			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Scheme.KernelCache">
 			                                            KernelCache<a id="btnradiobox_Kernel_Scheme_KernelCache" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Kernel.Scheme.KernelCache"/>
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Kernel.Scheme.KernelCache"/>
 			                                            
 			                                        </div>
 
@@ -634,11 +523,9 @@
                                        	<div id="tabbable_Kernel_Force" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <table id="gridtable_Kernel_Force"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_Kernel_Force"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_Kernel_Force"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_Kernel_Force"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_Kernel_Force"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_Kernel_Force"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_Kernel_Force'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
                                         </div>
 
@@ -658,94 +545,12 @@
                                     </div>
 
                                     <div class="checkbox">
-
-                                        <label class="mintip" :title="title.Kernel.Quirks.AppleCpuPmCfgLock">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleCpuPmCfgLock" />
-                                            <span class="lbl"> AppleCpuPmCfgLock</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.AppleXcpmCfgLock">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleXcpmCfgLock" />
-                                            <span class="lbl"> AppleXcpmCfgLock</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.AppleXcpmExtraMsrs">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleXcpmExtraMsrs" />
-                                            <span class="lbl"> AppleXcpmExtraMsrs</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.AppleXcpmForceBoost">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.AppleXcpmForceBoost" />
-                                            <span class="lbl"> AppleXcpmForceBoost</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.CustomPciSerialDevice">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.CustomPciSerialDevice" />
-                                            <span class="lbl"> CustomPciSerialDevice</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.CustomSMBIOSGuid">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.CustomSMBIOSGuid" />
-                                            <span class="lbl"> CustomSMBIOSGuid</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.DisableIoMapper">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableIoMapper" />
-                                            <span class="lbl"> DisableIoMapper</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.DisableLinkeditJettison">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableLinkeditJettison" />
-                                            <span class="lbl"> DisableLinkeditJettison</span>
-                                        </label>
-										<label class="mintip" :title="title.Kernel.Quirks.DisableRtcChecksum">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.DisableRtcChecksum" />
-                                            <span class="lbl"> DisableRtcChecksum</span>
-                                        </label>
-                                         <label class="mintip" :title="title.Kernel.Quirks.ExtendBTFeatureFlags">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ExtendBTFeatureFlags" />
-                                            <span class="lbl"> ExtendBTFeatureFlags</span>
-                                        </label>
-
-                                    	<label class="mintip" :title="title.Kernel.Quirks.ExternalDiskIcons">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ExternalDiskIcons" />
-                                            <span class="lbl"> ExternalDiskIcons</span>
-										</label>
-										<label class="mintip" :title="title.Kernel.Quirks.ForceAquantiaEthernet">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ForceAquantiaEthernet" />
-                                            <span class="lbl"> ForceAquantiaEthernet</span>
-										</label>
-										<label class="mintip" :title="title.Kernel.Quirks.ForceSecureBootScheme">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ForceSecureBootScheme" />
-                                            <span class="lbl"> ForceSecureBootScheme</span>
-                                        </label>
-
-                                        <label class="mintip" :title="title.Kernel.Quirks.IncreasePciBarSize">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.IncreasePciBarSize" />
-                                            <span class="lbl"> IncreasePciBarSize</span>
-                                        </label>
-
-                                        <label class="mintip" :title="title.Kernel.Quirks.LapicKernelPanic">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.LapicKernelPanic" />
-                                            <span class="lbl"> LapicKernelPanic</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.LegacyCommpage">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.LegacyCommpage" />
-                                            <span class="lbl"> LegacyCommpage</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.PanicNoKextDump">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.PanicNoKextDump" />
-                                            <span class="lbl"> PanicNoKextDump</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.PowerTimeoutKernelPanic">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.PowerTimeoutKernelPanic" />
-                                            <span class="lbl"> PowerTimeoutKernelPanic</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.ProvideCurrentCpuInfo">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ProvideCurrentCpuInfo" />
-                                            <span class="lbl"> ProvideCurrentCpuInfo</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.ThirdPartyDrives">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.ThirdPartyDrives" />
-                                            <span class="lbl"> ThirdPartyDrives</span>
-                                        </label>
-                                        <label class="mintip" :title="title.Kernel.Quirks.XhciPortLimit">
-                                            <input type="checkbox" class="ace" v-model="Kernel.Quirks.XhciPortLimit" />
-                                            <span class="lbl"> XhciPortLimit</span>
-                                        </label>
+                                    	<template v-for="item,index in Kernel.Quirks">
+							            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.Kernel.Quirks[index]">
+                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<span class="lbl"> {{index}}</span>
+                                        	</label>
+							        	</template>                                        
 
                                     </div>
                                 </div>
@@ -773,31 +578,26 @@
                                         <div id="tabbable_Misc_BlessOverride" class="tab-pane fade in active" style="padding-bottom: 5px;">
                                             <table id="gridtable_Misc_BlessOverride"></table>
 			                                <span class="grey pull-right">
-			                                    <a id="btncopy_Misc_BlessOverride"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_Misc_BlessOverride"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_Misc_BlessOverride"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_Misc_BlessOverride"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+												<a :id="'btn' + item + '_Misc_BlessOverride'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
                                         </div>
 
                                         <div id="tabbable_Misc_Entries" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <table id="gridtable_Misc_Entries"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_Misc_Entries"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_Misc_Entries"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_Misc_Entries"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_Misc_Entries"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_Misc_Entries"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_Misc_Entries'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
                                         </div>
                                         <div id="tabbable_Misc_Tools" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <table id="gridtable_Misc_Tools"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_Misc_Tools"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_Misc_Tools"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_Misc_Tools"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_Misc_Tools"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_Misc_Tools"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_Misc_Tools'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
                                         </div>
                                         <div id="tabbable_Misc_Boot" class="tab-pane fade in" style="padding-bottom: 5px;">
@@ -807,18 +607,17 @@
 
 													<div class="col-xs-3 mintip" :title="title.Misc.Boot.HibernateMode">
 			                                            HibernateMode<a id="btnradiobox_Misc_Boot_HibernateMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.HibernateMode"/>                               
-
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.HibernateMode"/>
 			                                        </div>
 										
 													<div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerMode">
 			                                            PickerMode<a id="btnradiobox_Misc_Boot_PickerMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerMode"/>
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerMode"/>
 			                                        </div>
 
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerVariant">
 			                                            PickerVariant<a id="btnradiobox_Misc_Boot_PickerVariant" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerVariant"/>
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerVariant"/>
 			                                        </div>
 
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.TakeoffDelay">
@@ -832,11 +631,11 @@
 			                                        </div>
 													<div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerAttributes">
 			                                            PickerAttributes<a id="btncheckbox_Misc_Boot_PickerAttributes" style="text-decoration:none" v-on:click="btncheckboxclick($event,4)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerAttributes"/>
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerAttributes"/>
 													</div>
 													<div class="col-xs-3 mintip" :title="title.Misc.Boot.LauncherOption">
 			                                            LauncherOption<a id="btnradiobox_Misc_Boot_LauncherOption" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.LauncherOption"/>
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.LauncherOption"/>
 													</div>
 													<div class="col-xs-3 mintip" :title="title.Misc.Boot.LauncherPath">
 			                                            LauncherPath<input type="text" class="form-control" v-model="Misc.Boot.LauncherPath"/>
@@ -879,14 +678,14 @@
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.DisplayLevel">
 			                                            DisplayLevel<a id="btncheckbox_Misc_Debug_DisplayLevel" style="text-decoration:none" v-on:click="btncheckboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Debug.DisplayLevel"/>
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Debug.DisplayLevel"/>
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.LogModules">
 			                                            LogModules<input type="text" class="form-control" v-model="Misc.Debug.LogModules"/>
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.Target">
 			                                            Target<a id="btncheckbox_Misc_Debug_Target" style="text-decoration:none" v-on:click="btncheckboxclick($event,2)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Debug.Target"/>
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Debug.Target"/>
 			                                        </div>
 			                                    </div>
 
@@ -923,7 +722,7 @@
 			                                    <div class="row">
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ExposeSensitiveData">
 			                                            ExposeSensitiveData<a id="btncheckbox_Misc_Security_ExposeSensitiveData" style="text-decoration:none" v-on:click="btncheckboxclick($event,2)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Security.ExposeSensitiveData"/>
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Security.ExposeSensitiveData"/>
 			                                        </div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ApECID">
 			                                            ApECID<input type="text" class="form-control" v-model="Misc.Security.ApECID"/>
@@ -934,25 +733,25 @@
 													
 			                                        
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.Vault">
-			                                        	Vault<a id="btnradiobox_Misc_Security_Vault" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	Vault<a id="btnradiobox_Misc_Security_Vault" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="Misc.Security.Vault">
 													</div>
 
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ScanPolicy">
 														ScanPolicy<a id="btncheckbox_Misc_Security_ScanPolicy" style="text-decoration:none" v-on:click="btncheckboxclick($event)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 															<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
 			                                        </div>
 													
 			                                        
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.DmgLoading">
-			                                        	DmgLoading<a id="btnradiobox_Misc_Security_DmgLoading" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	DmgLoading<a id="btnradiobox_Misc_Security_DmgLoading" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="Misc.Security.DmgLoading">
 													</div>
 
 			                                        
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.SecureBootModel">
-			                                        	SecureBootModel<a id="btnradiobox_Misc_Security_SecureBootModel" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	SecureBootModel<a id="btnradiobox_Misc_Security_SecureBootModel" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="Misc.Security.SecureBootModel">
 													</div>
 			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.PasswordHash">
@@ -1076,19 +875,17 @@
 			                                    <div class="col-xs-6">
 			                                        <table id="gridtable_NVRAM_AddLeft"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy_NVRAM_AddLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste_NVRAM_AddLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd_NVRAM_AddLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel_NVRAM_AddLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a :id="'btn' + item + '_NVRAM_AddLeft'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
 			                                        </span>
 			                                    </div>
 			                                    <div class="col-xs-6">
 			                                        <table id="gridtable_NVRAM_AddRight"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy_NVRAM_AddRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste_NVRAM_AddRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd_NVRAM_AddRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel_NVRAM_AddRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a :id="'btn' + item + '_NVRAM_AddRight'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
 			                                        </span>
 			                                    </div>
 			                                </div>
@@ -1099,19 +896,17 @@
 			                                    <div class="col-xs-6">
 			                                        <table id="gridtable_NVRAM_DeleteLeft"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy_NVRAM_DeleteLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste_NVRAM_DeleteLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd_NVRAM_DeleteLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel_NVRAM_DeleteLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a :id="'btn' + item + '_NVRAM_DeleteLeft'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
 			                                        </span>
 			                                    </div>
 			                                    <div class="col-xs-6">
 			                                        <table id="gridtable_NVRAM_DeleteRight"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy_NVRAM_DeleteRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste_NVRAM_DeleteRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd_NVRAM_DeleteRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel_NVRAM_DeleteRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a :id="'btn' + item + '_NVRAM_DeleteRight'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
 			                                        </span>
 			                                    </div>
 			                                </div>
@@ -1122,19 +917,17 @@
 			                                    <div class="col-xs-6">
 			                                        <table id="gridtable_NVRAM_LegacySchemaLeft"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy_NVRAM_LegacySchemaLeft"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste_NVRAM_LegacySchemaLeft"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd_NVRAM_LegacySchemaLeft"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel_NVRAM_LegacySchemaLeft"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a :id="'btn' + item + '_NVRAM_LegacySchemaLeft'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
 			                                        </span>
 			                                    </div>
 			                                    <div class="col-xs-6">
 			                                        <table id="gridtable_NVRAM_LegacySchemaRight"></table>
 			                                        <span class="grey pull-right">
-			                                            <a id="btncopy_NVRAM_LegacySchemaRight"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-					                                    <a id="btnpaste_NVRAM_LegacySchemaRight"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-					                                    <a id="btnadd_NVRAM_LegacySchemaRight"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-					                                    <a id="btndel_NVRAM_LegacySchemaRight"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a :id="'btn' + item + '_NVRAM_LegacySchemaRight'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
 			                                        </span>
 			                                    </div>
 			                                </div>
@@ -1144,20 +937,16 @@
 
                                 <h3 class="header smaller lighter blue"></h3>
                                 <div class="well">
+
                                     <div class="checkbox">
-                                        <label class="mintip" :title="title.NVRAM.LegacyEnable">
-                                            <input type="checkbox" class="ace" v-model="NVRAM.root.LegacyEnable" />
-                                            <span class="lbl"> LegacyEnable</span>
-                                        </label>
-                                        <label class="mintip" :title="title.NVRAM.LegacyOverwrite">
-                                            <input type="checkbox" class="ace" v-model="NVRAM.root.LegacyOverwrite" />
-                                            <span class="lbl"> LegacyOverwrite</span>
-                                        </label>
-                                        <label class="mintip" :title="title.NVRAM.WriteFlash">
-                                            <input type="checkbox" class="ace" v-model="NVRAM.root.WriteFlash" />
-                                            <span class="lbl"> WriteFlash</span>
-                                        </label>
+										<template v-for="item,index in NVRAM.root">
+							            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.NVRAM[index]">
+                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<span class="lbl"> {{index}}</span>
+                                        	</label>
+							        	</template>                                        
                                     </div>
+
                                 </div>
 
                             </div>
@@ -1184,22 +973,22 @@
                                             <div class="well">
 				                                <div class="row">
 				                                	<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemProductName">
-			                                        	SystemProductName<a id="btnradiobox_PlatformInfo_Generic_SystemProductName" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	SystemProductName<a id="btnradiobox_PlatformInfo_Generic_SystemProductName" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
 													</div>
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.MLB">
 														MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
 													</div>	
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemSerialNumber">
-														SystemSerialNumber<a style="text-decoration:none" target="_blank" :href="'https://checkcoverage.apple.com/cn/zh?sn=' + PlatformInfo.Generic.SystemSerialNumber">&nbsp;<img src="assets/opencore/png/check.png" class="ctrlicon" ></a>&nbsp;
+														SystemSerialNumber<a style="text-decoration:none" target="_blank" :href="'https://checkcoverage.apple.com/cn/zh?sn=' + PlatformInfo.Generic.SystemSerialNumber">&nbsp;<img src="assets/img/png/check.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
 													</div>
 				                                
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemUUID">
-														SystemUUID<a style="text-decoration:none" v-on:click="btnSystemUUIDclick()">&nbsp;<img src="assets/opencore/png/generate.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
+														SystemUUID<a style="text-decoration:none" v-on:click="btnSystemUUIDclick()">&nbsp;<img src="assets/img/png/generate.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
 													</div>
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ROM">
-														ROM<a style="text-decoration:none" v-on:click="btnromclick()">&nbsp;<img src="assets/opencore/png/generate.png" class="ctrlicon" ></a>&nbsp;
+														ROM<a style="text-decoration:none" v-on:click="btnromclick()">&nbsp;<img src="assets/img/png/generate.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
 													</div>
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ProcessorType">
@@ -1207,24 +996,21 @@
 													</div>
 													
 													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemMemoryStatus">
-			                                        	SystemMemoryStatus<a id="btnradiobox_PlatformInfo_Generic_SystemMemoryStatus" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	SystemMemoryStatus<a id="btnradiobox_PlatformInfo_Generic_SystemMemoryStatus" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemMemoryStatus">
 													</div>
 				                                </div>
 
 				                                <div class="checkbox" style="margin-top: 20px">
-				                                	<label class="mintip" :title="title.PlatformInfo.Generic.AdviseFeatures">
-				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.AdviseFeatures" />
-				                                        <span class="lbl"> AdviseFeatures</span>
-													</label>
-													<label class="mintip" :title="title.PlatformInfo.Generic.MaxBIOSVersion">
-				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.MaxBIOSVersion" />
-				                                        <span class="lbl"> MaxBIOSVersion</span>
-				                                    </label>
-				                                    <label class="mintip" :title="title.PlatformInfo.Generic.SpoofVendor">
-				                                        <input type="checkbox" class="ace" v-model="PlatformInfo.Generic.SpoofVendor" />
-				                                        <span class="lbl"> SpoofVendor</span>
-				                                    </label>
+
+				                                	<template v-for="item,index in PlatformInfo.Generic">
+										            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.PlatformInfo.Generic[index]">
+			                                            	<input type="checkbox" class="ace" v-model="item" />
+			                                            	<span class="lbl"> {{index}}</span>
+			                                        	</label>
+										        	</template>
+
+				                                	
 				                                </div>
 				                            </div>
                                         </div>
@@ -1285,11 +1071,9 @@
 										<div id="tabbable_PlatformInfo_Memory" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <table id="gridtable_PlatformInfo_MemoryDevices"></table>
 											<span class="grey pull-right" >
-												<a id="btnenabled_PlatformInfo_MemoryDevices"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-												<a id="btncopy_PlatformInfo_MemoryDevices"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-												<a id="btnpaste_PlatformInfo_MemoryDevices"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-												<a id="btnadd_PlatformInfo_MemoryDevices"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-												<a id="btndel_PlatformInfo_MemoryDevices"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+												<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_PlatformInfo_MemoryDevices'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 											</span>
 
 											<div class="well" style="margin-top: 25px">
@@ -1314,7 +1098,7 @@
 													</div>
 													<div class="col-xs-3">
 														TypeDetail<a id="btncheckbox_PlatformInfo_Memory_TypeDetail" style="text-decoration:none" v-on:click="btncheckboxclick($event,4)">&nbsp;
-															<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="PlatformInfo.Memory.TypeDetail">
+															<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="PlatformInfo.Memory.TypeDetail">
 													</div>
 
 												</div>
@@ -1457,37 +1241,21 @@
 	                            <div class="well">
 	                                <div class="row">
 	                                  
-	                                  <div class="col-xs-3 mintip" :title="title.PlatformInfo.root.UpdateSMBIOSMode">
-			                                        	UpdateSMBIOSMode<a id="btnradiobox_PlatformInfo_root_UpdateSMBIOSMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
-														<input type="text" class="form-control" v-model="PlatformInfo.root.UpdateSMBIOSMode">
-													</div>
+	                                <div class="col-xs-3 mintip" :title="title.PlatformInfo.root.UpdateSMBIOSMode">
+			                            UpdateSMBIOSMode<a id="btnradiobox_PlatformInfo_root_UpdateSMBIOSMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
+										<input type="text" class="form-control" v-model="PlatformInfo.root.UpdateSMBIOSMode">
+									</div>
 	                                </div>
 
 	                                <div class="checkbox" style="margin-top: 20px">
-	                                    <label class="mintip" :title="title.PlatformInfo.root.Automatic">
-	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.Automatic" />
-	                                        <span class="lbl"> Automatic</span>
-										</label>
-										<label class="mintip" :title="title.PlatformInfo.root.CustomMemory">
-	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.CustomMemory" />
-	                                        <span class="lbl"> CustomMemory</span>
-	                                    </label>
-	                                    <label class="mintip" :title="title.PlatformInfo.root.UpdateDataHub">
-	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.UpdateDataHub" />
-	                                        <span class="lbl"> UpdateDataHub</span>
-	                                    </label>
-	                                    <label class="mintip" :title="title.PlatformInfo.root.UpdateNVRAM">
-	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.UpdateNVRAM" />
-	                                        <span class="lbl"> UpdateNVRAM</span>
-	                                    </label>
-	                                    <label class="mintip" :title="title.PlatformInfo.root.UpdateSMBIOS">
-	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.UpdateSMBIOS" />
-	                                        <span class="lbl"> UpdateSMBIOS</span>
-										</label>
-										<label class="mintip" :title="title.PlatformInfo.root.UseRawUuidEncoding">
-	                                        <input type="checkbox" class="ace" v-model="PlatformInfo.root.UseRawUuidEncoding" />
-	                                        <span class="lbl"> UseRawUuidEncoding</span>
-	                                    </label>
+	                                	<template v-for="item,index in PlatformInfo.root">
+							            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.PlatformInfo.root[index]">
+                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<span class="lbl"> {{index}}</span>
+                                        	</label>
+							        	</template>
+
+	                                    
 
 	                                </div>
 	                            </div>
@@ -1520,17 +1288,15 @@
                                         <div id="tabbable_UEFI_Drivers" class="tab-pane fade in active" style="padding-bottom: 5px;">
 											<table id="gridtable_UEFI_Drivers"></table>
 											<span class="grey pull-left" >
-												<label for="File_UEFI_Drivers"><img src="assets/opencore/png/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
+												<label for="File_UEFI_Drivers"><img src="assets/img/png/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
 													<input type="file" id="File_UEFI_Drivers" style="position:absolute;clip:rect(0 0 0 0);" accept=".efi" onchange="addFile(this.id);" multiple>
 												</label>
 											</span>
                                             
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_UEFI_Drivers"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_UEFI_Drivers"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_UEFI_Drivers"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_UEFI_Drivers"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_UEFI_Drivers"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_UEFI_Drivers'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
 										</div>
 
@@ -1538,11 +1304,9 @@
 										<div id="tabbable_UEFI_ReservedMemory" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <table id="gridtable_UEFI_ReservedMemory"></table>
 			                                <span class="grey pull-right">
-			                                	<a id="btnenabled_UEFI_ReservedMemory"><img src="assets/opencore/png/enabled.png" class="ctrlicon" :title="lang.enabled"></a>&nbsp;
-			                                    <a id="btncopy_UEFI_ReservedMemory"><img src="assets/opencore/png/copy.png" class="ctrlicon" :title="lang.copy"></a>&nbsp;
-			                                    <a id="btnpaste_UEFI_ReservedMemory"><img src="assets/opencore/png/paste.png" class="ctrlicon" :title="lang.paste"></a>&nbsp;
-			                                    <a id="btnadd_UEFI_ReservedMemory"><img src="assets/opencore/png/add.png" class="ctrlicon" :title="lang.add"></a>&nbsp;
-			                                    <a id="btndel_UEFI_ReservedMemory"><img src="assets/opencore/png/del.png" class="ctrlicon" :title="lang.del"></a>
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a :id="'btn' + item + '_UEFI_ReservedMemory'"><img :src="'assets/img/png/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
 			                                </span>
                                         </div>
 
@@ -1592,11 +1356,11 @@
 												<div class="row">
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.AppleEvent">
 			                                        AppleEvent<a id="btnradiobox_UEFI_AppleInput_AppleEvent" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-														<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.AppleInput.AppleEvent">
+														<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.AppleInput.AppleEvent">
 			                                      </div>
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.CustomDelays">
 			                                        CustomDelays<a id="btnradiobox_UEFI_AppleInput_CustomDelays" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
-														<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.AppleInput.CustomDelays">
+														<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.AppleInput.CustomDelays">
 			                                      </div>
 												  <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.KeyInitialDelay">
 			                                        KeyInitialDelay<input type="text" class="form-control" v-model="UEFI.AppleInput.KeyInitialDelay">
@@ -1653,7 +1417,7 @@
 												  
 												  
 													<div class="col-xs-3 mintip" :title="title.UEFI.Audio.PlayChime">
-			                                        	PlayChime<a id="btnradiobox_UEFI_Audio_PlayChime" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	PlayChime<a id="btnradiobox_UEFI_Audio_PlayChime" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="UEFI.Audio.PlayChime">
 													</div>
 
@@ -1703,7 +1467,7 @@
 			                                      
 			                                      
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeySupportMode">
-			                                        	KeySupportMode<a id="btnradiobox_UEFI_Input_KeySupportMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	KeySupportMode<a id="btnradiobox_UEFI_Input_KeySupportMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="UEFI.Input.KeySupportMode">
 													</div>
 													
@@ -1750,26 +1514,26 @@
 			                                     
 
 			                                       <div class="col-xs-3 mintip" :title="title.UEFI.Output.TextRenderer">
-			                                        	TextRenderer<a id="btnradiobox_UEFI_Output_TextRenderer" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	TextRenderer<a id="btnradiobox_UEFI_Output_TextRenderer" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="UEFI.Output.TextRenderer">
 													</div>
 
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.ConsoleMode">
-			                                        ConsoleMode<a id="btnradiobox_UEFI_Output_ConsoleMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
+			                                        ConsoleMode<a id="btnradiobox_UEFI_Output_ConsoleMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
 			                                      </div>
 												  
 			                                      	<div class="col-xs-3 mintip" :title="title.UEFI.Output.Resolution">
-			                                        	Resolution<a id="btnradiobox_UEFI_Output_Resolution" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	Resolution<a id="btnradiobox_UEFI_Output_Resolution" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="UEFI.Output.Resolution">
 													</div>
 
 													<div class="col-xs-3 mintip" :title="title.UEFI.Output.GopPassThrough">
-			                                        	GopPassThrough<a id="btnradiobox_UEFI_Output_GopPassThrough" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	GopPassThrough<a id="btnradiobox_UEFI_Output_GopPassThrough" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="UEFI.Output.GopPassThrough">
 													</div>
 
 													<div class="col-xs-3 mintip" :title="title.UEFI.Output.UIScale">
-			                                        	UIScale<a id="btnradiobox_UEFI_Output_UIScale" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/opencore/png/edit.png" class="ctrlicon" ></a>&nbsp;
+			                                        	UIScale<a id="btnradiobox_UEFI_Output_UIScale" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/img/png/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="UEFI.Output.UIScale">
 													</div>
 
@@ -1909,80 +1673,20 @@
                                         <div id="tabbable_UEFI_Quirks" class="tab-pane fade in" style="padding-bottom: 5px;">
                                             <div class="well">
 			                                    <div class="row">
-
-			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Quirks.ExitBootServicesDelay">
-			                                        ExitBootServicesDelay<input type="text" class="form-control" v-model="UEFI.Quirks.ExitBootServicesDelay">
-			                                      </div>
-
-			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Quirks.ResizeGpuBars">
-			                                        ResizeGpuBars<input type="text" class="form-control" v-model="UEFI.Quirks.ResizeGpuBars">
-			                                      </div>
-
-												  <div class="col-xs-3 mintip" :title="title.UEFI.Quirks.TscSyncTimeout">
-			                                        TscSyncTimeout<input type="text" class="form-control" v-model="UEFI.Quirks.TscSyncTimeout">
-			                                      </div>
+			                                    	<template v-for="item,index in UEFI.Quirks">
+										            	<div v-if="typeof(item) === 'number'" class="col-xs-3 mintip" :title="title.UEFI.Quirks[index]">
+			                                        		{{index}}<input type="text" class="form-control" v-model="item">
+			                                      		</div>
+										        	</template>
 			                                    </div>
 
 			                                    <div class="checkbox" style="margin-top: 20px">
-
-													<label class="mintip" :title="title.UEFI.Quirks.ActivateHpetSupport">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ActivateHpetSupport" />
-			                                            <span class="lbl"> ActivateHpetSupport</span>
-			                                        </label>
-													
-													<label class="mintip" :title="title.UEFI.Quirks.DisableSecurityPolicy">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.DisableSecurityPolicy" />
-			                                            <span class="lbl"> DisableSecurityPolicy</span>
-			                                        </label>
-
-			                                        <label class="mintip" :title="title.UEFI.Quirks.EnableVectorAcceleration">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.EnableVectorAcceleration" />
-			                                            <span class="lbl"> EnableVectorAcceleration</span>
-			                                        </label>
-			                                        <label class="mintip" :title="title.UEFI.Quirks.EnableVmx">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.EnableVmx" />
-			                                            <span class="lbl"> EnableVmx</span>
-			                                        </label>
-
-			                                        <label class="mintip" :title="title.UEFI.Quirks.ForgeUefiSupport">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ForgeUefiSupport" />
-			                                            <span class="lbl"> ForgeUefiSupport</span>
-			                                        </label>
-
-			                                        <label class="mintip" :title="title.UEFI.Quirks.ForceOcWriteFlash">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ForceOcWriteFlash" />
-			                                            <span class="lbl"> ForceOcWriteFlash</span>
-			                                        </label>
-
-			                                        <label class="mintip" :title="title.UEFI.Quirks.IgnoreInvalidFlexRatio">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.IgnoreInvalidFlexRatio" />
-			                                            <span class="lbl"> IgnoreInvalidFlexRatio</span>
-			                                        </label>
-
-
-
-			                                        <label class="mintip" :title="title.UEFI.Quirks.ReleaseUsbOwnership">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReleaseUsbOwnership" />
-			                                            <span class="lbl"> ReleaseUsbOwnership</span>
-			                                        </label>
-
-			                                        <label class="mintip" :title="title.UEFI.Quirks.ReloadOptionRoms">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.ReloadOptionRoms" />
-			                                            <span class="lbl"> ReloadOptionRoms</span>
-			                                        </label>
-		                                        
-
-			                                        <label class="mintip" :title="title.UEFI.Quirks.RequestBootVarRouting">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.RequestBootVarRouting" />
-			                                            <span class="lbl"> RequestBootVarRouting</span>
-			                                        </label>
-
-
-			                                        <label class="mintip" :title="title.UEFI.Quirks.UnblockFsConnect">
-			                                            <input type="checkbox" class="ace" v-model="UEFI.Quirks.UnblockFsConnect" />
-			                                            <span class="lbl"> UnblockFsConnect</span>
-			                                        </label>
-
+			                                    	<template v-for="item,index in UEFI.Quirks">
+										            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.UEFI.Quirks[index]">
+			                                            	<input type="checkbox" class="ace" v-model="item" />
+			                                            	<span class="lbl"> {{index}}</span>
+			                                        	</label>
+										        	</template>
 			                                    </div>
 
 			                                </div>
@@ -2102,25 +1806,7 @@
             // document.write("<script src='assets/opencore/lang-" + lang + ".js'><\/script>");
         </script> -->
 
-		<script src="assets/opencore/lang.js"></script>
-		<script src="assets/opencore/tips_zh-CN.js"></script>
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery-ui.custom.min.js"></script>		
-		<script src="assets/js/jquery.jqGrid.min.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
-		<script src="assets/js/ace-elements.min.js"></script>
-		<script src="assets/js/ace.min.js"></script>
-		<script src="assets/js/vue.min.js"></script>
-        <script src="assets/js/FileSaver.min.js"></script>
-        <script src="assets/js/jquery.format.js"></script>
-        <script src="assets/js/clipboard.min.js"></script>
-        <script src="assets/js/jquery.minimalTips.min.js"></script>
-		<script src="assets/js/toastr.min.js"></script>
-		<script src="assets/js/jszip.min.js"></script>
-		<script src="assets/opencore/plist_parser.js"></script>
-		<script src="assets/opencore/comm.js"></script>
-		<script src="assets/opencore/initGirdtable.js"></script>
-		<script src="assets/opencore/index.js"></script>
-		<script src="assets/opencore/generatePlist.js"></script>
+		<script src="assets/js/opencore.min.js"></script>
+		
 	</body>
 </html>

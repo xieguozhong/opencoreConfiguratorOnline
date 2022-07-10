@@ -1,0 +1,7 @@
+{
+	"devDependencies": {
+		"gulp": "^4.0.2",
+		"gulp-concat": "^2.6.1",
+		"gulp-uglify": "^3.0.2"
+	}
+}
