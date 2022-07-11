@@ -440,6 +440,7 @@ function getDeviceVolumeData(leftData, rightData) {
 }
 
 function getSubDeviceVolumeData(pid, rightData) {
+
 	let strreturn = '',lenrightData=rightData.length;
 	
 	for(let it=0;it<lenrightData;it++) {
@@ -520,7 +521,7 @@ function getStringorboolorinterger(theData, dataType={}) {
 
 function getDeviceData(leftData, rightData) {
 	let strreturn = '<dict>', lenleftData= leftData.length;
-	//consolelog('leftData type = ' + getTypeof(leftData));
+	
 	for(let it=0;it<lenleftData;it++) {
 		if(leftData[it]['Devices'] === undefined) {
 			showTipModal(VUEAPP.lang.DeviceError, 'warning');
@@ -537,7 +538,7 @@ function getDeviceData(leftData, rightData) {
 function getSubDeviceData(pid, rightData) {
 	
 	let subcontext = "<dict>", rightDataType = '', lenrightData=rightData.length;
-	//consolelog('Data type = ' + getTypeof(rightData));
+	
 	for(let i=0;i<lenrightData;i++) {
 		if(rightData[i].pid == pid) {
 			
@@ -576,7 +577,7 @@ function getSubDeviceData(pid, rightData) {
 function getBoolens(boolData,intData=[]) {
 	
 	let strreturn = '<dict>';
-	//consolelog('Data type = ' + getTypeof(boolData));
+	
 	for(let it in boolData) {
 		strreturn += addKey(it);
 		if(intData.indexOf(it) >= 0) {
@@ -626,10 +627,10 @@ function genArrayDict(tablekey, arrayDictData, dataFileds=[], intFileds=[]) {
 	arrayDictData = rewriteData(currentTableData, arrayDictData);
 
 	let tmpreturn = '', lenarrayDictData = arrayDictData.length;
-	//consolelog('Data type = ' + getTypeof(arrayDictData));
+	
 	for(let i=0;i<lenarrayDictData;i++) {
 		tmpreturn += '<dict>';
-		//consolelog('Data type = ' + getTypeof(arrayDictData[0]));
+		
 		for(let it in arrayDictData[0]) {   //字段顺序跟着第一行数据的字段顺序走，防止后增加的行的字段顺序和前面的不同
 			if(it === 'id' || it === 'pid') {
 				continue;
@@ -643,7 +644,7 @@ function genArrayDict(tablekey, arrayDictData, dataFileds=[], intFileds=[]) {
                 if(itemData === '') {
                     tmpreturn += '<data></data>';
                 } else {
-					//consolelog(itemData);
+					
                     tmpreturn += '<data>' + hextoBase64(itemData) + '</data>';
                 }
             }

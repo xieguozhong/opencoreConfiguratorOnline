@@ -36,7 +36,15 @@ function formatInteger(cellvalue = 0) {
  * @returns JSON Object
  */
 function formatContext(context='') {
-    let result = PlistParser.parse(context);
+    context = context.replace(/[\t\r]/g,'');
+    const arrayContext = context.split('\n');
+    let result = '';
+
+    for(let i=0,len=arrayContext.length;i<len;i++) {
+        result += arrayContext[i].trim();
+    }
+
+    result = PlistParser.parse(result);
     result = PlistParser.serialize(result);
     
     const fillstring = (ke,va) => {
@@ -45,6 +53,7 @@ function formatContext(context='') {
         }
         return va;
     };
+
     result = JSON.parse(result,fillstring);
     bljsonobj(result);
         
@@ -226,7 +235,7 @@ function hextoBase64(strhex) {
  * @returns string
  */
 function toBoolString(strbool) {
-    if(strbool === true || strbool === 'true' || strbool === '1') {
+    if(strbool === true || strbool === 'true' || strbool === 'YES' || strbool === '1') {
        return '<true/>';
     } else {
         return '<false/>';
@@ -278,6 +287,7 @@ function plistEncode(context='') {
     if(context === '' || context[0] === '') {
         return '';
     }
+
     
     if(getTypeof(context) === 'array') {
         switch(context[1]) {
@@ -286,6 +296,8 @@ function plistEncode(context='') {
             case 'string':
                 context = context[0];
                 break;
+            case 'bool':
+                return context[0] === true ? 'YES' : 'NO';
             default:
                 return context[0];
         }
