@@ -1,7 +1,7 @@
 # opencoreConfiguratorOnline
 
 
-适配版本: OpenCore-0.8.0-RELEASE
+适配版本: OpenCore-0.8.2-RELEASE
 
 
 
