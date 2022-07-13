@@ -16,7 +16,7 @@ web版的OpenCore引导工具config.plist的在线编辑器
 
 
 3 使用utools(https://www.u.tools)工具, 安装后在插件应用市场搜 opencore
-![image](https://github.com/xieguozhong/opencoreConfiguratorOnline/blob/main/readme/utools.tiff)
+![image](https://github.com/xieguozhong/opencoreConfiguratorOnline/blob/main/readme/utools.png)
 
 演示图
 1 打开config文件
