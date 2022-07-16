@@ -772,9 +772,10 @@ const VUEAPP = new Vue({
         , getPlistAndResetTableDataForValue:function(plistData, vueData, key, tablename) {
             vueData[key + 'Left'].length = 0;
             vueData[key + 'Right'].length = 0;
-                       
+            const keypddata = plistData[key];
             let i = 0,j = 0;
-            for (const [k, v] of Object.entries(plistData[key])) {
+            if(keypddata) {
+                for (const [k, v] of Object.entries(keypddata)) {
                     
                     vueData[key + 'Left'].push({id:i, Devices:k});
 
@@ -792,7 +793,11 @@ const VUEAPP = new Vue({
 
                     i++;
                 
+                }
+            } else {
+                showTipModal(fillLangString(VUEAPP.lang.plistformaterror,key), 'warning');
             }
+            
 
             getJqgridObjectbyKey(tablename + "Left").trigger("reloadGrid");
             getJqgridObjectbyKey(tablename + "Right").trigger("reloadGrid");
@@ -801,12 +806,16 @@ const VUEAPP = new Vue({
         }
 
         , getPlistAndResetTableDataForVolume:function(plistData, vueData, key, tablename) {
+
             vueData[key + 'Left'].length = 0;
             vueData[key + 'Right'].length = 0;
             let i = 0,id = 0;
-            for (const [k, v] of Object.entries(plistData[key])) {
+            const keypddata = plistData[key];
+
+            if(keypddata) {
+                for (const [k, v] of Object.entries(keypddata)) {
                     
-                vueData[key + 'Left'].push({id:i, Devices:k});
+                    vueData[key + 'Left'].push({id:i, Devices:k});
 
                     for(let j=0;j<v.length;j++) {
                         
@@ -821,7 +830,11 @@ const VUEAPP = new Vue({
 
                     i++;
                 
+                }
+            } else {
+                showTipModal(fillLangString(VUEAPP.lang.plistformaterror,key), 'warning');
             }
+            
 
 
             getJqgridObjectbyKey(tablename + "Left").trigger("reloadGrid");
