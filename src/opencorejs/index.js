@@ -25,15 +25,19 @@ $(document).ready(function() {
     });
 
 
-    //初始化表格
+    //初始化ACPI表格
     initGridTableACPI();
-    initGridTableBooter();
-    initGridTableDeviceProperties();
-    initGridTableKernel();
-    initGridTableMisc();
-    initGridTableNVRAM();
-    initGridTablePlatformInfo();
-    initGridTableUEFI();
+    
+    //初始化剩余的表格
+    setTimeout(() => {
+        initGridTableBooter();
+        initGridTableDeviceProperties();
+        initGridTableKernel();
+        initGridTableMisc();
+        initGridTableNVRAM();
+        initGridTablePlatformInfo();
+        initGridTableUEFI();
+    }, 0);
 
     //绑定所有按钮
     bindAllButton();
@@ -60,6 +64,8 @@ $(document).ready(function() {
         VUEAPP['plistJsonObject'] = formatContext(lastOpenCorePlistConfig);
         VUEAPP.initAllData();
     }
+    
+    
 
 });
 
