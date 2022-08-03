@@ -29,15 +29,15 @@ $(document).ready(function() {
     initGridTableACPI();
     
     //初始化剩余的表格
-    setTimeout(() => {
-        initGridTableBooter();
-        initGridTableDeviceProperties();
-        initGridTableKernel();
-        initGridTableMisc();
-        initGridTableNVRAM();
-        initGridTablePlatformInfo();
-        initGridTableUEFI();
-    }, 0);
+
+    initGridTableBooter();
+    initGridTableDeviceProperties();
+    initGridTableKernel();
+    initGridTableMisc();
+    initGridTableNVRAM();
+    initGridTablePlatformInfo();
+    initGridTableUEFI();
+
 
     //绑定所有按钮
     bindAllButton();
@@ -380,7 +380,7 @@ const VUEAPP = new Vue({
             }
         },
         NVRAM:{
-            root:{ LegacyEnable:false, LegacyOverwrite:false, WriteFlash:false},
+            root:{ LegacyOverwrite:false, WriteFlash:false},
             AddLeft:[],
             AddRight:[],
             DeleteLeft:[],
@@ -772,6 +772,7 @@ const VUEAPP = new Vue({
             for(let it = 0;it<plistData.length;it++) {                
                 gridData.push(plistData[it]);
             }
+
             getJqgridObjectbyKey(gridkey).trigger("reloadGrid");
         }
         

@@ -282,8 +282,7 @@ function getNVRAM() {
 	nvramContext += '<key>Delete</key>';
 	nvramContext += getDeviceVolumeData(getRewriteLRData('NVRAM_DeleteLeft', VUEAPP.NVRAM.DeleteLeft), getRewriteLRData('NVRAM_DeleteRight', VUEAPP.NVRAM.DeleteRight));
 
-	//3 LegacyEnable
-	nvramContext += '<key>LegacyEnable</key>' + toBoolStringStrict(VUEAPP.NVRAM.root['LegacyEnable']);
+	//3 LegacyOverwrite
 	nvramContext += '<key>LegacyOverwrite</key>' + toBoolStringStrict(VUEAPP.NVRAM.root['LegacyOverwrite']);
 
 	//4 LegacySchema

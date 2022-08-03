@@ -319,11 +319,12 @@ function initGridTablePlatformInfo() {
 }
 
 function initGridTableUEFI() {
-	let colNames = ['Path','Arguments','Comment','Enabled'];
+	let colNames = ['Path','Arguments','Comment','LoadEarly','Enabled'];
 	let colModel = [
 		{name:'Path',index:'Path', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:250,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'LoadEarly',index:'LoadEarly', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
 	let objGT_UEFI_Drivers = jQuery('#gridtable_UEFI_Drivers');
@@ -331,7 +332,7 @@ function initGridTableUEFI() {
 	GLOBAL_MAP_TABLE.set('UEFI_Drivers', objGT_UEFI_Drivers);
 	initGridTable(objGT_UEFI_Drivers, VUEAPP.UEFI.Drivers, colNames, colModel);
 
-	let typeValues = {
+	const typeValues = {
 		Reserved:'Reserved',
 		LoaderCode:'LoaderCode',
 		LoaderData:'LoaderData',
