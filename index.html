@@ -6,6 +6,7 @@
 		<title>OpenCore Configurator Online</title>
 		<meta name="description" content="OpenCore Configurator Online https://github.com/xieguozhong/opencoreConfiguratorOnline" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
+		<link rel="shortcut icon" href="favicon.ico" />
 		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css" />
 		<link rel="stylesheet" href="assets/css/jquery-ui.min.css" />
@@ -190,7 +191,7 @@
 						</div><!-- /.nav-search -->
                         <div class="pull-right">
 
-                            <button class="btn btn-minier btn-success" onclick="savePlist();">{{lang.down}}</button>
+                            <button class="btn btn-minier btn-success" onclick="savePlist();">{{lang.down}}</button>&nbsp;
                             <button class="btn btn-minier btn-success" onclick="copyPlist();">{{lang.copy}}</button>
 							<label class="mintip" :title="title.PlatformInfo.configisfull" style="margin-left: 10px">
 								<input v-model="configisfull" type="checkbox" class="ace" />
@@ -1803,14 +1804,15 @@
             // }
             	
         </script>
-
-		<script src="src/commjs/jquery.min.js"></script>
-		<script src="src/commjs/jquery-ui.custom.min.js"></script>		
-		<script src="src/commjs/jquery.jqGrid.min.js"></script>
-        <script src="src/commjs/bootstrap.min.js"></script>
-		<script src="src/commjs/ace-elements.min.js"></script>
+        <script src="src/commjs/vue.min.js"></script>
+		<script src="src/commjs/jquery.min.js"></script>	
+		<script src="src/commjs/grid.base.min.js"></script>
+		<script src="src/commjs/grid.grouping.min.js"></script>
+		<script src="src/commjs/grid.jqueryui.min.js"></script>
+		<script src="src/commjs/grid.locale-en.min.js"></script>
+		<script src="src/commjs/bootstrap.min.js"></script>
 		<script src="src/commjs/ace.min.js"></script>
-		<script src="src/commjs/vue.min.js"></script>
+		<script src="src/commjs/ace-elements.min.js"></script>		
         <script src="src/commjs/FileSaver.min.js"></script>
         <script src="src/commjs/jquery.format.min.js"></script>
         <script src="src/commjs/clipboard.min.js"></script>
@@ -1825,7 +1827,6 @@
 		<script src="src/opencorejs/generatePlist.js"></script>
 
     -->
-		<script src="assets/js/opencore.min.js"></script>	
-		
+    <script src="assets/js/opencore.min.js"></script>		
 	</body>
 </html>
