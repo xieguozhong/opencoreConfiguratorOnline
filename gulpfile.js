@@ -16,7 +16,7 @@ gulp.task('css_concat',()=>{
         'src/assets/css/toastr.min.css'
         ])
         .pipe(concat('opencore.min.css'))    //合并成为opencore.min.js文件
-        .pipe(gulp.dest('dist/assets/css'));   //输出到build目录下
+        .pipe(gulp.dest('docs/assets/css'));   //输出到build目录下
         //.pipe(uglify())   //压缩js文件
         //.pipe(gulp.dest('build'));   //输出到build目录下
 });
@@ -55,16 +55,16 @@ gulp.task('jss_2',()=>{
         'src/assets/commjs/toastr.min.js',
         'build/opencore.js'
         ]).pipe(concat('opencore.min.js'))    //合并成为opencore.min.js文件
-        .pipe(gulp.dest('dist/assets/js'));    //输出到assets/js目录下
+        .pipe(gulp.dest('docs/assets/js'));    //输出到assets/js目录下
 });
 
 gulp.task('index_html_replace', function() {
     return gulp.src('src/index.html')
       .pipe(htmlreplace({
-          'css': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/dist/assets/css/opencore.min.css',
-          'jss': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/dist/assets/js/opencore.min.js'
+          'css': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/docs/assets/css/opencore.min.css',
+          'jss': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/docs/assets/js/opencore.min.js'
       }))
-      .pipe(gulp.dest('dist'));
+      .pipe(gulp.dest('docs'));
   });
 
 
