@@ -12,10 +12,8 @@ $(document).ready(function() {
         before_change: function(files){
             const reader = new FileReader();
             reader.readAsText(files[0]);
-            reader.onload = function () {    
-                
+            reader.onload = function () {
             	VUEAPP['plistJsonObject'] = formatContext(this.result);
-                
             	VUEAPP.initAllData();
         	}
             delete reader;
@@ -24,24 +22,6 @@ $(document).ready(function() {
         }).on('file.error.ace', function() {
             showTipModal(VUEAPP.lang.alertfileerror, 'error');
     });
-
-
-    //初始化ACPI表格
-    initGridTableACPI();
-    
-    //初始化剩余的表格
-
-    initGridTableBooter();
-    initGridTableDeviceProperties();
-    initGridTableKernel();
-    initGridTableMisc();
-    initGridTableNVRAM();
-    initGridTablePlatformInfo();
-    initGridTableUEFI();
-
-
-    //绑定所有按钮
-    bindAllButton();
 
     //初始化提示插件
     $.minimalTips();
@@ -58,13 +38,28 @@ $(document).ready(function() {
     //页面加载完成后解除文件选择框的禁用属性
     $("#id-input-file-2").removeAttr("disabled");
 
-    //自动加载最后保存的Plist文件内容
-    const lastOpenCorePlistConfig = localStorage?.lastOpenCorePlistConfig;
-    if(lastOpenCorePlistConfig) {
-        showTipModal(VUEAPP.lang.loadlastplist);
-        VUEAPP['plistJsonObject'] = formatContext(lastOpenCorePlistConfig);
-        VUEAPP.initAllData();
-    }
+    //初始化ACPI表格
+    initGridTableACPI();
+    
+    //初始化剩余的表格
+    setTimeout(()=>{
+        initGridTableBooter();
+        initGridTableDeviceProperties();
+        initGridTableKernel();
+        initGridTableMisc();
+        initGridTableNVRAM();
+        initGridTablePlatformInfo();
+        initGridTableUEFI();
+    
+        //自动加载最后保存的Plist文件内容
+        const lastOpenCorePlistConfig = localStorage?.lastOpenCorePlistConfig;
+        if(lastOpenCorePlistConfig) {
+            showTipModal(VUEAPP.lang.loadlastplist);
+            VUEAPP['plistJsonObject'] = formatContext(lastOpenCorePlistConfig);
+            VUEAPP.initAllData();
+        }
+    })
+    
     
     
 
@@ -146,160 +141,7 @@ function handFile(ff, thetable) {
 }
 
 
-//绑定所有的按钮的clicks事件
-function bindAllButton() {
 
-    //为所有表格绑定事件
-    for (let objtb of GLOBAL_MAP_TABLE.values()) {
-        bindClick(objtb);
-    }
-
-    function bindClick(currentGridTable) {
-
-        const gridtableid = currentGridTable.selector;
-        const buttonBehind = gridtableid.slice(11);//表格ID都是以 #gridtable_ 开头
-
-        // 1 绑定所有的增加按钮
-        $("#btnadd_" + buttonBehind).on("click",function(){
-
-            //如果是右边表格, 先检查左边有没有选中, 如果没有, 不做任何反应
-            if(buttonBehind.endsWith('Right')) {                
-                
-                const theGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
-                const selectedId = theGrid.jqGrid("getGridParam", "selrow");
-
-                if(selectedId !== null) {
-                    let maxid = getMaxrowid(currentGridTable);
-                    currentGridTable.jqGrid('addRowData',  ++maxid , {pid:selectedId}, 'last');
-                }
-
-            } else {
-                let maxid = getMaxrowid(currentGridTable);
-                currentGridTable.jqGrid('addRowData', ++maxid, {}, 'last');
-            }
-
-
-        });
-
-
-        // 2 绑定所有的删除按钮
-        $("#btndel_" + buttonBehind).on("click",function(){
-
-            const selectedIds = currentGridTable.jqGrid('getGridParam','selarrrow');
-
-            //如果有选中行, 说明可以进行删除操作
-            if(selectedIds.length > 0) {
-                let deleteIds = [], rowData, leftSelectedId;
-
-                //如果是右边表格, 只要删除左边选中行下面的数据即可
-                if(buttonBehind.endsWith('Right')) {
-                    let leftGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
-
-                    leftSelectedId = leftGrid.jqGrid("getGridParam", "selrow");
-                }
-
-                for(let i=0,len=selectedIds.length;i<len;i++) {
-                    
-                    if(leftSelectedId === undefined) {
-                        deleteIds.push(parseInt(selectedIds[i]));
-                    } else {
-                        rowData = currentGridTable.jqGrid('getRowData', selectedIds[i]);
-                        if(leftSelectedId == rowData.pid) {
-                            deleteIds.push(parseInt(selectedIds[i]));
-                        }
-                    }
-                    
-                }
-                deleteIds.sort((x,y) => y-x);
-
-                for(let it of deleteIds) {
-                    //在删除行之前,把GLOBAL_SET_ONEDITTABLE中的记录删除(如果有的话)
-                    GLOBAL_SET_ONEDITTABLE.delete('#gridtable_' + buttonBehind + '_' + it);
-
-                    currentGridTable.jqGrid('delRowData', it);
-                }
-
-                //如果删除左边表格, 要隐藏右边表格
-                if(buttonBehind.endsWith('Left')) {
-                    const rightButtonBehind = buttonBehind.replace('Left', 'Right')
-                    const rightGrid = getJqgridObjectbyKey(rightButtonBehind);
-                    const rowIds = rightGrid.getDataIDs();
-                    for(let it of rowIds) {
-                        //在隐藏行之前,把GLOBAL_SET_ONEDITTABLE中的记录删除(如果有的话)
-                        GLOBAL_SET_ONEDITTABLE.delete('#gridtable_' + rightButtonBehind + '_' + it);
-
-                        rightGrid.setRowData(it,null,{display: 'none'});
-                    }
-                }
-
-                showTipModal(VUEAPP.lang.deleterowsuccess, 'success');
-            }
-
-        });
-
-
-        // 3 绑定所有的复制按钮
-        $("#btncopy_" + buttonBehind).on("click",function(){
-
-            //先清空剪贴板
-            const selectedId = currentGridTable.jqGrid("getGridParam", "selarrrow");
-            if(selectedId.length === 0) {
-                copyDatatoClipboard(' ');
-                showTipModal(VUEAPP.lang.checkdatafirst, 'error');
-                return;
-            }
-            let rowData, arrStrdata = [], leftSelectedId;
-
-            //如果是右边表格, 只要复制左边选中行下面的数据即可
-            if(buttonBehind.endsWith('Right')) {               
-                
-                const leftGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
-
-                leftSelectedId = leftGrid.jqGrid("getGridParam", "selrow");
-                
-            }
-
-            for(let i=0,len=selectedId.length;i<len;i++) {
-                rowData = currentGridTable.jqGrid('getRowData', selectedId[i]);
-                
-                if(leftSelectedId === undefined || leftSelectedId == rowData.pid) {
-                    arrStrdata.push(JSON.stringify(rowData));
-                }
-                
-            }
-            
-            copyDatatoClipboard('[' + arrStrdata.join() + ']');
-
-            showTipModal(VUEAPP.lang.copydatasuccess, 'success');
-
-
-        });
-
-        // 4 绑定所有的粘贴按钮
-        $("#btnpaste_" + buttonBehind).on("click",function(){
-            VUEAPP.current_paste_tableid = gridtableid;
-            showTextareaModal();
-        });
-
-        // 5 绑定所有的 启用/禁用 按钮
-        $("#btnenabled_" + buttonBehind).on("click",function(){
-            const selectedIds = currentGridTable.jqGrid("getGridParam", "selarrrow");
-
-            if(selectedIds.length > 0) {
-                let theEnabled = currentGridTable.jqGrid('getCell', selectedIds[0], "Enabled");
-                theEnabled = theEnabled === 'YES' ? 'NO':'YES';
-
-                for(let i=0,len=selectedIds.length;i<len;i++) {
-                    currentGridTable.jqGrid('setCell',selectedIds[i],"Enabled",theEnabled);
-                }
-            }
-
-        });
-
-    }
-
-
-}
 
 const vueproperty = {
     data() {
@@ -968,6 +810,140 @@ const vueproperty = {
             //consolelog('勾选值=' + pagetotal);
             return pagetotal;
         }
+        //按钮点击事件
+        ,imgButtonClick : function(event) {
+            const buttonid = event.currentTarget.id;
+            const buttonBehind = buttonid.substring(buttonid.indexOf('_')+1)
+            const currentGridTable = getJqgridObjectbyKey(buttonBehind);
+            this['imgButtonClick_' + buttonid.substring(0, buttonid.indexOf('_'))](buttonBehind, currentGridTable);
+        }
+
+        //启用按钮点击事件
+        ,imgButtonClick_btnenabled:function(buttonBehind, currentGridTable) {
+            
+            const selectedIds = currentGridTable.jqGrid("getGridParam", "selarrrow");
+
+            if(selectedIds.length > 0) {
+                let theEnabled = currentGridTable.jqGrid('getCell', selectedIds[0], "Enabled");
+                theEnabled = theEnabled === 'YES' ? 'NO':'YES';
+
+                for(let i=0,len=selectedIds.length;i<len;i++) {
+                    currentGridTable.jqGrid('setCell',selectedIds[i],"Enabled",theEnabled);
+                }
+            }
+
+        }
+
+        //增加按钮点击事件
+        ,imgButtonClick_btnadd:function(buttonBehind, currentGridTable) {
+            
+            if(buttonBehind.endsWith('Right')) {
+                const theGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
+                const selectedId = theGrid.jqGrid("getGridParam", "selrow");
+
+                if(selectedId !== null) {
+                    let maxid = getMaxrowid(currentGridTable);
+                    currentGridTable.jqGrid('addRowData',  ++maxid , {pid:selectedId}, 'last');
+                }
+
+            } else {
+                let maxid = getMaxrowid(currentGridTable);
+                currentGridTable.jqGrid('addRowData', ++maxid, {}, 'last');
+            }
+        }
+        //删除按钮点击事件
+        ,imgButtonClick_btndel:function(buttonBehind, currentGridTable) {
+            const selectedIds = currentGridTable.jqGrid('getGridParam','selarrrow');
+
+            //如果有选中行, 说明可以进行删除操作
+            if(selectedIds.length > 0) {
+                let deleteIds = [], rowData, leftSelectedId;
+
+                //如果是右边表格, 只要删除左边选中行下面的数据即可
+                if(buttonBehind.endsWith('Right')) {
+                    let leftGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
+
+                    leftSelectedId = leftGrid.jqGrid("getGridParam", "selrow");
+                }
+
+                for(let i=0,len=selectedIds.length;i<len;i++) {
+                    
+                    if(leftSelectedId === undefined) {
+                        deleteIds.push(parseInt(selectedIds[i]));
+                    } else {
+                        rowData = currentGridTable.jqGrid('getRowData', selectedIds[i]);
+                        if(leftSelectedId == rowData.pid) {
+                            deleteIds.push(parseInt(selectedIds[i]));
+                        }
+                    }
+                    
+                }
+                deleteIds.sort((x,y) => y-x);
+
+                for(let it of deleteIds) {
+                    //在删除行之前,把GLOBAL_SET_ONEDITTABLE中的记录删除(如果有的话)
+                    GLOBAL_SET_ONEDITTABLE.delete('#gridtable_' + buttonBehind + '_' + it);
+
+                    currentGridTable.jqGrid('delRowData', it);
+                }
+
+                //如果删除左边表格, 要隐藏右边表格
+                if(buttonBehind.endsWith('Left')) {
+                    const rightButtonBehind = buttonBehind.replace('Left', 'Right')
+                    const rightGrid = getJqgridObjectbyKey(rightButtonBehind);
+                    const rowIds = rightGrid.getDataIDs();
+                    for(let it of rowIds) {
+                        //在隐藏行之前,把GLOBAL_SET_ONEDITTABLE中的记录删除(如果有的话)
+                        GLOBAL_SET_ONEDITTABLE.delete('#gridtable_' + rightButtonBehind + '_' + it);
+
+                        rightGrid.setRowData(it,null,{display: 'none'});
+                    }
+                }
+
+                showTipModal(VUEAPP.lang.deleterowsuccess, 'success');
+            }
+        }
+
+        //复制按钮点击事件
+        ,imgButtonClick_btncopy:function(buttonBehind, currentGridTable) {
+            //先清空剪贴板
+            const selectedId = currentGridTable.jqGrid("getGridParam", "selarrrow");
+            if(selectedId.length === 0) {
+                copyDatatoClipboard(' ');
+                showTipModal(VUEAPP.lang.checkdatafirst, 'error');
+                return;
+            }
+            let rowData, arrStrdata = [], leftSelectedId;
+
+            //如果是右边表格, 只要复制左边选中行下面的数据即可
+            if(buttonBehind.endsWith('Right')) {               
+                
+                const leftGrid = getJqgridObjectbyKey(buttonBehind.replace('Right','Left'));
+
+                leftSelectedId = leftGrid.jqGrid("getGridParam", "selrow");
+                
+            }
+
+            for(let i=0,len=selectedId.length;i<len;i++) {
+                rowData = currentGridTable.jqGrid('getRowData', selectedId[i]);
+                
+                if(leftSelectedId === undefined || leftSelectedId == rowData.pid) {
+                    arrStrdata.push(JSON.stringify(rowData));
+                }
+                
+            }
+            
+            copyDatatoClipboard('[' + arrStrdata.join() + ']');
+
+            showTipModal(VUEAPP.lang.copydatasuccess, 'success');
+        }
+
+        //粘贴按钮点击事件
+        ,imgButtonClick_btnpaste:function(buttonBehind, currentGridTable) {
+            VUEAPP.current_paste_tableid = '#gridtable_' + buttonBehind;
+            showTextareaModal();
+        }
+
     }
 };
 

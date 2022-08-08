@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<title>OpenCore Configurator Online</title>
+		<meta name="description" content="OpenCore Configurator Online https://github.com/xieguozhong/opencoreConfiguratorOnline" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0" />
+		<link rel="shortcut icon" href="favicon.ico" />
+		<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/assets/css/jquery-ui.min.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/assets/css/ui.jqgrid.min.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/assets/css/fonts.googleapis.com.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/assets/css/ace.min.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/assets/css/ace-skins.min.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/assets/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/assets/css/jquery.minimalTips.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/assets/css/toastr.min.css" /> -->
+
+		<!-- build:css -->
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="assets/css/jquery-ui.min.css" />
+		<link rel="stylesheet" href="assets/css/ui.jqgrid.min.css" />		
+		<link rel="stylesheet" href="assets/css/ace.min.css" />
+		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="assets/css/jquery.minimalTips.css" />
+		<link rel="stylesheet" href="assets/css/toastr.min.css" />
+		<!-- endbuild -->
+
+		<style type="text/css">
+			th div {text-align : center;}
+			.ctrlicon {
+				width:12px; height:12px; cursor: pointer;
+			}
+			.tablelia {
+				font-size: 18px;
+				color: #478FCA!important;
+				font-weight: lighter;
+			}
+
+			.well {
+			    min-height: 14px;
+			    padding: 10px;
+			    margin-bottom: 5px;
+			}
+
+			.tab-content {
+			    padding: 12px 12px;
+			}
+
+
+
+		</style>
+
+		<script>'use strict';</script>
+	</head>
+
+	<body class="no-skin">
+		<div id="navbar" class="navbar navbar-default ace-save-state">
+
+			<div class="navbar-container ace-save-state" id="navbar-container">
+
+				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+					<span class="sr-only">Toggle sidebar</span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+
+					<span class="icon-bar"></span>
+				</button>
+
+
+				<div class="navbar-header pull-left">
+					<a href="#" class="navbar-brand">
+						<small>
+							<i class="fa fa-leaf"></i>
+							OpenCore Configurator On Line
+						</small>
+					</a>
+				</div>
+			</div><!-- /.navbar-container -->
+
+		</div>
+
+		<div class="main-container ace-save-state" id="main-container">
+			
+			<div id="sidebar" class="sidebar responsive ace-save-state">
+				
+				<ul class="nav nav-list">
+
+					<li class="open">
+						<a >
+							<i class="menu-icon fa fa-list"></i>
+							<span class="menu-text"> SECTIONS </span>
+						</a>
+
+						<b class="arrow"></b>
+
+						<ul class="submenu">
+
+							<li v-bind:class="{ active: root === 'ACPI' }">
+								<a href="#" v-on:click="setRoot('ACPI')" :title="title.ACPI.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									ACPI
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'Booter' }">
+								<a href="#" v-on:click="setRoot('Booter')" :title="title.Booter.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Booter
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'DeviceProperties' }">
+								<a href="#" v-on:click="setRoot('DeviceProperties')" :title="title.DeviceProperties.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									DeviceProperties
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'Kernel' }">
+								<a href="#" v-on:click="setRoot('Kernel')" :title="title.Kernel.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Kernel
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'Misc' }">
+								<a href="#" v-on:click="setRoot('Misc')" :title="title.Misc.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Misc
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'NVRAM' }">
+								<a href="#" v-on:click="setRoot('NVRAM')" :title="title.NVRAM.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									NVRAM
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'PlatformInfo' }">
+								<a href="#" v-on:click="setRoot('PlatformInfo')" :title="title.PlatformInfo.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									PlatformInfo
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li v-bind:class="{ active: root === 'UEFI' }">
+								<a href="#" v-on:click="setRoot('UEFI')" :title="title.UEFI.title">
+									<i class="menu-icon fa fa-caret-right"></i>
+									UEFI
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+
+						</ul>
+					</li>
+
+
+
+				</ul><!-- /.nav-list -->
+
+				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+				</div>
+
+			</div>
+
+			<div class="main-content" >
+				<div class="main-content-inner">
+					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+						<ul class="breadcrumb">
+							<li>
+								<i class="ace-icon fa fa-home home-icon"></i>
+								<a href="#">Home</a>
+							</li>
+							<li class="active">{{root}}</li>
+						</ul><!-- /.breadcrumb -->
+
+						<div class="nav-search" style="width:270px;margin-right: 215px" >
+							<input type="file" disabled id="id-input-file-2" />
+						</div><!-- /.nav-search -->
+                        <div class="pull-right">
+
+                            <button class="btn btn-minier btn-success" onclick="savePlist();">{{lang.down}}</button>&nbsp;
+                            <button class="btn btn-minier btn-success" onclick="copyPlist();">{{lang.copy}}</button>
+							<label class="mintip" :title="title.PlatformInfo.configisfull" style="margin-left: 10px">
+								<input v-model="configisfull" type="checkbox" class="ace" />
+								<span class="lbl"> Custom</span>
+							</label>
+							<label class="mintip" :title="title.PlatformInfo.configisMOD" style="margin-left: 10px">
+								<input v-model="configisMOD" type="checkbox" class="ace" />
+								<span class="lbl"> MOD</span>
+							</label>
+                        </div>
+					</div>
+
+					<div class="page-content" style="padding-right:0px;padding-left:0px;">
+                    <div class="container-fluid" >
+
+                        <div class="row" v-show="root === 'ACPI'" >
+							<div class="col-xs-12" >
+
+                        		<div class="tabbable" >
+									<ul class="nav nav-tabs">
+										<li class="active"><a data-toggle="tab" href="#tabbable_ACPI_Add" class="tablelia">Add</a></li>
+										<li><a data-toggle="tab" href="#tabbable_ACPI_Delete" class="tablelia">Delete</a></li>
+										<li><a data-toggle="tab" href="#tabbable_ACPI_Patch" class="tablelia">Patch</a></li>
+									</ul>
+
+									<div class="tab-content" style="padding-right:3px;padding-left:2px;">
+										<div id="tabbable_ACPI_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+											<table id="gridtable_ACPI_Add"></table>
+											<span class="grey pull-left" >
+												<label for="File_ACPI_Add"><img src="assets/css/images/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
+													<input type="file" id="File_ACPI_Add" style="position:absolute;clip:rect(0 0 0 0);" accept=".aml" onchange="addFile(this.id);" multiple>
+												</label>
+											</span>
+											<span class="grey pull-right">
+												<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_ACPI_Add'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+											</span>
+			                                
+										</div>
+
+										<div id="tabbable_ACPI_Delete" class="tab-pane fade" style="padding-bottom: 5px;">
+											<table id="gridtable_ACPI_Delete"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_ACPI_Delete'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>			                                	
+			                                </span>
+										</div>
+
+										<div id="tabbable_ACPI_Patch" class="tab-pane fade" style="padding-bottom: 5px;">
+											<table id="gridtable_ACPI_Patch"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_ACPI_Patch'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>			                                	
+			                                </span>
+										</div>
+
+									</div>
+								</div>
+
+
+
+                                <h3 class="header smaller lighter blue"> Quirks</h3>
+
+                                <div class="checkbox well">
+
+                                	<template v-for="(item,index) in ACPI.Quirks" :key="index">
+						            	<label v-if="typeof(item) === 'boolean' && index !=='EnableForAll'" class="mintip" :title="title.ACPI.Quirks[index]">
+                                        	<input type="checkbox" class="ace" v-model="item" />
+                                        	<span class="lbl"> {{index}}</span>
+                                    	</label>
+						        	</template>
+
+									<label v-show="configisMOD === true" class="mintip" :title="title.ACPI.Quirks.EnableForAll">
+										<input type="checkbox" class="ace" v-model="ACPI.Quirks.EnableForAll" />
+										<span class="lbl"> EnableForAll</span>
+									</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" v-show="root === 'Booter'" >
+                        	<div class="col-xs-12">
+
+                        		<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+										<li class="active"><a data-toggle="tab" href="#tabbable_Booter_Patch" class="tablelia">Patch</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Booter_MmioWhitelist" class="tablelia">MmioWhitelist</a></li>
+                                    </ul>
+
+									<div class="tab-content" style="padding-right:3px;padding-left:2px;">
+										
+										<div id="tabbable_Booter_Patch" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable_Booter_Patch"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_Booter_Patch'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_Booter_MmioWhitelist" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable_Booter_MmioWhitelist"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_Booter_MmioWhitelist'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <h3 class="header smaller lighter blue"> Quirks</h3>
+                                <div class="well">
+
+                                	<div class="row">
+                                		<template v-for="(item,index) in Booter.Quirks" :key="index">
+											<div v-if="typeof(item) === 'number'" class="col-xs-3 mintip" :title="title.Booter.Quirks[index]">
+												{{index}}<input type="text" class="form-control" v-model="item">
+											</div>
+										</template>
+                                    </div>
+
+                                	
+                                    <div class="checkbox">
+                                    	<template v-for="(item,index) in Booter.Quirks" :key="index">
+							            	<label v-if="typeof(item) === 'boolean' && index !== 'EnableForAll'" class="mintip" :title="title.Booter.Quirks[index]">
+                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<span class="lbl"> {{index}}</span>
+                                        	</label>
+							        	</template>										
+										<label v-show="configisMOD === true" class="mintip" :title="title.Booter.Quirks.EnableForAll">
+                                            <input type="checkbox" class="ace" v-model="Booter.Quirks.EnableForAll" />
+                                            <span class="lbl"> EnableForAll</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                        	</div>
+                    	</div>
+
+                        <div class="row" v-show="root === 'DeviceProperties'">
+                            <div class="col-xs-12">
+
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_DeviceProperties_Add" class="tablelia">Add</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_DeviceProperties_Delete" class="tablelia">Delete</a></li>
+
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_DeviceProperties_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable_DeviceProperties_AddLeft"></table>
+			                                        <span class="grey pull-right">
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+															<a @click="imgButtonClick" :id="'btn' + item + '_DeviceProperties_AddLeft'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable_DeviceProperties_AddRight"></table>
+			                                        <span class="grey pull-right">
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+															<a @click="imgButtonClick" :id="'btn' + item + '_DeviceProperties_AddRight'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_DeviceProperties_Delete" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable_DeviceProperties_DeleteLeft"></table>
+			                                        <span class="grey pull-right">
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+															<a @click="imgButtonClick" :id="'btn' + item + '_DeviceProperties_DeleteLeft'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable_DeviceProperties_DeleteRight"></table>
+			                                        <span class="grey pull-right">
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+															<a @click="imgButtonClick" :id="'btn' + item + '_DeviceProperties_DeleteRight'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" v-show="root === 'Kernel'">
+                            <div class="col-xs-12">
+
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_Kernel_Add" class="tablelia">Add</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Block" class="tablelia">Block</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Patch" class="tablelia">Patch</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Force" class="tablelia">Force</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Emulate" class="tablelia">Emulate</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Kernel_Scheme" class="tablelia">Scheme</a></li>
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_Kernel_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable_Kernel_Add"></table>
+                                            <span class="grey pull-left" >
+												<label for="File_Kernel_Add"><img src="assets/css/images/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
+													<input type="file" id="File_Kernel_Add" style="position:absolute;clip:rect(0 0 0 0);" accept=".kext" onchange="addFile(this.id);" multiple>
+												</label>
+											</span>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_Kernel_Add'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_Kernel_Block" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable_Kernel_Block"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_Kernel_Block'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_Kernel_Patch" class="tab-pane fade in" style="padding-bottom: 5px;">
+
+			                                <table id="gridtable_Kernel_Patch"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_Kernel_Patch'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_Kernel_Emulate" class="tab-pane fade in" style="padding-bottom: 5px;">
+
+			                                <div class="well">
+			                                    <div class="row">
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.Cpuid1Data">
+			                                            Cpuid1Data<input type="text" class="form-control" v-model="Kernel.Emulate.Cpuid1Data"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.Cpuid1Mask">
+			                                            Cpuid1Mask<input type="text" class="form-control" v-model="Kernel.Emulate.Cpuid1Mask"/>
+			                                        </div>
+
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.MaxKernel">
+			                                            MaxKernel<input type="text" class="form-control" v-model="Kernel.Emulate.MaxKernel"/>
+			                                        </div>
+
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Emulate.MinKernel">
+			                                            MinKernel<input type="text" class="form-control" v-model="Kernel.Emulate.MinKernel"/>
+			                                        </div>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.Kernel.Emulate.DummyPowerManagement">
+			                                            <input type="checkbox" class="ace" v-model="Kernel.Emulate.DummyPowerManagement" />
+			                                            <span class="lbl"> DummyPowerManagement</span>
+			                                        </label>
+													
+
+			                                    </div>
+
+
+		                                	</div>
+
+                                       	</div>
+
+                                       	<div id="tabbable_Kernel_Scheme" class="tab-pane fade in" style="padding-bottom: 5px;">
+
+			                                <div class="well">
+			                                    <div class="row">
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Scheme.KernelArch">
+			                                            KernelArch<a id="btnradiobox_Kernel_Scheme_KernelArch" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Kernel.Scheme.KernelArch"/>
+			                                            
+			                                        </div>
+			                                        <div class="col-xs-3 mintip"  :title="title.Kernel.Scheme.KernelCache">
+			                                            KernelCache<a id="btnradiobox_Kernel_Scheme_KernelCache" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Kernel.Scheme.KernelCache"/>
+			                                            
+			                                        </div>
+
+			                                       
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                    	<label class="mintip" :title="title.Kernel.Scheme.CustomKernel">
+			                                            <input type="checkbox" class="ace" v-model="Kernel.Scheme.CustomKernel" />
+			                                            <span class="lbl"> CustomKernel</span>
+			                                        </label>
+			                                        
+			                                        <label class="mintip" :title="title.Kernel.Scheme.FuzzyMatch">
+			                                            <input type="checkbox" class="ace" v-model="Kernel.Scheme.FuzzyMatch" />
+			                                            <span class="lbl"> FuzzyMatch</span>
+			                                        </label>
+													
+
+			                                    </div>
+
+
+		                                	</div>
+
+                                       	</div>
+
+                                       	<div id="tabbable_Kernel_Force" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable_Kernel_Force"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_Kernel_Force'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+
+                                <h3 class="header smaller lighter blue"> Quirks</h3>
+                                <div class="well">
+									<div class="row">
+                                        <div class="col-xs-3 mintip" :title="title.Kernel.Quirks.SetApfsTrimTimeout">
+                                            SetApfsTrimTimeout<input type="text" class="form-control" v-model="Kernel.Quirks.SetApfsTrimTimeout"/>
+                                        </div>
+                                       
+                                    </div>
+
+                                    <div class="checkbox">
+                                    	<template v-for="(item,index) in Kernel.Quirks" :key="index">
+							            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.Kernel.Quirks[index]">
+                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<span class="lbl"> {{index}}</span>
+                                        	</label>
+							        	</template>                                        
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row" v-show="root === 'Misc'">
+
+                            <div class="col-xs-12">
+
+								<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_Misc_BlessOverride" class="tablelia">BlessOverride</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Entries" class="tablelia">Entries</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Tools" class="tablelia">Tools</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Boot" class="tablelia">Boot</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Debug" class="tablelia">Debug</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_Misc_Security" class="tablelia">Security</a></li>
+										<li><a data-toggle="tab" href="#tabbable_Misc_Serial" class="tablelia">Serial</a></li>
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_Misc_BlessOverride" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <table id="gridtable_Misc_BlessOverride"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_Misc_BlessOverride'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+                                        </div>
+
+                                        <div id="tabbable_Misc_Entries" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable_Misc_Entries"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_Misc_Entries'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+                                        </div>
+                                        <div id="tabbable_Misc_Tools" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable_Misc_Tools"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_Misc_Tools'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+                                        </div>
+                                        <div id="tabbable_Misc_Boot" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+			                                    <div class="row">
+
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.HibernateMode">
+			                                            HibernateMode<a id="btnradiobox_Misc_Boot_HibernateMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.HibernateMode"/>
+			                                        </div>
+										
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerMode">
+			                                            PickerMode<a id="btnradiobox_Misc_Boot_PickerMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerMode"/>
+			                                        </div>
+
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerVariant">
+			                                            PickerVariant<a id="btnradiobox_Misc_Boot_PickerVariant" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerVariant"/>
+			                                        </div>
+
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.TakeoffDelay">
+			                                            TakeoffDelay<input type="text" class="form-control" v-model="Misc.Boot.TakeoffDelay"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Boot.Timeout">
+			                                            Timeout<input type="text" class="form-control" v-model="Misc.Boot.Timeout"/>
+			                                        </div>
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.ConsoleAttributes">
+			                                            ConsoleAttributes<input type="text" class="form-control" v-model="Misc.Boot.ConsoleAttributes"/>
+			                                        </div>
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.PickerAttributes">
+			                                            PickerAttributes<a id="btncheckbox_Misc_Boot_PickerAttributes" style="text-decoration:none" v-on:click="btncheckboxclick($event,4)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.PickerAttributes"/>
+													</div>
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.LauncherOption">
+			                                            LauncherOption<a id="btnradiobox_Misc_Boot_LauncherOption" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Boot.LauncherOption"/>
+													</div>
+													<div class="col-xs-3 mintip" :title="title.Misc.Boot.LauncherPath">
+			                                            LauncherPath<input type="text" class="form-control" v-model="Misc.Boot.LauncherPath"/>
+			                                        </div>
+													
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px ">
+			                                    	<label class="mintip" :title="title.Misc.Boot.HideAuxiliary">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.HideAuxiliary" />
+			                                            <span class="lbl"> HideAuxiliary</span>
+			                                        </label>
+			                                        
+													<label class="mintip" :title="title.Misc.Boot.PickerAudioAssist">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.PickerAudioAssist" />
+			                                            <span class="lbl"> PickerAudioAssist</span>
+			                                        </label>
+			                                        <label class="mintip" style="margin-left: 5px;" :title="title.Misc.Boot.PollAppleHotKeys">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.PollAppleHotKeys" />
+			                                            <span class="lbl"> PollAppleHotKeys</span>
+			                                        </label>
+			                                        <label class="mintip" style="margin-left: 5px;" :title="title.Misc.Boot.ShowPicker">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Boot.ShowPicker" />
+			                                            <span class="lbl"> ShowPicker</span>
+			                                        </label>
+													<label v-show="configisMOD === true" class="mintip" :title="title.Misc.Boot.SkipCustomEntryCheck">
+														<input type="checkbox" class="ace" v-model="Misc.Boot.SkipCustomEntryCheck" />
+														<span class="lbl"> SkipCustomEntryCheck</span>
+													</label>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_Misc_Debug" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+			                                    <div class="row">
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.DisplayDelay">
+			                                            DisplayDelay<input type="text" class="form-control" v-model="Misc.Debug.DisplayDelay"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.DisplayLevel">
+			                                            DisplayLevel<a id="btncheckbox_Misc_Debug_DisplayLevel" style="text-decoration:none" v-on:click="btncheckboxclick($event)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Debug.DisplayLevel"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.LogModules">
+			                                            LogModules<input type="text" class="form-control" v-model="Misc.Debug.LogModules"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Debug.Target">
+			                                            Target<a id="btncheckbox_Misc_Debug_Target" style="text-decoration:none" v-on:click="btncheckboxclick($event,2)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Debug.Target"/>
+			                                        </div>
+			                                    </div>
+
+			                                   <div class="checkbox" style="margin-top: 20px ">
+													<label class="mintip" :title="title.Misc.Debug.AppleDebug">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.AppleDebug" />
+			                                            <span class="lbl"> AppleDebug</span>
+			                                        </label>
+
+													<label class="mintip" :title="title.Misc.Debug.ApplePanic">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.ApplePanic" />
+			                                            <span class="lbl"> ApplePanic</span>
+			                                        </label>
+
+
+			                                        <label class="mintip" :title="title.Misc.Debug.DisableWatchDog">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.DisableWatchDog" />
+			                                            <span class="lbl"> DisableWatchDog</span>
+			                                        </label>
+
+													
+
+													<label class="mintip" :title="title.Misc.Debug.SysReport">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Debug.SysReport" />
+			                                            <span class="lbl"> SysReport</span>
+			                                        </label>
+
+			                                    </div>
+			                                </div>
+                                        </div>
+                                        <div id="tabbable_Misc_Security" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+			                                    <div class="row">
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ExposeSensitiveData">
+			                                            ExposeSensitiveData<a id="btncheckbox_Misc_Security_ExposeSensitiveData" style="text-decoration:none" v-on:click="btncheckboxclick($event,2)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="Misc.Security.ExposeSensitiveData"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ApECID">
+			                                            ApECID<input type="text" class="form-control" v-model="Misc.Security.ApECID"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.HaltLevel">
+			                                            HaltLevel<input type="text" class="form-control" v-model="Misc.Security.HaltLevel"/>
+			                                        </div>
+													
+			                                        
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.Vault">
+			                                        	Vault<a id="btnradiobox_Misc_Security_Vault" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="Misc.Security.Vault">
+													</div>
+
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.ScanPolicy">
+														ScanPolicy<a id="btncheckbox_Misc_Security_ScanPolicy" style="text-decoration:none" v-on:click="btncheckboxclick($event)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+															<input type="text" class="form-control" v-model="Misc.Security.ScanPolicy"/>
+			                                        </div>
+													
+			                                        
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.DmgLoading">
+			                                        	DmgLoading<a id="btnradiobox_Misc_Security_DmgLoading" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="Misc.Security.DmgLoading">
+													</div>
+
+			                                        
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.SecureBootModel">
+			                                        	SecureBootModel<a id="btnradiobox_Misc_Security_SecureBootModel" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="Misc.Security.SecureBootModel">
+													</div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.PasswordHash">
+			                                            PasswordHash<input type="text" class="form-control" v-model="Misc.Security.PasswordHash"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Security.PasswordSalt">
+			                                            PasswordSalt<input type="text" class="form-control" v-model="Misc.Security.PasswordSalt"/>
+			                                        </div>
+
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+
+			                                        <label class="mintip" :title="title.Misc.Security.AllowSetDefault">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AllowSetDefault" />
+			                                            <span class="lbl"> AllowSetDefault</span>
+			                                        </label>
+			                                        
+			                                        <label class="mintip" :title="title.Misc.Security.AuthRestart">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.AuthRestart" />
+			                                            <span class="lbl"> AuthRestart</span>
+													</label>
+													<label class="mintip" :title="title.Misc.Security.BlacklistAppleUpdate">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.BlacklistAppleUpdate" />
+			                                            <span class="lbl"> BlacklistAppleUpdate</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.Misc.Security.EnablePassword">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Security.EnablePassword" />
+			                                            <span class="lbl"> EnablePassword</span>
+			                                        </label>
+													
+
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_Misc_Serial" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+			                                   <div class="checkbox" style="margin-top: 20px ">
+													<label class="mintip" :title="title.Misc.Serial.Init">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Serial.Init" />
+			                                            <span class="lbl"> Init</span>
+			                                        </label>
+
+													<label class="mintip" :title="title.Misc.Serial.Override">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Serial.Override" />
+			                                            <span class="lbl"> Override</span>
+			                                        </label>
+			                                    </div>
+
+			                                    <div class="row" v-show="Misc.Serial.Override === true">
+			                                    	<div class="col-xs-3 mintip" :title="title.Misc.Serial.Custom.BaudRate">
+			                                            BaudRate<input type="text" class="form-control" v-model="Misc.Serial.Custom.BaudRate"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Serial.Custom.ClockRate">
+			                                            ClockRate<input type="text" class="form-control" v-model="Misc.Serial.Custom.ClockRate"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Serial.Custom.ExtendedTxFifoSize">
+			                                            ExtendedTxFifoSize<input type="text" class="form-control" v-model="Misc.Serial.Custom.ExtendedTxFifoSize"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Serial.Custom.FifoControl">
+			                                            FifoControl<input type="text" class="form-control" v-model="Misc.Serial.Custom.FifoControl"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Serial.Custom.LineControl">
+			                                            LineControl<input type="text" class="form-control" v-model="Misc.Serial.Custom.LineControl"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Serial.Custom.PciDeviceInfo">
+			                                            PciDeviceInfo<input type="text" class="form-control" v-model="Misc.Serial.Custom.PciDeviceInfo"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Serial.Custom.RegisterAccessWidth">
+			                                            RegisterAccessWidth<input type="text" class="form-control" v-model="Misc.Serial.Custom.RegisterAccessWidth"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Serial.Custom.RegisterBase">
+			                                            RegisterBase<input type="text" class="form-control" v-model="Misc.Serial.Custom.RegisterBase"/>
+			                                        </div>
+			                                        <div class="col-xs-3 mintip" :title="title.Misc.Serial.Custom.RegisterStride">
+			                                            RegisterStride<input type="text" class="form-control" v-model="Misc.Serial.Custom.RegisterStride"/>
+			                                        </div>
+			                                        
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px " v-show="Misc.Serial.Override === true">
+			                                    	<label class="mintip" :title="title.Misc.Serial.Custom.UseHardwareFlowControl">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Serial.Custom.UseHardwareFlowControl" />
+			                                            <span class="lbl"> UseHardwareFlowControl</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.Misc.Serial.Custom.UseMmio">
+			                                            <input type="checkbox" class="ace" v-model="Misc.Serial.Custom.UseMmio" />
+			                                            <span class="lbl"> UseMmio</span>
+			                                        </label>
+			                                    </div>
+
+			                                </div>
+                                        </div>
+                                        
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" v-show="root === 'NVRAM'">
+
+                            <div class="col-xs-12">
+
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tabbable_NVRAM_Add" class="tablelia">Add</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_NVRAM_Delete" class="tablelia">Delete</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_NVRAM_LegacySchema" class="tablelia">LegacySchema</a></li>
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_NVRAM_Add" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable_NVRAM_AddLeft"></table>
+			                                        <span class="grey pull-right">
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a @click="imgButtonClick" :id="'btn' + item + '_NVRAM_AddLeft'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable_NVRAM_AddRight"></table>
+			                                        <span class="grey pull-right">
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a @click="imgButtonClick" :id="'btn' + item + '_NVRAM_AddRight'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_NVRAM_Delete" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable_NVRAM_DeleteLeft"></table>
+			                                        <span class="grey pull-right">
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a @click="imgButtonClick" :id="'btn' + item + '_NVRAM_DeleteLeft'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable_NVRAM_DeleteRight"></table>
+			                                        <span class="grey pull-right">
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a @click="imgButtonClick" :id="'btn' + item + '_NVRAM_DeleteRight'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_NVRAM_LegacySchema" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="row">
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable_NVRAM_LegacySchemaLeft"></table>
+			                                        <span class="grey pull-right">
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a @click="imgButtonClick" :id="'btn' + item + '_NVRAM_LegacySchemaLeft'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
+			                                        </span>
+			                                    </div>
+			                                    <div class="col-xs-6">
+			                                        <table id="gridtable_NVRAM_LegacySchemaRight"></table>
+			                                        <span class="grey pull-right">
+			                                        	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+														<a @click="imgButtonClick" :id="'btn' + item + '_NVRAM_LegacySchemaRight'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+														</template>
+			                                        </span>
+			                                    </div>
+			                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h3 class="header smaller lighter blue"></h3>
+                                <div class="well">
+
+                                    <div class="checkbox">
+										<template v-for="(item,index) in NVRAM.root" :key="index">
+							            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.NVRAM[index]">
+                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<span class="lbl"> {{index}}</span>
+                                        	</label>
+							        	</template>                                        
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" v-show="root === 'PlatformInfo'">
+                        	<div class="col-xs-12">
+
+                        		<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" id="li_PlatformInfo_Generic"><a data-toggle="tab" href="#tabbable_PlatformInfo_Generic" class="tablelia" id="button_PlatformInfo_Generic">Generic</a></li>
+										<li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_DataHub" class="tablelia">DataHub</a></li>
+										<li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_Memory" class="tablelia">Memory</a></li>
+                                        <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_PlatformNVRAM" class="tablelia">PlatformNVRAM</a></li>
+                                        <li v-show="configisfull === true"><a data-toggle="tab" href="#tabbable_PlatformInfo_SMBIOS" class="tablelia">SMBIOS</a></li>
+
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                    	<div id="tabbable_PlatformInfo_Generic" class="tab-pane fade in active" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                	<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemProductName">
+			                                        	SystemProductName<a id="btnradiobox_PlatformInfo_Generic_SystemProductName" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemProductName">
+													</div>
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.MLB">
+														MLB<input type="text" class="form-control" v-model="PlatformInfo.Generic.MLB">
+													</div>	
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemSerialNumber">
+														SystemSerialNumber<a style="text-decoration:none" target="_blank" :href="'https://checkcoverage.apple.com/cn/zh?sn=' + PlatformInfo.Generic.SystemSerialNumber">&nbsp;<img src="assets/css/images/check.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemSerialNumber">
+													</div>
+				                                
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemUUID">
+														SystemUUID<a style="text-decoration:none" v-on:click="btnSystemUUIDclick()">&nbsp;<img src="assets/css/images/generate.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemUUID">
+													</div>
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ROM">
+														ROM<a style="text-decoration:none" v-on:click="btnromclick()">&nbsp;<img src="assets/css/images/generate.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="PlatformInfo.Generic.ROM">
+													</div>
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.ProcessorType">
+														ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.Generic.ProcessorType">
+													</div>
+													
+													<div class="col-xs-3 mintip" :title="title.PlatformInfo.Generic.SystemMemoryStatus">
+			                                        	SystemMemoryStatus<a id="btnradiobox_PlatformInfo_Generic_SystemMemoryStatus" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="PlatformInfo.Generic.SystemMemoryStatus">
+													</div>
+				                                </div>
+
+				                                <div class="checkbox" style="margin-top: 20px">
+
+				                                	<template v-for="(item,index) in PlatformInfo.Generic" :key="index">
+										            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.PlatformInfo.Generic[index]">
+			                                            	<input type="checkbox" class="ace" v-model="item" />
+			                                            	<span class="lbl"> {{index}}</span>
+			                                        	</label>
+										        	</template>
+
+				                                	
+				                                </div>
+				                            </div>
+                                        </div>
+
+                                        <div id="tabbable_PlatformInfo_DataHub" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                  <div class="col-xs-3">
+				                                    ARTFrequency<input type="text" class="form-control" v-model="PlatformInfo.DataHub.ARTFrequency">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    BoardProduct<input type="text" class="form-control" v-model="PlatformInfo.DataHub.BoardProduct">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    BoardRevision<input type="text" class="form-control" v-model="PlatformInfo.DataHub.BoardRevision">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    DevicePathsSupported<input type="text" class="form-control" v-model="PlatformInfo.DataHub.DevicePathsSupported">
+				                                  </div>
+				                                
+				                                  <div class="col-xs-3">
+				                                    FSBFrequency<input type="text" class="form-control" v-model="PlatformInfo.DataHub.FSBFrequency">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    InitialTSC<input type="text" class="form-control" v-model="PlatformInfo.DataHub.InitialTSC">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    PlatformName<input type="text" class="form-control" v-model="PlatformInfo.DataHub.PlatformName">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SmcBranch<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcBranch">
+				                                  </div>
+				                                
+				                                  <div class="col-xs-3">
+				                                    SmcPlatform<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcPlatform">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SmcRevision<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SmcRevision">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    StartupPowerEvents<input type="text" class="form-control" v-model="PlatformInfo.DataHub.StartupPowerEvents">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemProductName">
+				                                  </div>
+				                                
+				                                  <div class="col-xs-3">
+				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemSerialNumber">
+				                                  </div>
+				                                  <div class="col-xs-3">
+				                                    SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.DataHub.SystemUUID">
+				                                  </div>
+				                                </div>
+				                            </div>
+										</div>
+										
+
+										<div id="tabbable_PlatformInfo_Memory" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable_PlatformInfo_MemoryDevices"></table>
+											<span class="grey pull-right" >
+												<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_PlatformInfo_MemoryDevices'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+											</span>
+
+											<div class="well" style="margin-top: 25px">
+				                                <div class="row">
+													<div class="col-xs-3">
+														DataWidth<input type="text" class="form-control" v-model="PlatformInfo.Memory.DataWidth">
+													</div>
+													<div class="col-xs-3">
+														ErrorCorrection<input type="text" class="form-control" v-model="PlatformInfo.Memory.ErrorCorrection">
+													</div>
+													<div class="col-xs-3">
+														FormFactor<input type="text" class="form-control" v-model="PlatformInfo.Memory.FormFactor">
+													</div>
+													<div class="col-xs-3">
+														MaxCapacity<input type="text" class="form-control" v-model="PlatformInfo.Memory.MaxCapacity">
+													</div>
+													<div class="col-xs-3">
+														TotalWidth<input type="text" class="form-control" v-model="PlatformInfo.Memory.TotalWidth">
+													</div>
+													<div class="col-xs-3">
+														Type<input type="text" class="form-control" v-model="PlatformInfo.Memory.Type">
+													</div>
+													<div class="col-xs-3">
+														TypeDetail<a id="btncheckbox_PlatformInfo_Memory_TypeDetail" style="text-decoration:none" v-on:click="btncheckboxclick($event,4)">&nbsp;
+															<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="PlatformInfo.Memory.TypeDetail">
+													</div>
+
+												</div>
+											</div>
+											
+										</div>
+										
+
+
+
+                                        <div id="tabbable_PlatformInfo_PlatformNVRAM" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+													<div class="col-xs-3">
+														BID<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.BID">
+													</div>
+													<div class="col-xs-3">
+														FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeatures">
+													</div>
+													<div class="col-xs-3">
+														FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.FirmwareFeaturesMask">
+													</div>
+													<div class="col-xs-3">
+														MLB<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.MLB">
+													</div>
+													<div class="col-xs-3">
+														ROM<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.ROM">
+													</div>
+													<div class="col-xs-3">
+														SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.SystemSerialNumber">
+														
+													</div>
+													<div class="col-xs-3">
+														
+														SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.PlatformNVRAM.SystemUUID">
+													</div>
+				                                </div>
+				                            </div>
+                                        </div>
+
+                                        <div id="tabbable_PlatformInfo_SMBIOS" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+				                                <div class="row">
+				                                    <div class="col-xs-3">
+				                                    BIOSReleaseDate<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSReleaseDate">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BIOSVendor<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSVendor">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BIOSVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BIOSVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardAssetTag<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardAssetTag">
+				                                    </div>
+				                                
+				                                    <div class="col-xs-3">
+				                                    BoardLocationInChassis<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardLocationInChassis">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardManufacturer">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardProduct<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardProduct">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardSerialNumber">
+				                                    </div>
+				                                
+				                                    <div class="col-xs-3">
+				                                    BoardType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardType">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    BoardVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.BoardVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisAssetTag<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisAssetTag">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisManufacturer">
+				                                    </div>
+				                                
+				                                    <div class="col-xs-3">
+				                                    ChassisSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisSerialNumber">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisType">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ChassisVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ChassisVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    FirmwareFeatures<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.FirmwareFeatures">
+				                                    </div>
+				                                
+				                                    <div class="col-xs-3">
+				                                    FirmwareFeaturesMask<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.FirmwareFeaturesMask">
+				                                    </div>
+				                                    
+				                                    <div class="col-xs-3">
+				                                    PlatformFeature<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.PlatformFeature">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    ProcessorType<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.ProcessorType">
+				                                    </div>
+				                                
+				                                    <div class="col-xs-3">
+				                                    SmcVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SmcVersion">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemFamily<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemFamily">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemManufacturer<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemManufacturer">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemProductName<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemProductName">
+				                                    </div>
+				                                
+				                                    <div class="col-xs-3">
+				                                    SystemSKUNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemSKUNumber">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemSerialNumber<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemSerialNumber">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemUUID<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemUUID">
+				                                    </div>
+				                                    <div class="col-xs-3">
+				                                    SystemVersion<input type="text" class="form-control" v-model="PlatformInfo.SMBIOS.SystemVersion">
+				                                    </div>
+				                                </div>
+				                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+	                            <h3 class="header smaller lighter blue"> </h3>
+	                            <div class="well">
+	                                <div class="row">
+	                                  
+	                                <div class="col-xs-3 mintip" :title="title.PlatformInfo.root.UpdateSMBIOSMode">
+			                            UpdateSMBIOSMode<a id="btnradiobox_PlatformInfo_root_UpdateSMBIOSMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+										<input type="text" class="form-control" v-model="PlatformInfo.root.UpdateSMBIOSMode">
+									</div>
+	                                </div>
+
+	                                <div class="checkbox" style="margin-top: 20px">
+	                                	<template v-for="(item,index) in PlatformInfo.root" :key="index">
+							            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.PlatformInfo.root[index]">
+                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<span class="lbl"> {{index}}</span>
+                                        	</label>
+							        	</template>
+
+	                                    
+
+	                                </div>
+	                            </div>
+
+
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" v-show="root === 'UEFI'">
+                            <div class="col-xs-12">
+
+                            	<div class="tabbable" >
+                                    <ul class="nav nav-tabs">
+                                        <li class="active" :title="title.UEFI.Drivers"><a data-toggle="tab" href="#tabbable_UEFI_Drivers" class="tablelia">Drivers</a></li>
+										<li><a data-toggle="tab" href="#tabbable_UEFI_ReservedMemory" class="tablelia">ReservedMemory</a></li>
+										<li><a data-toggle="tab" href="#tabbable_UEFI_APFS" class="tablelia">APFS</a></li>
+										<li><a data-toggle="tab" href="#tabbable_UEFI_AppleInput" class="tablelia">AppleInput</a></li>
+										<li><a data-toggle="tab" href="#tabbable_UEFI_Audio" class="tablelia">Audio</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_Input" class="tablelia">Input</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_Output" class="tablelia">Output</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_ProtocolOverrides" class="tablelia">ProtocolOverrides</a></li>
+                                        <li><a data-toggle="tab" href="#tabbable_UEFI_Quirks" class="tablelia">Quirks</a></li>
+                                    </ul>
+
+                                    <div class="tab-content" style="padding-right:18px;padding-left:2px;">
+
+                                        <div id="tabbable_UEFI_Drivers" class="tab-pane fade in active" style="padding-bottom: 5px;">
+											<table id="gridtable_UEFI_Drivers"></table>
+											<span class="grey pull-left" >
+												<label for="File_UEFI_Drivers"><img src="assets/css/images/fileadd.png" style="padding: 0px; height: 16px; cursor:pointer;">
+													<input type="file" id="File_UEFI_Drivers" style="position:absolute;clip:rect(0 0 0 0);" accept=".efi" onchange="addFile(this.id);" multiple>
+												</label>
+											</span>
+                                            
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_UEFI_Drivers'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+										</div>
+
+
+										<div id="tabbable_UEFI_ReservedMemory" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable_UEFI_ReservedMemory"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_UEFI_ReservedMemory'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
+                                        </div>
+
+
+
+										<div id="tabbable_UEFI_APFS" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+												<div class="row">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.APFS.MinDate">
+			                                        MinDate<input type="text" class="form-control" v-model="UEFI.APFS.MinDate">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.APFS.MinVersion">
+			                                        MinVersion<input type="text" class="form-control" v-model="UEFI.APFS.MinVersion">
+			                                      </div>
+
+			                                    </div>
+
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.UEFI.APFS.EnableJumpstart">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.EnableJumpstart" />
+			                                            <span class="lbl"> EnableJumpstart</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.APFS.GlobalConnect">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.GlobalConnect" />
+			                                            <span class="lbl"> GlobalConnect</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.APFS.HideVerbose">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.HideVerbose" />
+			                                            <span class="lbl"> HideVerbose</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.APFS.JumpstartHotPlug">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.APFS.JumpstartHotPlug" />
+			                                            <span class="lbl"> JumpstartHotPlug</span>
+			                                        </label>
+
+			                                    </div>
+
+
+			                                </div>
+                                        </div>
+
+										<div id="tabbable_UEFI_AppleInput" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+												<div class="row">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.AppleEvent">
+			                                        AppleEvent<a id="btnradiobox_UEFI_AppleInput_AppleEvent" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+														<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.AppleInput.AppleEvent">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.CustomDelays">
+			                                        CustomDelays<a id="btnradiobox_UEFI_AppleInput_CustomDelays" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;
+														<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.AppleInput.CustomDelays">
+			                                      </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.KeyInitialDelay">
+			                                        KeyInitialDelay<input type="text" class="form-control" v-model="UEFI.AppleInput.KeyInitialDelay">
+			                                      </div>
+												  
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.KeySubsequentDelay">
+			                                        KeySubsequentDelay<input type="text" class="form-control" v-model="UEFI.AppleInput.KeySubsequentDelay">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerPollMask">
+			                                        PointerPollMask<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerPollMask">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerPollMax">
+			                                        PointerPollMax<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerPollMax">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerPollMin">
+			                                        PointerPollMin<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerPollMin">
+			                                      </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerSpeedDiv">
+			                                        PointerSpeedDiv<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerSpeedDiv">
+			                                      </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.AppleInput.PointerSpeedMul">
+			                                        PointerSpeedMul<input type="text" class="form-control" v-model="UEFI.AppleInput.PointerSpeedMul">
+			                                      </div>
+
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.UEFI.AppleInput.GraphicsInputMirroring">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.AppleInput.GraphicsInputMirroring" />
+			                                            <span class="lbl"> GraphicsInputMirroring</span>
+			                                        </label>
+													
+
+			                                    </div>
+
+			                                </div>
+                                        </div>
+
+
+										<div id="tabbable_UEFI_Audio" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+												<div class="row">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioDevice">
+			                                        AudioDevice<input type="text" class="form-control" v-model="UEFI.Audio.AudioDevice">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioCodec">
+			                                        AudioCodec<input type="text" class="form-control" v-model="UEFI.Audio.AudioCodec">
+			                                      </div>
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Audio.AudioOutMask">
+			                                        AudioOutMask<input type="text" class="form-control" v-model="UEFI.Audio.AudioOutMask">
+			                                      </div>
+			                                      
+												  
+												  
+													<div class="col-xs-3 mintip" :title="title.UEFI.Audio.PlayChime">
+			                                        	PlayChime<a id="btnradiobox_UEFI_Audio_PlayChime" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Audio.PlayChime">
+													</div>
+
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.SetupDelay">
+													SetupDelay<input type="text" class="form-control" v-model="UEFI.Audio.SetupDelay">
+												  </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.MaximumGain">
+													MaximumGain<input type="text" class="form-control" v-model="UEFI.Audio.MaximumGain">
+												  </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.MinimumAssistGain">
+													MinimumAssistGain<input type="text" class="form-control" v-model="UEFI.Audio.MinimumAssistGain">
+												  </div>
+												  <div class="col-xs-3 mintip" :title="title.UEFI.Audio.MinimumAudibleGain">
+													MinimumAudibleGain<input type="text" class="form-control" v-model="UEFI.Audio.MinimumAudibleGain">
+												  </div>
+												
+			                                    </div>
+			                                    
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                    	<label class="mintip" :title="title.UEFI.Audio.DisconnectHda">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.DisconnectHda" />
+			                                            <span class="lbl"> DisconnectHda</span>
+			                                        </label>
+
+			                                        <label class="mintip" :title="title.UEFI.Audio.AudioSupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.AudioSupport" />
+			                                            <span class="lbl"> AudioSupport</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Audio.ResetTrafficClass">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Audio.ResetTrafficClass" />
+			                                            <span class="lbl"> ResetTrafficClass</span>
+			                                        </label>
+
+			                                    </div>
+
+
+			                                </div>
+                                        </div>
+
+                                        <div id="tabbable_UEFI_Input" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    <div class="row">
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeyForgetThreshold">
+			                                        KeyForgetThreshold<input type="text" class="form-control" v-model="UEFI.Input.KeyForgetThreshold">
+			                                      </div>
+			                                      
+			                                      
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.KeySupportMode">
+			                                        	KeySupportMode<a id="btnradiobox_UEFI_Input_KeySupportMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Input.KeySupportMode">
+													</div>
+													
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Input.PointerSupportMode">
+			                                        PointerSupportMode<input type="text" class="form-control" v-model="UEFI.Input.PointerSupportMode">
+			                                      </div>
+			                                    </div>
+			                                    <div class="row" style="margin-top: 10px">
+			                                        <div class="col-xs-3 mintip" :title="title.UEFI.Input.TimerResolution">
+			                                            TimerResolution<input type="text" class="form-control" v-model="UEFI.Input.TimerResolution">
+			                                        </div>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+													<label class="mintip" :title="title.UEFI.Input.KeyFiltering">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeyFiltering" />
+			                                            <span class="lbl"> KeyFiltering</span>
+			                                        </label>
+
+			                                        <label class="mintip" :title="title.UEFI.Input.KeySupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeySupport" />
+			                                            <span class="lbl"> KeySupport</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Input.KeySwap">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.KeySwap" />
+			                                            <span class="lbl"> KeySwap</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Input.PointerSupport">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Input.PointerSupport" />
+			                                            <span class="lbl"> PointerSupport</span>
+			                                        </label>
+			                                    </div>
+
+
+			                                </div>
+                                        </div>
+
+
+                                        <div id="tabbable_UEFI_Output" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+
+												<div class="row">
+
+			                                     
+
+			                                       <div class="col-xs-3 mintip" :title="title.UEFI.Output.TextRenderer">
+			                                        	TextRenderer<a id="btnradiobox_UEFI_Output_TextRenderer" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Output.TextRenderer">
+													</div>
+
+			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.ConsoleMode">
+			                                        ConsoleMode<a id="btnradiobox_UEFI_Output_ConsoleMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
+			                                      </div>
+												  
+			                                      	<div class="col-xs-3 mintip" :title="title.UEFI.Output.Resolution">
+			                                        	Resolution<a id="btnradiobox_UEFI_Output_Resolution" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Output.Resolution">
+													</div>
+
+													<div class="col-xs-3 mintip" :title="title.UEFI.Output.GopPassThrough">
+			                                        	GopPassThrough<a id="btnradiobox_UEFI_Output_GopPassThrough" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Output.GopPassThrough">
+													</div>
+
+													<div class="col-xs-3 mintip" :title="title.UEFI.Output.UIScale">
+			                                        	UIScale<a id="btnradiobox_UEFI_Output_UIScale" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Output.UIScale">
+													</div>
+
+			                                    </div>
+
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                        <label class="mintip" :title="title.UEFI.Output.ClearScreenOnModeSwitch">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ClearScreenOnModeSwitch" />
+			                                            <span class="lbl"> ClearScreenOnModeSwitch</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.IgnoreTextInGraphics">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.IgnoreTextInGraphics" />
+			                                            <span class="lbl"> IgnoreTextInGraphics</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.ProvideConsoleGop">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ProvideConsoleGop" />
+			                                            <span class="lbl"> ProvideConsoleGop</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.ReconnectGraphicsOnConnect">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReconnectGraphicsOnConnect" />
+			                                            <span class="lbl"> ReconnectGraphicsOnConnect</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.DirectGopRendering">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.DirectGopRendering" />
+			                                            <span class="lbl"> DirectGopRendering</span>
+													</label>
+													<label class="mintip" :title="title.UEFI.Output.ForceResolution">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ForceResolution" />
+			                                            <span class="lbl"> ForceResolution</span>
+			                                        </label>
+													
+			                                        <label class="mintip" :title="title.UEFI.Output.ReconnectOnResChange">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReconnectOnResChange" />
+			                                            <span class="lbl"> ReconnectOnResChange</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.ReplaceTabWithSpace">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReplaceTabWithSpace" />
+			                                            <span class="lbl"> ReplaceTabWithSpace</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.Output.SanitiseClearScreen">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.SanitiseClearScreen" />
+			                                            <span class="lbl"> SanitiseClearScreen</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.Output.UgaPassThrough">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.UgaPassThrough" />
+			                                            <span class="lbl"> UgaPassThrough</span>
+			                                        </label>
+
+			                                    </div>
+
+
+			                                </div>
+                                        </div>
+
+
+                                        <div id="tabbable_UEFI_ProtocolOverrides" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    <div class="checkbox">
+			                                    	<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleAudio">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleAudio" />
+			                                            <span class="lbl"> AppleAudio</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleBootPolicy">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleBootPolicy" />
+			                                            <span class="lbl"> AppleBootPolicy</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleDebugLog">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleDebugLog" />
+			                                            <span class="lbl"> AppleDebugLog</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleEg2Info">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleEg2Info" />
+			                                            <span class="lbl"> AppleEg2Info</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleFramebufferInfo">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleFramebufferInfo" />
+			                                            <span class="lbl"> AppleFramebufferInfo</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleImageConversion">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleImageConversion" />
+			                                            <span class="lbl"> AppleImageConversion</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleImg4Verification">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleImg4Verification" />
+			                                            <span class="lbl"> AppleImg4Verification</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleKeyMap">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleKeyMap" />
+			                                            <span class="lbl"> AppleKeyMap</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleRtcRam">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleRtcRam" />
+			                                            <span class="lbl"> AppleRtcRam</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleSecureBoot">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleSecureBoot" />
+			                                            <span class="lbl"> AppleSecureBoot</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleSmcIo">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleSmcIo" />
+			                                            <span class="lbl"> AppleSmcIo</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.AppleUserInterfaceTheme">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.AppleUserInterfaceTheme" />
+			                                            <span class="lbl"> AppleUserInterfaceTheme</span>
+			                                        </label>
+
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.DataHub">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.DataHub" />
+			                                            <span class="lbl"> DataHub</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.DeviceProperties">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.DeviceProperties" />
+			                                            <span class="lbl"> DeviceProperties</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.FirmwareVolume">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.FirmwareVolume" />
+			                                            <span class="lbl"> FirmwareVolume</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.HashServices">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.HashServices" />
+			                                            <span class="lbl"> HashServices</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.OSInfo">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.OSInfo" />
+			                                            <span class="lbl"> OSInfo</span>
+			                                        </label>
+			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.UnicodeCollation">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.UnicodeCollation" />
+			                                            <span class="lbl"> UnicodeCollation</span>
+			                                        </label>
+
+			                                    </div>
+			                                </div>
+                                        </div>
+                                        <div id="tabbable_UEFI_Quirks" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <div class="well">
+			                                    <div class="row">
+			                                    	<template v-for="(item,index) in UEFI.Quirks" :key="index">
+										            	<div v-if="typeof(item) === 'number'" class="col-xs-3 mintip" :title="title.UEFI.Quirks[index]">
+			                                        		{{index}}<input type="text" class="form-control" v-model="item">
+			                                      		</div>
+										        	</template>
+			                                    </div>
+
+			                                    <div class="checkbox" style="margin-top: 20px">
+			                                    	<template v-for="(item,index) in UEFI.Quirks" :key="index">
+										            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.UEFI.Quirks[index]">
+			                                            	<input type="checkbox" class="ace" v-model="item" />
+			                                            	<span class="lbl"> {{index}}</span>
+			                                        	</label>
+										        	</template>
+			                                    </div>
+
+			                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <h3 class="header smaller lighter blue"></h3>
+                                <div class="well">
+                                    <div class="checkbox">
+                                        <label class="mintip" :title="title.UEFI.ConnectDrivers">
+                                            <input type="checkbox" class="ace" v-model="UEFI.root.ConnectDrivers" />
+                                            <span class="lbl"> ConnectDrivers</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+					</div><!-- /.page-content -->
+
+				</div><!-- /.main-content-inner -->
+			</div><!-- /.main-content -->
+
+			<div class="footer">
+				<div class="footer-inner">
+					<div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">{{lang.footermessage}}</span>
+						</span>
+
+					</div>
+				</div>
+			</div>
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+			</a>
+
+            <div class="modal fade" id="inputModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- 模态框主体 -->
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="message-text" class="control-label">{{lang.pasteMessage}}</label>
+                                    <textarea class="form-control" id="textarea_plist_paste" rows="15" cols="40" v-model="textarea_content"></textarea>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 模态框底部 -->
+                        <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{lang.close}}</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="startPaste();">{{lang.starPaste}}</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="divMuCheckboxPageModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- 模态框主体 -->
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+									<label for="message-text" class="control-label"><b>{{lang.pleasecheckmessage}}</b></label><br><br>
+
+									<div v-if="Assist.RADIO_CHECK_BOX === 'C'">
+										<div v-for="(it,index) in Assist.pagePublic_List" :key="index">
+											<label>&nbsp;&nbsp;<input type="checkbox" class="ace" v-model="Assist.pagePublic_Selected" :value="it.val" /><span class="lbl"> {{it.des}}</span></label><br>									
+										</div>
+									</div>
+
+									<div v-else-if="Assist.RADIO_CHECK_BOX === 'R'">
+										<div v-for="(it,index) in Assist.pageRadio_List" :key="index">
+											<label>&nbsp;&nbsp;<input type="radio" class="ace" v-model="Assist.pageRadio_CurrentValue" :value="it.val" /><span class="lbl"> {{it.des}}</span></label><br>									
+										</div>
+									</div>           
+			                          
+                                </div>
+
+
+                            </form>
+                        </div>
+
+                        <!-- 模态框底部 -->
+                        <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{{lang.close}}</button>
+                            <button type="button" class="btn btn-primary btn-sm" v-on:click="checkboxPageBtnOKclick">{{lang.starPaste}}</button>
+                        </div>
+
+                    </div>
+                </div>
+			</div>
+			
+			
+
+		</div><!-- /.main-container -->
+
+        <!-- <script>
+            let lang = navigator.language;
+            console.log('lang=' + lang);
+            // if( lang === undefined) {
+            //     lang = "zh-CN";
+            // }
+            	
+        </script>
+        <script src="https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/assets/js/opencore.min.js"></script>	
+
+    -->
+   	<!-- build:jss -->
+	<script src="assets/commjs/vue.min.js"></script>
+	<script src="assets/commjs/jquery.min.js"></script>	
+	<script src="assets/commjs/grid.base.min.js"></script>
+	<script src="assets/commjs/grid.grouping.min.js"></script>
+	<script src="assets/commjs/grid.jqueryui.min.js"></script>
+	<script src="assets/commjs/grid.locale-en.min.js"></script>
+	<script src="assets/commjs/bootstrap.min.js"></script>
+	<script src="assets/commjs/ace.min.js"></script>
+	<script src="assets/commjs/ace-elements.min.js"></script>		
+	<script src="assets/commjs/FileSaver.min.js"></script>
+	<script src="assets/commjs/jquery.format.min.js"></script>
+	<script src="assets/commjs/clipboard.min.js"></script>
+	<script src="assets/commjs/jquery.minimalTips.min.js"></script>
+	<script src="assets/commjs/toastr.min.js"></script>
+	<script src="assets/opencorejs/plist_parser.js"></script>
+	<script src="assets/opencorejs/lang.js"></script>
+	<script src="assets/opencorejs/tips_zh-CN.js"></script>
+	<script src="assets/opencorejs/comm.js"></script>
+	<script src="assets/opencorejs/initGirdtable.js"></script>
+	<script src="assets/opencorejs/index.js"></script>
+	<script src="assets/opencorejs/generatePlist.js"></script>
+	<!-- endbuild -->
+	</body>
+</html>
