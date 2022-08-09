@@ -944,6 +944,20 @@ const vueproperty = {
             showTextareaModal();
         }
 
+        /**
+         * SystemUUID 点击事件
+         */
+        ,btnSystemUUIDclick:function () {
+            VUEAPP.PlatformInfo.Generic.SystemUUID = uuid();
+        }
+
+        /**
+         * rom 点击事件
+         */
+        ,opbtnromclick:function () {
+            VUEAPP.PlatformInfo.Generic.ROM = uuid().split('-')[4];
+        }
+
     }
 };
 
@@ -1055,16 +1069,3 @@ function startPaste() {
 	showTipModal(VUEAPP.lang.pasteDataSuccess, 'success');
 }
 
-/**
- * SystemUUID 点击事件
- */
- function btnSystemUUIDclick() {
-    VUEAPP.PlatformInfo.Generic.SystemUUID = uuid();
-}
-
-/**
- * rom 点击事件
- */
-function btnromclick() {
-    VUEAPP.PlatformInfo.Generic.ROM = uuid().split('-')[4];
-}

@@ -533,33 +533,30 @@ function initGridTable(objGridTable, gridData, colNames, colModel, width=0 , hei
 	//窗口拉动
 	$(window).on('resize.jqGrid', () => {
 		const tab_content_width = objGridTable.closest('.tab-content').width();
-		if(tab_content_width > 0) {
-			GLOBAL_TABLE_WIDTH = tab_content_width;
-
-			( (theWidth) => {
-				setTimeout(()=>{
-
-					if(theWidth === GLOBAL_TABLE_WIDTH) {
-
-						const theWidthHalf = theWidth / 2 - 8;
-						for (let key of GLOBAL_MAP_TABLE.keys()) {
-							
-							if(key.endsWith("Left") || key.endsWith("Right")) {
-								getJqgridObjectbyKey(key).jqGrid( 'setGridWidth', theWidthHalf);
-							} else {
-								getJqgridObjectbyKey(key).jqGrid( 'setGridWidth', theWidth);								
-							}
-						}
-
-					}
-
-				}, 200);
-			})(tab_content_width);
-		}
+		if(tab_content_width > 0) setAllTableWidth(tab_content_width);
 	})
 
 }
 
+//防抖后的设置所有表格宽度函数
+const setAllTableWidth = fandou(function(theWidth) {
+	const theWidthHalf = theWidth / 2 - 8;
+	for (let key of GLOBAL_MAP_TABLE.keys()) {		
+		if(key.endsWith("Left") || key.endsWith("Right")) {
+			getJqgridObjectbyKey(key).jqGrid( 'setGridWidth', theWidthHalf);
+		} else {
+			getJqgridObjectbyKey(key).jqGrid( 'setGridWidth', theWidth);								
+		}
+	}
+});
 
-
-
+//防抖
+function fandou(fn, times=100) {
+    let timeouter = null;
+    return function(...args) {
+        if(timeouter) clearTimeout(timeouter);        
+        timeouter = setTimeout(()=>{
+            fn.apply(this, args);
+        }, times);
+    }
+}
