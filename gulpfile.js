@@ -53,7 +53,7 @@ gulp.task('jss_2',()=>{
         'src/assets/commjs/jquery.minimalTips.min.js',
         'src/assets/commjs/toastr.min.js',
         'src/assets/commjs/jszip.min.js',
-        
+
         'build/opencore.js'
         ]).pipe(concat('opencore.min.js'))    //合并成为opencore.min.js文件
         .pipe(gulp.dest('docs/assets/js'));    //输出到assets/js目录下
@@ -62,8 +62,10 @@ gulp.task('jss_2',()=>{
 gulp.task('index_html_replace', function() {
     return gulp.src('src/index.html')
       .pipe(htmlreplace({
-          'css': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/docs/assets/css/opencore.min.css',
-          'jss': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/docs/assets/js/opencore.min.js'
+        //   'css': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/docs/assets/css/opencore.min.css',
+        //   'jss': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/docs/assets/js/opencore.min.js'
+        'css': 'assets/css/opencore.min.css',
+        'jss': 'assets/js/opencore.min.js'
       }))
       .pipe(gulp.dest('docs'));
   });
