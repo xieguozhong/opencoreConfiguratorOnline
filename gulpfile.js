@@ -52,7 +52,9 @@ gulp.task('jss_2',()=>{
         'src/assets/commjs/clipboard.min.js',
         'src/assets/commjs/jquery.minimalTips.min.js',
         'src/assets/commjs/toastr.min.js',
-        'src/assets/commjs/jszip.min.js'
+        'src/assets/commjs/jszip.min.js',
+        
+        'build/opencore.js'
         ]).pipe(concat('opencore.min.js'))    //合并成为opencore.min.js文件
         .pipe(gulp.dest('docs/assets/js'));    //输出到assets/js目录下
 });
