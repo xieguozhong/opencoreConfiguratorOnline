@@ -40,20 +40,19 @@ gulp.task('jss_1',()=>{
 gulp.task('jss_2',()=>{
     return gulp.src([        
         'src/assets/commjs/vue.min.js',
-        'src/assets/commjs/jquery.min.js', 
-        'src/assets/commjs/grid.base.min.js',
-        'src/assets/commjs/grid.grouping.min.js',
-        'src/assets/commjs/grid.jqueryui.min.js',
+        'src/assets/commjs/jquery.min.js',		
+        'src/assets/commjs/jquery-ui.custom.min.js',
+        'src/assets/commjs/jquery.jqGrid.min.js',
         'src/assets/commjs/grid.locale-en.min.js',
         'src/assets/commjs/bootstrap.min.js',
         'src/assets/commjs/ace.min.js',
-        'src/assets/commjs/ace-elements.min.js',       
+        'src/assets/commjs/ace-elements.min.js',		
         'src/assets/commjs/FileSaver.min.js',
         'src/assets/commjs/jquery.format.min.js',
         'src/assets/commjs/clipboard.min.js',
         'src/assets/commjs/jquery.minimalTips.min.js',
         'src/assets/commjs/toastr.min.js',
-        'build/opencore.js'
+        'src/assets/commjs/jszip.min.js'
         ]).pipe(concat('opencore.min.js'))    //合并成为opencore.min.js文件
         .pipe(gulp.dest('docs/assets/js'));    //输出到assets/js目录下
 });
