@@ -1,9 +1,17 @@
 # opencoreConfiguratorOnline
 
+适配OpenCore-0.8.4-RELEASE 源码看这里
+https://github.com/xieguozhong/occvue3
 
-适配版本: OpenCore-0.8.2-RELEASE
+适配OpenCore-0.8.4-RELEASE 在线使用
+https://xieguozhong.github.io/occvue3
 
 
+
+<br><br>
+这边这个不想更新了
+
+适配版本: OpenCore-0.8.3-RELEASE
 
 
 web版的OpenCore引导工具config.plist的在线编辑器
