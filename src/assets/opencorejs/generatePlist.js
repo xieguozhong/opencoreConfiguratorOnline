@@ -698,15 +698,45 @@ function addvtype(valu) {
 
 //用左边的数据重写右边的数据并返回右边的数据
 function rewriteData(leftdata, rightdata) {
-	//consolelog('leftdata type = ' + getTypeof(leftdata) + "  " + 'rightdata type = ' + getTypeof(rightdata));
-	const len=leftdata.length;
-	for(let i=0;i<len;i++) {
-		//consolelog('leftdata[i] type = ' + getTypeof(leftdata[i]))
-		for(let it in leftdata[i]) {
-			rightdata[i][it] = leftdata[i][it];
-		}
-	}
-	return rightdata;
+	const lenLeft = leftdata.length
+
+        //先看表格有没有数据
+        if (lenLeft === 0) {
+            return []
+        }
+
+        //如果读入的文件没有数据，直接返回表格中的数据
+        if (rightdata.length === 0) {
+            return leftdata
+        }
+
+        //如果读入的配置文件有数据, 就按读入的数据顺序返回
+        let attributeOrderJqgrid = Object.keys(leftdata[0]);//读取表格中的字段列表, 这个列表是匹配新版opencore的
+
+        let attributeOrderVue = Object.keys(rightdata[0]);//这个是读入配置文件中的列表， 如果是老版本可能会有缺失一个字段
+
+        attributeOrderVue = attributeOrderVue.filter((item) => {  //删除掉已经不存在的字段属性
+            return attributeOrderJqgrid.includes(item)
+        })
+
+        attributeOrderJqgrid = attributeOrderJqgrid.filter((item) => { //找到新增加的字段属性
+            return !attributeOrderVue.includes(item)
+        })
+
+        attributeOrderVue = [...attributeOrderVue, ...attributeOrderJqgrid] //组成新的字段属性列表，已经去旧革新
+
+        const newRightdata = []
+
+        const LenAttOrd = attributeOrderVue.length
+        for (let i = 0; i < lenLeft; i++) {
+            const tmpobj = {}
+            for (let j = 0; j < LenAttOrd; j++) {
+                tmpobj[attributeOrderVue[j]] = leftdata[i][attributeOrderVue[j]]
+            }
+            newRightdata.push(tmpobj)
+        }
+
+        return newRightdata
 }
 
 //用在左右两边表格的地方

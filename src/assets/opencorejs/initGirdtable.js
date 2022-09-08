@@ -96,13 +96,14 @@ function initGridTableMisc() {
 
 
 	//Tools
-	colNames = ['Arguments','Comment','Name','Flavour','Path','Auxiliary','RealPath','TextMode','Enabled'];
+	colNames = ['Arguments','Comment','Name','Flavour','Path','FullNvramAccess','Auxiliary','RealPath','TextMode','Enabled'];
 	colModel = [
 		{name:'Arguments',index:'Arguments', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Name',index:'Name', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Flavour',index:'Flavour', width:150,editable: true,  sortable:false, formatter:getPlistEncodeFunction('Auto')},
 		{name:'Path',index:'Path', width:150,editable: true,  sortable:false, formatter:plistEncode},
+		{name:'FullNvramAccess',index:'FullNvramAccess', width:110, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'Auxiliary',index:'Auxiliary', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'RealPath',index:'RealPath', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
 		{name:'TextMode',index:'TextMode', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat},
