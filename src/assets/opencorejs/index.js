@@ -267,7 +267,7 @@ const vueproperty = {
                     EnableJumpstart:false, GlobalConnect:false, HideVerbose:false, JumpstartHotPlug:false, MinDate:0, MinVersion:0
                 },
                 AppleInput:{
-                    AppleEvent:'Auto',CustomDelays:false,GraphicsInputMirroring:false,KeyInitialDelay:50,KeySubsequentDelay:5,PointerPollMask:-1,
+                    AppleEvent:'Auto',CustomDelays:false,GraphicsInputMirroring:false,KeyInitialDelay:50,KeySubsequentDelay:5,PointerDwellClickTimeout:0,PointerDwellDoubleClickTimeout:0,PointerDwellRadius:0,PointerPollMask:-1,
                     PointerPollMax:0,PointerPollMin:0,PointerSpeedDiv:1,PointerSpeedMul:1
                 },
                 Audio:{

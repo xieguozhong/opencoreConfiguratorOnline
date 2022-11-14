@@ -365,7 +365,9 @@ function getUEFI() {
 
 	//AppleInput
 	uefiContext += '<key>AppleInput</key><dict>';
-	let AppleInputDataType = {KeyInitialDelay:'integer',KeySubsequentDelay:'integer',PointerPollMask:'integer', PointerPollMax:'integer', PointerPollMin:'integer', PointerSpeedDiv:'integer',PointerSpeedMul:'integer'};
+	let AppleInputDataType = {KeyInitialDelay:'integer',KeySubsequentDelay:'integer',
+	PointerDwellClickTimeout:'integer',PointerDwellDoubleClickTimeout:'integer',PointerDwellRadius:'integer',
+	PointerPollMask:'integer', PointerPollMax:'integer', PointerPollMin:'integer', PointerSpeedDiv:'integer',PointerSpeedMul:'integer'};
 	uefiContext += getStringorboolorinterger(VUEAPP.UEFI.AppleInput, AppleInputDataType);
 	uefiContext += '</dict>';
 
