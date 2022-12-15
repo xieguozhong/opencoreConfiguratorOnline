@@ -200,7 +200,7 @@ const vueproperty = {
                 BlessOverride:[],
                 Boot:{
                     HibernateMode:'None', PickerMode:'Builtin', PickerVariant:'Auto', TakeoffDelay:'0',
-                    Timeout:'0', HideAuxiliary:false, LauncherOption:'Disabled',LauncherPath:'Default', ConsoleAttributes:'0', 
+                    Timeout:'0',HibernateSkipsPicker:false, HideAuxiliary:false, LauncherOption:'Disabled',LauncherPath:'Default', ConsoleAttributes:'0', 
                     PickerAttributes:'0', PickerAudioAssist:false,PollAppleHotKeys: false, ShowPicker: false,SkipCustomEntryCheck:false
                 },
                 Debug: {

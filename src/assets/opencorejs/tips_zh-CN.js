@@ -127,6 +127,7 @@ const SYSTEM_TIPS = {
             HibernateMode:'None 休眠检测模式（最好避免与黑苹果一同休眠）,支持以下模式:',
             PickerMode:'选择用于引导管理的引导选择器 <br>1 Builtin -- 引导管理由OpenCore处理，使用了纯文本用户界面<br>2 External -- 如果可用，则使用外部引导管理协议。否则使用内置模式<br>3 Apple -- 如果可用，则使用Apple引导管理。否则使用内置模式',
 			PickerVariant:'选择用于启动管理的特定图标集 <br>• Auto — 根据DefaultBackground颜色自动选择一组图标<br>• Default — 普通图标集（不带前缀）<br>• 其他值 — 如果资源支持，则设置自定义图标：例：Acidanthera\\GoldenGate',
+            HibernateSkipsPicker:'NO 从 macOS 休眠中唤醒，是否显示选择器',
             HideAuxiliary:'NO 默认情况下从选择器菜单隐藏辅助条目',
             LauncherOption:'在固件首选项中注册启动器选项以实现持久性<br>•Disabled — 啥也不干<br> •Full — 在启动引导程序时在UEFI变量存储中创建或更新最优先启动选项<br>•Short — 创建短启动选项，而不是完整的启动选项',
             LauncherPath:'Default LauncherOption的启动路径，自定义格式如：\\EFI\\SomeLauncher.efi',

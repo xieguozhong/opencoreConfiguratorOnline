@@ -186,7 +186,7 @@ function getMisc() {
 	miscContext += '<key>Boot</key><dict>';
 	miscContext += '<key>ConsoleAttributes</key><integer>' + toNumber(VUEAPP.Misc.Boot['ConsoleAttributes']) + '</integer>';
 	miscContext += '<key>HibernateMode</key>' + addCharstring(VUEAPP.Misc.Boot['HibernateMode']);
-
+	miscContext += '<key>HibernateSkipsPicker</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['HibernateSkipsPicker']);
 	miscContext += '<key>HideAuxiliary</key>' + toBoolStringStrict(VUEAPP.Misc.Boot['HideAuxiliary']);
 	miscContext += '<key>LauncherOption</key>' + addCharstring(VUEAPP.Misc.Boot['LauncherOption']);
 	miscContext += '<key>LauncherPath</key>' + addCharstring(VUEAPP.Misc.Boot['LauncherPath']);
