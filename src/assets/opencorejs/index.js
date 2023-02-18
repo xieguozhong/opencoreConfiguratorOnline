@@ -292,7 +292,7 @@ const vueproperty = {
                 Quirks:{
                     ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,EnableVmx:false,ExitBootServicesDelay:0,
                     ForceOcWriteFlash:false,ForgeUefiSupport:false,IgnoreInvalidFlexRatio:false,
-                    ReleaseUsbOwnership:false, ReloadOptionRoms:false, RequestBootVarRouting:false, ResizeGpuBars:-1,TscSyncTimeout:0, UnblockFsConnect:false
+                    ReleaseUsbOwnership:false, ReloadOptionRoms:false, RequestBootVarRouting:false, ResizeGpuBars:-1,ResizeUsePciRbIo:false,TscSyncTimeout:0, UnblockFsConnect:false
                 },
                 ReservedMemory:[]
             },
