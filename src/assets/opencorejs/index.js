@@ -280,7 +280,7 @@ const vueproperty = {
 
                 },
                 Output:{
-                    ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,GopPassThrough:'Disabled',
+                    ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,GopBurstMode:false,GopPassThrough:'Disabled',
                     IgnoreTextInGraphics:false,ProvideConsoleGop:false,ReconnectGraphicsOnConnect:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
                     Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UIScale:-1,UgaPassThrough:false
                 },

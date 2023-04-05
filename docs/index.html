@@ -1573,7 +1573,10 @@
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ForceResolution" />
 			                                            <span class="lbl"> ForceResolution</span>
 			                                        </label>
-													
+			                                        <label class="mintip" :title="title.UEFI.Output.GopBurstMode">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.GopBurstMode" />
+			                                            <span class="lbl"> GopBurstMode</span>
+			                                        </label>													
 			                                        <label class="mintip" :title="title.UEFI.Output.ReconnectOnResChange">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReconnectOnResChange" />
 			                                            <span class="lbl"> ReconnectOnResChange</span>
@@ -1764,7 +1767,7 @@
 
 
             <div class="modal fade" id="divMuCheckboxPageModal">
-                <div class="modal-dialog">
+                <div class="modal-dialog" style="width: 800px;">
                     <div class="modal-content">
 
                         <!-- 模态框主体 -->

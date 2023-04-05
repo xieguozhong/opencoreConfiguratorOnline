@@ -290,6 +290,7 @@ const SYSTEM_TIPS = {
             ReconnectGraphicsOnConnect:'NO 在驱动程序连接期间重新连接所有图形驱动程序',
             DirectGopRendering:'NO 使用内置的图形输出协议渲染器进行控制台',
             ForceResolution:'NO 在默认情况下（例如在旧版Intel GMA和第一代Intel HD Graphics（Ironlake / Arrandale）上）无法使用所需分辨率的情况下，强制设置分辨率。将“分辨率”设置为“最大”将尝试从连接的显示器的EDID中获取最大的可用分辨率',
+            GopBurstMode:'NO 如果系统固件尚未启用，则为 gop 内存启用 write combining wc 缓存',
             GopPassThrough:'NO 在UGA协议实例之上提供GOP协议实例',
             ReconnectOnResChange:'NO 更改屏幕分辨率后重新连接控制台控制器', 
             ReplaceTabWithSpace:'NO 某些固件无法打印制表符甚至其后的所有内容，从而造成困难或无法使用UEFI Shell内置文本编辑器来编辑属性列表和其他文档。这个选项使控制台输出空间而不是选项卡', 
@@ -367,10 +368,10 @@ const SYSTEM_TIPS = {
             ]
 
             ,DisplayLevel_List:[
-                {val:'0x00000002', des:'DEBUG_WARN in DEBUG, NOOPT, RELEASE'},
-                {val:'0x00000040', des:'DEBUG_INFO in DEBUG, NOOPT'},
-                {val:'0x00400000', des:'DEBUG_VERBOSE in custom builds'},
-                {val:'0x80000000', des:'DEBUG_ERROR in DEBUG, NOOPT, RELEASE'}
+                {val:'0x00000002', des:'0x00000002 - DEBUG_WARN in DEBUG, NOOPT, RELEASE'},
+                {val:'0x00000040', des:'0x00000040 - DEBUG_INFO in DEBUG, NOOPT'},
+                {val:'0x00400000', des:'0x00400000 - DEBUG_VERBOSE in custom builds'},
+                {val:'0x80000000', des:'0x80000000 - DEBUG_ERROR in DEBUG, NOOPT, RELEASE'}
             ]
 
             ,Target_List:[
@@ -388,7 +389,11 @@ const SYSTEM_TIPS = {
                 {val:'0x0001', des:'OC_ATTR_USE_VOLUME_ICON，为启动项提供自定义图标'},
                 {val:'0x0002', des:'OC_ATTR_USE_DISK_LABEL_FILE，为启动项提供定制的呈现标题'},
                 {val:'0x0004', des:'OC_ATTR_USE_GENERIC_LABEL_IMAGE，为没有自定义条目的引导条目提供了预定义的标签图像'},
-                {val:'0x0008', des:'OC_ATTR_USE_ALTERNATE_ICONS，将已使用图标集更改为备用图标（如果支持）'}
+                {val:'0x0008', des:'OC_ATTR_HIDE_THEMED_ICONS，将已使用图标集更改为备用图标（如果支持）'},
+                {val:'0x0010', des:'OC_ATTR_USE_POINTER_CONTROL，在可用时在开放核心选择器中启用指针控制, 例如，这可以使用鼠标或触控板来控制 ui 元素'},
+                {val:'0x0020', des:'OC_ATTR_SHOW_DEBUG_DISPLAY，仅在调试和 noopt 构建中启用在内置选择器中显示额外的计时和调试信息'},
+                {val:'0x0040', des:'OC_ATTR_USE_MINIMAL_UI，使用最小的用户界面显示 没有关机或重启按钮 影响打开的机盖和内置选择器'},
+                {val:'0x0080', des:'OC_ATTR_USE_FLAVOUR_ICON，提供灵活的引导入口内容描述，适用于在不同内容集中挑选最佳媒体'}
             ]
 
             ,TypeDetail_List:[
@@ -414,9 +419,9 @@ const SYSTEM_TIPS = {
 
             ,KernelCache_List:[
                 {val:'Auto',      des:'Auto - 自动'},
-                {val:'Cacheless',   des:'Cacheless - 无缓存'},
-                {val:'Mkext',       des:'Mkext - 巴拉巴拉'},
-                {val:'Prelinked',       des:'Prelinked - 巴拉巴拉'}
+                {val:'Cacheless',   des:'Cacheless'},
+                {val:'Mkext',       des:'Mkext'},
+                {val:'Prelinked',       des:'Prelinked'}
             ]
 
            ,Resolution_List:[
@@ -446,7 +451,8 @@ const SYSTEM_TIPS = {
             ,LauncherOption_List:[
                 {val:'Disabled',           des:'Disabled — 啥也不干'},
                 {val:'Full',           des:'Full — 在启动引导程序时在UEFI变量存储中创建或更新最优先启动选项'},
-                {val:'Short',           des:'Short — 创建短启动选项，而不是完整的启动选项'}
+                {val:'Short',           des:'Short — 创建短启动选项，而不是完整的启动选项'},
+                {val:'System',           des:'System — 不创建启动选项，但假设指定的自定义选项是blessed'},
             
             ],
             AppleEvent_List:[
