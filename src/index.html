@@ -265,7 +265,7 @@
 
                                 	<template v-for="(item,index) in ACPI.Quirks" :key="index">
 						            	<label v-if="typeof(item) === 'boolean' && index !=='EnableForAll'" class="mintip" :title="title.ACPI.Quirks[index]">
-                                        	<input type="checkbox" class="ace" v-model="item" />
+                                        	<input type="checkbox" class="ace" v-model="ACPI.Quirks[index]" />
                                         	<span class="lbl"> {{index}}</span>
                                     	</label>
 						        	</template>
@@ -319,7 +319,7 @@
                                 	<div class="row">
                                 		<template v-for="(item,index) in Booter.Quirks" :key="index">
 											<div v-if="typeof(item) === 'number'" class="col-xs-3 mintip" :title="title.Booter.Quirks[index]">
-												{{index}}<input type="text" class="form-control" v-model="item">
+												{{index}}<input type="text" class="form-control" v-model="Booter.Quirks[index]">
 											</div>
 										</template>
                                     </div>
@@ -328,7 +328,7 @@
                                     <div class="checkbox">
                                     	<template v-for="(item,index) in Booter.Quirks" :key="index">
 							            	<label v-if="typeof(item) === 'boolean' && index !== 'EnableForAll'" class="mintip" :title="title.Booter.Quirks[index]">
-                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<input type="checkbox" class="ace" v-model="Booter.Quirks[index]" />
                                             	<span class="lbl"> {{index}}</span>
                                         	</label>
 							        	</template>										
@@ -549,7 +549,7 @@
                                     <div class="checkbox">
                                     	<template v-for="(item,index) in Kernel.Quirks" :key="index">
 							            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.Kernel.Quirks[index]">
-                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<input type="checkbox" class="ace" v-model="Kernel.Quirks[index]" />
                                             	<span class="lbl"> {{index}}</span>
                                         	</label>
 							        	</template>                                        
@@ -949,7 +949,7 @@
                                     <div class="checkbox">
 										<template v-for="(item,index) in NVRAM.root" :key="index">
 							            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.NVRAM[index]">
-                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<input type="checkbox" class="ace" v-model="NVRAM.root[index]" />
                                             	<span class="lbl"> {{index}}</span>
                                         	</label>
 							        	</template>                                        
@@ -1013,7 +1013,7 @@
 
 				                                	<template v-for="(item,index) in PlatformInfo.Generic" :key="index">
 										            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.PlatformInfo.Generic[index]">
-			                                            	<input type="checkbox" class="ace" v-model="item" />
+			                                            	<input type="checkbox" class="ace" v-model="PlatformInfo.Generic[index]" />
 			                                            	<span class="lbl"> {{index}}</span>
 			                                        	</label>
 										        	</template>
@@ -1258,7 +1258,7 @@
 	                                <div class="checkbox" style="margin-top: 20px">
 	                                	<template v-for="(item,index) in PlatformInfo.root" :key="index">
 							            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.PlatformInfo.root[index]">
-                                            	<input type="checkbox" class="ace" v-model="item" />
+                                            	<input type="checkbox" class="ace" v-model="PlatformInfo.root[index]" />
                                             	<span class="lbl"> {{index}}</span>
                                         	</label>
 							        	</template>
@@ -1550,6 +1550,11 @@
 														<input type="text" class="form-control" v-model="UEFI.Output.GopPassThrough">
 													</div>
 
+													<div class="col-xs-3 mintip" :title="title.UEFI.Output.InitialMode">
+			                                        	InitialMode<a id="btnradiobox_UEFI_Output_InitialMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+														<input type="text" class="form-control" v-model="UEFI.Output.InitialMode">
+													</div>
+
 													<div class="col-xs-3 mintip" :title="title.UEFI.Output.UIScale">
 			                                        	UIScale<a id="btnradiobox_UEFI_Output_UIScale" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
 														<input type="text" class="form-control" v-model="UEFI.Output.UIScale">
@@ -1586,7 +1591,7 @@
 			                                        <label class="mintip" :title="title.UEFI.Output.GopBurstMode">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.GopBurstMode" />
 			                                            <span class="lbl"> GopBurstMode</span>
-			                                        </label>													
+			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.Output.ReconnectOnResChange">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.Output.ReconnectOnResChange" />
 			                                            <span class="lbl"> ReconnectOnResChange</span>
@@ -1696,7 +1701,7 @@
 			                                    <div class="row">
 			                                    	<template v-for="(item,index) in UEFI.Quirks" :key="index">
 										            	<div v-if="typeof(item) === 'number'" class="col-xs-3 mintip" :title="title.UEFI.Quirks[index]">
-			                                        		{{index}}<input type="text" class="form-control" v-model="item">
+			                                        		{{index}}<input type="text" class="form-control" v-model="UEFI.Quirks[index]">
 			                                      		</div>
 										        	</template>
 			                                    </div>
@@ -1704,7 +1709,7 @@
 			                                    <div class="checkbox" style="margin-top: 20px">
 			                                    	<template v-for="(item,index) in UEFI.Quirks" :key="index">
 										            	<label v-if="typeof(item) === 'boolean'" class="mintip" :title="title.UEFI.Quirks[index]">
-			                                            	<input type="checkbox" class="ace" v-model="item" />
+			                                            	<input type="checkbox" class="ace" v-model="UEFI.Quirks[index]" />
 			                                            	<span class="lbl"> {{index}}</span>
 			                                        	</label>
 										        	</template>

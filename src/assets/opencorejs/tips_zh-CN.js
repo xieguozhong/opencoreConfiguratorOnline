@@ -84,6 +84,7 @@ const SYSTEM_TIPS = {
             CustomPciSerialDevice:'NO 在定制的 PCI 串行设备上执行 PMIO 寄存器基地址的更改',
             CustomSMBIOSGuid:'NO 对 UpdateSMBIOSMode 自定义模式执行 GUID 修补, 用于戴尔笔记本电脑 (等同于 Clover 的 DellSMBIOSPatch)',
             DisableIoMapper:'NO 需要绕过 VT-d 且 BIOS 中禁用时使用',
+            DisableIoMapperMapping:'NO 在 iommu vt d 中禁用映射 pci 桥接设备内存',
             DisableLinkeditJettison:'禁用__LINKEDIT抛售代码。此选项使Lilu.kext以及可能的其他功能在macOS Big Sur中以最佳性能运行而无需keepsyms = 1引导参数',
 			DisableRtcChecksum:'禁用 AppleRTC 中写入的主校验和 （0x58-0x59）',
             ExtendBTFeatureFlags:'NO 将FeatureFlags设置为0x0F，以获得Bluetooth的全部功能，包括Continuity。注意：此选项替代了BT4LEContinuityFixup.kext，由于更新太晚而无法正常运行修补进度。',
@@ -292,6 +293,7 @@ const SYSTEM_TIPS = {
             ForceResolution:'NO 在默认情况下（例如在旧版Intel GMA和第一代Intel HD Graphics（Ironlake / Arrandale）上）无法使用所需分辨率的情况下，强制设置分辨率。将“分辨率”设置为“最大”将尝试从连接的显示器的EDID中获取最大的可用分辨率',
             GopBurstMode:'NO 如果系统固件尚未启用，则为 gop 内存启用 write combining wc 缓存',
             GopPassThrough:'NO 在UGA协议实例之上提供GOP协议实例',
+            InitialMode:'Auto 选择文本渲染器将运行的内部控制台控制模式',
             ReconnectOnResChange:'NO 更改屏幕分辨率后重新连接控制台控制器', 
             ReplaceTabWithSpace:'NO 某些固件无法打印制表符甚至其后的所有内容，从而造成困难或无法使用UEFI Shell内置文本编辑器来编辑属性列表和其他文档。这个选项使控制台输出空间而不是选项卡', 
             SanitiseClearScreen:'NO 某些固件在尝试清除时将屏幕分辨率重置为故障保护值（例如1024x768）使用大显示（例如2K或4K）时的屏幕内容。此选项尝试应用解决方法。',
@@ -468,6 +470,11 @@ const SYSTEM_TIPS = {
                 {val:'Enabled',          des:'Enabled — 为所有 UGA 协议提供 GOP'},
                 {val:'Apple',       des:'Apple — 为支持 AppleFramebufferInfo 的协议提供 GOP'},
                 {val:'Disabled',      des:'Disabled — 不提供 GOP'}
+            ],
+            InitialMode_List:[
+                {val:'Auto',          des:'Auto — 自动'},
+                {val:'Text',       des:'Text — 文本'},
+                {val:'Graphics',      des:'Graphics — 图形'}
             ],
             UIScale_List:[
                 {val:-1,          des:'-1 — 保持当前变量不变'},

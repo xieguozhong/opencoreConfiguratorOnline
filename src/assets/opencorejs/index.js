@@ -190,7 +190,7 @@ const vueproperty = {
                 Quirks:{
                     
                     AppleCpuPmCfgLock:false, AppleXcpmCfgLock:false, AppleXcpmExtraMsrs:false, AppleXcpmForceBoost:false,CustomPciSerialDevice:false,CustomSMBIOSGuid:false,
-                    DisableIoMapper:false, DisableLinkeditJettison:false,DisableRtcChecksum:false, ExtendBTFeatureFlags:false, ExternalDiskIcons:false,ForceAquantiaEthernet:false,
+                    DisableIoMapper:false, DisableIoMapperMapping:false,DisableLinkeditJettison:false,DisableRtcChecksum:false, ExtendBTFeatureFlags:false, ExternalDiskIcons:false,ForceAquantiaEthernet:false,
                     ForceSecureBootScheme:false,IncreasePciBarSize:false,
                     LapicKernelPanic:false, LegacyCommpage:false, PanicNoKextDump:false,
                     PowerTimeoutKernelPanic:false,ProvideCurrentCpuInfo:false,SetApfsTrimTimeout:-1, ThirdPartyDrives:false, XhciPortLimit:false
@@ -281,7 +281,7 @@ const vueproperty = {
                 },
                 Output:{
                     ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,GopBurstMode:false,GopPassThrough:'Disabled',
-                    IgnoreTextInGraphics:false,ProvideConsoleGop:false,ReconnectGraphicsOnConnect:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
+                    IgnoreTextInGraphics:false,InitialMode:'Auto',ProvideConsoleGop:false,ReconnectGraphicsOnConnect:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
                     Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UIScale:-1,UgaPassThrough:false
                 },
                 ProtocolOverrides:{
