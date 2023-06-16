@@ -1536,8 +1536,13 @@
 														<input type="text" class="form-control" v-model="UEFI.Output.TextRenderer">
 													</div>
 
+													<div class="col-xs-3 mintip" :title="title.UEFI.Output.ConsoleFont">														
+														ConsoleFont<input type="text" class="form-control" v-model="UEFI.Output.ConsoleFont">													
+													</div>
+
 			                                      <div class="col-xs-3 mintip" :title="title.UEFI.Output.ConsoleMode">
-			                                        ConsoleMode<a id="btnradiobox_UEFI_Output_ConsoleMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
+			                                        ConsoleMode<a id="btnradiobox_UEFI_Output_ConsoleMode" style="text-decoration:none" v-on:click="btnradioboxclick($event)">&nbsp;<img src="assets/css/images/edit.png" class="ctrlicon" ></a>&nbsp;
+													<input type="text" class="form-control" v-model="UEFI.Output.ConsoleMode">
 			                                      </div>
 												  
 			                                      	<div class="col-xs-3 mintip" :title="title.UEFI.Output.Resolution">
@@ -1687,6 +1692,10 @@
 			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.OSInfo">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.OSInfo" />
 			                                            <span class="lbl"> OSInfo</span>
+			                                        </label>
+													<label class="mintip" :title="title.UEFI.ProtocolOverrides.PciIo">
+			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.PciIo" />
+			                                            <span class="lbl"> PciIo</span>
 			                                        </label>
 			                                        <label class="mintip" :title="title.UEFI.ProtocolOverrides.UnicodeCollation">
 			                                            <input type="checkbox" class="ace" v-model="UEFI.ProtocolOverrides.UnicodeCollation" />

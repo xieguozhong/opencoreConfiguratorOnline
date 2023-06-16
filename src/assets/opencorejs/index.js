@@ -280,14 +280,14 @@ const vueproperty = {
 
                 },
                 Output:{
-                    ClearScreenOnModeSwitch:false,ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,GopBurstMode:false,GopPassThrough:'Disabled',
+                    ClearScreenOnModeSwitch:false,ConsoleFont:'',ConsoleMode:'',DirectGopRendering:false,ForceResolution:false,GopBurstMode:false,GopPassThrough:'Disabled',
                     IgnoreTextInGraphics:false,InitialMode:'Auto',ProvideConsoleGop:false,ReconnectGraphicsOnConnect:false,ReconnectOnResChange:false,ReplaceTabWithSpace:false,
                     Resolution:'',SanitiseClearScreen:false,TextRenderer:'BuiltinGraphics',UIScale:-1,UgaPassThrough:false
                 },
                 ProtocolOverrides:{
                     AppleAudio:false,AppleBootPolicy:false, AppleDebugLog:false,AppleEg2Info:false, AppleFramebufferInfo:false,AppleImageConversion:false,
                     AppleImg4Verification:false, AppleKeyMap:false, AppleRtcRam:false,AppleSecureBoot:false, AppleSmcIo:false,AppleUserInterfaceTheme:false,
-                    DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,UnicodeCollation:false
+                    DataHub:false, DeviceProperties:false, FirmwareVolume:false, HashServices:false, OSInfo:false,PciIo:false,UnicodeCollation:false
                 },
                 Quirks:{
                     ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,EnableVmx:false,ExitBootServicesDelay:0,

@@ -283,6 +283,7 @@ const SYSTEM_TIPS = {
         },
         Output:{ 
             TextRenderer:'为通过标准控制台输出的文本选择渲染器<br>1 BuiltinGraphics -- 切换到“图形”模式并将内置渲染器与自定义ConsoleControl一起使用<br>2 SystemGraphics -- 切换到“图形”模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>3 SystemText -- 切换到文本模式，然后将系统渲染器与自定义ConsoleControl一起使用<br>4 SystemGeneric -- 将系统渲染器与系统ConsoleControl一起使用，并假设其行为正确', 
+            ConsoleFont:'指定用于开放核心内置文本渲染器的控制台字体',
             ConsoleMode:'按照WxH（例如80x24）格式的字符串指定的设置控制台输出模式', 			
             Resolution:'设置控制台输出屏幕分辨率<br>•设置为WxH @ Bpp（例如1920x1080 @ 32）或WxH（例如1920x1080）格式的字符串以请求自定义分辨率从GOP（如果有）<br>•空字符串 不更改屏幕分辨率<br>•Max 设置为最大以尝试使用最大的可用屏幕分辨率',
             ClearScreenOnModeSwitch:'NO 从图形模式切换到文本模式时，某些固件仅清除部分屏幕，先前绘制的图像片段可见。此选项会先用黑色填充整个图形屏幕切换至文字模式', 
@@ -319,6 +320,7 @@ const SYSTEM_TIPS = {
             FirmwareVolume:'NO 修复 Filevault 的 UI 问题, 设置为 YES 可以获得更好地兼容 FileVault',
             HashServices:'NO 修复运行 FileVault 时鼠标光标大小不正确的问题, 设置为 YES 可以更好地兼容 FileVault',
             OSInfo:'NO 强制使用内置版本重新安装OS Info协议。该协议通常用于从macOS引导程序，固件或其他应用程序接收通知',
+            PciIo:'NO 用 64 位 mmio 兼容函数替换 cpu io 和 pci root bridge io 中的函数以修复使用 4 g 解码时的无效参数这会影响 uefi 驱动程序，例如访问 aptio v haswell 之前的 64 位 mmio 设备平台和更早版本的音频 dxe 通常会受到影响',
             UnicodeCollation:'NO 一些较旧的固件破坏了 Unicode 排序规则, 设置为 YES 可以修复这些系统上 UEFI Shell 的兼容性 (通常为用于 IvyBridge 或更旧的设备)'
         },
         Quirks:{
