@@ -130,6 +130,7 @@ const SYSTEM_TIPS = {
 			PickerVariant:'选择用于启动管理的特定图标集 <br>• Auto — 根据DefaultBackground颜色自动选择一组图标<br>• Default — 普通图标集（不带前缀）<br>• 其他值 — 如果资源支持，则设置自定义图标：例：Acidanthera\\GoldenGate',
             HibernateSkipsPicker:'NO 从 macOS 休眠中唤醒，是否显示选择器',
             HideAuxiliary:'NO 默认情况下从选择器菜单隐藏辅助条目',
+            InstanceIdentifier:'空 当前开放核心实例的可选标识符',
             LauncherOption:'在固件首选项中注册启动器选项以实现持久性<br>•Disabled — 啥也不干<br> •Full — 在启动引导程序时在UEFI变量存储中创建或更新最优先启动选项<br>•Short — 创建短启动选项，而不是完整的启动选项',
             LauncherPath:'Default LauncherOption的启动路径，自定义格式如：\\EFI\\SomeLauncher.efi',
             PollAppleHotKeys:'YES 允许在引导过程中使用苹果原生快捷键, 需要与 AppleGenericInput.efi 或 UsbKbDxe.efi 结合使用, 具体体验取决于固件',
