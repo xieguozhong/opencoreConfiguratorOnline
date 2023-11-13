@@ -169,7 +169,7 @@ const vueproperty = {
                 Patch:[],
                 Quirks:{
                     AllowRelocationBlock:false,AvoidRuntimeDefrag:false, DevirtualiseMmio:false,  DisableSingleUser:false, DisableVariableWrite:false,
-                    DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false,ForceBooterSignature:false, ForceExitBootServices:false, ProtectMemoryRegions:false,
+                    DiscardHibernateMap:false, EnableSafeModeSlide:false, EnableWriteUnprotector:false,FixupAppleEfiImages:false,ForceBooterSignature:false, ForceExitBootServices:false, ProtectMemoryRegions:false,
                     ProtectSecureBoot:false,ProtectUefiServices:false,ProvideCustomSlide:false, ProvideMaxSlide:0, RebuildAppleMemoryMap:false,
                     ResizeAppleGpuBars:-1,SetupVirtualMap:false, SignalAppleOS:false, SyncRuntimePermissions:false,EnableForAll:false
                 }
@@ -292,7 +292,7 @@ const vueproperty = {
                 Quirks:{
                     ActivateHpetSupport:false,DisableSecurityPolicy:false,EnableVectorAcceleration:false,EnableVmx:false,ExitBootServicesDelay:0,
                     ForceOcWriteFlash:false,ForgeUefiSupport:false,IgnoreInvalidFlexRatio:false,
-                    ReleaseUsbOwnership:false, ReloadOptionRoms:false, RequestBootVarRouting:false, ResizeGpuBars:-1,ResizeUsePciRbIo:false,TscSyncTimeout:0, UnblockFsConnect:false
+                    ReleaseUsbOwnership:false, ReloadOptionRoms:false, RequestBootVarRouting:false, ResizeGpuBars:-1,ResizeUsePciRbIo:false,ShimRetainProtocol:false,TscSyncTimeout:0, UnblockFsConnect:false
                 },
                 ReservedMemory:[]
             },
