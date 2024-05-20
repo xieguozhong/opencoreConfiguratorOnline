@@ -1,7 +1,7 @@
 # opencoreConfiguratorOnline
 
 
-最新适配版本: OpenCore-0.9.2-RELEASE
+最新适配版本: OpenCore-1.0.0-RELEASE(主要因为 OpenCore 配置文件已经好几个版本没有更新了）
 
 
 web版的OpenCore引导工具config.plist的在线编辑器
