@@ -60,7 +60,8 @@ gulp.task('jss_2',()=>{
 
         'build/opencore.js'
         ]).pipe(concat('opencore.min.js'))    //合并成为opencore.min.js文件
-        .pipe(gulp.dest('docs/assets/js'));    //输出到assets/js目录下
+        .pipe(gulp.dest('docs/assets/js'))
+        .pipe(gulp.dest('/Users/dell/coder/utools/assets/js'));    //输出到/Users/dell/coder/utools/assets/js目录下
 });
 
 gulp.task('index_html_replace', function() {
@@ -71,7 +72,8 @@ gulp.task('index_html_replace', function() {
         'css': 'assets/css/opencore.min.css',
         'jss': 'assets/js/opencore.min.js'
       }))
-      .pipe(gulp.dest('docs'));
+      .pipe(gulp.dest('docs'))
+      .pipe(gulp.dest('/Users/dell/coder/utools'));
   });
 
 

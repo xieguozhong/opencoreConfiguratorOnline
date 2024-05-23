@@ -1,6 +1,6 @@
 
 const GLOBAL_LANG = {
-    
+
     'zh-CN' : {
         down : '保存',
         copy : '复制',
@@ -29,13 +29,20 @@ const GLOBAL_LANG = {
         del  : '删除',
         Error : '错误',
         enabled : '启用/禁用',
+        mount : "挂载",
+        mountEFIDisk : "挂载EFI分区",
         hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数',
         pleasecheckmessage : '请勾选需要的选项，然后点击 确定 按钮, 放弃请点击 关闭 按钮',
         editingtablemessage : '下列表格<br>{@1}<br>正在编辑中,请在被编辑的文本框中按回车键保存更改或者按Esc键取消更改',
-        supportversion : '注意: 适配官方发布的OpenCore-0.9.6-RELEASE',
-        footermessage:'适配版本: OpenCore-0.9.6-RELEASE',
+        supportversion : '注意: 适配官方发布的OpenCore-1.0.0-RELEASE',
+        footermessage:'适配版本: OpenCore-1.0.0-RELEASE',
         loadlastplist:'已加载最后一次保存的config.plist内容',
-        plistformaterror:'Plist文件格式错误, 没有找到名为 {@1} 的节点数据'
+        plistformaterror:'Plist文件格式错误, 没有找到名为 {@1} 的节点数据',
+        tip_no_mount_disk:'没有可供挂载的 EFI 磁盘',
+        tip_mount_disk_success:'EFI 分区已经被成功挂载到 {@1} 盘',
+        tip_mount_disk_failed:'EFI 分区挂载操作失败，可能EFI分区已经挂载或者盘符被占用',
+        tip_file_save_success:'文件保存成功',
+        tip_file_save_failed:'文件保存失败，请先确认文件是否存在'
     },
 
     'en-US' : {
@@ -66,12 +73,19 @@ const GLOBAL_LANG = {
         del  : 'Delete',
         Error : 'Error',
         enabled : 'enabled/disabled',
+        mount : "Mount",
+        mountEFIDisk : "Mount EFI partition",
         hexstringlengthisodd : '<{@1}> is not a valid hexadecimal string, because the length of a hexadecimal string cannot be odd',
         pleasecheckmessage : 'Please check the required options, and then click the OK button, to give up, please click the Close button',
         editingtablemessage : 'The following table<br><br>{@1}<br>is being edited. Please press enter in the edited text box to save the changes or press ESC to cancel the changes',
-        supportversion : 'Note: The plist file saved in the current version supports up to the officially released OpenCore-0.9.6-RELEASE',
-        footermessage:'Maximum support: OpenCore-0.9.6-RELEASE',
+        supportversion : 'Note: The plist file saved in the current version supports up to the officially released OpenCore-1.0.0-RELEASE',
+        footermessage:'Maximum support: OpenCore-1.0.0-RELEASE',
         loadlastplist:'The last saved config.plist content has been loaded',
-        plistformaterror:'Plist file format error, no node data named {@1} found'
+        plistformaterror:'Plist file format error, no node data named {@1} found',
+        tip_no_mount_disk:'No EFI disk to mount',
+        tip_mount_disk_success:'The EFI partition has been successfully mounted to the {@1} drive',
+        tip_mount_disk_failed:'The EFI partition mounting operation failed. The EFI partition may have been mounted or the drive letter may have been occupied',
+        tip_file_save_success:'File saved successfully',
+        tip_file_save_failed:'File saving failed, please confirm whether the file exists first'
     }
 };

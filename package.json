@@ -1,8 +1,10 @@
 {
 	"devDependencies": {
+		"@vscode/sudo-prompt": "^9.3.1",
 		"gulp": "^4.0.2",
 		"gulp-concat": "^2.6.1",
 		"gulp-html-replace": "^1.6.2",
-		"gulp-uglify": "^3.0.2"
+		"gulp-uglify": "^3.0.2",
+		"sudo-prompt": "^9.2.1"
 	}
 }
