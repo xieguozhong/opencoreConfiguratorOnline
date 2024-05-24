@@ -1,0 +1,12 @@
+{
+	"main": "index.html",
+	"logo": "logo.png",
+	"preload": "preload.js",
+	"features": [
+		{
+		  "code": "occedit",
+		  "explain": "一个html版本的黑苹果引导程序opencore配置文件编辑器",
+			"cmds":["occedit", "opencore"]
+		}
+	]
+}

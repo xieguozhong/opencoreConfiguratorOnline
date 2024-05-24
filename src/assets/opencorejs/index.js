@@ -257,7 +257,7 @@ const vueproperty = {
       lang: {}, //语言数据, 和浏览器的语言设置挂钩
       configisfull: false, //是否full模式
       configisMOD: false, //是否OpenCore MOD版本
-      current_run_env:"NM", // 当前运行的环境，NM:普通浏览器环境 MU：Macos下的utools WU：Windows下的utools LU: Linux 下的 utools
+      current_run_env:"NM", // 当前运行的环境，NM:普通浏览器环境 MU：Macos下的utools WU：Windows下的utools 
 
       ACPI: {
         Add: [],
