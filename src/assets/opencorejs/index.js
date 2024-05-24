@@ -14,7 +14,7 @@ $(document).ready(function () {
         reader.readAsText(files[0]);
         reader.onload = function () {
           $("#span_footermessage").text(files[0].path);
-          VUEAPP["plistJsonObject"] = formatContext(this.result);
+          VUEAPP["plistJsonObject"] = formatContext(this.result);          
           VUEAPP.initAllData();
         };
         delete reader;
@@ -66,12 +66,12 @@ $(document).ready(function () {
   if (typeof utools === "object") {
     if(utools.isMacOS()) {
       VUEAPP.current_run_env = "MU";
-      getEFIdiskName();
+      getEFIdiskName_MU();
       $("#button_save").click(savePlistUtools);
     } else if(utools.isWindows()){
       VUEAPP.current_run_env = "WU";
       $("#button_save").click(savePlistUtools);
-    } else {
+    } else if(utools.isLinux()) {
       $("#button_save").click(savePlist);
     }
 
@@ -79,6 +79,8 @@ $(document).ready(function () {
     $("#button_save").click(savePlist);
   }
 });
+
+
 
 // 加载 EFI 磁盘(Macos 下 utools 专用 )
 function loadEFIDisk_MU() {
@@ -125,8 +127,10 @@ function loadEFIDisk_WU() {
   checkDriverLetter(122);
 }
 
+
+
 //获取EFI的磁盘名称(Macos utools 专用 )
-function getEFIdiskName() {
+function getEFIdiskName_MU() {
   window.services.getEFIdiskName().then(
     function (res) {
       const arrayRes = res.split("\n");
@@ -253,7 +257,7 @@ const vueproperty = {
       lang: {}, //语言数据, 和浏览器的语言设置挂钩
       configisfull: false, //是否full模式
       configisMOD: false, //是否OpenCore MOD版本
-      current_run_env:"NM", // 当前运行的环境，NM:普通浏览器环境 MU：Macos下的utools WU：Windows下的utools
+      current_run_env:"NM", // 当前运行的环境，NM:普通浏览器环境 MU：Macos下的utools WU：Windows下的utools LU: Linux 下的 utools
 
       ACPI: {
         Add: [],
@@ -768,6 +772,7 @@ const vueproperty = {
       this.getAndSetDictItem(plistData.APFS, this.UEFI.APFS);
 
       //AppleInput
+      //console.log(this.UEFI.AppleInput)
       this.getAndSetDictItem(plistData.AppleInput, this.UEFI.AppleInput);
 
       //Audio
@@ -884,7 +889,8 @@ const vueproperty = {
       this.getAndSetDictItem(plistData.Serial, this.Misc.Serial);
 
       //Serial.Custom
-      this.getAndSetDictItem(plistData.Custom, this.Misc.Serial.Custom);
+      this.getAndSetDictItem(plistData.Serial.Custom, this.Misc.Serial.Custom);
+
     },
 
     initKernel: function () {
