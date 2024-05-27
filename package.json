@@ -1,10 +1,18 @@
 {
 	"devDependencies": {
 		"@vscode/sudo-prompt": "^9.3.1",
+		"got": "^14.3.0",
 		"gulp": "^4.0.2",
 		"gulp-concat": "^2.6.1",
 		"gulp-html-replace": "^1.6.2",
 		"gulp-uglify": "^3.0.2",
 		"sudo-prompt": "^9.2.1"
+	},
+	"dependencies": {
+		"adm-zip": "^0.5.12",
+		"download": "^8.0.0",
+		"request": "^2.88.2",
+		"unzip": "^0.1.11",
+		"unzipper": "^0.11.6"
 	}
 }

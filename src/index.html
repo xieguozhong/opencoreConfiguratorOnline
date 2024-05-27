@@ -187,29 +187,80 @@
 							</ul><!-- /.breadcrumb -->
 						</div>
 
-						<div v-if="current_run_env === 'MU'" class="nav-search" style="width:240px;margin-right: 420px;">
-							<select style="width:140px;" id="select_efi_disk"></select>&nbsp;<button class="btn btn-minier btn-default" onclick="loadEFIDisk_MU();">{{lang.mount}}</button>
+						<div v-if="current_run_env === 'MU'" class="nav-search" style="width:240px;margin-right: 140px;display: flex;align-items: flex-end;">
+							<select style="width:140px;" id="select_efi_disk"></select>
+							<span class="btn-group">
+								<button data-toggle="dropdown" class="btn btn-xs btn-white dropdown-toggle" aria-expanded="false" style="height: 30px;">
+								  <span class="ace-icon fa fa-caret-down icon-only"></span>
+								</button>
+
+								<ul class="dropdown-menu dropdown-info dropdown-menu-right">
+								  <li>
+									<a href="void(0)" onclick="loadEFIDisk_MU();">{{lang.mountEFIDisk}}</a>
+								  </li>
+
+								  <li v-if="is_opencore_upgrade" class="divider"></li>
+
+								  <li v-if="is_opencore_upgrade">
+									<a href="void(0)" onclick="checkEFIPartitionMounted()">{{lang.upgrade_opencore}}</a>
+								  </li>
+
+								</ul>
+							  </span>
+
 						</div>
-						<div v-if="current_run_env === 'WU'" class="nav-search" style="width:240px;margin-right: 420px;">
+
+						<div v-if="current_run_env === 'WU'" class="nav-search" style="width:240px;margin-right: 140px;">
 							<button class="btn btn-minier btn-default" onclick="loadEFIDisk_WU();">{{lang.mountEFIDisk}}</button>
 						</div>
 
-						<div class="nav-search" style="width:200px;margin-right: 210px;" >
-							<input type="file" disabled id="id-input-file-2" />
-						</div><!-- /.nav-search -->
 
-                        <div class="pull-right" style="width: 210px;">
-							<button class="btn btn-minier btn-success" id="button_save" >{{lang.down}}</button>&nbsp;
-							<button class="btn btn-minier btn-success" onclick="copyPlist();">{{lang.copy}}</button>
-							<label class="mintip" :title="title.PlatformInfo.configisfull" style="margin-left: 10px">
-								<input v-model="configisfull" type="checkbox" class="ace" />
-								<span class="lbl"> Custom</span>
-							</label>
-							<label class="mintip" :title="title.PlatformInfo.configisMOD" style="margin-left: 10px">
-								<input v-model="configisMOD" type="checkbox" class="ace" />
-								<span class="lbl"> MOD</span>
-							</label>
+						<div class="pull-right" style="display: inline-block; align-items: flex-end;">
+							<div class="nav-search" style="width:200px;margin-right: 10px;" >
+								<input type="file" disabled id="id-input-file-2" />
+							</div><!-- /.nav-search -->
+							<div class="btn-group">
+								<button data-toggle="dropdown" class="btn btn-xs btn-white dropdown-toggle" aria-expanded="false" style="height: 30px;">
+								  <span class="ace-icon fa fa-caret-down icon-only"></span>
+								</button>
+
+								<ul class="dropdown-menu dropdown-info dropdown-menu-right">
+								  <li>
+									<a href="void(0)" id="button_save">{{lang.down}}</a>
+								  </li>
+								  <li class="divider"></li>
+								  <li>
+									<a href="void(0)" id="button_save" onclick="copyPlist();">{{lang.copy}}</a>
+								  </li>
+								  <li class="divider"></li>
+								  <li>
+									<label class="mintip" :title="title.PlatformInfo.configisfull" style="margin-left: 10px;">
+										<input v-model="configisfull" type="checkbox" class="ace" />
+										<span class="lbl"> Custom</span>
+									</label>
+								  </li>
+
+								  <!--
+									<li class="divider"></li>
+								  <li>
+									<label class="mintip" :title="title.PlatformInfo.configisMOD" style="margin-left: 10px">
+									<input v-model="configisMOD" type="checkbox" class="ace" />
+									<span class="lbl"> MOD</span>
+								</label></li>
+								//-->
+								</ul>
+							</div>
 						</div>
+
+						<!--
+                        <div class="pull-right" style="width: 210px;">
+							<button class="btn btn-minier btn-success" id="button_save">{{lang.down}}</button>&nbsp;
+							<button class="btn btn-minier btn-success" onclick="copyPlist();">{{lang.copy}}</button>
+
+
+						</div>
+
+						//-->
 					</div>
 
 					<div class="page-content" style="padding-right:0px;padding-left:0px;">
@@ -1762,9 +1813,9 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span id="span_footermessage" class="blue bolder">{{lang.footermessage}}</span>
+							<span class="blue bolder">{{lang.footermessage}}</span>
 						</span>
-
+						<span class="pull-right" id="span_footer_right_message"></span>
 					</div>
 				</div>
 			</div>
