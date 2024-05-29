@@ -29,6 +29,7 @@ gulp.task('jss_1',()=>{
         'src/assets/opencorejs/comm.js',
         'src/assets/opencorejs/initGirdtable.js',
         'src/assets/opencorejs/index.js',
+        'src/assets/opencorejs/ocefi.js',
         'src/assets/opencorejs/generatePlist.js'
         ])
         .pipe(concat('opencore.js'))    //合并成为opencore.min.js文件
@@ -38,9 +39,9 @@ gulp.task('jss_1',()=>{
 });
 
 gulp.task('jss_2',()=>{
-    return gulp.src([        
+    return gulp.src([
         'src/assets/commjs/vue.min.js',
-        'src/assets/commjs/jquery.min.js',		
+        'src/assets/commjs/jquery.min.js',
         'src/assets/commjs/jquery-ui.custom.min.js',
         'src/assets/commjs/grid.base.min.js',
         'src/assets/commjs/grid.common.js',
@@ -50,7 +51,7 @@ gulp.task('jss_2',()=>{
         'src/assets/commjs/grid.locale-en.min.js',
         'src/assets/commjs/bootstrap.min.js',
         'src/assets/commjs/ace.min.js',
-        'src/assets/commjs/ace-elements.min.js',		
+        'src/assets/commjs/ace-elements.min.js',
         'src/assets/commjs/FileSaver.min.js',
         'src/assets/commjs/jquery.format.min.js',
         'src/assets/commjs/clipboard.min.js',

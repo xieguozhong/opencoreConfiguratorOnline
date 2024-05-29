@@ -29,7 +29,8 @@ const GLOBAL_LANG = {
         del  : '删除',
         Error : '错误',
         enabled : '启用/禁用',
-        mountEFIDisk : "挂载EFI分区",
+        mountEFIDisk : "挂载系统EFI分区",
+        mountSelectedDisk : "挂载选定EFI分区",
         hexstringlengthisodd : '<{@1}>不是有效的十六进制字符串, 因为十六进制字符串的长度不能为奇数',
         pleasecheckmessage : '请勾选需要的选项，然后点击 确定 按钮, 放弃请点击 关闭 按钮',
         editingtablemessage : '下列表格<br>{@1}<br>正在编辑中,请在被编辑的文本框中按回车键保存更改或者按Esc键取消更改',
@@ -44,7 +45,7 @@ const GLOBAL_LANG = {
         tip_file_save_failed:'文件保存失败，请先确认文件是否存在',
         span_foot_right_opencore_version:"OpenCore版本信息：本机{@1}，最新{@2}",
         upgrade_opencore:"升级 OpenCore",
-        tip_EFI_partition_not_exist:"EFI 分区 “{@1}” 不存在，请先挂载 EFI 分区，否则无法升级",
+        tip_EFI_partition_not_exist:"请先挂载 EFI 分区“{@1}” ，否则无法升级",
         tip_is_continue_upgrading_opencore:"是否要继续升级 “{@1}” 分区中的 OpenCore？"
     },
 
@@ -76,7 +77,8 @@ const GLOBAL_LANG = {
         del  : 'Delete',
         Error : 'Error',
         enabled : 'enabled/disabled',
-        mountEFIDisk : "Mount EFI partition",
+        mountEFIDisk : "Mount system EFI partition",
+        mountSelectedDisk : "Mount the selected EFI partition",
         hexstringlengthisodd : '<{@1}> is not a valid hexadecimal string, because the length of a hexadecimal string cannot be odd',
         pleasecheckmessage : 'Please check the required options, and then click the OK button, to give up, please click the Close button',
         editingtablemessage : 'The following table<br><br>{@1}<br>is being edited. Please press enter in the edited text box to save the changes or press ESC to cancel the changes',
@@ -91,7 +93,7 @@ const GLOBAL_LANG = {
         tip_file_save_failed:'File saving failed, please confirm whether the file exists first',
         span_foot_right_opencore_version:"OpenCore version information: native{@1}, latest{@2}",
         upgrade_opencore:"Upgrade OpenCore",
-        tip_EFI_partition_not_exist:"The EFI partition “{@1}” does not exist. Please mount the EFI partition first, otherwise it cannot be upgrade",
+        tip_EFI_partition_not_exist:"Please mount the EFI partition “{@1}” first, otherwise the upgrade cannot be done",
         tip_is_continue_upgrading_opencore:"Do you want to continue upgrading OpenCore in the “{@1}” partition？"
     }
 };

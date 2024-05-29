@@ -177,8 +177,12 @@
 							</ul><!-- /.breadcrumb -->
 						</div>
 
-						<div v-if="current_run_env === 'MU'" class="nav-search" style="width:240px;margin-right: 140px;display: flex;align-items: flex-end;">
-							<select style="width:140px;" id="select_efi_disk"></select>
+						<div v-if="current_run_env === 'MU'" class="nav-search" style="width:240px;margin-right: 150px;display: flex;align-items: flex-end;">
+							<select style="width:150px;" v-model="select_efi_drives.selected">
+								<option v-for="option in select_efi_drives.options" v-bind:value="option.value" v-bind:partitionname="option.partitionname">
+									{{ option.text }}&nbsp;({{option.ismounted ? '已挂载' : '未挂载'}})
+								</option>
+							</select>
 							<span class="btn-group">
 								<button data-toggle="dropdown" class="btn btn-xs btn-white dropdown-toggle" aria-expanded="false" style="height: 30px;">
 								  <span class="ace-icon fa fa-caret-down icon-only"></span>
@@ -186,7 +190,7 @@
 
 								<ul class="dropdown-menu dropdown-info dropdown-menu-right">
 								  <li>
-									<a href="void(0)" onclick="loadEFIDisk_MU();">{{lang.mountEFIDisk}}</a>
+									<a href="void(0)" onclick="loadEFIDisk_MU();">{{lang.mountSelectedDisk}}</a>
 								  </li>
 
 								  <li v-if="is_opencore_upgrade" class="divider"></li>
@@ -200,8 +204,28 @@
 
 						</div>
 
-						<div v-if="current_run_env === 'WU'" class="nav-search" style="width:240px;margin-right: 140px;">
-							<button class="btn btn-minier btn-default" onclick="loadEFIDisk_WU();">{{lang.mountEFIDisk}}</button>
+						<div v-if="current_run_env === 'WU'" class="nav-search" style="width:240px;margin-right: 150px;display: flex;align-items: flex-end;">
+							<select style="width:150px;" v-model="select_efi_drives.selected">
+								<option v-for="option in select_efi_drives.options" v-bind:value="option.value">
+									{{ option.text }}
+								</option>
+							</select>
+							<span class="btn-group">
+								<button data-toggle="dropdown" class="btn btn-xs  btn-white dropdown-toggle" aria-expanded="false" style="height: 30px;">
+									<i class="ace-icon fa fa-angle-down icon-on-right"></i>
+								</button>
+
+								<ul class="dropdown-menu dropdown-info dropdown-menu-right">
+									<li>
+										<a href="void(0)" onclick="loadEFIDisk_WU();">{{lang.mountEFIDisk}}</a>
+									</li>
+									<li class="divider"></li>
+									<li v-bind:class="{ 'disabled': select_efi_drives.selected.length === 0 }">
+										<a href="void(0)" onclick="upgradeOpencore_Windows()">{{lang.upgrade_opencore}}<span v-if="select_efi_drives.selected.length === 0">（先选择EFI分区）</span></a>
+									</li>
+								</ul>
+							</span>
+
 						</div>
 
 
@@ -1805,7 +1829,9 @@
 						<span class="bigger-120">
 							<span class="blue bolder">{{lang.footermessage}}</span>
 						</span>
-						<span class="pull-right" id="span_footer_right_message"></span>
+						<span class="pull-right" id="span_footer_right_message">
+
+						</span>
 					</div>
 				</div>
 			</div>

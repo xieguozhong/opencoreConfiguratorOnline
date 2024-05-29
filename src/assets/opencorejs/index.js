@@ -69,201 +69,19 @@ $(document).ready(function () {
     if (utools.isMacOS()) {
       VUEAPP.current_run_env = "MU";
       getEFIdiskName_MU();
-      checkOpenCoreVersion();
+
     } else if (utools.isWindows()) {
       VUEAPP.current_run_env = "WU";
+      getEfiDiskList_windows();
     }
-
+    checkOpenCoreVersion();
 
   } else {
     $("#button_save").click(savePlist);
   }
 });
 
-//检查 EFI 分区是否已经挂载，如果没有挂载就提示挂载
-function checkEFIPartitionMounted() {
-  const partitionname = $("#select_efi_disk option:selected").attr(
-    "partitionname"
-  );
 
-  window.services
-    .checkFolderExist(`/Volumes/${partitionname}/EFI`)
-    .then(function (isExist) {
-      if (isExist) {
-        //console.log("EFI 分区存在");
-        const cf = confirm(
-          fillLangString(
-            VUEAPP.lang.tip_is_continue_upgrading_opencore,
-            partitionname
-          )
-        );
-        if (cf) upgradeOpencore(`/Volumes/${partitionname}/EFI`);
-      } else {
-        alert(
-          fillLangString(VUEAPP.lang.tip_EFI_partition_not_exist, partitionname)
-        );
-      }
-    });
-}
-
-//检测本地和最新的 OpenCore 版本
-function checkOpenCoreVersion() {
-  const tmpversion = VUEAPP.array_opencor_version;
-  window.services
-    .getGithubOpencoreVersion()
-    .then(function (res) {
-      tmpversion.push(res);
-      tmpversion.push(Number((res.match(/\d+/g) || []).join("")));
-      return window.services.getLocalOpencoreVersion();
-    })
-    .then(function (res) {
-      const lv = res.substr(res.indexOf("REL-")).split("-");
-      if (lv.length === 5) {
-        tmpversion.push(lv[1].split("").join("."));
-        tmpversion.push(Number(lv[1]));
-        let span_foot_right_opencore_version = fillLangString(
-          VUEAPP.lang.span_foot_right_opencore_version,
-          tmpversion[2],
-          tmpversion[0]
-        );
-        if (tmpversion[1] > tmpversion[3]) {
-          VUEAPP.is_opencore_upgrade = true;
-        }
-        $("#span_footer_right_message").text(span_foot_right_opencore_version);
-      }
-    })
-    .catch(function (error) {
-      console.log(error, "error");
-    });
-}
-
-//更新 Opencore
-function upgradeOpencore(EFIPath) {
-  const tempPath = utools.getPath("temp");
-  const arrayFileList = ["BOOT/BOOTx64.efi", "OC/OpenCore.efi"];
-  const unzipPath = `${tempPath}OpenCore-${VUEAPP.array_opencor_version[0]}-RELEASE`;
-  showTipModal("开始下载文件");
-  const task = window.services.downloadOpencore(
-    tempPath,
-    VUEAPP.array_opencor_version[0]
-  );
-  task
-    .then((downFile) => {
-      showTipModal("文件下载成功, 开始解压文件,保存路径：" + downFile);
-      return window.services.unzipFile(downFile, unzipPath);
-    })
-    .then((unzippath) => {
-      showTipModal("文件解压成功到：" + unzippath);
-      return window.services.getFileNameList(`${EFIPath}/OC/Drivers`);
-    })
-    .then((files) => {
-      files.forEach((file) => {
-        if (file.indexOf("._") === -1) {
-          arrayFileList.push("OC/Drivers/" + file);
-        }
-      });
-
-      return window.services.getFileNameList(`${EFIPath}/OC/Tools`);
-    })
-    .then((files) => {
-      files.forEach((file) => {
-        if (file.indexOf("._") === -1) {
-          arrayFileList.push("OC/Tools/" + file);
-        }
-      });
-
-      upgradeFileOnebyOne(0);
-    })
-    .catch(function (error) {
-      console.log(error, "error");
-    });
-
-  function upgradeFileOnebyOne(z) {
-    if (z > arrayFileList.length - 1) {
-      showTipModal("OpenCore 更新完成，共更新了 " + z + " 个文件");
-      return;
-    }
-    const source = `${unzipPath}/X64/EFI/${arrayFileList[z]}`;
-    const destination = `${EFIPath}/${arrayFileList[z]}`;
-    showTipModal(z + 1 + " 更新文件" + destination);
-    console.info(z + 1 + " 更新文件" + destination);
-    window.services.copyFile(source, destination).then(() => {
-      upgradeFileOnebyOne(z + 1);
-    });
-  }
-}
-
-// 加载 EFI 磁盘(Macos 下 utools 专用 )
-function loadEFIDisk_MU() {
-  const BSDname = $("#select_efi_disk").val();
-  if (BSDname === "") {
-    alert(VUEAPP.lang.tip_no_mount_disk);
-    return;
-  }
-
-  window.services.loadEFIDisk(BSDname).then(
-    function (res) {
-      console.log(res);
-      showTipModal(res);
-    },
-    function (error) {
-      showTipModal(error, "error");
-    }
-  );
-}
-
-// 加载 EFI 磁盘(Windows 下 utools 专用 )
-function loadEFIDisk_WU() {
-  function checkDriverLetter(dl) {
-    if (dl < 97) {
-      showTipModal("EFI 分区挂载操作失败，所有盘符都被占用，厉害了", "error");
-      return;
-    }
-    const diskno = String.fromCharCode(dl);
-    window.services.checkDriveLetter(diskno).then(
-      function () {
-        checkDriverLetter(dl - 1);
-      },
-      function () {
-        window.services.loadEFIDisk(diskno).then(
-          function () {
-            showTipModal(
-              fillLangString(VUEAPP.lang.tip_mount_disk_success, diskno)
-            );
-          },
-          function () {
-            showTipModal(VUEAPP.lang.tip_mount_disk_failed, "error");
-          }
-        );
-      }
-    );
-  }
-
-  checkDriverLetter(122);
-}
-
-//获取EFI的磁盘名称(Macos utools 专用 )
-function getEFIdiskName_MU() {
-  window.services.getEFIdiskName().then(
-    function (res) {
-      const arrayRes = res.split("\n");
-      const jq_select_efi_disk = $("#select_efi_disk");
-      for (let i = 0; i < arrayRes.length; i++) {
-        const itval = arrayRes[i].split(/\s{2,}/);
-        if (itval.length === 5 && itval[2].indexOf("EFI") === 0) {
-          jq_select_efi_disk.append(
-            `<option partitionName='${itval[2].substr(
-              itval[2].indexOf("EFI") + 4
-            )}' value='${itval[4]}'>${itval[2] + "_" + itval[4]}</option>`
-          );
-        }
-      }
-    },
-    function (error) {
-      console.log("出错了：" + error);
-    }
-  );
-}
 
 // ACPI Add 和 UEFI Drivers Kernel_Add处添加文件
 function addFile(fileid) {
@@ -375,6 +193,7 @@ const vueproperty = {
       current_run_env: "NM", // 当前运行的环境，NM:普通浏览器环境 MU：Macos下的utools WU：Windows下的utools
       is_opencore_upgrade: false, //标记 opencore 是否可以升级，可以升级为true, 用于决定是否显示 升级 opencore 按钮
       array_opencor_version: [], //记录 opencore 的版本好，格式为字符串数组['1.0.0',100,'0.9.9',99] 分别代表：官方版本，官方版本数字号，本地版本，本地版本数字号
+      select_efi_drives:{selected:'', options:[]}, //记录windows下已经挂载的efi分区盘符
 
       ACPI: {
         Add: [],

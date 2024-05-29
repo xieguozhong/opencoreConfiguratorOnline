@@ -12,7 +12,7 @@ function enabledFormat(cellvalue = false) {
 }
 
 function formatInteger(cellvalue = 0) {
-    
+
     if(cellvalue === 0) {
         return 0;
     }
@@ -32,42 +32,48 @@ function formatInteger(cellvalue = 0) {
 
 /**
  * 把Plist的文本内容转换成json对象返回
- * @param {string} context 
+ * @param {string} context
  * @returns JSON Object
  */
 function formatContext(context='') {
-    context = context.replace(/[\t\r]/g,'');
-    const arrayContext = context.split('\n');
-    let result = '';
+    try {
+        context = context.replace(/[\t\r]/g,'');
+        const arrayContext = context.split('\n');
+        let result = '';
 
-    for(let i=0,len=arrayContext.length;i<len;i++) {
-        result += arrayContext[i].trim();
+        for(let i=0,len=arrayContext.length;i<len;i++) {
+            result += arrayContext[i].trim();
+        }
+
+        result = PlistParser.parse(result);
+        result = PlistParser.serialize(result);
+
+        const fillstring = (ke,va) => {
+            if(getTypeof(va) === 'array' && va[1] === 'string') {
+                va[0] = b64Decode(va[0]);
+            }
+            return va;
+        };
+
+        result = JSON.parse(result,fillstring);
+        bljsonobj(result);
+
+        return result;
+
+    }catch(err) {
+        console.log("错误：" + err);
+        showTipModal("错误，配置文件格式不对，请检查<br>" + err, 'warning');
     }
 
-    result = PlistParser.parse(result);
-    result = PlistParser.serialize(result);
-    
-    const fillstring = (ke,va) => {
-        if(getTypeof(va) === 'array' && va[1] === 'string') {
-            va[0] = b64Decode(va[0]);
-        }
-        return va;
-    };
-
-    result = JSON.parse(result,fillstring);
-    bljsonobj(result);
-        
-    return result;
-    
 }
 
 /**
  * 遍历JSON Object 对象,把编过码的键值全部改回来
- * @param {Object} obj 
+ * @param {Object} obj
  */
 function bljsonobj(obj) {
     Object.entries(obj).forEach(([key, value]) => {
-        
+
         const tf = getTypeof(value);
 
         obj[b64Decode(key)] = value;
@@ -78,24 +84,24 @@ function bljsonobj(obj) {
         if(tf === 'array') {
             const lenarr = value.length;
             for(let it=0;it<lenarr;it++) {
-                
+
                 if(getTypeof(value[it]) === 'object') {
                     bljsonobj(value[it]);
-                } 
-                
+                }
+
             }
         } else if(tf === 'object') {
             bljsonobj(value);
 
         }
-        
+
     });
 }
 
 /**
  * base64转16进制
  * Thanks to http://www.tomeko.net/online_tools/base64.php?lang=en
- * @param {string} strbase64 
+ * @param {string} strbase64
  * @returns string
  */
 function base64toHex(strbase64='') {
@@ -126,7 +132,7 @@ function base64toHex(strbase64='') {
         if (orig_input != input){
             showTipModal (VUEAPP.lang.CharactersOutsideWarning, 'warning');
         }
-            
+
         if (input.length % 4) {
             showTipModal (VUEAPP.lang.InputlengthError, 'error');
             return "";
@@ -167,8 +173,8 @@ function base64toHex(strbase64='') {
 /**
  * 16进制转base64
  * Thanks to http://www.tomeko.net/online_tools/hex_to_base64.php?lang=en
- * @param {*} strhex 
- * @returns 
+ * @param {*} strhex
+ * @returns
  */
 function hextoBase64(strhex) {
     //consolelog(strhex);
@@ -231,7 +237,7 @@ function hextoBase64(strhex) {
 
 /**
  * 当输入 ture, 'true', '1' 时转为 '<true/>' ,其他的一律转为 '<false/>'
- * @param {string} strbool 
+ * @param {string} strbool
  * @returns string
  */
 function toBoolString(strbool) {
@@ -244,7 +250,7 @@ function toBoolString(strbool) {
 
 /**
  * 输入 true 转为 '<true/>' ,其他的一律转为 '<false/>'
- * @param {string} strbool 
+ * @param {string} strbool
  * @returns string
  */
 function toBoolStringStrict(strbool) {
@@ -257,12 +263,12 @@ function toBoolStringStrict(strbool) {
 
 /**
  * jqgrid 中的formatter使用, 返回一个可以带默认值得函数
- * @param {string} defaultvalue 
+ * @param {string} defaultvalue
  * @returns function
  */
 function getPlistEncodeFunction(defaultvalue) {
     return (context='') => {
-        
+
         if(context === '' || context[0] === '') {
             return defaultvalue;
         }
@@ -270,16 +276,16 @@ function getPlistEncodeFunction(defaultvalue) {
 
         if(getTypeof(context) === 'array') {
             return context[1] === 'data' ? base64toHex(context[0]) : context[0]
-        } 
-    
-        return context;       
-            
+        }
+
+        return context;
+
     }
 }
 
 /**
  * jqgrid 中的formatter使用, 把正确的值解析出来
- * @param {string} context 
+ * @param {string} context
  * @returns string
  */
 function plistEncode(context='') {
@@ -288,7 +294,7 @@ function plistEncode(context='') {
         return '';
     }
 
-    
+
     if(getTypeof(context) === 'array') {
         switch(context[1]) {
             case 'data':
@@ -305,15 +311,15 @@ function plistEncode(context='') {
     }
 
     return htmlEscape(context);
-        
+
 }
 
 /**
  * 1 检测num变量是否为数值
  * 2 如果不是弹出提示信息,返回0
  * 3 如果是根据第二个参数转换后返回, 默认为parseInt函数
- * @param {String} num 
- * @param {Function} fnparse 
+ * @param {String} num
+ * @param {Function} fnparse
  * @returns Number
  */
 function toNumber(num, fnparse=parseInt) {
@@ -326,7 +332,7 @@ function toNumber(num, fnparse=parseInt) {
 
 /**
  * 在字符串两边加上<string>, 而且字符串中的 < > & 这3个符号会被转义
- * @param {String} context 
+ * @param {String} context
  * @returns String
  */
 function addCharstring(context='') {
@@ -335,7 +341,7 @@ function addCharstring(context='') {
 
 /**
  * 复制内容到剪贴板中
- * @param {String} rowdata 
+ * @param {String} rowdata
  */
 function copyDatatoClipboard(rowdata) {
 	$("body").append('<div id="hiddendivforcopy"><button id="hiddenbuttonforcopy">Copy</button></div>');
@@ -379,20 +385,20 @@ function showTextareaModal() {
 
 /**
  * fillLangString('my {@1} is {@2}', 'name', 'mady')
- * @param  {...String} args 
+ * @param  {...String} args
  * @returns String
  */
-function fillLangString(...args) {    
-	for(let i=1,len=args.length;i<len;i++) {      
+function fillLangString(...args) {
+	for(let i=1,len=args.length;i<len;i++) {
 		args[0] = args[0].replace('{@' + i + '}', args[i]);
-	}  
+	}
 	return args[0];
 }
 
 /**
  * 把一个json字符串转换成json对象,在复制粘贴功能中使用
  * 如果转换失败返回 false
- * @param {string} str 
+ * @param {string} str
  * @returns Object
  */
 function stringToJSON(str) {
@@ -407,7 +413,7 @@ function stringToJSON(str) {
 
 /**
  * 根据表格关键字去全局变量 GLOBAL_MAP_TABLE 中取表格对象
- * @param {string} tbkey 
+ * @param {string} tbkey
  * @returns Object
  */
 function getJqgridObjectbyKey(tbkey) {
@@ -420,7 +426,7 @@ function consolelog(msg) {
 
 /**
  * 生产UUID
- * @returns 
+ * @returns
  */
 function uuid() {
   let temp_url = URL.createObjectURL(new Blob());
@@ -444,7 +450,7 @@ function getMaxrowid(objGridTable) {
  * 浅拷贝一个对象,delList中是不要的属性
  * @param {Object} target  要拷贝的对象
  * @param {Array} delList 不需要拷贝的属性列表
- * @returns 
+ * @returns
  */
 function clone(target, delList=[]) {
 
@@ -453,7 +459,7 @@ function clone(target, delList=[]) {
         if(delList.includes(key) === false && Reflect.has(target, key)) {
             tempObj[key] = target[key];
         }
-        
+
     }
     return tempObj;
 
@@ -477,7 +483,7 @@ function clone(target, delList=[]) {
 
 /**
  * 得到变量的真实类型
- * @param {object} obj 
+ * @param {object} obj
  * @returns string
  */
 function getTypeof(obj) {
@@ -486,7 +492,7 @@ function getTypeof(obj) {
 
 /**
  * 转义字符串中的 & < > 3个符号, 在生产plist文本内容时使用
- * @param {string} context 
+ * @param {string} context
  * @returns string
  */
 function htmlEscape(context=''){
@@ -495,7 +501,7 @@ function htmlEscape(context=''){
 
 /**
  * 还原字符串中的 & < > 3个符号, 在读取plist的内容时使用
- * @param {string} context 
+ * @param {string} context
  * @returns string
  */
 function htmlReescape(str = '') {
@@ -504,7 +510,7 @@ function htmlReescape(str = '') {
 
 /**
  * 由于特殊字符串导致JSON.parse()出错,用这个函数在读取plist文件后把字符串类型数据进行base64编码
- * @param {string} str 
+ * @param {string} str
  * @returns string
  */
 function b64Encode(str='') {
@@ -513,7 +519,7 @@ function b64Encode(str='') {
 
 /**
  * b64Encode反编码, 在plist内容成功被JSON.parse后把字符串转回来
- * @param {strting} str 
+ * @param {strting} str
  * @returns string
  */
 function b64Decode(str='') {
