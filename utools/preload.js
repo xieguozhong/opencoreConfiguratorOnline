@@ -89,9 +89,8 @@ window.services = {};
 
     //随机选择一个代理服务器下载
     const mirrors = [
-      'mirror.ghproxy.com',
+      'ghp.ci',
       'github.moeyy.xyz',
-      'x.haod.me',
       'mirrors.chenby.cn'
     ];
 

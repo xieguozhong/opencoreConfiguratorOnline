@@ -673,7 +673,7 @@ function getUEFI() {
     ["Address", "Size"],
   );
 
-  return uefiContext + "</dict>";
+  return uefiContext + "<key>Unload</key><array/></dict>";
 }
 
 //*****************公共函数区**********************

@@ -79,6 +79,21 @@ $(document).ready(function () {
   } else {
     $("#button_save").click(savePlist);
   }
+
+  //显示适配版本信息
+  (function(){
+    const mirrors = [
+      'ghp.ci',
+      'github.moeyy.xyz',
+      'mirrors.chenby.cn'
+    ];
+    fetch(`https://${mirrors[Math.floor(Math.random()*mirrors.length)]}/https://raw.githubusercontent.com/xieguozhong/opencoreConfiguratorOnline/refs/heads/main/data.json`)
+      .then((response) => response.json())
+      .then((data) => {
+        VUEAPP.lang.footermessage += data.supportversion;
+      });
+  })();
+
 });
 
 
@@ -191,7 +206,7 @@ const vueproperty = {
       configisfull: false, //是否full模式
       configisMOD: false, //是否OpenCore MOD版本
       current_run_env: "NM", // 当前运行的环境，NM:普通浏览器环境 MU：Macos下的utools WU：Windows下的utools
-      is_opencore_upgrade: false, //标记 opencore 是否可以升级，可以升级为true, 用于决定是否显示 升级 opencore 按钮
+      //is_opencore_upgrade: false, //标记 opencore 是否可以升级，可以升级为true, 用于决定是否显示 升级 opencore 按钮
       array_opencor_version: [], //记录 opencore 的版本好，格式为字符串数组['1.0.0',100,'0.9.9',99] 分别代表：官方版本，官方版本数字号，本地版本，本地版本数字号
       select_efi_drives:{selected:'', options:[]}, //记录windows下已经挂载的efi分区盘符
 

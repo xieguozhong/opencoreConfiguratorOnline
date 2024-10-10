@@ -72,9 +72,9 @@ function checkOpenCoreVersion() {
         if (lv.length === 5) {
         tmpversion.push(lv[1].split("").join("."));
         tmpversion.push(Number(lv[1]));
-        if (tmpversion[1] > tmpversion[3]) {
-          VUEAPP.is_opencore_upgrade = true;
-        }
+        //if (tmpversion[1] > tmpversion[3]) {
+        //  VUEAPP.is_opencore_upgrade = true;
+        //}
       } else {
         tmpversion.push('---');
         tmpversion.push(0);
@@ -192,6 +192,7 @@ function loadEFIDisk_WU() {
       return;
     }
     const diskno = String.fromCharCode(dl);
+
     window.services.checkDriveLetter(diskno).then(
       function () {
         checkDriverLetter(dl - 1);
@@ -214,8 +215,8 @@ function loadEFIDisk_WU() {
       }
     );
   }
-
-  checkDriverLetter(122);
+  //从 P 找到 A
+  checkDriverLetter(112);
 }
 
 //获取EFI的磁盘名称(Macos utools 专用 )
