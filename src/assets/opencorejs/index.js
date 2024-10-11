@@ -13,7 +13,9 @@ $(document).ready(function () {
         const reader = new FileReader();
         reader.readAsText(files[0]);
         reader.onload = function () {
-          VUEAPP.lang.footermessage = files[0].path;
+          if(VUEAPP.current_run_env == 'MU' || VUEAPP.current_run_env == 'WU') {
+            VUEAPP.lang.footermessage = files[0].path;
+          }           
           VUEAPP["plistJsonObject"] = formatContext(this.result);
           VUEAPP.initAllData();
         };
