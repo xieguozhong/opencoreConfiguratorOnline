@@ -1,7 +1,7 @@
 # opencoreConfiguratorOnline
 
 
-最新适配版本: OpenCore-1.0.0-RELEASE(主要因为 OpenCore 的配置文件已经好几个版本没有变更了）
+最新适配版本: OpenCore-1.0.2-RELEASE(简单的添加<key>Unload</key><array/>,还不知道array中的格式什么样子）
 
 
 web版的OpenCore引导工具config.plist的在线编辑器
