@@ -44,5 +44,9 @@ web版的OpenCore引导工具config.plist的在线编辑器
 8 Macos下挂载 EFI 分区
 ![image](https://github.com/xieguozhong/opencoreConfiguratorOnline/blob/main/readme/mountefidisk.gif)
 
+9 Macos下更新 opencore
+![image](https://github.com/xieguozhong/opencoreConfiguratorOnline/blob/main/readme/upgradeopencore.gif)
+
+
 
 
