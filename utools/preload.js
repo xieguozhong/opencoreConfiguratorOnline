@@ -91,7 +91,10 @@ window.services = {};
     const mirrors = [
       'ghp.ci',
       'github.moeyy.xyz',
-      'mirrors.chenby.cn'
+      'cf.ghproxy.cc',
+      'mirror.ghproxy.com',
+      'hub.gitmirror.com',
+      'gh.api.99988866.xyz'
     ];
 
     const durl = `https://${mirrors[Math.floor(Math.random()*mirrors.length)]}/https://github.com/acidanthera/OpenCorePkg/releases/download/${version}/OpenCore-${version}-RELEASE.zip`;
@@ -201,7 +204,7 @@ window.services = {};
     // 2 挂载指定的 EFI 磁盘
     window.services.loadEFIDisk = (BSDname) => {
       const stringShell = `diskutil mount /dev/${BSDname}`;
-      const sudo = require("./public/sudoprompt");
+      const sudo = require("./public/sudo-prompt");
       console.log("执行命令：" + stringShell);
       return new Promise((resolve, reject) => {
         sudo.exec(

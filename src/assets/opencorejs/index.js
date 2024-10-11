@@ -85,7 +85,10 @@ $(document).ready(function () {
     const mirrors = [
       'ghp.ci',
       'github.moeyy.xyz',
-      'mirrors.chenby.cn'
+      'cf.ghproxy.cc',
+      'mirror.ghproxy.com',
+      'hub.gitmirror.com',
+      'gh.api.99988866.xyz'
     ];
     fetch(`https://${mirrors[Math.floor(Math.random()*mirrors.length)]}/https://raw.githubusercontent.com/xieguozhong/opencoreConfiguratorOnline/refs/heads/main/data.json`)
       .then((response) => response.json())
