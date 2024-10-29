@@ -29,7 +29,7 @@ function upgradeOpencore_Windows() {
   const selected = VUEAPP.select_efi_drives.selected;
   if (selected.length === 0) return;
 
-  const iscontinue = confirm("windows下无法获取本地OpenCore版本，官方最新版本为：" + VUEAPP.array_opencor_version[0] + ", 需要继续升级“" + selected.toUpperCase() + ":/EFI”中的Opencore吗？");
+  const iscontinue = confirm("windows下无法获取本地OpenCore版本，官方最新版本为：" + VUEAPP.opencore_latest_version + ", 需要继续升级“" + selected.toUpperCase() + ":/EFI”中的Opencore吗？");
   if (iscontinue) {
     upgradeOpencore(selected + ':/EFI');
   }
@@ -37,9 +37,9 @@ function upgradeOpencore_Windows() {
 
 }
 
-//检查 EFI 分区是否已经挂载，如果没有挂载就提示挂载
-function checkEFIPartitionMounted() {
-
+//升级 Opencore 程序
+function upgradeOpencore_MU() {
+  //先检查 EFI 分区是否已经挂载，如果没有挂载就提示挂载
   const selectedOption = VUEAPP.select_efi_drives.options.find(it=>it.value === VUEAPP.select_efi_drives.selected);
   if(!selectedOption.ismounted) {
     alert(fillLangString(VUEAPP.lang.tip_EFI_partition_not_exist, selectedOption.partitionname));
@@ -51,44 +51,6 @@ function checkEFIPartitionMounted() {
 
 }
 
-//检测本地和最新的 OpenCore 版本
-function checkOpenCoreVersion() {
-  const tmpversion = VUEAPP.array_opencor_version;
-  window.services
-    .getGithubOpencoreVersion()
-    .then(function (res) {
-      tmpversion.push(res);
-      tmpversion.push(Number((res.match(/\d+/g) || []).join("")));
-
-      if(utools.isWindows()) {//如果是 windows 下就无法获取本地 opencore 版本
-        return new Promise((resolve) => {resolve('');})
-      } else {
-        return window.services.getLocalOpencoreVersion();
-      }
-
-    })
-    .then(function (res) {
-      const lv = res.substr(res.indexOf("REL-")).split("-");
-        if (lv.length === 5) {
-        tmpversion.push(lv[1].split("").join("."));
-        tmpversion.push(Number(lv[1]));
-        //if (tmpversion[1] > tmpversion[3]) {
-        //  VUEAPP.is_opencore_upgrade = true;
-        //}
-      } else {
-        tmpversion.push('---');
-        tmpversion.push(0);
-      }
-
-      let span_foot_right_opencore_version = fillLangString(VUEAPP.lang.span_foot_right_opencore_version,tmpversion[2],tmpversion[0]);
-
-      $("#span_footer_right_message").text(span_foot_right_opencore_version);
-
-    })
-    .catch(function (error) {
-      console.log(error, "error");
-    });
-}
 
 //更新 Opencore
 function upgradeOpencore(EFIPath) {
@@ -96,8 +58,8 @@ function upgradeOpencore(EFIPath) {
   const tempPath = utools.getPath("temp");
   //console.log(tempPath)
   const arrayFileList = ["BOOT/BOOTx64.efi", "OC/OpenCore.efi"];
-  const unzipPath = `${tempPath}OpenCore-${VUEAPP.array_opencor_version[0]}-RELEASE`;
-  const zipfilePath = `${tempPath}OpenCore-${VUEAPP.array_opencor_version[0]}-RELEASE.zip`;
+  const unzipPath = `${tempPath}OpenCore-${VUEAPP.opencore_latest_version}-RELEASE`;
+  const zipfilePath = `${tempPath}OpenCore-${VUEAPP.opencore_latest_version}-RELEASE.zip`;
 
   showTipModal("开始下载文件");
 
@@ -107,7 +69,7 @@ function upgradeOpencore(EFIPath) {
         resolve(zipfilePath);
       })
     } else {
-      return window.services.downloadOpencore(zipfilePath, VUEAPP.array_opencor_version[0]);
+      return window.services.downloadOpencore(zipfilePath, VUEAPP.opencore_latest_version);
     }
   })
     .then((downFile) => {
@@ -174,7 +136,7 @@ function loadEFIDisk_MU() {
 
   window.services.loadEFIDisk(BSDname).then(
     function (res) {
-      console.log(res);
+      //console.log(res);
       selectedOption.ismounted = true;
       showTipModal(res);
     },

@@ -43,12 +43,15 @@ const GLOBAL_LANG = {
         tip_no_mount_disk:'没有可供挂载的 EFI 磁盘',
         tip_mount_disk_success:'EFI 分区已经被成功挂载到 {@1} 盘',
         tip_mount_disk_failed:'EFI 分区挂载操作失败，可能EFI分区已经挂载或者盘符被占用',
+        tip_mount_disk_ismounted:'当前 EFI 分区已经挂载, 操作失败',
         tip_file_save_success:'文件保存成功',
         tip_file_save_failed:'文件保存失败，请先确认文件是否存在',
+        tip_file_download_failed:'文件下载不成功, 操作失败, 可能是代理网站检测到频繁下载启用了真人验证, 请退出程序重试',
+        tip_file_upgrade_success:'文件“{@1}”更新成功',
         span_foot_right_opencore_version:"OpenCore版本信息：本机{@1}，最新{@2}",
-        upgrade_opencore:"更新选定 EFI 分区中的 OpenCore",
+        upgrade_opencore:"升级 OpenCore",
         tip_EFI_partition_not_exist:"请先挂载 EFI 分区“{@1}” ，否则无法升级",
-        tip_is_continue_upgrading_opencore:"是否要继续更新 “{@1}” 分区中的 OpenCore？"
+        tip_is_continue_upgrading_opencore:"确认要升级 “{@1}” 分区中的 OpenCore 版本吗？"
     },
 
     'en-US' : {
@@ -93,11 +96,14 @@ const GLOBAL_LANG = {
         tip_no_mount_disk:'No EFI disk to mount',
         tip_mount_disk_success:'The EFI partition has been successfully mounted to the {@1} drive',
         tip_mount_disk_failed:'The EFI partition mounting operation failed. The EFI partition may have been mounted or the drive letter may have been occupied',
+        tip_mount_disk_ismounted:'The current EFI partition has been mounted, and the operation failed',
         tip_file_save_success:'File saved successfully',
         tip_file_save_failed:'File saving failed, please confirm whether the file exists first',
+        tip_file_download_failed:'File download failed. Operation failed',
+        tip_file_upgrade_success:'File {@1} is successfully upgraded',
         span_foot_right_opencore_version:"OpenCore version information: native{@1}, latest{@2}",
         upgrade_opencore:"Upgrade OpenCore",
         tip_EFI_partition_not_exist:"Please mount the EFI partition “{@1}” first, otherwise the upgrade cannot be done",
-        tip_is_continue_upgrading_opencore:"Do you want to continue upgrading OpenCore in the “{@1}” partition？"
+        tip_is_continue_upgrading_opencore:"Are you sure you want to upgrade the OpenCore version in the {@1} partition?"
     }
 };

@@ -90,11 +90,10 @@ window.services = {};
     //随机选择一个代理服务器下载
     const mirrors = [
       'ghp.ci',
-      'github.moeyy.xyz',
-      'cf.ghproxy.cc',
-      'mirror.ghproxy.com',
-      'hub.gitmirror.com',
-      'gh.api.99988866.xyz'
+    'github.moeyy.xyz',
+    'cf.ghproxy.cc',
+    'hub.gitmirror.com',
+    'ghps.cc'
     ];
 
     const durl = `https://${mirrors[Math.floor(Math.random()*mirrors.length)]}/https://github.com/acidanthera/OpenCorePkg/releases/download/${version}/OpenCore-${version}-RELEASE.zip`;

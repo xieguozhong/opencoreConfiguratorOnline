@@ -39,7 +39,7 @@
 	</head>
 
 	<body class="no-skin">
-		<div id="navbar" class="navbar navbar-default ace-save-state">
+		<div v-if="current_run_env === 'NM'" id="navbar" class="navbar navbar-default ace-save-state">
 
 			<div class="navbar-container ace-save-state" id="navbar-container">
 
@@ -161,20 +161,22 @@
 				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
 					<i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
 				</div>
-
+				{{debug_message}}
 			</div>
 
 			<div class="main-content" >
 				<div class="main-content-inner">
 					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
-						<div style="width:200px;display: inline-block;">
-							<ul class="breadcrumb">
+						<div style="width:400px;display: inline-block;">
+							<ul class="breadcrumb" style="width: 170px;">
 								<li>
 									<i class="ace-icon fa fa-home home-icon"></i>
 									<a href="#">Home</a>
 								</li>
 								<li class="active">{{root}}</li>
+								
 							</ul><!-- /.breadcrumb -->
+							{{open_file_path}}
 						</div>
 
 						<div v-if="current_run_env === 'MU'" class="nav-search" style="width:240px;margin-right: 150px;display: flex;align-items: flex-end;">
@@ -194,7 +196,34 @@
 										<i class="ace-icon fa fa-hdd-o blue"></i>
 										{{lang.mountSelectedDisk}}
 									</button>
-									<button class="btn btn-xs btn-white btn-default btn-round" style="margin:5px" onclick="checkEFIPartitionMounted()">
+									<button class="btn btn-xs btn-white btn-default btn-round" style="margin:5px" onclick="upgradeOpencore_MU()">
+										<i class="ace-icon fa fa-bolt blue"></i>
+										{{lang.upgrade_opencore}}
+									</button>
+								  </li>
+								</ul>
+							  </span>
+
+						</div>
+
+						<div v-if="current_run_env === 'MT'" class="nav-search" style="width:240px;margin-right: 150px;display: flex;align-items: flex-end;">
+							<select style="width:150px;" v-model="select_efi_drives.selected">
+								<option v-for="option in select_efi_drives.options" v-bind:value="option.value" v-bind:partitionname="option.partitionname">
+									{{ option.text }}&nbsp;({{option.ismounted ? lang.mounted : lang.unmounted}})
+								</option>
+							</select>
+							<span class="btn-group">
+								<button data-toggle="dropdown" class="btn btn-xs btn-white dropdown-toggle" aria-expanded="false" style="height: 30px;">
+								  <span class="ace-icon fa fa-caret-down icon-only"></span>
+								</button>
+
+								<ul class="dropdown-menu dropdown-info dropdown-menu-right">
+								  <li>									
+									<button class="btn btn-xs btn-white btn-default btn-round" style="margin:5px" onclick="mountEFIDisk_MT();">
+										<i class="ace-icon fa fa-hdd-o blue"></i>
+										{{lang.mountSelectedDisk}}
+									</button>
+									<button class="btn btn-xs btn-white btn-default btn-round" style="margin:5px" onclick="upgradeOpencore_MT()">
 										<i class="ace-icon fa fa-bolt blue"></i>
 										{{lang.upgrade_opencore}}
 									</button>
@@ -236,7 +265,18 @@
 
 						<div class="pull-right" style="display: inline-block; align-items: flex-end;">
 							<div class="nav-search" style="width:200px;margin-right: 10px;" >
-								<input type="file" disabled id="id-input-file-2" />
+								
+								<div v-if="current_run_env === 'MT'" >
+									<label class="ace-file-input" onclick="openconfigfile()">
+										<span class="ace-file-container" :data-title="tauri_file_choose">
+											<span class="ace-file-name" :data-title="tauri_file_path">
+												<i class="ace-icon fa fa-upload"></i>
+											</span>
+										</span>
+									</label>									
+								</div>
+								<div v-else><input type="file" disabled id="id-input-file-2" /></div>
+								
 							</div><!-- /.nav-search -->
 							<div class="btn-group">
 								<button data-toggle="dropdown" class="btn btn-xs btn-white dropdown-toggle" aria-expanded="false" style="height: 30px;">
@@ -254,7 +294,7 @@
 										<i class="ace-icon fa fa-copy blue"></i>
 										{{lang.copy}}
 									</button>&nbsp;
-								</li>								
+									</li>								
 	
 								</ul>
 							</div>
@@ -1816,7 +1856,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">{{lang.footermessage}}</span>
+							<span class="blue bolder">{{lang.footermessage}}{{supportversion}}</span>
 						</span>
 						<span class="pull-right" id="span_footer_right_message" style="width: 200px;"></span>
 					</div>
@@ -1906,5 +1946,6 @@
 
    	<script src="assets/js/opencore.min.js"></script>
 
+	<script src="assets/js/tauri.min.js"></script>
 	</body>
 </html>

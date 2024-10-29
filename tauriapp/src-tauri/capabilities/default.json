@@ -1,0 +1,38 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "shell:allow-open",
+    "shell:default",
+    "dialog:default",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "run-diskutil-list",
+          "cmd": "diskutil",
+          "args": [
+            "list"
+          ]
+        },
+        {
+          "name": "run-check-diskmouted",
+          "cmd": "sh",
+          "args": [
+            "-c",
+            {
+              "validator": "mount |grep /dev/disk[0-9]+s[0-9]+"
+            }
+          ]
+        }
+      ]
+    },
+    "http:default",
+    "fs:default"
+  ]
+}

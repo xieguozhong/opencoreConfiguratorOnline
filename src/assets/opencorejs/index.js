@@ -13,9 +13,9 @@ $(document).ready(function () {
         const reader = new FileReader();
         reader.readAsText(files[0]);
         reader.onload = function () {
-          if(VUEAPP.current_run_env == 'MU' || VUEAPP.current_run_env == 'WU') {
-            VUEAPP.lang.footermessage = files[0].path;
-          }           
+          if(VUEAPP.current_run_env === 'MU' || VUEAPP.current_run_env === 'WU') {
+            VUEAPP.open_file_path = files[0].path;            
+          }
           VUEAPP["plistJsonObject"] = formatContext(this.result);
           VUEAPP.initAllData();
         };
@@ -30,14 +30,21 @@ $(document).ready(function () {
   //初始化提示插件
   $.minimalTips();
 
+  //更新随机代理地址
+  const mirrors = [
+    'ghp.ci',
+    'github.moeyy.xyz',
+    'cf.ghproxy.cc',
+    'hub.gitmirror.com',
+    'ghps.cc'
+  ];
+  VUEAPP.download_proxy_url = `https://${mirrors[Math.floor(Math.random()*mirrors.length)]}`;
+
   //设置弹出提示插件
   toastr.options = {
     closeButton: true,
     positionClass: "toast-top-center",
   };
-
-  //显示适用于版本信息
-  //showTipModal(VUEAPP.lang.supportversion);
 
   //页面加载完成后解除文件选择框的禁用属性
   $("#id-input-file-2").removeAttr("disabled");
@@ -54,18 +61,27 @@ $(document).ready(function () {
     initGridTableNVRAM();
     initGridTablePlatformInfo();
     initGridTableUEFI();
-
-    //自动加载最后保存的Plist文件内容
-    //const lastOpenCorePlistConfig = localStorage?.lastOpenCorePlistConfig;
-    //if(lastOpenCorePlistConfig) {
-    //    showTipModal(VUEAPP.lang.loadlastplist);
-    //    VUEAPP['plistJsonObject'] = formatContext(lastOpenCorePlistConfig);
-    //    VUEAPP.initAllData();
-    //}
   });
 
+  //绑定保存按钮功能
+  $("#button_save").click(savePlist);
+
+  //如果是 tauri 模式下
+  if(typeof window.__TAURI__ === 'object') {
+    VUEAPP.current_run_env = "MT";
+    getEFIdiskName_MT();
+    VUEAPP.tauri_file_path = VUEAPP.lang.no_file;
+    VUEAPP.tauri_file_choose = VUEAPP.lang.choose;
+    $('#button_save').off('click');
+    $("#button_save").click(savePlistTauri);
+    
+  }
+
+  
   //如果是在 utools 模式下
   if (typeof utools === "object" && utools.isLinux() === false) {
+    //修改保存按钮功能
+    $('#button_save').off('click');
     $("#button_save").click(savePlistUtools);
 
     if (utools.isMacOS()) {
@@ -76,31 +92,47 @@ $(document).ready(function () {
       VUEAPP.current_run_env = "WU";
       getEfiDiskList_windows();
     }
-    checkOpenCoreVersion();
+   
 
-  } else {
-    $("#button_save").click(savePlist);
   }
+  
+  //显示适配版本信息, 如果本地存储了版本信息并且获取时间在 1 小时内就从本地取,否则就去 github 上取
+  //localStorage.removeItem('datajson')
+  const datajson = localStorage.getItem('datajson');
+  //console.log(datajson)
+  if(typeof datajson === "string") {
 
-  //显示适配版本信息
-  (function(){
-    const mirrors = [
-      'ghp.ci',
-      'github.moeyy.xyz',
-      'cf.ghproxy.cc',
-      'mirror.ghproxy.com',
-      'hub.gitmirror.com',
-      'gh.api.99988866.xyz'
-    ];
-    fetch(`https://${mirrors[Math.floor(Math.random()*mirrors.length)]}/https://raw.githubusercontent.com/xieguozhong/opencoreConfiguratorOnline/refs/heads/main/data.json`)
-      .then((response) => response.json())
-      .then((data) => {
-        VUEAPP.lang.footermessage += data.supportversion;
-      });
-  })();
+    const newdatajson = JSON.parse(datajson)
+    VUEAPP.supportversion += newdatajson.supportversion;
+    VUEAPP.opencore_latest_version = newdatajson.latestversion;
+    //如果最后获取时间已经超过 1 个小时就重新从 github 上取
+    const lastgetdate = new Date(newdatajson.lastgetdate);
+    const now = new Date();
+    const difftime = Math.round((now.getTime() - lastgetdate.getTime())/1000);      
+    if(parseInt(difftime/60) > 60) {       
+      getAndSetDatajson();
+    }
+  } else {
+    getAndSetDatajson();
+  }
 
 });
 
+function getAndSetDatajson() {
+  
+  fetch(`${VUEAPP.download_proxy_url}/https://raw.githubusercontent.com/xieguozhong/opencoreConfiguratorOnline/refs/heads/main/data.json`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+      if(data.supportversion.length > 0) {            
+        data.lastgetdate = new Date();
+        localStorage.setItem('datajson',JSON.stringify(data));
+        VUEAPP.supportversion = data.supportversion;
+        VUEAPP.opencore_latest_version = data.latestversion;
+      }
+      
+    });
+}
 
 
 // ACPI Add 和 UEFI Drivers Kernel_Add处添加文件
@@ -210,10 +242,18 @@ const vueproperty = {
       lang: {}, //语言数据, 和浏览器的语言设置挂钩
       configisfull: false, //是否full模式
       configisMOD: false, //是否OpenCore MOD版本
-      current_run_env: "NM", // 当前运行的环境，NM:普通浏览器环境 MU：Macos下的utools WU：Windows下的utools
+      current_run_env: "NM", // 当前运行的环境，NM:普通浏览器环境 MU：Macos下的utools WU：Windows下的utools, MT:tauri 模式下
       //is_opencore_upgrade: false, //标记 opencore 是否可以升级，可以升级为true, 用于决定是否显示 升级 opencore 按钮
-      array_opencor_version: [], //记录 opencore 的版本好，格式为字符串数组['1.0.0',100,'0.9.9',99] 分别代表：官方版本，官方版本数字号，本地版本，本地版本数字号
+      //array_opencor_version: [], //记录 opencore 的版本号，格式为字符串数组['1.0.0',100,'0.9.9',99] 分别代表：官方版本，官方版本数字号，本地版本，本地版本数字号
+      supportversion:'', //记录 occedit 最高支持opencore的版本
+      opencore_latest_version:'',//记录 opencore 的最新版本号
       select_efi_drives:{selected:'', options:[]}, //记录windows下已经挂载的efi分区盘符
+      open_file_path:'', //当前打开的文件的路径
+      debug_message:'',//显示tauri 下的一些调试信息
+      tauri_file_path:'',//tauri 下显示文件路径
+      tauri_file_choose:'',//tauri 下显示选择或更换文件的文字
+
+      download_proxy_url:'https://ghp.ci',//下载用的代理地址
 
       ACPI: {
         Add: [],
@@ -1391,7 +1431,7 @@ function savePlistUtools() {
 
   //保存文件
   const savefile = window.services.saveFile(
-    VUEAPP.lang.footermessage,
+    VUEAPP.open_file_path,
     xmlcontext
   );
   savefile.then(

@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const htmlreplace = require('gulp-html-replace');
+const rename = require('gulp-rename');
 
 gulp.task('css_concat',()=>{
     return gulp.src([
@@ -58,9 +59,19 @@ gulp.task('jss_2',()=>{
         'src/assets/commjs/jquery.minimalTips.min.js',
         'src/assets/commjs/toastr.min.js',
         'src/assets/commjs/jszip.min.js',
-
+        'src/assets/commjs/bootbox.v4.min.js',        
         'build/opencore.js'
         ]).pipe(concat('opencore.min.js'))    //合并成为opencore.min.js文件
+        .pipe(gulp.dest('docs/assets/js'))
+        .pipe(gulp.dest('utools/assets/js'));    //输出到utools/assets/js目录下
+});
+
+gulp.task('jss_3',()=>{
+    return gulp.src(       
+        'src/assets/opencorejs/tauri.js'
+        )        
+        .pipe(uglify())   //压缩js文件
+        .pipe(rename('tauri.min.js'))    //更名成为tauri.min.js文件
         .pipe(gulp.dest('docs/assets/js'))
         .pipe(gulp.dest('utools/assets/js'));    //输出到utools/assets/js目录下
 });
@@ -71,17 +82,18 @@ gulp.task('index_html_replace', function() {
         //   'css': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/docs/assets/css/opencore.min.css',
         //   'jss': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/docs/assets/js/opencore.min.js'
         'css': 'assets/css/opencore.min.css',
-        'jss': 'assets/js/opencore.min.js'
-      }))
+        'jss': 'assets/js/opencore.min.js',
+        'tauri': 'assets/js/tauri.min.js'
+      },{keepUnassigned: true,ignoreMissing: true}))
       .pipe(gulp.dest('docs'))
       .pipe(gulp.dest('utools'));
   });
 
 
-gulp.task('series_jss',gulp.series('jss_1','jss_2'));
+gulp.task('series_jss',gulp.series('jss_1','jss_2','jss_3'));
 gulp.task('default',gulp.parallel('series_jss','index_html_replace','css_concat'));
 
 gulp.task('watch',function(){
-    gulp.watch('src/assets/opencorejs/**/*.js',gulp.series('jss_1','jss_2'));
+    gulp.watch('src/assets/opencorejs/**/*.js',gulp.series('jss_1','jss_2','jss_3'));
     gulp.watch('src/index.html',gulp.parallel('index_html_replace'));
 })
