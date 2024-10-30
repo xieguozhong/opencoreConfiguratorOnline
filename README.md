@@ -47,6 +47,16 @@ web版的OpenCore引导工具config.plist的在线编辑器
 9 Macos下更新 opencore
 ![image](https://github.com/xieguozhong/opencoreConfiguratorOnline/blob/main/readme/upgradeopencore.gif)
 
+修改方式:
+打开终端 1
+git clone https://github.com/xieguozhong/opencoreConfiguratorOnline.git
+cd opencoreConfiguratorOnline
+gulp
+gulp watch
+
+tauri 修改方法
+cd opencoreConfiguratorOnline/tauriapp
+npm run tauri dev
 
 
 
