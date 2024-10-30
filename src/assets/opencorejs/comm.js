@@ -62,7 +62,7 @@ function formatContext(context='') {
 
     }catch(err) {
         console.log("错误：" + err);
-        showTipModal("错误，配置文件格式不对，请检查<br>" + err, 'warning');
+        showTipModal(VUEAPP.lang.tip_file_format_error + "<br>" + err, 'error');
     }
 
 }
@@ -524,4 +524,13 @@ function b64Encode(str='') {
  */
 function b64Decode(str='') {
     return str === '' ? '' : decodeURIComponent(atob(str));
+}
+
+/**
+ *  用\转义文件名中的特殊字符
+ * @param {string} 文件名称 
+ * @returns 
+ */
+function escapeFileName(fileName) {
+    return fileName.replace(/([\\ :{}()|[\]^$+*?.<>])/g, '\\$1');
 }

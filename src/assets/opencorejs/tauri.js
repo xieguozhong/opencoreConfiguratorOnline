@@ -60,22 +60,44 @@ async function mountEFIDisk_MT () {
   selectedOption.ismounted = true;
 }
 
+async function checkPlistfile(plistfilepath) {
+  const { Command } = window.__TAURI__.shell;
+    
+  let result = await Command.create('run-check-plist-file', ['-c', "plutil -lint " + escapeFileName(plistfilepath)]).execute();
+
+  if(typeof result?.stdout === 'string' ) {
+    if(result.stdout.replace(/\n/g, "").slice(-2) === 'OK') {
+      return false;
+    } else {      
+      //console.log("检测文件有问题:" + result.stdout);
+      showTipModal(VUEAPP.lang.tip_file_format_error + "<br>" + result.stdout, 'error');
+      return true;
+    }
+  }
+  //如果检查操作失败
+  return false;
+}
+
 //弹出文件选择框, 并调用 读取文件内容, 初始化界面数据 函数
 async function openconfigfile() {
   const { open } = window.__TAURI__.dialog;
   const selected = await open({
     multiple: false,
     filters: [{
-      name: 'Opencore config file',
+      name: 'Opencore config file web editor',
       extensions: ['plist']
     }]
   });
-  //console.log(selected)
+
   if(typeof selected === 'string') {
     VUEAPP.tauri_file_choose = VUEAPP.lang.change;
+    //去检查文件格式是否正确
+    const checkres = await checkPlistfile(selected);
+    if(checkres) return;
     const arrselected = selected.split('/');
     VUEAPP.tauri_file_path = arrselected[arrselected.length-1];
     VUEAPP.open_file_path = selected
+    $("#span_open_file_path").text(selected);
     readconfigfile(selected);
   }
 }
@@ -123,8 +145,9 @@ function upgradeOpencore_MT() {
     showTipModal(fillLangString(VUEAPP.lang.tip_EFI_partition_not_exist, selectedOption.partitionname),'error');
     return;
   }
-  getAndSetDatajson();
-  bootbox.confirm("<div style='font-size:18px'>" + fillLangString(VUEAPP.lang.tip_is_continue_upgrading_opencore,selectedOption.partitionname) + "</div>", function(result) {
+  //getAndSetDatajson();
+  bootbox.confirm("<div style='font-size:18px'>" 
+    + fillLangString(VUEAPP.lang.tip_is_continue_upgrading_opencore,selectedOption.partitionname,VUEAPP.opencore_latest_version) + "</div>", function(result) {
     if(result) {
       asyncupgradeOpencore(`/Volumes/${selectedOption.partitionname}/EFI`);
     }
@@ -145,22 +168,24 @@ async function asyncupgradeOpencore(diskno) {
   
   const unzipPath = `${tempPath}OpenCore-${VUEAPP.opencore_latest_version}-RELEASE`;
   const zipfilePath = `${tempPath}OpenCore-${VUEAPP.opencore_latest_version}-RELEASE.zip`;
-  console.log(zipfilePath)
-  showTipModal("开始下载文件");
+  //console.log(zipfilePath)
+  showTipModal(VUEAPP.lang.tip_file_download_start);
 
 
   const saveresult = await invoke("get_file_size", { filepath: zipfilePath});
+  //如果文件不存在或者文件大小小于8000000, 就去 github 上下载
   if(saveresult < 8000000) {
-    console.log("文件不存在,需要下载")
+    //console.log("文件不存在,需要下载")
     const durl = `${VUEAPP.download_proxy_url}/https://github.com/acidanthera/OpenCorePkg/releases/download/${VUEAPP.opencore_latest_version}/OpenCore-${VUEAPP.opencore_latest_version}-RELEASE.zip`;
-    console.log(durl)
+    //console.log(durl)
     const download = await invoke("download_file", { url: durl, outputdir:tempPath});
     if(download === 0) {
+      $('body').css('cursor', '');
       showTipModal(VUEAPP.lang.tip_file_download_failed,'error');
       return;
     }
   }
-
+  showTipModal(VUEAPP.lang.tip_file_download_success);
   //开始解压文件
   const unzipres = await invoke("unzip_file_to_dir", { zippath: zipfilePath, destdir:unzipPath});  
 
@@ -185,7 +210,7 @@ async function asyncupgradeOpencore(diskno) {
   }
 
   $('body').css('cursor', '');
-
+  showTipModal(VUEAPP.lang.tip_upgrade_opencore_success);
 }
 
 

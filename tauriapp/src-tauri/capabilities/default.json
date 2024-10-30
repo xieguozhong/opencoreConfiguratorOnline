@@ -30,6 +30,17 @@
             }
           ]
         }
+        ,
+        {
+          "name": "run-check-plist-file",
+          "cmd": "sh",
+          "args": [
+            "-c",
+            {
+              "validator": "^plutil -lint .*\\.plist$"
+            }
+          ]
+        }
       ]
     },
     "http:default",

@@ -48,10 +48,14 @@ const GLOBAL_LANG = {
         tip_file_save_failed:'文件保存失败，请先确认文件是否存在',
         tip_file_download_failed:'文件下载不成功, 操作失败, 可能是代理网站检测到频繁下载启用了真人验证, 请退出程序重试',
         tip_file_upgrade_success:'文件“{@1}”更新成功',
+        tip_file_format_error:'配置文件内容格式不正确, 请检查, 错误如下:',
+        tip_file_download_start:'开始下载文件',
+        tip_file_download_success:'文件下载成功, 开始解压',
         span_foot_right_opencore_version:"OpenCore版本信息：本机{@1}，最新{@2}",
         upgrade_opencore:"升级 OpenCore",
+        tip_upgrade_opencore_success:"文件更新结束, Opencore 升级成功",
         tip_EFI_partition_not_exist:"请先挂载 EFI 分区“{@1}” ，否则无法升级",
-        tip_is_continue_upgrading_opencore:"确认要升级 “{@1}” 分区中的 OpenCore 版本吗？"
+        tip_is_continue_upgrading_opencore:"确认要升级 “{@1}” 分区中的 OpenCore 版本为“{@2}”吗？"
     },
 
     'en-US' : {
@@ -101,9 +105,13 @@ const GLOBAL_LANG = {
         tip_file_save_failed:'File saving failed, please confirm whether the file exists first',
         tip_file_download_failed:'File download failed. Operation failed',
         tip_file_upgrade_success:'File {@1} is successfully upgraded',
+        tip_file_format_error:'The format of the configuration file is incorrect. Please check it.',
+        tip_file_download_start:'Start downloading file',
+        tip_file_download_success:'The file is successfully downloaded and decompressed',
         span_foot_right_opencore_version:"OpenCore version information: native{@1}, latest{@2}",
         upgrade_opencore:"Upgrade OpenCore",
+        tip_upgrade_opencore_success:"The file update is complete and Opencore has been upgraded successfully",
         tip_EFI_partition_not_exist:"Please mount the EFI partition “{@1}” first, otherwise the upgrade cannot be done",
-        tip_is_continue_upgrading_opencore:"Are you sure you want to upgrade the OpenCore version in the {@1} partition?"
+        tip_is_continue_upgrading_opencore:"Are you sure you want to upgrade the OpenCore version to “{@2}” in the {@1}  partition?"
     }
 };
