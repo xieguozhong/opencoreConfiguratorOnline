@@ -673,7 +673,16 @@ function getUEFI() {
     ["Address", "Size"],
   );
 
-  return uefiContext + "<key>Unload</key><array/></dict>";
+  //1 Unload
+  uefiContext += "<key>Unload</key>";
+  let driversString = "";
+  //consolelog('bodata type = ' + getTypeof(bodata))
+  for (let i = 0, len = VUEAPP.UEFI.Unload.length; i < len; i++) {
+    driversString += addCharstring(VUEAPP.UEFI.Unload[i]["Drivers"]);
+  }
+  uefiContext += bothsidesAddarray(driversString);
+
+  return uefiContext + "</dict>";
 }
 
 //*****************公共函数区**********************

@@ -363,6 +363,11 @@ function initGridTableUEFI() {
 	GLOBAL_MAP_TABLE.set('UEFI_ReservedMemory', objGT_UEFI_ReservedMemory);
 	initGridTable(objGT_UEFI_ReservedMemory, VUEAPP.UEFI.ReservedMemory, colNames, colModel);
 
+	const colnamesUnload = ['Firmware Drivers'];
+	const colModelUnload = [{name:'Drivers',index:'Drivers', editable:true,  sortable:false, formatter:plistEncode}];
+	const objGT_UEFI_Unload = jQuery('#gridtable_UEFI_Unload');
+	GLOBAL_MAP_TABLE.set('UEFI_Unload', objGT_UEFI_Unload);
+	initGridTable(objGT_UEFI_Unload, VUEAPP.UEFI.Unload, colnamesUnload, colModelUnload);
 }
 
 function initGridTableNVRAM() {

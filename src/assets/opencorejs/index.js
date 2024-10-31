@@ -69,10 +69,10 @@ $(document).ready(function () {
 
   //如果是 tauri 模式下
   if(typeof window.__TAURI__ === 'object') {
-    VUEAPP.current_run_env = "MT";
-    getEFIdiskName_MT();
+    VUEAPP.current_run_env = "MT";    
     VUEAPP.tauri_file_path = VUEAPP.lang.no_file;
     VUEAPP.tauri_file_choose = VUEAPP.lang.choose;
+    getEFIdiskName_MT();
     $('#button_save').off('click');
     $("#button_save").click(savePlistTauri);
     
@@ -139,7 +139,7 @@ function getAndSetDatajson() {
 // ACPI Add 和 UEFI Drivers Kernel_Add处添加文件
 function addFile(fileid) {
   const file = document.getElementById(fileid),
-    thetablename = fileid.substr(fileid.indexOf("_") + 1);
+    thetablename = fileid.slice(fileid.indexOf("_") + 1);
 
   const thetable = getJqgridObjectbyKey(thetablename);
 
@@ -618,6 +618,7 @@ const vueproperty = {
           UnblockFsConnect: false,
         },
         ReservedMemory: [],
+        Unload: []
       },
 
       //弹出窗口辅助
@@ -809,6 +810,17 @@ const vueproperty = {
         "UEFI_ReservedMemory",
         this.UEFI.ReservedMemory
       );
+
+      //Unload
+      this.UEFI.Unload.length = 0;
+      const arrayUnload = plistData.Unload;
+      for (let i = 0, len = arrayUnload.length; i < len; i++) {
+        this.UEFI.Unload.push({
+          Drivers: arrayUnload[i][0],
+        });
+      }
+      getJqgridObjectbyKey("UEFI_Unload").trigger("reloadGrid");
+
     },
 
     initPlatformInfo: function () {

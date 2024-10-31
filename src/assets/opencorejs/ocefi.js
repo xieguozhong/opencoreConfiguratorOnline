@@ -12,7 +12,7 @@ function getEfiDiskList_windows() {
         if (isExist) {
           const option = { text: `${letter.toUpperCase()}:/EFI/OC`, value: letter };
           VUEAPP.select_efi_drives.options.push(option);
-          if(VUEAPP.select_efi_drives.selected.length === 0) {
+          if (VUEAPP.select_efi_drives.selected.length === 0) {
             VUEAPP.select_efi_drives.selected = letter;
           }
         }
@@ -40,13 +40,13 @@ function upgradeOpencore_Windows() {
 //升级 Opencore 程序
 function upgradeOpencore_MU() {
   //先检查 EFI 分区是否已经挂载，如果没有挂载就提示挂载
-  const selectedOption = VUEAPP.select_efi_drives.options.find(it=>it.value === VUEAPP.select_efi_drives.selected);
-  if(!selectedOption.ismounted) {
+  const selectedOption = VUEAPP.select_efi_drives.options.find(it => it.value === VUEAPP.select_efi_drives.selected);
+  if (!selectedOption.ismounted) {
     alert(fillLangString(VUEAPP.lang.tip_EFI_partition_not_exist, selectedOption.partitionname));
     return;
   }
 
-  const cf = confirm(fillLangString(VUEAPP.lang.tip_is_continue_upgrading_opencore,selectedOption.partitionname));
+  const cf = confirm(fillLangString(VUEAPP.lang.tip_is_continue_upgrading_opencore, selectedOption.partitionname));
   if (cf) upgradeOpencore(`/Volumes/${selectedOption.partitionname}/EFI`);
 
 }
@@ -62,6 +62,8 @@ function upgradeOpencore(EFIPath) {
   const zipfilePath = `${tempPath}OpenCore-${VUEAPP.opencore_latest_version}-RELEASE.zip`;
 
   showTipModal("开始下载文件");
+
+
 
   window.services.getFileSize(zipfilePath).then((size) => {
     if (size / 1024 / 1024 > 8) {
@@ -107,7 +109,7 @@ function upgradeOpencore(EFIPath) {
   function upgradeFileOnebyOne(z) {
     if (z >= arrayFileList.length) {
       $('body').css('cursor', '');
-      if(z>0) showTipModal("OpenCore 更新完成，共更新了 " + z + " 个文件");
+      if (z > 0) showTipModal("OpenCore 更新完成，共更新了 " + z + " 个文件");
       return;
     }
     const source = `${unzipPath}/X64/EFI/${arrayFileList[z]}`;
@@ -128,8 +130,8 @@ function loadEFIDisk_MU() {
     return;
   }
 
-  const selectedOption = VUEAPP.select_efi_drives.options.find(it=>it.value === BSDname);
-  if(selectedOption.ismounted) {
+  const selectedOption = VUEAPP.select_efi_drives.options.find(it => it.value === BSDname);
+  if (selectedOption.ismounted) {
     alert('当前 EFI 分区已经挂载');
     return;
   }
@@ -191,31 +193,31 @@ function getEFIdiskName_MU() {
         const itval = arrayRes[i].split(/\s{2,}/);
         if (itval.length === 5 && itval[2].indexOf("EFI") === 0) {
           const option = {
-            text: itval[2].substr(itval[2].indexOf("EFI") + 4) + " " + itval[4],
+            text: itval[2].slice(itval[2].indexOf("EFI") + 4) + " " + itval[4],
             value: itval[4],
-            partitionname:itval[2].substr(itval[2].indexOf("EFI") + 4),
-            ismounted : false
+            partitionname: itval[2].slice(itval[2].indexOf("EFI") + 4),
+            ismounted: false
           };
           VUEAPP.select_efi_drives.options.push(option);
-          if(VUEAPP.select_efi_drives.selected.length === 0) VUEAPP.select_efi_drives.selected = itval[4];
+          if (VUEAPP.select_efi_drives.selected.length === 0) VUEAPP.select_efi_drives.selected = itval[4];
 
         }
       }
 
       // 去批量更新 EFI 分区是否挂载
       function updateselect_efi_drives_ismounted(x) {
-        if(x >= VUEAPP.select_efi_drives.options.length) {
+        if (x >= VUEAPP.select_efi_drives.options.length) {
           return;
         }
         const options = VUEAPP.select_efi_drives.options[x];
         //console.log(`/Volumes/${options.partitionname}/EFI 是否挂载`)
         window.services.checkFolderExist(`/Volumes/${options.partitionname}/EFI`)
-        .then(function (isExist) {
-          if (isExist) {
-            options.ismounted = true;
-          }
-          updateselect_efi_drives_ismounted(x+1);
-        });
+          .then(function (isExist) {
+            if (isExist) {
+              options.ismounted = true;
+            }
+            updateselect_efi_drives_ismounted(x + 1);
+          });
       }
       updateselect_efi_drives_ismounted(0);
     },

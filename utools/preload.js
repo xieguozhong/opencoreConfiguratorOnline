@@ -90,13 +90,13 @@ window.services = {};
     //随机选择一个代理服务器下载
     const mirrors = [
       'ghp.ci',
-    'github.moeyy.xyz',
-    'cf.ghproxy.cc',
-    'hub.gitmirror.com',
-    'ghps.cc'
+      'github.moeyy.xyz',
+      'cf.ghproxy.cc',
+      'hub.gitmirror.com',
+      'ghps.cc'
     ];
 
-    const durl = `https://${mirrors[Math.floor(Math.random()*mirrors.length)]}/https://github.com/acidanthera/OpenCorePkg/releases/download/${version}/OpenCore-${version}-RELEASE.zip`;
+    const durl = `https://${mirrors[Math.floor(Math.random() * mirrors.length)]}/https://github.com/acidanthera/OpenCorePkg/releases/download/${version}/OpenCore-${version}-RELEASE.zip`;
     console.log('下载地址：' + durl);
     const fs = require("fs");
     const https = require("https");
@@ -185,14 +185,13 @@ window.services = {};
         } else {
           resolve(stats.size);
         }
+      });
+
     });
 
-  });
+  };
 
-
-
-};
-
+  //macos + utools 模式下专用的函数
   if (utools.isMacOS()) {
     // 1 获取所有磁盘中的 EFI 分区
     window.services.getEFIdiskName = () => {

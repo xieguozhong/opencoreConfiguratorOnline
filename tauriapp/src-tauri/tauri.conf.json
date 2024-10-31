@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tauriapp",
+  "productName": "occwebeditor",
   "version": "0.1.0",
   "identifier": "com.tauriapp.app",
   "build": {
@@ -11,8 +11,8 @@
     "windows": [
       {
         "title": "OpenCore Configuration Web Editor",
-        "width": 1400,
-        "height": 1100
+        "width": 1260,
+        "height": 950
       }
     ],
     "security": {

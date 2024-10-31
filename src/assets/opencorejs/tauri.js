@@ -1,4 +1,7 @@
-//填充efi磁盘下拉列表框
+/**
+ * 填充efi磁盘下拉列表框
+ * @param {string} stdout 
+ */
 function add_select_efi_drives(stdout) {
   const arrayRes = stdout.split("\n");
 
@@ -6,9 +9,9 @@ function add_select_efi_drives(stdout) {
     const itval = arrayRes[i].split(/\s{2,}/);
     if (itval.length === 5 && itval[2].indexOf("EFI") === 0) {
       const option = {
-        text: itval[2].substr(itval[2].indexOf("EFI") + 4) + " " + itval[4],
+        text: itval[2].slice(itval[2].indexOf("EFI") + 4) + " " + itval[4],
         value: itval[4],
-        partitionname:itval[2].substr(itval[2].indexOf("EFI") + 4),
+        partitionname:itval[2].slice(itval[2].indexOf("EFI") + 4),
         ismounted : false
       };
       VUEAPP.select_efi_drives.options.push(option);
@@ -60,6 +63,11 @@ async function mountEFIDisk_MT () {
   selectedOption.ismounted = true;
 }
 
+/**
+ * 检查 plist 文件格式是否正确
+ * @param {string} plistfilepath 
+ * @returns 
+ */
 async function checkPlistfile(plistfilepath) {
   const { Command } = window.__TAURI__.shell;
     

@@ -1401,6 +1401,7 @@
                                         <li><a data-toggle="tab" href="#tabbable_UEFI_Output" class="tablelia">Output</a></li>
                                         <li><a data-toggle="tab" href="#tabbable_UEFI_ProtocolOverrides" class="tablelia">ProtocolOverrides</a></li>
                                         <li><a data-toggle="tab" href="#tabbable_UEFI_Quirks" class="tablelia">Quirks</a></li>
+										<li><a data-toggle="tab" href="#tabbable_UEFI_Unload" class="tablelia">Unload</a></li>
                                     </ul>
 
                                     <div class="tab-content" style="padding-right:18px;padding-left:2px;">
@@ -1837,6 +1838,15 @@
 			                                    </div>
 
 			                                </div>
+                                        </div>
+
+										<div id="tabbable_UEFI_Unload" class="tab-pane fade in" style="padding-bottom: 5px;">
+                                            <table id="gridtable_UEFI_Unload"></table>
+			                                <span class="grey pull-right">
+			                                	<template v-for="(item, index) in OCbuttons.buttons4" :key="index">
+												<a @click="imgButtonClick" :id="'btn' + item + '_UEFI_Unload'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;
+												</template>
+			                                </span>
                                         </div>
 
                                     </div>

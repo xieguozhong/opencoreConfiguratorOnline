@@ -110,10 +110,10 @@ function base64toHex(strbase64='') {
     }
     function dec2hex(d) {
         const hD='0123456789ABCDEF';
-        let h = hD.substr(d&15,1);
+        let h = hD.slice(d&15,1);
         while (d>15) {
             d>>=4;
-            h=hD.substr(d&15,1)+h;
+            h=hD.slice(d&15,1)+h;
         }
         return h;
     }
@@ -229,7 +229,7 @@ function hextoBase64(strhex) {
     }
     const binary = new Array();
     for (let i=0; i<strhex.length/2; i++) {
-        let h = strhex.substr(i*2, 2);
+        let h = strhex.slice(i*2, 2);
         binary[i] = parseInt(h,16);
     }
     return binary_to_base64(binary);
@@ -432,7 +432,7 @@ function uuid() {
   let temp_url = URL.createObjectURL(new Blob());
   let uuid = temp_url.toString();
   URL.revokeObjectURL(temp_url);
-  return uuid.substr(uuid.lastIndexOf("/") + 1).toUpperCase();
+  return uuid.slice(uuid.lastIndexOf("/") + 1).toUpperCase();
 }
 
 
