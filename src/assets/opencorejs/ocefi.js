@@ -53,7 +53,7 @@ function upgradeOpencore_MU() {
 
 
 //更新 Opencore
-function upgradeOpencore(EFIPath) {
+async function upgradeOpencore(EFIPath) {
   $('body').css('cursor', 'progress');
   const tempPath = utools.getPath("temp");
   //console.log(tempPath)
@@ -63,10 +63,8 @@ function upgradeOpencore(EFIPath) {
 
   showTipModal("开始下载文件");
 
-
-
   window.services.getFileSize(zipfilePath).then((size) => {
-    if (size / 1024 / 1024 > 8) {
+    if (size > 8000000) {
       return new Promise((resolve) => {
         resolve(zipfilePath);
       })

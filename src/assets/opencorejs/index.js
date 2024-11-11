@@ -103,15 +103,17 @@ $(document).ready(function () {
   //console.log(datajson)
   if(typeof datajson === "string") {
 
-    const newdatajson = JSON.parse(datajson)
-    VUEAPP.supportversion += newdatajson.supportversion;
-    VUEAPP.opencore_latest_version = newdatajson.latestversion;
+    const newdatajson = JSON.parse(datajson);
     //如果最后获取时间已经超过 1 个小时就重新从 github 上取
     const lastgetdate = new Date(newdatajson.lastgetdate);
     const now = new Date();
     const difftime = Math.round((now.getTime() - lastgetdate.getTime())/1000);      
     if(parseInt(difftime/60) > 60) {       
       getAndSetDatajson();
+    } else {
+      VUEAPP.supportversion = newdatajson.supportversion;
+      VUEAPP.opencore_latest_version = newdatajson.latestversion;
+      VUEAPP.acpi_patch_list = newdatajson.acpi_patch_list;
     }
   } else {
     getAndSetDatajson();
@@ -119,20 +121,22 @@ $(document).ready(function () {
 
 });
 
-function getAndSetDatajson() {
+/**
+ * 从 github 上获取数据并设置到本地
+ */
+async function getAndSetDatajson() {
   
-  fetch(`${VUEAPP.download_proxy_url}/https://raw.githubusercontent.com/xieguozhong/opencoreConfiguratorOnline/refs/heads/main/data.json`)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data)
-      if(data.supportversion.length > 0) {            
-        data.lastgetdate = new Date();
-        localStorage.setItem('datajson',JSON.stringify(data));
-        VUEAPP.supportversion = data.supportversion;
-        VUEAPP.opencore_latest_version = data.latestversion;
-      }
-      
-    });
+  let response = await fetch(`${VUEAPP.download_proxy_url}/https://raw.githubusercontent.com/xieguozhong/opencoreConfiguratorOnline/refs/heads/main/data.json`);
+
+  let data = await response.json();
+
+  if(data.supportversion.length > 0) {            
+    data.lastgetdate = new Date();
+    localStorage.setItem('datajson',JSON.stringify(data));
+    VUEAPP.supportversion = data.supportversion;
+    VUEAPP.opencore_latest_version = data.latestversion;
+    VUEAPP.acpi_patch_list = data.acpi_patch_list;
+  }
 }
 
 
@@ -178,12 +182,14 @@ function handFile(ff, thetable) {
   JSZip.loadAsync(ff).then(
     function (zip) {
       zip.forEach((relativePath) => {
+        //console.log(relativePath)
         sfl.add(relativePath);
 
         //这里大部分都是相同的会被过滤掉
-        sfonly.add(
-          relativePath.substring(0, findStrAssIndex(relativePath, "/", 1))
-        );
+        const kextname = relativePath.substring(0, findStrAssIndex(relativePath, "/", 1));
+        if(kextname.slice(-5) === ".kext") {
+          sfonly.add(kextname);
+        }
 
         const pindex = relativePath.indexOf("PlugIns");
         if (pindex > -1) {
@@ -196,7 +202,7 @@ function handFile(ff, thetable) {
 
       let maxid = getMaxrowid(thetable),
         newData = null;
-
+      //console.log(sfonly)
       sfonly.forEach((kname) => {
         const lastdotindex = kname.lastIndexOf(".");
         const lastslaindex = kname.lastIndexOf("/") + 1;
@@ -253,6 +259,7 @@ const vueproperty = {
       debug_message:'',//显示tauri 下的一些调试信息
       tauri_file_path:'',//tauri 下显示文件路径
       tauri_file_choose:'',//tauri 下显示选择或更换文件的文字
+      acpi_patch_list:[], //记录 acpi 下 patch 列表  
 
       download_proxy_url:'https://ghp.ci',//下载用的代理地址
 
@@ -988,6 +995,7 @@ const vueproperty = {
         "ACPI_Delete",
         this.ACPI.Delete
       );
+      
       this.getPlistAndResetTableData(
         plistData,
         "Patch",
@@ -1407,6 +1415,20 @@ const vueproperty = {
     opbtnromclick: function () {
       VUEAPP.PlatformInfo.Generic.ROM = uuid().split("-")[4];
     },
+    /**
+     * acpi 下面 patch list 点击事件
+     * @param {number} index 
+     */
+    acpi_patch_list_click:function(index) {
+      console.log(this.acpi_patch_list[index])
+      let objGridTable = getJqgridObjectbyKey("ACPI_Patch");
+      const rowData = [];
+      rowData.push(this.acpi_patch_list[index]);
+      let maxid = getMaxrowid(objGridTable);
+      for (let it in rowData) {
+        objGridTable.jqGrid("addRowData", ++maxid, rowData[it], "last");
+      }
+    }
   },
 };
 
