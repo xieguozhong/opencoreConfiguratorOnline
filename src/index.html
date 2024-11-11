@@ -562,6 +562,20 @@
                                         <div id="tabbable_Kernel_Patch" class="tab-pane fade in" style="padding-bottom: 5px;">
 
 			                                <table id="gridtable_Kernel_Patch"></table>
+											<span class="grey pull-left" >
+												<div class="btn-group" style="padding-top:0px;">
+													<button data-toggle="dropdown" class="btn  btn-white btn-minier dropdown-toggle" style="height: 15px;padding-top:0px;">
+														Patch list
+														<span class="ace-icon fa fa-caret-down icon-on-right"></span>
+													</button>
+	
+													<ul class="dropdown-menu dropdown-inverse">
+														<li v-for="(item, index) in kernel_patch_list" :key="index">
+															<a href="#" @click="kernel_patch_list_click(index)">{{item.Comment}}</a>
+														</li>														
+													</ul>
+												</div>
+											</span>
 			                                <span class="grey pull-right">
 			                                	<template v-for="(item, index) in OCbuttons.buttons5" :key="index">
 												<a @click="imgButtonClick" :id="'btn' + item + '_Kernel_Patch'"><img :src="'assets/css/images/' + item + '.png'" class="ctrlicon" :title="lang[item]"></a>&nbsp;

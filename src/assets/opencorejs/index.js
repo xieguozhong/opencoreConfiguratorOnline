@@ -114,6 +114,7 @@ $(document).ready(function () {
       VUEAPP.supportversion = newdatajson.supportversion;
       VUEAPP.opencore_latest_version = newdatajson.latestversion;
       VUEAPP.acpi_patch_list = newdatajson.acpi_patch_list;
+      VUEAPP.kernel_patch_list = newdatajson.kernel_patch_list;
     }
   } else {
     getAndSetDatajson();
@@ -136,6 +137,7 @@ async function getAndSetDatajson() {
     VUEAPP.supportversion = data.supportversion;
     VUEAPP.opencore_latest_version = data.latestversion;
     VUEAPP.acpi_patch_list = data.acpi_patch_list;
+    VUEAPP.kernel_patch_list = data.kernel_patch_list;
   }
 }
 
@@ -259,7 +261,8 @@ const vueproperty = {
       debug_message:'',//显示tauri 下的一些调试信息
       tauri_file_path:'',//tauri 下显示文件路径
       tauri_file_choose:'',//tauri 下显示选择或更换文件的文字
-      acpi_patch_list:[], //记录 acpi 下 patch 列表  
+      acpi_patch_list:[], //记录 acpi 下 patch 列表
+      kernel_patch_list:[], //记录 kernel 下 patch 列表
 
       download_proxy_url:'https://ghp.ci',//下载用的代理地址
 
@@ -1420,7 +1423,6 @@ const vueproperty = {
      * @param {number} index 
      */
     acpi_patch_list_click:function(index) {
-      console.log(this.acpi_patch_list[index])
       let objGridTable = getJqgridObjectbyKey("ACPI_Patch");
       const rowData = [];
       rowData.push(this.acpi_patch_list[index]);
@@ -1428,7 +1430,21 @@ const vueproperty = {
       for (let it in rowData) {
         objGridTable.jqGrid("addRowData", ++maxid, rowData[it], "last");
       }
-    }
+    },
+    /**
+     * kernel 下面 patch list 点击事件
+     * @param {number} index 
+     */
+    kernel_patch_list_click:function(index) {
+      let objGridTable = getJqgridObjectbyKey("Kernel_Patch");
+      const rowData = [];
+      rowData.push(this.kernel_patch_list[index]);
+      let maxid = getMaxrowid(objGridTable);
+      for (let it in rowData) {
+        objGridTable.jqGrid("addRowData", ++maxid, rowData[it], "last");
+      }
+    },
+
   },
 };
 
