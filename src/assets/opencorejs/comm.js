@@ -118,7 +118,6 @@ function base64toHex(strbase64='') {
         return h;
     }
 
-
     function base64_decode(input) {
 
         const keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
@@ -159,8 +158,6 @@ function base64toHex(strbase64='') {
         }
         return output;
     }
-
-
 
     let output = base64_decode(strbase64);
     let hexText = '';
@@ -284,11 +281,21 @@ function getPlistEncodeFunction(defaultvalue) {
 }
 
 /**
+ * 把 base64 编码的字符串格式化为 ascii 编码
+ * @param {string} context 
+ * @returns string
+ */
+function plistEncodeAscii(context='') {
+    return plistEncode(context,'ASCII');
+}
+
+
+/**
  * jqgrid 中的formatter使用, 把正确的值解析出来
  * @param {string} context
  * @returns string
  */
-function plistEncode(context='') {
+function plistEncode(context='',encoding) {
 
     if(context === '' || context[0] === '') {
         return '';
@@ -298,7 +305,7 @@ function plistEncode(context='') {
     if(getTypeof(context) === 'array') {
         switch(context[1]) {
             case 'data':
-                return base64toHex(context[0]);
+                return encoding === 'ASCII' ? atob(context[0]) : base64toHex(context[0]);
             case 'string':
                 context = context[0];
                 break;

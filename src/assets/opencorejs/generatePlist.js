@@ -75,8 +75,9 @@ function getACPI() {
   acpiContext += genArrayDict(
     "ACPI_Patch",
     VUEAPP.ACPI.Patch,
-    ["Find", "Mask", "OemTableId", "Replace", "ReplaceMask", "TableSignature"],
+    ["Find", "Mask", "OemTableId", "Replace", "ReplaceMask"],
     ["BaseSkip", "Count", "Limit", "Skip", "TableLength"],
+    ["TableSignature"]
   );
 
   //Quirks
@@ -889,6 +890,7 @@ genArrayDict(		tablekey，      表格在GLOBAL_MAP_TABLE中的key
 					arrayDictData,  数据
 					dataFileds,     要转换为base64的字段列表
 					intFileds       要转换为整形的字段列表
+          asciiFileds     从 ascii 转化为 base64 的字段列表
 					)
 **/
 function genArrayDict(
@@ -896,6 +898,7 @@ function genArrayDict(
   arrayDictData,
   dataFileds = [],
   intFileds = [],
+  asciiFileds = []
 ) {
   if (arrayDictData.length === 0) {
     return "<array/>";
@@ -931,6 +934,14 @@ function genArrayDict(
       // 如果在整形字段列表中
       else if (intFileds.indexOf(it) >= 0) {
         tmpreturn += "<integer>" + toNumber(itemData) + "</integer>";
+      }
+      //如果在 ascii 转 base64 字段列表中
+      else if (asciiFileds.indexOf(it) >= 0) {
+        if (itemData === "") {
+          tmpreturn += "<data></data>";
+        } else {
+          tmpreturn += "<data>" + btoa(itemData) + "</data>";
+        }
       }
       //否则就是其他string boolean了
       else {
