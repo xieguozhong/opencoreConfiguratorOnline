@@ -100,136 +100,55 @@ function bljsonobj(obj) {
 
 /**
  * base64转16进制
- * Thanks to http://www.tomeko.net/online_tools/base64.php?lang=en
+ * Thanks to chatgpt
  * @param {string} strbase64
  * @returns string
  */
-function base64toHex(strbase64='') {
-    if(strbase64 === '') {
+function base64toHex(base64Str='') {
+    if(base64Str === '') {
         return '';
     }
-    function dec2hex(d) {
-        const hD='0123456789ABCDEF';
-        let h = hD.substr(d&15,1);
-        while (d>15) {
-            d>>=4;
-            h=hD.substr(d&15,1)+h;
+    try {
+        // 1. 使用 atob 解码 Base64 字符串为 ASCII
+        const asciiStr = atob(base64Str);
+
+        // 2. 将 ASCII 字符串转换为字节数组并转换为 16 进制字符串
+        let hexStr = '';
+        for (let i = 0; i < asciiStr.length; i++) {
+            const hex = asciiStr.charCodeAt(i).toString(16).padStart(2, '0');
+            hexStr += hex;
         }
-        return h;
+        return hexStr.toUpperCase();
+    } catch (error) {
+        console.log(`Error: Invalid Base64 string - ${error.message}`);
+        return '';
     }
-
-    function base64_decode(input) {
-
-        const keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
-        const output = new Array();
-        let chr1, chr2, chr3;
-        let enc1, enc2, enc3, enc4;
-        let i = 0;
-
-        let orig_input = input;
-        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-        if (orig_input != input){
-            showTipModal (VUEAPP.lang.CharactersOutsideWarning, 'warning');
-        }
-
-        if (input.length % 4) {
-            showTipModal (VUEAPP.lang.InputlengthError, 'error');
-            return "";
-        }
-
-        let j=0;
-        while (i < input.length) {
-
-            enc1 = keyStr.indexOf(input.charAt(i++));
-            enc2 = keyStr.indexOf(input.charAt(i++));
-            enc3 = keyStr.indexOf(input.charAt(i++));
-            enc4 = keyStr.indexOf(input.charAt(i++));
-
-            chr1 = (enc1 << 2) | (enc2 >> 4);
-            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-            chr3 = ((enc3 & 3) << 6) | enc4;
-
-            output[j++] = chr1;
-            if (enc3 != 64)
-              output[j++] = chr2;
-            if (enc4 != 64)
-              output[j++] = chr3;
-
-        }
-        return output;
-    }
-
-    let output = base64_decode(strbase64);
-    let hexText = '';
-    for (i=0; i<output.length; i++) {
-      hexText = hexText + (output[i]<16?"0":"") + dec2hex(output[i]);
-    }
-    return hexText;
 }
 
 /**
  * 16进制转base64
- * Thanks to http://www.tomeko.net/online_tools/hex_to_base64.php?lang=en
- * @param {*} strhex
+ * Thanks to chatgpt
+ * @param {*} hexStr
  * @returns
  */
-function hextoBase64(strhex) {
-    //consolelog(strhex);
-    function binary_to_base64(input) {
-        const base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-        let ret = '';
-        let i = 0;
-        let j = 0;
-        const char_array_3 = new Array(3);
-        const char_array_4 = new Array(4);
-        let in_len = input.length;
-        let pos = 0;
-
-        while (in_len--) {
-            char_array_3[i++] = input[pos++];
-            if (i == 3) {
-                char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-                char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-                char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
-                char_array_4[3] = char_array_3[2] & 0x3f;
-
-                for (i = 0; (i <4) ; i++)
-                    ret += base64_chars.charAt(char_array_4[i]);
-                i = 0;
-            }
+function hextoBase64(hexStr) {
+    if(hexStr === '') return '';
+    try {
+        // 1. 将 16 进制字符串转换为 ASCII 字符串
+        let asciiStr = '';
+        for (let i = 0; i < hexStr.length; i += 2) {
+            const hexByte = hexStr.substr(i, 2);
+            const charCode = parseInt(hexByte, 16);
+            if (isNaN(charCode)) throw new Error('Invalid hex string');
+            asciiStr += String.fromCharCode(charCode);
         }
 
-        if (i) {
-            for (j = i; j < 3; j++)
-                char_array_3[j] = 0;
-
-            char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-            char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-            char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
-            char_array_4[3] = char_array_3[2] & 0x3f;
-
-            for (j = 0; (j < i + 1); j++)
-                ret += base64_chars.charAt(char_array_4[j]);
-
-            while ((i++ < 3))
-                ret += '=';
-
-        }
-
-        return ret;
-    }
-
-    strhex = strhex.replace(/\s+/g, "");
-    if (strhex.length % 2) {
-        showTipModal (VUEAPP.lang.Error + ', ' + fillLangString(VUEAPP.lang.hexstringlengthisodd, strhex), 'error');
+        // 2. 使用 btoa 将 ASCII 字符串转换为 Base64
+        return btoa(asciiStr);
+    } catch (error) {
+        console.log(`Error: ${error.message}`);
         return '';
     }
-    const binary = new Array();
-    for (let i=0; i<strhex.length/2; i++) {
-        let h = strhex.substr(i*2, 2);
-        binary[i] = parseInt(h,16);
-    }
-    return binary_to_base64(binary);
 }
 
 /**

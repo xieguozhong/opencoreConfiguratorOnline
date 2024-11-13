@@ -4,7 +4,11 @@ let GLOBAL_TABLE_WIDTH = 0,  			//表格的宽度
 
 const 	GLOBAL_MAP_TABLE = new Map(),      //用于存储所有初始化好的表格
 		GLOBAL_SET_ONEDITTABLE = new Set(),	//用于存储编辑中的表格名称，回车保存后会从Set中删除
-		DATA_TYPE_LIST = {string:'string',data:'data',real:'real',integer:'integer',bool:'bool',date:'date'};//Type的类型列表
+		ARCH_LIST = {Any:'Any',i386:'i386',x86_64:'x86_64'},
+		TABLESIGNATURE_LIST = {DSDT:"DSDT",SSDT:"SSDT",HPET:"HPET",ECDT:"ECDT",BGRT:"BGRT",
+			MCFG:"MCFG",DMAR:"DMAR",APIC:"APIC",ASFT:"ASFT",SBST:"SBST",
+			SLIC:"SLIC",MATS:"MATS",BATB:"BATB",UEFI:"UEFI"},
+		DATA_TYPE_LIST = {string:'string',data:'data',integer:'integer',bool:'bool'};//Type的类型列表
 
 
 function initGridTableACPI() {
@@ -30,10 +34,10 @@ function initGridTableACPI() {
 	//gridtable-ACPI-Delete
 	colNames = ['Comment', 'OemTableId','TableLength','TableSignature','All','Enabled'];
 	colModel = [
-		{name:'Comment',index:'Comment',width:90, editable:true, sortable:false, formatter:plistEncode},
+		{name:'Comment',index:'Comment',width:150, editable:true, sortable:false, formatter:plistEncode},
 		{name:'OemTableId',index:'OemTableId', width:150,editable: true, sortable:false, formatter:plistEncode},
 		{name:'TableLength',index:'TableLength',width:90, editable:true, sortable:false, fixed:true, align:'center', formatter:formatInteger},
-		{name:'TableSignature',index:'TableSignature', width:150,editable: true, sortable:false, formatter:plistEncode},
+		{name:'TableSignature',index:'TableSignature', width:90,editable: true, sortable:false, edittype:'select', formatter:plistEncodeAscii, editoptions:{value:TABLESIGNATURE_LIST}},
 		{name:'All',index:'All', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,formatter:enabledFormat, fixed:true, align:'center'},
 		{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 	];
@@ -53,11 +57,10 @@ function initGridTableACPI() {
 			{name:'ReplaceMask',index:'ReplaceMask',width:90, editable:true, sortable:false, formatter:plistEncode},
 			{name:'Limit',index:'Limit',width:60, editable:true, sortable:false, fixed:true, align:'center', formatter:formatInteger},
 			{name:'Mask',index:'Mask',width:90, editable:true, sortable:false, formatter:plistEncode},
-			{name:'OemTableId',index:'OemTableId',width:90, editable:true, sortable:false, formatter:plistEncode},
-			
+			{name:'OemTableId',index:'OemTableId',width:90, editable:true, sortable:false, formatter:plistEncode},			
 			{name:'Skip',index:'Skip',width:60, editable:true, sortable:false, fixed:true, align:'center', formatter:formatInteger},
 			{name:'TableLength',index:'TableLength',width:90, editable:true, sortable:false, fixed:true, align:'center', formatter:formatInteger},
-			{name:'TableSignature',index:'TableSignature',width:90, editable:true, sortable:false, formatter:plistEncodeAscii},
+			{name:'TableSignature',index:'TableSignature',width:90, editable:true, sortable:false, edittype:'select', formatter:plistEncodeAscii, editoptions:{value:TABLESIGNATURE_LIST}},
 			{name:'Enabled',index:'Enabled', width:70, editable: true,edittype:"checkbox",editoptions: {value:"YES:NO"}, sortable:false,fixed:true,align:'center',formatter:enabledFormat}
 		];
 
@@ -201,7 +204,7 @@ function initGridTableBooter() {
 
 	colNames = ['Arch','Comment', 'Count','Find','Replace','ReplaceMask','Identifier','Limit','Mask','Skip','Enabled'];
 	colModel = [
-		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', formatter:getPlistEncodeFunction('Any'), editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}}},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', formatter:getPlistEncodeFunction('Any'), editoptions:{value:ARCH_LIST}},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Count',index:'Count', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:formatInteger},
 		{name:'Find',index:'Find', width:150,editable: true,  sortable:false, formatter:plistEncode},
@@ -224,10 +227,11 @@ function initGridTableKernel() {
 
 	let tableHeight = parseInt(GLOBAL_TABLE_HEIGHT * 0.44);
 	let kernelTableWidth = GLOBAL_TABLE_WIDTH - 15;
+	
 	//Add
 	let colNames = ['Arch','BundlePath', 'Comment','ExecutablePath','PlistPath','MaxKernel','MinKernel','Enabled'];
 	let colModel = [
-		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:ARCH_LIST},formatter:getPlistEncodeFunction('Any')},
 		{name:'BundlePath',index:'BundlePath', width:170,editable: true, sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:160,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'ExecutablePath',index:'ExecutablePath', width:180,editable: true,  sortable:false, formatter:plistEncode},		
@@ -244,7 +248,7 @@ function initGridTableKernel() {
 	//Block
 	colNames = ['Arch','Comment','Identifier', 'MaxKernel','MinKernel','Strategy','Enabled'];
 	colModel = [
-		{name:'Arch',index:'Arch', width:70,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
+		{name:'Arch',index:'Arch', width:70,editable: true, sortable:false, edittype:'select', editoptions:{value:ARCH_LIST},formatter:getPlistEncodeFunction('Any')},
 		{name:'Comment',index:'Comment', width:170,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Identifier',index:'Identifier', width:180,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'MaxKernel',index:'MaxKernel', width:80,editable: true,  sortable:false, formatter:plistEncode},
@@ -260,7 +264,7 @@ function initGridTableKernel() {
 	//Patch
 	colNames = ['Arch','Base','Comment', 'Count','Find','Replace','ReplaceMask','Identifier','Limit','Mask','MaxKernel', 'MinKernel','Skip','Enabled'];
 	colModel = [
-		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:ARCH_LIST},formatter:getPlistEncodeFunction('Any')},
 		{name:'Base',index:'Base', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Count',index:'Count', width:50,editable: true,  sortable:false, fixed:true, align:'center', formatter:formatInteger},
@@ -283,7 +287,7 @@ function initGridTableKernel() {
 	//Force
 	colNames = ['Arch','BundlePath', 'Comment','Identifier','ExecutablePath','MaxKernel','MinKernel','PlistPath','Enabled'];
 	colModel = [
-		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:{Any:'Any',i386:'i386',x86_64:'x86_64'}},formatter:getPlistEncodeFunction('Any')},
+		{name:'Arch',index:'Arch', width:52,editable: true, sortable:false, edittype:'select', editoptions:{value:ARCH_LIST},formatter:getPlistEncodeFunction('Any')},
 		{name:'BundlePath',index:'BundlePath', width:150,editable: true,  sortable:false, formatter:plistEncode},
 		{name:'Comment',index:'Comment', width:100,editable: true,  sortable:false, fixed:true, align:'center', formatter:plistEncode},
 		{name:'Identifier',index:'Identifier', width:150,editable: true,  sortable:false, formatter:plistEncode},

@@ -65,8 +65,9 @@ function getACPI() {
   acpiContext += genArrayDict(
     "ACPI_Delete",
     VUEAPP.ACPI.Delete,
-    ["OemTableId", "TableSignature"],
+    ["OemTableId"],
     ["TableLength"],
+    ["TableSignature"]
   );
 
   //Patch
