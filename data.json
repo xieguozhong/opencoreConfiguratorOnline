@@ -1,5 +1,5 @@
 {
-  "supportversion": "OpenCore-1.0.2-RELEASE",
+  "supportversion": "OpenCore-1.0.3-RELEASE",
   "latestversion":"1.0.3",
   "acpi_patch_list":[
     {"Base":"","BaseSkip":"0","Comment":"Rename EHC1 to EH01 (USB)","Count":"0","Find":"45484331","Limit":"0","Mask":"","OemTableId":"","Replace":"45483031","ReplaceMask":"","Skip":"0","TableLength":"0","TableSignature":"DSDT","Enabled":"YES"},
