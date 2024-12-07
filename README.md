@@ -50,15 +50,26 @@ web版的OpenCore引导工具config.plist的在线编辑器
 ![image](https://github.com/xieguozhong/opencoreConfiguratorOnline/blob/main/readme/upgradeopencore.gif)
 
 修改方式:
-打开终端 1
-git clone https://github.com/xieguozhong/opencoreConfiguratorOnline.git
-cd opencoreConfiguratorOnline
-gulp
-gulp watch
 
-tauri 修改方法
-cd opencoreConfiguratorOnline/tauriapp
-npm run tauri dev
+打开终端 1
+#git clone https://github.com/xieguozhong/opencoreConfiguratorOnline.git
+
+#cd opencoreConfiguratorOnline
+
+#npm install
+
+#gulp
+
+#gulp watch
+
+
+tauri 修改方法,提前安装好 rust , brew install rust
+
+#cd opencoreConfiguratorOnline/tauriapp
+
+#npm install
+
+#npm run tauri dev
 
 
 
