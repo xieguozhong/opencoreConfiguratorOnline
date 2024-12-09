@@ -184,9 +184,7 @@ fn list_files_in_dir(dirpath: &str) -> String {
                         if let Ok(relative_path) = path.strip_prefix(base_path) {
                             file_list.push(relative_path.to_string_lossy().to_string());
                         }
-                    } else if path.is_dir() && !file_name_str.starts_with('.') {
-                        visit_dirs(&path, base_path, file_list); // 递归调用
-                    }
+                    } 
                 }
             }
         }

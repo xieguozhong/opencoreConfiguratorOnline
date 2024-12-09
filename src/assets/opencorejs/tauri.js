@@ -183,9 +183,9 @@ async function asyncupgradeOpencore(diskno) {
   const saveresult = await invoke("get_file_size", { filepath: zipfilePath});
   //如果文件不存在或者文件大小小于8000000, 就去 github 上下载
   if(saveresult < 8000000) {
-    //console.log("文件不存在,需要下载")
+    console.log("文件不存在,需要下载")
     const durl = `${VUEAPP.download_proxy_url}/https://github.com/acidanthera/OpenCorePkg/releases/download/${VUEAPP.opencore_latest_version}/OpenCore-${VUEAPP.opencore_latest_version}-RELEASE.zip`;
-    //console.log(durl)
+    console.log('下载地址：' + durl);
     const download = await invoke("download_file", { url: durl, outputdir:tempPath});
     if(download === 0) {
       $('body').css('cursor', '');
@@ -195,28 +195,29 @@ async function asyncupgradeOpencore(diskno) {
   }
   showTipModal(VUEAPP.lang.tip_file_download_success);
   //开始解压文件
-  const unzipres = await invoke("unzip_file_to_dir", { zippath: zipfilePath, destdir:unzipPath});  
-
-  //开始更新 BOOT 目录下文件
-  const bootfilelist = await invoke("list_files_in_dir", { dirpath: diskno + "/BOOT"});  
-  const bootfilejson = JSON.parse(bootfilelist);  
-  for(const it of bootfilejson.files) {
-    const copyfileres = await invoke("copy_file_to_dir", { srcfile: unzipPath + "/X64/EFI/BOOT/"+it, destdir:diskno+'/BOOT'});
-    if(copyfileres === 'Ok') {
-      showTipModal(fillLangString(VUEAPP.lang.tip_file_upgrade_success,it));
-    }
+  const unzipres = await invoke("unzip_file_to_dir", { zippath: zipfilePath, destdir:unzipPath});
+  if(unzipres === 'Ok') {
+    showTipModal(VUEAPP.lang.tip_file_decompressed_update);
   }
 
-  //开始更新 OC 目录下文件
-  const ocfilelist = await invoke("list_files_in_dir", { dirpath: diskno + "/OC"});
-  const ocfilejson = JSON.parse(ocfilelist);
-  for(const it of ocfilejson.files) {
-    const copyfileres = await invoke("copy_file_to_dir", { srcfile: unzipPath + "/X64/EFI/OC/"+it, destdir:diskno+'/OC'});
-    if(copyfileres === 'Ok') {
-      showTipModal(fillLangString(VUEAPP.lang.tip_file_upgrade_success,it));
+  //开始更新文件，只更新 BOOT，OC，OC/Drivers，OC/Tools 下的文件
+  const destDirList = [
+    '/BOOT',
+    '/OC',
+    '/OC/Drivers',
+    '/OC/Tools',
+  ];
+  for(const ddl of destDirList) {
+    const filelist = await invoke("list_files_in_dir", { dirpath: diskno + ddl});
+    const filelistJSON = JSON.parse(filelist); 
+
+    for(const it of filelistJSON.files) {
+      const copyfileres = await invoke("copy_file_to_dir", { srcfile: unzipPath + "/X64/EFI" + ddl + '/' +it, destdir:diskno + ddl});
+      if(copyfileres === 'Ok') {
+        showTipModal(fillLangString(VUEAPP.lang.tip_file_upgrade_success,it));
+      }
     }
   }
-
   $('body').css('cursor', '');
   showTipModal(VUEAPP.lang.tip_upgrade_opencore_success);
 }

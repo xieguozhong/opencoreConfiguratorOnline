@@ -45,8 +45,8 @@ function upgradeOpencore_MU() {
     alert(fillLangString(VUEAPP.lang.tip_EFI_partition_not_exist, selectedOption.partitionname));
     return;
   }
-
-  const cf = confirm(fillLangString(VUEAPP.lang.tip_is_continue_upgrading_opencore, selectedOption.partitionname));
+ 
+  const cf = confirm(fillLangString(VUEAPP.lang.tip_is_continue_upgrading_opencore, selectedOption.partitionname,VUEAPP.opencore_latest_version));
   if (cf) upgradeOpencore(`/Volumes/${selectedOption.partitionname}/EFI`);
 
 }
