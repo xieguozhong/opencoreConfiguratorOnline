@@ -29,6 +29,7 @@ gulp.task('jss_1',()=>{
         'src/assets/opencorejs/plist_parser.js',
         'src/assets/opencorejs/comm.js',
         'src/assets/opencorejs/initGirdtable.js',
+        'src/assets/opencorejs/vue_data.js',
         'src/assets/opencorejs/index.js',
         'src/assets/opencorejs/ocefi.js',
         'src/assets/opencorejs/generatePlist.js'

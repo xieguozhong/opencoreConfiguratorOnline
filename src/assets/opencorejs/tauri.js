@@ -183,9 +183,10 @@ async function asyncupgradeOpencore(diskno) {
   const saveresult = await invoke("get_file_size", { filepath: zipfilePath});
   //如果文件不存在或者文件大小小于8000000, 就去 github 上下载
   if(saveresult < 8000000) {
-    console.log("文件不存在,需要下载")
-    const durl = `${VUEAPP.download_proxy_url}/https://github.com/acidanthera/OpenCorePkg/releases/download/${VUEAPP.opencore_latest_version}/OpenCore-${VUEAPP.opencore_latest_version}-RELEASE.zip`;
+    console.log("文件不存在,需要下载");
+    const durl = `https://gh-proxy.com/https://github.com/acidanthera/OpenCorePkg/releases/download/${VUEAPP.opencore_latest_version}/OpenCore-${VUEAPP.opencore_latest_version}-RELEASE.zip`;
     console.log('下载地址：' + durl);
+    
     const download = await invoke("download_file", { url: durl, outputdir:tempPath});
     if(download === 0) {
       $('body').css('cursor', '');
