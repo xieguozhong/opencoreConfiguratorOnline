@@ -34,6 +34,7 @@ const SYSTEM_TIPS = {
         Quirks:{
             AllowRelocationBlock:'NO 允许通过重定位块引导macOS',
             AvoidRuntimeDefrag:'YES 修复 UEFI 的运行服务, 例如日期, 时间, NVRAM, 电源控制等',
+            ClearTaskSwitchBit:'NO 在UEFI运行时服务调用期间清除任务切换位',
             DevirtualiseMmio:'NO 减少 Stolen 内存占用空间，扩大 Slide = N 值的范围，但可能与主板不兼容。通常用于 APTIO V 固件 (Broadwell +)',
             DisableSingleUser:'NO 禁止 Cmd + S 和 -s 的使用，使设备更加接近于 T2 白苹果',
             DisableVariableWrite:'NO 禁止 NVRAM 写入, 在 Z390/HM370 等没有原生 macOS 支持 NVRAM 的设备上需要开启',

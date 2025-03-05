@@ -44,6 +44,7 @@ const vueproperty = {
         Quirks: {
           AllowRelocationBlock: false,
           AvoidRuntimeDefrag: false,
+          ClearTaskSwitchBit: false,
           DevirtualiseMmio: false,
           DisableSingleUser: false,
           DisableVariableWrite: false,
