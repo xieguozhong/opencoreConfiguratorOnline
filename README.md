@@ -1,7 +1,7 @@
 # opencoreConfiguratorOnline
 
 
-最新适配版本: OpenCore-1.0.3-RELEASE
+最新适配版本: OpenCore-1.0.4-RELEASE
 
 
 web版的OpenCore引导工具config.plist的在线编辑器
@@ -70,6 +70,8 @@ tauri 修改方法,提前安装好 rust , brew install rust
 #npm install
 
 #npm run tauri dev
+
+#npm run tauri build
 
 
 
