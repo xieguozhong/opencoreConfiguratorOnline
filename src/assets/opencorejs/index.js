@@ -197,19 +197,20 @@ function handFile(ff, thetable) {
         }
       });
 
-      let maxid = getMaxrowid(thetable),
-        newData = null;
-      //console.log(sfonly)
+      let maxid = getMaxrowid(thetable), newData = null;
+      
       sfonly.forEach((kname) => {
-        const lastdotindex = kname.lastIndexOf(".");
-        const lastslaindex = kname.lastIndexOf("/") + 1;
-        const knamekey = kname.substring(lastslaindex, lastdotindex);
-        let ExecutablePath = "",
-          PlistPath = "";
 
-        if (sfl.has(kname + "/Contents/MacOS/" + knamekey)) {
-          ExecutablePath = "Contents/MacOS/" + knamekey;
+        let ExecutablePath = "",PlistPath = "";
+
+        for(const it of sfl) {
+          const newKname = kname + "/Contents/MacOS/";
+          if(it.includes(newKname)  && it.length > newKname.length) {
+            ExecutablePath = it;
+            break;
+          } 
         }
+
         if (sfl.has(kname + "/Contents/Info.plist")) {
           PlistPath = "Contents/Info.plist";
         }
