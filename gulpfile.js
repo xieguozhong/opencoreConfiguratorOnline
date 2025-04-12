@@ -83,9 +83,10 @@ gulp.task('index_html_replace', function() {
         //   'css': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/docs/assets/css/opencore.min.css',
         //   'jss': 'https://cdn.jsdelivr.net/gh/xieguozhong/opencoreConfiguratorOnline@main/docs/assets/js/opencore.min.js'
         'css': 'assets/css/opencore.min.css',
-        'jss': 'assets/js/opencore.min.js',
-        'tauri': 'assets/js/tauri.min.js'
-      },{keepUnassigned: true,ignoreMissing: true}))
+        'jss': '<script src="assets/js/opencore.min.js" defer></script>',
+        'tauri': '<script src="assets/js/tauri.min.js" defer></script>'        
+      }
+      ,{keepUnassigned: true,ignoreMissing: true}))
       .pipe(gulp.dest('docs'))
       .pipe(gulp.dest('utools'));
   });
