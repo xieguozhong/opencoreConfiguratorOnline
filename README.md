@@ -1,10 +1,11 @@
 # opencoreConfiguratorOnline
 
 
-最新适配版本: OpenCore-1.0.4-RELEASE
+最新适配版本: OpenCore-1.0.5-RELEASE
 
 
 web版的OpenCore引导工具config.plist的在线编辑器
+
 使用方法:
 
 1 直接使用在线版, 地址 https://xieguozhong.github.io/opencoreConfiguratorOnline/
@@ -13,10 +14,13 @@ web版的OpenCore引导工具config.plist的在线编辑器
 2 git clone 后直接双击index.html使用
 
 
-3 强烈推荐使用utools( https://www.u.tools )工具, 非常多插件，好用方便还免费。 安装后在插件应用市场搜 opencore
+3 macos 系统使用独立的应用, 下载后解压直接用就可以了
+
+
+4 强烈推荐使用utools( https://www.u.tools )工具, 非常多插件，好用方便还免费。 安装后在插件应用市场搜 opencore
 ![image](https://github.com/xieguozhong/opencoreConfiguratorOnline/blob/main/readme/utools.png)
 
-4 macos 系统使用独立的应用, 下载后解压直接用就可以了
+
 
 演示图
 1 打开config文件
